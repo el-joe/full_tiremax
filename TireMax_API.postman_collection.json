@@ -29,18 +29,34 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/auth/register",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "auth", "register"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "register"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Ahmed Hassan\",\n  \"phone\": \"07701234567\",\n  \"email\": \"ahmed@example.com\",\n  \"password\": \"secret123\",\n  \"password_confirmation\": \"secret123\",\n  \"address\": \"Basra, Al-Ashar, Block 5\",\n  \"locale\": \"ar\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Create a new customer account. Returns a JWT token pair on success.\n\n**Body fields:**\n- `name` *(required, string, max 120)* — Customer full name\n- `phone` *(required, string, max 20, unique)* — Mobile phone number used as login identifier\n- `email` *(optional, email, max 120, unique)* — Email address\n- `password` *(required, string, min 6)* — Account password\n- `password_confirmation` *(required)* — Must match `password`\n- `address` *(optional, string, max 255)* — Default shipping address\n- `locale` *(optional, enum: en|ar)* — Preferred language for API messages"
           },
@@ -50,10 +66,18 @@
               "originalRequest": {
                 "method": "POST",
                 "header": [
-                  { "key": "Content-Type", "value": "application/json" },
-                  { "key": "Accept", "value": "application/json" }
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
-                "url": { "raw": "{{baseUrl}}/v1/auth/register" },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/register"
+                },
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"name\": \"Ahmed Hassan\",\n  \"phone\": \"07701234567\",\n  \"email\": \"ahmed@example.com\",\n  \"password\": \"secret123\",\n  \"password_confirmation\": \"secret123\",\n  \"address\": \"Basra, Al-Ashar, Block 5\",\n  \"locale\": \"ar\"\n}"
@@ -62,17 +86,32 @@
               "status": "Created",
               "code": 201,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Registered successfully\",\n  \"data\": {\n    \"customer\": {\n      \"id\": 1,\n      \"name\": \"Ahmed Hassan\",\n      \"email\": \"ahmed@example.com\",\n      \"phone\": \"07701234567\",\n      \"address\": \"Basra, Al-Ashar, Block 5\",\n      \"locale\": \"ar\"\n    },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL3YxL2F1dGgvcmVnaXN0ZXIiLCJpYXQiOjE3NDkwMDAwMDAsImV4cCI6MTc0OTAwMzYwMCwibmJmIjoxNzQ5MDAwMDAwLCJqdGkiOiJBYkNkRWZHaElqS2xNbk9wIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.SampleSignature\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}"
             },
             {
               "name": "422 Validation Error",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/auth/register" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/register"
+                }
+              },
               "status": "Unprocessable Entity",
               "code": 422,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"phone\": [\"The phone has already been taken.\"],\n    \"password\": [\"The password confirmation does not match.\"]\n  }\n}"
             }
@@ -83,39 +122,79 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "auth", "login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "login"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"login\": \"07701234567\",\n  \"password\": \"secret123\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Authenticate an existing customer. The `login` field accepts either a phone number or email address.\n\n**Body fields:**\n- `login` *(required, string)* — Customer phone number or email address\n- `password` *(required, string)* — Account password"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/auth/login" }, "body": { "mode": "raw", "raw": "{\n  \"login\": \"07701234567\",\n  \"password\": \"secret123\"\n}" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/login"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"login\": \"07701234567\",\n  \"password\": \"secret123\"\n}"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Logged in successfully\",\n  \"data\": {\n    \"customer\": {\n      \"id\": 1,\n      \"name\": \"Ahmed Hassan\",\n      \"email\": \"ahmed@example.com\",\n      \"phone\": \"07701234567\",\n      \"address\": \"Basra, Al-Ashar, Block 5\",\n      \"locale\": \"ar\"\n    },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzQ5MDAwMDAwLCJleHAiOjE3NDkwMDM2MDB9.SampleSignature\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}"
             },
             {
               "name": "401 Invalid Credentials",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/auth/login" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/login"
+                }
+              },
               "status": "Unauthorized",
               "code": 401,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Invalid credentials\"\n}"
             }
@@ -126,24 +205,46 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/auth/refresh",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "auth", "refresh"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "refresh"
+              ]
             },
             "description": "Exchange an expiring JWT token for a fresh one. Send the current token in the `Authorization` header; receive a new token in the response.\n\n**No request body required.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/auth/refresh" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/refresh"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzQ5MDAzNjAwLCJleHAiOjE3NDkwMDcyMDB9.NewSampleSignature\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}"
             }
@@ -154,34 +255,66 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/auth/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "auth", "me"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "me"
+              ]
             },
             "description": "Returns the authenticated customer's profile data.\n\n**No parameters required.** Authentication via `Authorization: Bearer` header."
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/auth/me" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/me"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Ahmed Hassan\",\n    \"email\": \"ahmed@example.com\",\n    \"phone\": \"07701234567\",\n    \"address\": \"Basra, Al-Ashar, Block 5\",\n    \"locale\": \"ar\"\n  }\n}"
             },
             {
               "name": "401 Unauthenticated",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/auth/me" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/me"
+                }
+              },
               "status": "Unauthorized",
               "code": 401,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Unauthenticated\"\n}"
             }
@@ -192,30 +325,59 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/auth/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "auth", "me"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "me"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Ahmed Hassan Updated\",\n  \"email\": \"ahmed.new@example.com\",\n  \"address\": \"Basra, Zubayr District\",\n  \"locale\": \"en\",\n  \"password\": \"newpassword123\",\n  \"password_confirmation\": \"newpassword123\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Update the authenticated customer's profile. All fields are optional — only send the fields you want to change.\n\n**Body fields (all optional):**\n- `name` *(string, max 120)* — Customer display name\n- `email` *(email, max 120, unique)* — Email address (must not belong to another account)\n- `address` *(string, max 255)* — Default delivery address\n- `locale` *(enum: en|ar)* — Preferred language\n- `password` *(string, min 6)* — New password\n- `password_confirmation` *(string)* — Required when `password` is provided"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "PUT", "url": { "raw": "{{baseUrl}}/v1/auth/me" } },
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/me"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Updated successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Ahmed Hassan Updated\",\n    \"email\": \"ahmed.new@example.com\",\n    \"phone\": \"07701234567\",\n    \"address\": \"Basra, Zubayr District\",\n    \"locale\": \"en\"\n  }\n}"
             }
@@ -226,24 +388,46 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/auth/logout",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "auth", "logout"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "logout"
+              ]
             },
             "description": "Invalidate the current JWT token. After calling this endpoint the token can no longer be used.\n\n**No request body required.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/auth/logout" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/auth/logout"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Logged out successfully\"\n}"
             }
@@ -260,25 +444,218 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/home",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "home"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "home"
+              ]
             },
             "description": "Returns aggregated homepage data in one request:\n- `featured` — Up to 12 featured products\n- `best_sellers` — Up to 8 best-seller products\n- `new_arrivals` — Up to 8 newest products\n- `offers` — Up to 8 products on sale\n- `brands` — All active brands\n- `governorates` — All active governorates\n\n**No parameters required. Auth optional.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/home" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/home"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"featured\": [\n      {\n        \"id\": 1,\n        \"sku\": \"MCH-PS5-22550R17\",\n        \"type\": \"tire\",\n        \"name\": \"Michelin Pilot Sport 5\",\n        \"short_description\": \"Ultra high performance summer tire\",\n        \"description\": \"Designed for the most demanding drivers\",\n        \"pattern_name\": \"Pilot Sport 5\",\n        \"usage_notes\": null,\n        \"price\": 185000,\n        \"sale_price\": 165000,\n        \"effective_price\": 165000,\n        \"has_discount\": true,\n        \"stock\": 24,\n        \"in_stock\": true,\n        \"manufacture_year\": 2024,\n        \"manufacturer_warranty_months\": 60,\n        \"agency_warranty_months\": 12,\n        \"expert_rating\": 4.8,\n        \"sales_count\": 312,\n        \"views_count\": 5800,\n        \"is_featured\": true,\n        \"badges\": [\"best_seller\", \"new\"],\n        \"images\": [\n          { \"url\": \"http://localhost:8000/storage/products/mich-ps5.jpg\", \"is_primary\": true }\n        ],\n        \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5.jpg\",\n        \"brand\": {\n          \"id\": 1,\n          \"slug\": \"michelin\",\n          \"name\": \"Michelin\",\n          \"description\": \"French multinational tyre manufacturer\",\n          \"logo\": \"http://localhost:8000/storage/brands/michelin.png\",\n          \"country\": \"France\",\n          \"is_active\": true\n        },\n        \"category\": {\n          \"id\": 2,\n          \"slug\": \"uhp-tires\",\n          \"name\": \"UHP Tires\",\n          \"description\": \"Ultra high performance tires\",\n          \"product_type\": \"tire\",\n          \"icon\": \"tire-uhp\"\n        },\n        \"tire_spec\": {\n          \"width\": 225,\n          \"aspect_ratio\": 50,\n          \"rim_diameter\": 17,\n          \"load_index\": \"98Y\",\n          \"speed_rating\": \"Y\",\n          \"usage_type\": \"summer\",\n          \"runflat\": false,\n          \"size_string\": \"225/50R17\"\n        },\n        \"battery_spec\": null\n      }\n    ],\n    \"best_sellers\": [],\n    \"new_arrivals\": [],\n    \"offers\": [],\n    \"brands\": [\n      {\n        \"id\": 1,\n        \"slug\": \"michelin\",\n        \"name\": \"Michelin\",\n        \"description\": \"French multinational tyre manufacturer\",\n        \"logo\": \"http://localhost:8000/storage/brands/michelin.png\",\n        \"country\": \"France\",\n        \"is_active\": true\n      },\n      {\n        \"id\": 2,\n        \"slug\": \"bridgestone\",\n        \"name\": \"Bridgestone\",\n        \"description\": \"World's largest tyre manufacturer\",\n        \"logo\": \"http://localhost:8000/storage/brands/bridgestone.png\",\n        \"country\": \"Japan\",\n        \"is_active\": true\n      }\n    ],\n    \"governorates\": [\n      {\n        \"id\": 1,\n        \"code\": \"BSR\",\n        \"name\": \"Basra\",\n        \"is_basra\": true,\n        \"shipping_fee\": 0\n      },\n      {\n        \"id\": 2,\n        \"code\": \"BGH\",\n        \"name\": \"Baghdad\",\n        \"is_basra\": false,\n        \"shipping_fee\": 7500\n      }\n    ]\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Flash Sales",
+      "description": "Flash sales are time-limited discount events. All flash-sale endpoints are public (no authentication required). Products returned include a computed `flash_sale_price` and `countdown_seconds` field so the client can display a live countdown timer.",
+      "item": [
+        {
+          "name": "List Active Flash Sales",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/flash-sales",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "flash-sales"
+              ]
+            },
+            "description": "Returns all **currently running** flash sales ordered by soonest ending first.\n\nA flash sale is considered active when:\n- `is_active = true`\n- `starts_at <= now()`\n- `ends_at >= now()`\n\nUse the `countdown_seconds` field to drive a client-side countdown timer."
+          },
+          "response": [
+            {
+              "name": "200 OK — active sales exist",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/flash-sales"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"title\": \"Eid Mega Sale\",\n      \"discount_percent\": 20.0,\n      \"starts_at\": \"2026-06-05T10:00:00+03:00\",\n      \"ends_at\": \"2026-06-05T23:59:59+03:00\",\n      \"status\": \"active\",\n      \"is_running\": true,\n      \"countdown_seconds\": 49199,\n      \"products_count\": 14\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Summer Tire Blitz\",\n      \"discount_percent\": 15.0,\n      \"starts_at\": \"2026-06-05T08:00:00+03:00\",\n      \"ends_at\": \"2026-06-06T08:00:00+03:00\",\n      \"status\": \"active\",\n      \"is_running\": true,\n      \"countdown_seconds\": 93600,\n      \"products_count\": 32\n    }\n  ]\n}"
+            },
+            {
+              "name": "200 OK — no active sales",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/flash-sales"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Flash Sale Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/flash-sales/1/products?type=tire&per_page=15&page=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "flash-sales",
+                "1",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "tire",
+                  "description": "Filter products by type. Allowed values: `tire` | `battery` | `accessory`. Omit to return all types."
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "description": "Number of products to return per page. Default: `15`. Max recommended: `50`."
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination. Default: `1`."
+                }
+              ]
+            },
+            "description": "Returns a **paginated list of products** belonging to the specified flash sale.\n\nOnly **active** products are returned. Each product includes:\n- `flash_sale_price` — the discounted price after applying `discount_percent`\n- `flash_sale_discount_percent` — the sale's discount percentage\n- `countdown_seconds` — seconds remaining until the sale ends\n\n**Path parameter:**\n- `{flashSale}` *(required, integer)* — The flash sale ID from `GET /v1/flash-sales`\n\nReturns `404` if the flash sale ID does not exist."
+          },
+          "response": [
+            {
+              "name": "200 OK — products found",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/flash-sales/1/products?type=tire&per_page=2"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"sku\": \"MCH-PS5-22550R17\",\n      \"type\": \"tire\",\n      \"name\": \"Michelin Pilot Sport 5 225/50R17\",\n      \"short_description\": \"Ultra high performance summer tire\",\n      \"price\": 185000,\n      \"sale_price\": 165000,\n      \"effective_price\": 165000,\n      \"flash_sale_price\": 148000,\n      \"flash_sale_discount_percent\": 20.0,\n      \"has_discount\": true,\n      \"countdown_seconds\": 49199,\n      \"stock\": 24,\n      \"in_stock\": true,\n      \"manufacture_year\": 2024,\n      \"manufacturer_warranty_months\": 60,\n      \"agency_warranty_months\": 12,\n      \"expert_rating\": 4.8,\n      \"sales_count\": 312,\n      \"views_count\": 5800,\n      \"is_featured\": true,\n      \"badges\": [\n        \"best_seller\"\n      ],\n      \"images\": [\n        {\n          \"url\": \"http://localhost:8000/storage/products/mich-ps5.jpg\",\n          \"is_primary\": true\n        }\n      ],\n      \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5.jpg\",\n      \"brand\": {\n        \"id\": 1,\n        \"slug\": \"michelin\",\n        \"name\": \"Michelin\",\n        \"logo\": \"http://localhost:8000/storage/brands/michelin.png\",\n        \"country\": \"France\",\n        \"is_active\": true\n      },\n      \"category\": {\n        \"id\": 2,\n        \"slug\": \"uhp-tires\",\n        \"name\": \"UHP Tires\",\n        \"product_type\": \"tire\",\n        \"icon\": \"tire-uhp\"\n      },\n      \"tire_spec\": {\n        \"width\": 225,\n        \"aspect_ratio\": 50,\n        \"rim_diameter\": 17,\n        \"load_index\": \"98Y\",\n        \"speed_rating\": \"Y\",\n        \"usage_type\": \"summer\",\n        \"runflat\": false,\n        \"size_string\": \"225/50R17\"\n      },\n      \"battery_spec\": null\n    },\n    {\n      \"id\": 5,\n      \"sku\": \"GY-EFG-20560R16\",\n      \"type\": \"tire\",\n      \"name\": \"Goodyear EfficientGrip 205/60R16\",\n      \"short_description\": \"Fuel-efficient all-season touring tire\",\n      \"price\": 95000,\n      \"sale_price\": null,\n      \"effective_price\": 95000,\n      \"flash_sale_price\": 76000,\n      \"flash_sale_discount_percent\": 20.0,\n      \"has_discount\": false,\n      \"countdown_seconds\": 49199,\n      \"stock\": 60,\n      \"in_stock\": true,\n      \"manufacture_year\": 2024,\n      \"manufacturer_warranty_months\": 60,\n      \"agency_warranty_months\": 12,\n      \"expert_rating\": 4.3,\n      \"sales_count\": 204,\n      \"views_count\": 3800,\n      \"is_featured\": false,\n      \"badges\": [],\n      \"images\": [\n        {\n          \"url\": \"http://localhost:8000/storage/products/gy-efg.jpg\",\n          \"is_primary\": true\n        }\n      ],\n      \"primary_image\": \"http://localhost:8000/storage/products/gy-efg.jpg\",\n      \"brand\": {\n        \"id\": 4,\n        \"slug\": \"goodyear\",\n        \"name\": \"Goodyear\",\n        \"logo\": \"http://localhost:8000/storage/brands/goodyear.png\",\n        \"country\": \"USA\",\n        \"is_active\": true\n      },\n      \"category\": {\n        \"id\": 1,\n        \"slug\": \"touring-tires\",\n        \"name\": \"Touring Tires\",\n        \"product_type\": \"tire\",\n        \"icon\": \"tire-touring\"\n      },\n      \"tire_spec\": {\n        \"width\": 205,\n        \"aspect_ratio\": 60,\n        \"rim_diameter\": 16,\n        \"load_index\": \"92H\",\n        \"speed_rating\": \"H\",\n        \"usage_type\": \"all_season\",\n        \"runflat\": false,\n        \"size_string\": \"205/60R16\"\n      },\n      \"battery_spec\": null\n    }\n  ],\n  \"meta\": {\n    \"flash_sale\": {\n      \"id\": 1,\n      \"title\": \"Eid Mega Sale\",\n      \"discount_percent\": 20.0,\n      \"starts_at\": \"2026-06-05T10:00:00+03:00\",\n      \"ends_at\": \"2026-06-05T23:59:59+03:00\",\n      \"status\": \"active\",\n      \"is_running\": true,\n      \"countdown_seconds\": 49199,\n      \"products_count\": 14\n    },\n    \"pagination\": {\n      \"total\": 14,\n      \"per_page\": 2,\n      \"current_page\": 1,\n      \"last_page\": 7\n    }\n  }\n}"
+            },
+            {
+              "name": "200 OK — no products match filter",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/flash-sales/1/products?type=battery"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [],\n  \"meta\": {\n    \"flash_sale\": {\n      \"id\": 1,\n      \"title\": \"Eid Mega Sale\",\n      \"discount_percent\": 20.0,\n      \"starts_at\": \"2026-06-05T10:00:00+03:00\",\n      \"ends_at\": \"2026-06-05T23:59:59+03:00\",\n      \"status\": \"active\",\n      \"is_running\": true,\n      \"countdown_seconds\": 49199,\n      \"products_count\": 14\n    },\n    \"pagination\": {\n      \"total\": 0,\n      \"per_page\": 15,\n      \"current_page\": 1,\n      \"last_page\": 1\n    }\n  }\n}"
+            },
+            {
+              "name": "404 Not Found — flash sale does not exist",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/flash-sales/999/products"
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Flash sale not found.\",\n  \"data\": null\n}"
             }
           ]
         }
@@ -293,23 +670,41 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/brands",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "brands"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "brands"
+              ]
             },
             "description": "Returns all active tire/battery brands ordered by `sort_order`.\n\n**No query parameters. Auth optional.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/brands" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/brands"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"slug\": \"michelin\",\n      \"name\": \"Michelin\",\n      \"description\": \"French multinational tyre manufacturer\",\n      \"logo\": \"http://localhost:8000/storage/brands/michelin.png\",\n      \"country\": \"France\",\n      \"is_active\": true\n    },\n    {\n      \"id\": 2,\n      \"slug\": \"bridgestone\",\n      \"name\": \"Bridgestone\",\n      \"description\": \"World's largest tyre manufacturer\",\n      \"logo\": \"http://localhost:8000/storage/brands/bridgestone.png\",\n      \"country\": \"Japan\",\n      \"is_active\": true\n    },\n    {\n      \"id\": 3,\n      \"slug\": \"continental\",\n      \"name\": \"Continental\",\n      \"description\": \"German automotive parts manufacturer\",\n      \"logo\": \"http://localhost:8000/storage/brands/continental.png\",\n      \"country\": \"Germany\",\n      \"is_active\": true\n    }\n  ]\n}"
             }
@@ -320,23 +715,41 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/branches",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "branches"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "branches"
+              ]
             },
             "description": "Returns all active branches with their weekly schedules.\n\n**No query parameters. Auth optional.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/branches" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/branches"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"code\": \"BSR-MAIN\",\n      \"name\": \"Basra Main Branch\",\n      \"address\": \"Basra, Abu Al-Khaseeb Highway, near Gulf Hotel\",\n      \"description\": \"Our flagship store serving Basra\",\n      \"phone\": \"0771-000-0001\",\n      \"email\": \"basra@tiremax.iq\",\n      \"latitude\": 30.5085,\n      \"longitude\": 47.7834,\n      \"is_main\": true,\n      \"is_active\": true,\n      \"schedules\": [\n        {\n          \"day_of_week\": 0,\n          \"opens_at\": \"08:00:00\",\n          \"closes_at\": \"20:00:00\",\n          \"capacity\": 10,\n          \"is_closed\": false\n        },\n        {\n          \"day_of_week\": 5,\n          \"opens_at\": null,\n          \"closes_at\": null,\n          \"capacity\": 0,\n          \"is_closed\": true\n        }\n      ]\n    }\n  ]\n}"
             }
@@ -347,23 +760,41 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/governorates",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "governorates"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "governorates"
+              ]
             },
             "description": "Returns all active Iraqi governorates with shipping fees. Useful for populating the delivery location selector.\n\n**No query parameters. Auth optional.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/governorates" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/governorates"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"code\": \"BSR\",\n      \"name\": \"Basra\",\n      \"is_basra\": true,\n      \"shipping_fee\": 0\n    },\n    {\n      \"id\": 2,\n      \"code\": \"BGH\",\n      \"name\": \"Baghdad\",\n      \"is_basra\": false,\n      \"shipping_fee\": 7500\n    },\n    {\n      \"id\": 3,\n      \"code\": \"MSL\",\n      \"name\": \"Mosul\",\n      \"is_basra\": false,\n      \"shipping_fee\": 10000\n    }\n  ]\n}"
             }
@@ -374,23 +805,41 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/services",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "services"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "services"
+              ]
             },
             "description": "Returns all active services offered at branches (e.g. tire fitting, wheel balancing, nitrogen inflation).\n\n**No query parameters. Auth optional.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/services" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/services"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"slug\": \"tire-fitting\",\n      \"name\": \"Tire Fitting\",\n      \"description\": \"Professional mounting and fitting of new tires\",\n      \"icon\": \"wrench\",\n      \"duration_minutes\": 30,\n      \"price\": 5000\n    },\n    {\n      \"id\": 2,\n      \"slug\": \"wheel-balancing\",\n      \"name\": \"Wheel Balancing\",\n      \"description\": \"Dynamic wheel balancing to reduce vibration\",\n      \"icon\": \"balance\",\n      \"duration_minutes\": 20,\n      \"price\": 3000\n    },\n    {\n      \"id\": 3,\n      \"slug\": \"nitrogen-inflation\",\n      \"name\": \"Nitrogen Inflation\",\n      \"description\": \"Fill tires with nitrogen for better pressure stability\",\n      \"icon\": \"gas\",\n      \"duration_minutes\": 15,\n      \"price\": 2000\n    }\n  ]\n}"
             }
@@ -407,28 +856,96 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/products?type=tire&brand_id=1&category_id=2&min_price=50000&max_price=200000&search=pilot&badge=best_seller&width=225&aspect_ratio=50&rim_diameter=17&vehicle_id=1&sort=price&direction=asc&per_page=15&page=1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products"
+              ],
               "query": [
-                { "key": "type", "value": "tire", "description": "Product type filter. Allowed: tire | battery | accessory" },
-                { "key": "brand_id", "value": "1", "description": "Filter by brand ID. Can be repeated (?brand_id[]=1&brand_id[]=2) to filter multiple brands" },
-                { "key": "category_id", "value": "2", "description": "Filter by category ID" },
-                { "key": "min_price", "value": "50000", "description": "Minimum price in Iraqi Dinars (inclusive)" },
-                { "key": "max_price", "value": "200000", "description": "Maximum price in Iraqi Dinars (inclusive)" },
-                { "key": "search", "value": "pilot", "description": "Keyword search against the translated product name" },
-                { "key": "badge", "value": "best_seller", "description": "Filter by product badge. Allowed: best_seller | new | sale | featured" },
-                { "key": "width", "value": "225", "description": "Tire section width in mm (tires only)" },
-                { "key": "aspect_ratio", "value": "50", "description": "Tire aspect ratio / profile height percentage (tires only)" },
-                { "key": "rim_diameter", "value": "17", "description": "Rim / wheel diameter in inches (tires only)" },
-                { "key": "vehicle_id", "value": "1", "description": "Filter tires compatible with a specific vehicle ID" },
-                { "key": "sort", "value": "price", "description": "Sort field. Allowed: sort_order (default) | price | created_at | expert_rating | real_sales_count" },
-                { "key": "direction", "value": "asc", "description": "Sort direction. Allowed: asc (default) | desc" },
-                { "key": "per_page", "value": "15", "description": "Number of items per page (default: 15)" },
-                { "key": "page", "value": "1", "description": "Page number (default: 1)" }
+                {
+                  "key": "type",
+                  "value": "tire",
+                  "description": "Product type filter. Allowed: tire | battery | accessory"
+                },
+                {
+                  "key": "brand_id",
+                  "value": "1",
+                  "description": "Filter by brand ID. Can be repeated (?brand_id[]=1&brand_id[]=2) to filter multiple brands"
+                },
+                {
+                  "key": "category_id",
+                  "value": "2",
+                  "description": "Filter by category ID"
+                },
+                {
+                  "key": "min_price",
+                  "value": "50000",
+                  "description": "Minimum price in Iraqi Dinars (inclusive)"
+                },
+                {
+                  "key": "max_price",
+                  "value": "200000",
+                  "description": "Maximum price in Iraqi Dinars (inclusive)"
+                },
+                {
+                  "key": "search",
+                  "value": "pilot",
+                  "description": "Keyword search against the translated product name"
+                },
+                {
+                  "key": "badge",
+                  "value": "best_seller",
+                  "description": "Filter by product badge. Allowed: best_seller | new | sale | featured"
+                },
+                {
+                  "key": "width",
+                  "value": "225",
+                  "description": "Tire section width in mm (tires only)"
+                },
+                {
+                  "key": "aspect_ratio",
+                  "value": "50",
+                  "description": "Tire aspect ratio / profile height percentage (tires only)"
+                },
+                {
+                  "key": "rim_diameter",
+                  "value": "17",
+                  "description": "Rim / wheel diameter in inches (tires only)"
+                },
+                {
+                  "key": "vehicle_id",
+                  "value": "1",
+                  "description": "Filter tires compatible with a specific vehicle ID"
+                },
+                {
+                  "key": "sort",
+                  "value": "price",
+                  "description": "Sort field. Allowed: sort_order (default) | price | created_at | expert_rating | real_sales_count"
+                },
+                {
+                  "key": "direction",
+                  "value": "asc",
+                  "description": "Sort direction. Allowed: asc (default) | desc"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "description": "Number of items per page (default: 15)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                }
               ]
             },
             "description": "Returns a paginated list of products with full details including brand, category, images, badges, and tire/battery specs.\n\nAll query parameters are optional and can be combined freely."
@@ -436,11 +953,21 @@
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/products?type=tire&per_page=2" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/products?type=tire&per_page=2"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"sku\": \"MCH-PS5-22550R17\",\n      \"type\": \"tire\",\n      \"name\": \"Michelin Pilot Sport 5 225/50R17\",\n      \"short_description\": \"Ultra high performance summer tire\",\n      \"description\": \"Engineered for sports car drivers demanding precision and longevity.\",\n      \"pattern_name\": \"Pilot Sport 5\",\n      \"usage_notes\": \"Suitable for dry and wet roads; not for snow/ice.\",\n      \"price\": 185000,\n      \"sale_price\": 165000,\n      \"effective_price\": 165000,\n      \"has_discount\": true,\n      \"stock\": 24,\n      \"in_stock\": true,\n      \"manufacture_year\": 2024,\n      \"manufacturer_warranty_months\": 60,\n      \"agency_warranty_months\": 12,\n      \"expert_rating\": 4.8,\n      \"sales_count\": 312,\n      \"views_count\": 5800,\n      \"is_featured\": true,\n      \"badges\": [\"best_seller\"],\n      \"images\": [\n        { \"url\": \"http://localhost:8000/storage/products/mich-ps5.jpg\", \"is_primary\": true }\n      ],\n      \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5.jpg\",\n      \"brand\": { \"id\": 1, \"slug\": \"michelin\", \"name\": \"Michelin\", \"logo\": \"http://localhost:8000/storage/brands/michelin.png\", \"country\": \"France\", \"is_active\": true },\n      \"category\": { \"id\": 2, \"slug\": \"uhp-tires\", \"name\": \"UHP Tires\", \"product_type\": \"tire\", \"icon\": \"tire-uhp\" },\n      \"tire_spec\": {\n        \"width\": 225,\n        \"aspect_ratio\": 50,\n        \"rim_diameter\": 17,\n        \"load_index\": \"98Y\",\n        \"speed_rating\": \"Y\",\n        \"usage_type\": \"summer\",\n        \"runflat\": false,\n        \"size_string\": \"225/50R17\"\n      },\n      \"battery_spec\": null\n    },\n    {\n      \"id\": 2,\n      \"sku\": \"BS-T005-20555R16\",\n      \"type\": \"tire\",\n      \"name\": \"Bridgestone Turanza T005 205/55R16\",\n      \"short_description\": \"Premium touring tire\",\n      \"description\": \"Award-winning comfort and wet performance.\",\n      \"pattern_name\": \"Turanza T005\",\n      \"usage_notes\": null,\n      \"price\": 120000,\n      \"sale_price\": null,\n      \"effective_price\": 120000,\n      \"has_discount\": false,\n      \"stock\": 48,\n      \"in_stock\": true,\n      \"manufacture_year\": 2024,\n      \"manufacturer_warranty_months\": 60,\n      \"agency_warranty_months\": 12,\n      \"expert_rating\": 4.5,\n      \"sales_count\": 528,\n      \"views_count\": 9100,\n      \"is_featured\": false,\n      \"badges\": [\"best_seller\", \"new\"],\n      \"images\": [\n        { \"url\": \"http://localhost:8000/storage/products/bs-t005.jpg\", \"is_primary\": true }\n      ],\n      \"primary_image\": \"http://localhost:8000/storage/products/bs-t005.jpg\",\n      \"brand\": { \"id\": 2, \"slug\": \"bridgestone\", \"name\": \"Bridgestone\", \"logo\": \"http://localhost:8000/storage/brands/bridgestone.png\", \"country\": \"Japan\", \"is_active\": true },\n      \"category\": { \"id\": 1, \"slug\": \"touring-tires\", \"name\": \"Touring Tires\", \"product_type\": \"tire\", \"icon\": \"tire-touring\" },\n      \"tire_spec\": {\n        \"width\": 205,\n        \"aspect_ratio\": 55,\n        \"rim_diameter\": 16,\n        \"load_index\": \"91V\",\n        \"speed_rating\": \"V\",\n        \"usage_type\": \"summer\",\n        \"runflat\": false,\n        \"size_string\": \"205/55R16\"\n      },\n      \"battery_spec\": null\n    }\n  ],\n  \"meta\": {\n    \"pagination\": {\n      \"total\": 148,\n      \"per_page\": 2,\n      \"current_page\": 1,\n      \"last_page\": 74\n    }\n  }\n}"
             }
@@ -451,33 +978,62 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/products/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "1"
+              ]
             },
             "description": "Returns full details for a single product including brand, category, all images, badges, tire spec, and battery spec. Also records a product view.\n\n**URL params:**\n- `product` — Product ID"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/products/1" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/products/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"id\": 1,\n    \"sku\": \"MCH-PS5-22550R17\",\n    \"type\": \"tire\",\n    \"name\": \"Michelin Pilot Sport 5 225/50R17\",\n    \"short_description\": \"Ultra high performance summer tire\",\n    \"description\": \"Engineered for sports car drivers demanding precision and longevity on both dry and wet roads. Features innovative bi-compound technology.\",\n    \"pattern_name\": \"Pilot Sport 5\",\n    \"usage_notes\": \"Suitable for dry and wet roads; not for snow/ice.\",\n    \"price\": 185000,\n    \"sale_price\": 165000,\n    \"effective_price\": 165000,\n    \"has_discount\": true,\n    \"stock\": 24,\n    \"in_stock\": true,\n    \"manufacture_year\": 2024,\n    \"manufacturer_warranty_months\": 60,\n    \"agency_warranty_months\": 12,\n    \"expert_rating\": 4.8,\n    \"sales_count\": 312,\n    \"views_count\": 5800,\n    \"is_featured\": true,\n    \"badges\": [\"best_seller\"],\n    \"images\": [\n      { \"url\": \"http://localhost:8000/storage/products/mich-ps5-1.jpg\", \"is_primary\": true },\n      { \"url\": \"http://localhost:8000/storage/products/mich-ps5-2.jpg\", \"is_primary\": false },\n      { \"url\": \"http://localhost:8000/storage/products/mich-ps5-3.jpg\", \"is_primary\": false }\n    ],\n    \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5-1.jpg\",\n    \"brand\": {\n      \"id\": 1,\n      \"slug\": \"michelin\",\n      \"name\": \"Michelin\",\n      \"description\": \"French multinational tyre manufacturer\",\n      \"logo\": \"http://localhost:8000/storage/brands/michelin.png\",\n      \"country\": \"France\",\n      \"is_active\": true\n    },\n    \"category\": {\n      \"id\": 2,\n      \"slug\": \"uhp-tires\",\n      \"name\": \"UHP Tires\",\n      \"description\": \"Ultra high performance tires\",\n      \"product_type\": \"tire\",\n      \"icon\": \"tire-uhp\"\n    },\n    \"tire_spec\": {\n      \"width\": 225,\n      \"aspect_ratio\": 50,\n      \"rim_diameter\": 17,\n      \"load_index\": \"98Y\",\n      \"speed_rating\": \"Y\",\n      \"usage_type\": \"summer\",\n      \"runflat\": false,\n      \"size_string\": \"225/50R17\"\n    },\n    \"battery_spec\": null\n  }\n}"
             },
             {
               "name": "404 Not Found",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/products/9999" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/products/9999"
+                }
+              },
               "status": "Not Found",
               "code": 404,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Not found\"\n}"
             }
@@ -488,23 +1044,43 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/products/1/related",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products", "1", "related"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "1",
+                "related"
+              ]
             },
             "description": "Returns up to 8 related products that share the same brand or category as the specified product.\n\n**URL params:**\n- `product` — Product ID"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/products/1/related" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/products/1/related"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 5,\n      \"sku\": \"MCH-PS5-24545R18\",\n      \"type\": \"tire\",\n      \"name\": \"Michelin Pilot Sport 5 245/45R18\",\n      \"price\": 210000,\n      \"sale_price\": null,\n      \"effective_price\": 210000,\n      \"has_discount\": false,\n      \"stock\": 12,\n      \"in_stock\": true,\n      \"is_featured\": false,\n      \"badges\": [],\n      \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5-245.jpg\",\n      \"brand\": { \"id\": 1, \"slug\": \"michelin\", \"name\": \"Michelin\" }\n    }\n  ]\n}"
             }
@@ -520,22 +1096,43 @@
           "name": "List Vehicle Makes",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/vehicles/makes",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "vehicles", "makes"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "vehicles",
+                "makes"
+              ]
             },
             "description": "Returns all vehicle makes (manufacturers) ordered alphabetically.\n\n**No query parameters.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/vehicles/makes" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/vehicles/makes"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    { \"id\": 1, \"slug\": \"toyota\", \"name\": \"Toyota\", \"logo\": \"http://localhost:8000/storage/makes/toyota.png\" },\n    { \"id\": 2, \"slug\": \"honda\", \"name\": \"Honda\", \"logo\": \"http://localhost:8000/storage/makes/honda.png\" },\n    { \"id\": 3, \"slug\": \"bmw\", \"name\": \"BMW\", \"logo\": \"http://localhost:8000/storage/makes/bmw.png\" }\n  ]\n}"
             }
@@ -545,22 +1142,45 @@
           "name": "List Models by Make",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/vehicles/makes/1/models",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "vehicles", "makes", "1", "models"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "vehicles",
+                "makes",
+                "1",
+                "models"
+              ]
             },
             "description": "Returns all models belonging to the specified make.\n\n**URL params:**\n- `make` — Vehicle make ID"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/vehicles/makes/1/models" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/vehicles/makes/1/models"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    { \"id\": 1, \"slug\": \"camry\", \"name\": \"Camry\", \"vehicle_make_id\": 1 },\n    { \"id\": 2, \"slug\": \"corolla\", \"name\": \"Corolla\", \"vehicle_make_id\": 1 },\n    { \"id\": 3, \"slug\": \"land-cruiser\", \"name\": \"Land Cruiser\", \"vehicle_make_id\": 1 }\n  ]\n}"
             }
@@ -570,22 +1190,45 @@
           "name": "List Years by Model",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/vehicles/models/1/years",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "vehicles", "models", "1", "years"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "vehicles",
+                "models",
+                "1",
+                "years"
+              ]
             },
             "description": "Returns all vehicle trim/year entries for the given model. Each entry has a `year_from`/`year_to` range.\n\n**URL params:**\n- `model` — Vehicle model ID"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/vehicles/models/1/years" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/vehicles/models/1/years"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"vehicle_model_id\": 1,\n      \"year_from\": 2018,\n      \"year_to\": 2022,\n      \"trim_code\": \"SE\",\n      \"trim_name\": \"SE 2.5L\",\n      \"engine\": \"2.5L 4-Cyl\",\n      \"notes\": null,\n      \"model\": { \"id\": 1, \"slug\": \"camry\", \"name\": \"Camry\", \"vehicle_make_id\": 1 }\n    },\n    {\n      \"id\": 2,\n      \"vehicle_model_id\": 1,\n      \"year_from\": 2023,\n      \"year_to\": null,\n      \"trim_code\": \"XSE\",\n      \"trim_name\": \"XSE 3.5L V6\",\n      \"engine\": \"3.5L V6\",\n      \"notes\": null,\n      \"model\": { \"id\": 1, \"slug\": \"camry\", \"name\": \"Camry\", \"vehicle_make_id\": 1 }\n    }\n  ]\n}"
             }
@@ -595,15 +1238,37 @@
           "name": "List Vehicles",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/vehicles?make_id=1&model_id=1&year=2020",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "vehicles"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "vehicles"
+              ],
               "query": [
-                { "key": "make_id", "value": "1", "description": "Filter vehicles by make (manufacturer) ID" },
-                { "key": "model_id", "value": "1", "description": "Filter vehicles by model ID" },
-                { "key": "year", "value": "2020", "description": "Filter vehicles whose year_from ≤ year ≤ year_to" }
+                {
+                  "key": "make_id",
+                  "value": "1",
+                  "description": "Filter vehicles by make (manufacturer) ID"
+                },
+                {
+                  "key": "model_id",
+                  "value": "1",
+                  "description": "Filter vehicles by model ID"
+                },
+                {
+                  "key": "year",
+                  "value": "2020",
+                  "description": "Filter vehicles whose year_from ≤ year ≤ year_to"
+                }
               ]
             },
             "description": "Search for vehicles by make, model, and/or year. Returns up to 50 matching vehicles.\n\nAll query params are optional."
@@ -611,11 +1276,21 @@
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/vehicles?make_id=1&model_id=1&year=2020" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/vehicles?make_id=1&model_id=1&year=2020"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"vehicle_model_id\": 1,\n      \"year_from\": 2018,\n      \"year_to\": 2022,\n      \"trim_code\": \"SE\",\n      \"trim_name\": \"SE 2.5L\",\n      \"engine\": \"2.5L 4-Cyl\",\n      \"notes\": null,\n      \"model\": { \"id\": 1, \"slug\": \"camry\", \"name\": \"Camry\", \"vehicle_make_id\": 1 }\n    }\n  ]\n}"
             }
@@ -625,22 +1300,43 @@
           "name": "Get Vehicle",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/vehicles/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "vehicles", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "vehicles",
+                "1"
+              ]
             },
             "description": "Returns full details of a single vehicle entry.\n\n**URL params:**\n- `vehicle` — Vehicle ID"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/vehicles/1" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/vehicles/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"id\": 1,\n    \"vehicle_model_id\": 1,\n    \"year_from\": 2018,\n    \"year_to\": 2022,\n    \"trim_code\": \"SE\",\n    \"trim_name\": \"SE 2.5L\",\n    \"engine\": \"2.5L 4-Cyl\",\n    \"notes\": null,\n    \"model\": {\n      \"id\": 1,\n      \"slug\": \"camry\",\n      \"name\": \"Camry\",\n      \"vehicle_make_id\": 1\n    }\n  }\n}"
             }
@@ -656,22 +1352,44 @@
           "name": "Fitments by Vehicle",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/fitments/by-vehicle/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "fitments", "by-vehicle", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "fitments",
+                "by-vehicle",
+                "1"
+              ]
             },
             "description": "Returns all products (tires) that have a fitment entry for the specified vehicle and are not excluded.\n\n**URL params:**\n- `vehicle` — Vehicle ID\n\n**Auth optional.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/fitments/by-vehicle/1" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/fitments/by-vehicle/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"sku\": \"MCH-PS5-22550R17\",\n      \"type\": \"tire\",\n      \"name\": \"Michelin Pilot Sport 5 225/50R17\",\n      \"price\": 185000,\n      \"sale_price\": 165000,\n      \"effective_price\": 165000,\n      \"has_discount\": true,\n      \"in_stock\": true,\n      \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5.jpg\",\n      \"tire_spec\": { \"width\": 225, \"aspect_ratio\": 50, \"rim_diameter\": 17, \"size_string\": \"225/50R17\" }\n    }\n  ]\n}"
             }
@@ -681,15 +1399,38 @@
           "name": "Fitments by Tire Size",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/fitments/by-size?width=225&aspect_ratio=50&rim_diameter=17",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "fitments", "by-size"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "fitments",
+                "by-size"
+              ],
               "query": [
-                { "key": "width", "value": "225", "description": "Tire section width in mm (required)" },
-                { "key": "aspect_ratio", "value": "50", "description": "Tire aspect ratio / profile percentage (required)" },
-                { "key": "rim_diameter", "value": "17", "description": "Rim diameter in inches (required)" }
+                {
+                  "key": "width",
+                  "value": "225",
+                  "description": "Tire section width in mm (required)"
+                },
+                {
+                  "key": "aspect_ratio",
+                  "value": "50",
+                  "description": "Tire aspect ratio / profile percentage (required)"
+                },
+                {
+                  "key": "rim_diameter",
+                  "value": "17",
+                  "description": "Rim diameter in inches (required)"
+                }
               ]
             },
             "description": "Returns all active products matching the exact tire size. All three query parameters are required.\n\n**Auth optional.**"
@@ -697,21 +1438,41 @@
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/fitments/by-size?width=225&aspect_ratio=50&rim_diameter=17" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/fitments/by-size?width=225&aspect_ratio=50&rim_diameter=17"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"sku\": \"MCH-PS5-22550R17\",\n      \"name\": \"Michelin Pilot Sport 5 225/50R17\",\n      \"price\": 185000,\n      \"effective_price\": 165000,\n      \"has_discount\": true,\n      \"in_stock\": true,\n      \"tire_spec\": { \"width\": 225, \"aspect_ratio\": 50, \"rim_diameter\": 17, \"size_string\": \"225/50R17\" }\n    },\n    {\n      \"id\": 7,\n      \"sku\": \"CN-SC6-22550R17\",\n      \"name\": \"Continental SportContact 6 225/50R17\",\n      \"price\": 175000,\n      \"effective_price\": 175000,\n      \"has_discount\": false,\n      \"in_stock\": true,\n      \"tire_spec\": { \"width\": 225, \"aspect_ratio\": 50, \"rim_diameter\": 17, \"size_string\": \"225/50R17\" }\n    }\n  ]\n}"
             },
             {
               "name": "422 Missing Required Params",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/fitments/by-size?width=225" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/fitments/by-size?width=225"
+                }
+              },
               "status": "Unprocessable Entity",
               "code": 422,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"aspect_ratio\": [\"The aspect ratio field is required.\"],\n    \"rim_diameter\": [\"The rim diameter field is required.\"]\n  }\n}"
             }
@@ -727,13 +1488,28 @@
           "name": "List Product Reviews",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/v1/reviews/1?page=1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "reviews", "1"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reviews",
+                "1"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number (default: 1, page size: 15)" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1, page size: 15)"
+                }
               ]
             },
             "description": "Returns paginated approved reviews for a product along with aggregated rating data.\n\n**URL params:**\n- `product` — Product ID\n\n**Query params:**\n- `page` *(optional)* — Page number\n\n**Auth optional.**"
@@ -741,11 +1517,21 @@
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/reviews/1" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/reviews/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 12,\n      \"type\": \"customer\",\n      \"rating\": 5,\n      \"comment\": \"Excellent tire, great grip in wet conditions. Very quiet on the highway.\",\n      \"created_at\": \"2026-05-20T14:32:00+03:00\",\n      \"customer\": { \"id\": 3, \"name\": \"Mohammed Ali\" }\n    },\n    {\n      \"id\": 9,\n      \"type\": \"customer\",\n      \"rating\": 4,\n      \"comment\": \"Good performance but a bit pricey.\",\n      \"created_at\": \"2026-04-10T09:15:00+03:00\",\n      \"customer\": { \"id\": 7, \"name\": \"Sara Khalid\" }\n    }\n  ],\n  \"meta\": {\n    \"pagination\": {\n      \"total\": 47,\n      \"per_page\": 15,\n      \"current_page\": 1,\n      \"last_page\": 4\n    },\n    \"rating_avg\": 4.72,\n    \"rating_count\": 47\n  }\n}"
             }
@@ -756,30 +1542,59 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/reviews/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "reviews", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reviews",
+                "1"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excellent tire, very smooth ride and great wet grip.\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Submit a review for a product. The review will be pending admin approval before appearing publicly.\n\n**URL params:**\n- `product` — Product ID\n\n**Body fields:**\n- `rating` *(required, integer, 1–5)* — Star rating from 1 (worst) to 5 (best)\n- `comment` *(optional, string, max 1000)* — Written review text"
           },
           "response": [
             {
               "name": "201 Created",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/reviews/1" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/reviews/1"
+                }
+              },
               "status": "Created",
               "code": 201,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Your review has been submitted and is pending approval\",\n  \"data\": {\n    \"id\": 48,\n    \"type\": \"customer\",\n    \"rating\": 5,\n    \"comment\": \"Excellent tire, very smooth ride and great wet grip.\",\n    \"created_at\": \"2026-06-04T10:00:00+03:00\",\n    \"customer\": null\n  }\n}"
             }
@@ -796,24 +1611,45 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/cart",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "cart"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "cart"
+              ]
             },
             "description": "Returns the authenticated customer's current cart with all items, unit prices, and subtotal.\n\n**No parameters.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/cart" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/cart"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"id\": 1,\n    \"governorate_id\": null,\n    \"governorate\": null,\n    \"items\": [\n      {\n        \"id\": 1,\n        \"product_id\": 1,\n        \"product\": {\n          \"id\": 1,\n          \"sku\": \"MCH-PS5-22550R17\",\n          \"name\": \"Michelin Pilot Sport 5 225/50R17\",\n          \"price\": 185000,\n          \"sale_price\": 165000,\n          \"effective_price\": 165000,\n          \"in_stock\": true,\n          \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5.jpg\",\n          \"brand\": { \"id\": 1, \"name\": \"Michelin\" }\n        },\n        \"quantity\": 4,\n        \"unit_price\": 165000,\n        \"total\": 660000\n      }\n    ],\n    \"subtotal\": 660000,\n    \"items_count\": 4\n  }\n}"
             }
@@ -824,30 +1660,59 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/cart/items",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "cart", "items"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "cart",
+                "items"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"product_id\": 1,\n  \"quantity\": 4\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Adds a product to the cart. If the product already exists in the cart, the quantity is incremented.\n\n**Body fields:**\n- `product_id` *(required, integer, must exist in products table)* — ID of the product to add\n- `quantity` *(required, integer, 1–99)* — Number of units to add"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/cart/items" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/cart/items"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Added successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"governorate_id\": null,\n    \"items\": [\n      {\n        \"id\": 1,\n        \"product_id\": 1,\n        \"product\": { \"id\": 1, \"name\": \"Michelin Pilot Sport 5 225/50R17\", \"effective_price\": 165000, \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5.jpg\" },\n        \"quantity\": 4,\n        \"unit_price\": 165000,\n        \"total\": 660000\n      }\n    ],\n    \"subtotal\": 660000,\n    \"items_count\": 4\n  }\n}"
             }
@@ -858,30 +1723,60 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/cart/items/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "cart", "items", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "cart",
+                "items",
+                "1"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"quantity\": 2\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Updates the quantity of a specific cart item. Setting `quantity` to 0 removes the item.\n\n**URL params:**\n- `item` — Cart item ID\n\n**Body fields:**\n- `quantity` *(required, integer, 0–99)* — New quantity (0 removes the item)"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "PUT", "url": { "raw": "{{baseUrl}}/v1/cart/items/1" } },
+              "originalRequest": {
+                "method": "PUT",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/cart/items/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Updated successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"items\": [\n      {\n        \"id\": 1,\n        \"product_id\": 1,\n        \"product\": { \"id\": 1, \"name\": \"Michelin Pilot Sport 5 225/50R17\", \"effective_price\": 165000 },\n        \"quantity\": 2,\n        \"unit_price\": 165000,\n        \"total\": 330000\n      }\n    ],\n    \"subtotal\": 330000,\n    \"items_count\": 2\n  }\n}"
             }
@@ -892,24 +1787,47 @@
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/cart/items/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "cart", "items", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "cart",
+                "items",
+                "1"
+              ]
             },
             "description": "Removes a specific item from the cart.\n\n**URL params:**\n- `item` — Cart item ID to delete"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/v1/cart/items/1" } },
+              "originalRequest": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/cart/items/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Deleted successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"items\": [],\n    \"subtotal\": 0,\n    \"items_count\": 0\n  }\n}"
             }
@@ -920,24 +1838,45 @@
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/cart",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "cart"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "cart"
+              ]
             },
             "description": "Removes all items from the authenticated customer's cart.\n\n**No parameters.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/v1/cart" } },
+              "originalRequest": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/cart"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Deleted successfully\"\n}"
             }
@@ -948,40 +1887,79 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/cart/apply-offer",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "cart", "apply-offer"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "cart",
+                "apply-offer"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"code\": \"SUMMER10\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Validates and applies a promotional offer code to the cart. Returns the discount amount and updated totals.\n\n**Body fields:**\n- `code` *(required, string)* — Promotional offer code (case-sensitive)"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/cart/apply-offer" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/cart/apply-offer"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"discount\": 33000,\n    \"subtotal\": 330000,\n    \"total\": 297000,\n    \"offer\": {\n      \"code\": \"SUMMER10\",\n      \"title\": \"Summer 10% Discount\"\n    }\n  }\n}"
             },
             {
               "name": "400 Invalid Code",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/cart/apply-offer" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/cart/apply-offer"
+                }
+              },
               "status": "Bad Request",
               "code": 400,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Invalid or expired offer code\"\n}"
             }
@@ -998,16 +1976,35 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/orders?page=1&per_page=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "orders"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "orders"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number (default: 1)" },
-                { "key": "per_page", "value": "10", "description": "Items per page (default: 15)" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Items per page (default: 15)"
+                }
               ]
             },
             "description": "Returns a paginated list of the authenticated customer's orders, newest first."
@@ -1015,11 +2012,21 @@
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/orders" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/orders"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"reference\": \"ORD-20260604-0001\",\n      \"type\": \"delivery\",\n      \"status\": \"processing\",\n      \"payment_method\": \"cod\",\n      \"payment_status\": \"pending\",\n      \"subtotal\": 330000,\n      \"discount\": 33000,\n      \"shipping_fee\": 0,\n      \"installation_fee\": 0,\n      \"total\": 297000,\n      \"customer_name\": \"Ahmed Hassan\",\n      \"customer_phone\": \"07701234567\",\n      \"customer_email\": \"ahmed@example.com\",\n      \"shipping_address\": \"Basra, Al-Ashar, Block 5\",\n      \"tracking_number\": null,\n      \"placed_at\": \"2026-06-04T10:15:00+03:00\"\n    }\n  ],\n  \"meta\": {\n    \"pagination\": {\n      \"total\": 5,\n      \"per_page\": 10,\n      \"current_page\": 1,\n      \"last_page\": 1\n    }\n  }\n}"
             }
@@ -1030,40 +2037,78 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/orders",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "orders"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "orders"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"type\": \"delivery\",\n  \"governorate_id\": 1,\n  \"payment_method\": \"cod\",\n  \"customer_name\": \"Ahmed Hassan\",\n  \"customer_phone\": \"07701234567\",\n  \"customer_email\": \"ahmed@example.com\",\n  \"shipping_address\": \"Basra, Al-Ashar, Block 5, House 12\",\n  \"notes\": \"Please call before delivery\",\n  \"discount\": 33000,\n  \"installation_fee\": 0\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Creates an order from the customer's current cart and empties the cart. Returns the full order object.\n\n**Body fields:**\n- `type` *(required, enum: basra|delivery)* — `basra` = in-store pickup at a Basra branch; `delivery` = shipped to a governorate\n- `branch_id` *(required when type=basra, integer)* — Branch ID for in-store pickup\n- `governorate_id` *(required when type=delivery, integer)* — Destination governorate ID\n- `payment_method` *(optional, enum: cod|card|transfer)* — Payment method; defaults to cod\n- `customer_name` *(optional, string, max 120)* — Override customer name for this order\n- `customer_phone` *(optional, string, max 20)* — Override contact phone for this order\n- `customer_email` *(optional, email, max 120)* — Override contact email for this order\n- `shipping_address` *(required when type=delivery, string, max 255)* — Full delivery address\n- `notes` *(optional, string, max 500)* — Additional delivery or handling notes\n- `discount` *(optional, numeric, min 0)* — Additional manual discount amount in IQD\n- `installation_fee` *(optional, numeric, min 0)* — Installation fee to add to the order total"
           },
           "response": [
             {
               "name": "201 Created",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/orders" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/orders"
+                }
+              },
               "status": "Created",
               "code": 201,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Order placed successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"reference\": \"ORD-20260604-0001\",\n    \"type\": \"delivery\",\n    \"status\": \"pending\",\n    \"payment_method\": \"cod\",\n    \"payment_status\": \"pending\",\n    \"subtotal\": 330000,\n    \"discount\": 33000,\n    \"shipping_fee\": 0,\n    \"installation_fee\": 0,\n    \"total\": 297000,\n    \"customer_name\": \"Ahmed Hassan\",\n    \"customer_phone\": \"07701234567\",\n    \"customer_email\": \"ahmed@example.com\",\n    \"shipping_address\": \"Basra, Al-Ashar, Block 5, House 12\",\n    \"tracking_number\": null,\n    \"placed_at\": \"2026-06-04T10:15:00+03:00\",\n    \"governorate\": { \"id\": 1, \"code\": \"BSR\", \"name\": \"Basra\", \"is_basra\": true, \"shipping_fee\": 0 },\n    \"branch\": null,\n    \"items\": [\n      {\n        \"id\": 1,\n        \"product_id\": 1,\n        \"product_name\": \"Michelin Pilot Sport 5 225/50R17\",\n        \"product_sku\": \"MCH-PS5-22550R17\",\n        \"quantity\": 2,\n        \"unit_price\": 165000,\n        \"total\": 330000\n      }\n    ]\n  }\n}"
             },
             {
               "name": "400 Empty Cart",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/orders" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/orders"
+                }
+              },
               "status": "Bad Request",
               "code": 400,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Your cart is empty\"\n}"
             }
@@ -1074,34 +2119,66 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/orders/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "orders", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "orders",
+                "1"
+              ]
             },
             "description": "Returns full details of a single order, including all items, governorate, and branch info. Only the owning customer can access their orders.\n\n**URL params:**\n- `order` — Order ID"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/orders/1" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/orders/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"id\": 1,\n    \"reference\": \"ORD-20260604-0001\",\n    \"type\": \"delivery\",\n    \"status\": \"processing\",\n    \"payment_method\": \"cod\",\n    \"payment_status\": \"pending\",\n    \"subtotal\": 330000,\n    \"discount\": 33000,\n    \"shipping_fee\": 0,\n    \"installation_fee\": 0,\n    \"total\": 297000,\n    \"customer_name\": \"Ahmed Hassan\",\n    \"customer_phone\": \"07701234567\",\n    \"customer_email\": \"ahmed@example.com\",\n    \"shipping_address\": \"Basra, Al-Ashar, Block 5, House 12\",\n    \"tracking_number\": \"TRK-00001234\",\n    \"placed_at\": \"2026-06-04T10:15:00+03:00\",\n    \"governorate\": { \"id\": 1, \"code\": \"BSR\", \"name\": \"Basra\", \"is_basra\": true, \"shipping_fee\": 0 },\n    \"branch\": null,\n    \"items\": [\n      {\n        \"id\": 1,\n        \"product_id\": 1,\n        \"product_name\": \"Michelin Pilot Sport 5 225/50R17\",\n        \"product_sku\": \"MCH-PS5-22550R17\",\n        \"quantity\": 2,\n        \"unit_price\": 165000,\n        \"total\": 330000\n      }\n    ]\n  }\n}"
             },
             {
               "name": "403 Forbidden",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/orders/99" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/orders/99"
+                }
+              },
               "status": "Forbidden",
               "code": 403,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Forbidden\"\n}"
             }
@@ -1112,34 +2189,67 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/orders/1/cancel",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "orders", "1", "cancel"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "orders",
+                "1",
+                "cancel"
+              ]
             },
             "description": "Requests cancellation of an order. Only orders in cancellable states (pending, processing) can be cancelled. Stock is automatically restored.\n\n**URL params:**\n- `order` — Order ID\n\n**No request body required.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/orders/1/cancel" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/orders/1/cancel"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Cancelled successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"reference\": \"ORD-20260604-0001\",\n    \"status\": \"cancelled\",\n    \"total\": 297000,\n    \"placed_at\": \"2026-06-04T10:15:00+03:00\"\n  }\n}"
             },
             {
               "name": "400 Cannot Cancel",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/orders/1/cancel" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/orders/1/cancel"
+                }
+              },
               "status": "Bad Request",
               "code": 400,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Order cannot be cancelled in its current state\"\n}"
             }
@@ -1156,16 +2266,35 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/bookings?page=1&per_page=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "bookings"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "bookings"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number (default: 1)" },
-                { "key": "per_page", "value": "10", "description": "Items per page (default: 15)" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Items per page (default: 15)"
+                }
               ]
             },
             "description": "Returns a paginated list of the authenticated customer's bookings."
@@ -1173,11 +2302,21 @@
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/bookings" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/bookings"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"reference\": \"BKG-20260604-0001\",\n      \"scheduled_at\": \"2026-06-10T10:00:00+03:00\",\n      \"duration_minutes\": 30,\n      \"status\": \"confirmed\",\n      \"customer_notes\": \"Please use nitrogen for inflation\"\n    }\n  ],\n  \"meta\": {\n    \"pagination\": {\n      \"total\": 3,\n      \"per_page\": 10,\n      \"current_page\": 1,\n      \"last_page\": 1\n    }\n  }\n}"
             }
@@ -1188,40 +2327,78 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/bookings",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "bookings"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "bookings"
+              ]
             },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"branch_id\": 1,\n  \"service_id\": 1,\n  \"order_id\": 1,\n  \"scheduled_at\": \"2026-06-10T10:00:00\",\n  \"customer_notes\": \"Please use nitrogen for inflation\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "description": "Creates a service appointment booking at a branch. The `scheduled_at` must be a future date/time within the branch's open hours.\n\n**Body fields:**\n- `branch_id` *(required, integer, must exist in branches table)* — Branch where the appointment will take place\n- `service_id` *(required, integer, must exist in services table)* — Service type to be performed\n- `order_id` *(optional, integer, must exist in orders table)* — Link this booking to an existing order (e.g. for installation after purchase)\n- `scheduled_at` *(required, datetime, must be in the future)* — Appointment date and time in ISO 8601 format\n- `customer_notes` *(optional, string, max 500)* — Special requests or notes for the technician"
           },
           "response": [
             {
               "name": "201 Created",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/bookings" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/bookings"
+                }
+              },
               "status": "Created",
               "code": 201,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Booking created successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"reference\": \"BKG-20260604-0001\",\n    \"scheduled_at\": \"2026-06-10T10:00:00+03:00\",\n    \"duration_minutes\": 30,\n    \"status\": \"pending\",\n    \"customer_notes\": \"Please use nitrogen for inflation\",\n    \"branch\": {\n      \"id\": 1,\n      \"code\": \"BSR-MAIN\",\n      \"name\": \"Basra Main Branch\",\n      \"address\": \"Basra, Abu Al-Khaseeb Highway\",\n      \"phone\": \"0771-000-0001\"\n    },\n    \"service\": {\n      \"id\": 1,\n      \"slug\": \"tire-fitting\",\n      \"name\": \"Tire Fitting\",\n      \"duration_minutes\": 30,\n      \"price\": 5000\n    }\n  }\n}"
             },
             {
               "name": "422 Slot Not Available",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/bookings" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/bookings"
+                }
+              },
               "status": "Unprocessable Entity",
               "code": 422,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"scheduled_at\": [\"The scheduled at must be a date after now.\"]\n  }\n}"
             }
@@ -1232,24 +2409,46 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/bookings/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "bookings", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "bookings",
+                "1"
+              ]
             },
             "description": "Returns full details of a single booking including branch and service info. Only the owning customer can access their bookings.\n\n**URL params:**\n- `booking` — Booking ID"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/bookings/1" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/bookings/1"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"id\": 1,\n    \"reference\": \"BKG-20260604-0001\",\n    \"scheduled_at\": \"2026-06-10T10:00:00+03:00\",\n    \"duration_minutes\": 30,\n    \"status\": \"confirmed\",\n    \"customer_notes\": \"Please use nitrogen for inflation\",\n    \"branch\": {\n      \"id\": 1,\n      \"code\": \"BSR-MAIN\",\n      \"name\": \"Basra Main Branch\",\n      \"address\": \"Basra, Abu Al-Khaseeb Highway\",\n      \"phone\": \"0771-000-0001\",\n      \"latitude\": 30.5085,\n      \"longitude\": 47.7834\n    },\n    \"service\": {\n      \"id\": 1,\n      \"slug\": \"tire-fitting\",\n      \"name\": \"Tire Fitting\",\n      \"description\": \"Professional mounting and fitting of new tires\",\n      \"duration_minutes\": 30,\n      \"price\": 5000\n    }\n  }\n}"
             }
@@ -1260,24 +2459,47 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/bookings/1/cancel",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "bookings", "1", "cancel"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "bookings",
+                "1",
+                "cancel"
+              ]
             },
             "description": "Cancels a pending or confirmed booking. The slot is freed and becomes available for others.\n\n**URL params:**\n- `booking` — Booking ID\n\n**No request body required.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/bookings/1/cancel" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/bookings/1/cancel"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Cancelled successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"reference\": \"BKG-20260604-0001\",\n    \"scheduled_at\": \"2026-06-10T10:00:00+03:00\",\n    \"duration_minutes\": 30,\n    \"status\": \"cancelled\",\n    \"customer_notes\": \"Please use nitrogen for inflation\"\n  }\n}"
             }
@@ -1288,15 +2510,33 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/bookings/branch/1/slots?date=2026-06-10",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "bookings", "branch", "1", "slots"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "bookings",
+                "branch",
+                "1",
+                "slots"
+              ],
               "query": [
-                { "key": "date", "value": "2026-06-10", "description": "Date to check availability for (required, format: YYYY-MM-DD). Must be a future date." }
+                {
+                  "key": "date",
+                  "value": "2026-06-10",
+                  "description": "Date to check availability for (required, format: YYYY-MM-DD). Must be a future date."
+                }
               ]
             },
             "description": "Returns the list of available booking time slots for a branch on a given date. Takes into account the branch schedule and existing bookings.\n\n**URL params:**\n- `branch` — Branch ID\n\n**Query params:**\n- `date` *(required, date, format YYYY-MM-DD)* — The date to check"
@@ -1304,21 +2544,41 @@
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/bookings/branch/1/slots?date=2026-06-10" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/bookings/branch/1/slots?date=2026-06-10"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    { \"time\": \"08:00\", \"available\": true, \"capacity_remaining\": 4 },\n    { \"time\": \"08:30\", \"available\": true, \"capacity_remaining\": 4 },\n    { \"time\": \"09:00\", \"available\": false, \"capacity_remaining\": 0 },\n    { \"time\": \"09:30\", \"available\": true, \"capacity_remaining\": 2 },\n    { \"time\": \"10:00\", \"available\": true, \"capacity_remaining\": 4 },\n    { \"time\": \"10:30\", \"available\": true, \"capacity_remaining\": 3 },\n    { \"time\": \"11:00\", \"available\": true, \"capacity_remaining\": 4 },\n    { \"time\": \"11:30\", \"available\": false, \"capacity_remaining\": 0 },\n    { \"time\": \"12:00\", \"available\": true, \"capacity_remaining\": 4 },\n    { \"time\": \"12:30\", \"available\": true, \"capacity_remaining\": 4 },\n    { \"time\": \"13:00\", \"available\": true, \"capacity_remaining\": 4 }\n  ]\n}"
             },
             {
               "name": "422 Missing Date",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/bookings/branch/1/slots" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/bookings/branch/1/slots"
+                }
+              },
               "status": "Unprocessable Entity",
               "code": 422,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"date\": [\"The date field is required.\"]\n  }\n}"
             }
@@ -1335,24 +2595,45 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/favorites",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "favorites"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "favorites"
+              ]
             },
             "description": "Returns all products saved to the authenticated customer's wishlist, ordered by date added (newest first).\n\n**No parameters.**"
           },
           "response": [
             {
               "name": "200 OK",
-              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/v1/favorites" } },
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/favorites"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"sku\": \"MCH-PS5-22550R17\",\n      \"name\": \"Michelin Pilot Sport 5 225/50R17\",\n      \"price\": 185000,\n      \"sale_price\": 165000,\n      \"effective_price\": 165000,\n      \"has_discount\": true,\n      \"in_stock\": true,\n      \"is_featured\": true,\n      \"badges\": [\"best_seller\"],\n      \"primary_image\": \"http://localhost:8000/storage/products/mich-ps5.jpg\",\n      \"brand\": { \"id\": 1, \"slug\": \"michelin\", \"name\": \"Michelin\" }\n    }\n  ]\n}"
             }
@@ -1363,34 +2644,67 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/favorites/1/toggle",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "favorites", "1", "toggle"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "favorites",
+                "1",
+                "toggle"
+              ]
             },
             "description": "Adds a product to favorites if it is not already saved, or removes it if it is. Returns the new `favorited` state.\n\n**URL params:**\n- `product` — Product ID\n\n**No request body required.**"
           },
           "response": [
             {
               "name": "201 Added to Favorites",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/favorites/1/toggle" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/favorites/1/toggle"
+                }
+              },
               "status": "Created",
               "code": 201,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Added successfully\",\n  \"data\": {\n    \"favorited\": true\n  }\n}"
             },
             {
               "name": "200 Removed from Favorites",
-              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/v1/favorites/1/toggle" } },
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/v1/favorites/1/toggle"
+                }
+              },
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Deleted successfully\",\n  \"data\": {\n    \"favorited\": false\n  }\n}"
             }
