@@ -126,7 +126,8 @@ class FitmentManager extends Component
         $vehicles = Vehicle::with(['make', 'model'])
             ->when($this->modelId, fn($q, $m) => $q->where('vehicle_model_id', $m))
             ->limit(200)->get();
-        $products = Product::with('brand')->where('type', 'tire')->where('is_active', true)->limit(200)->get();
+        $products = Product::with('brand')/*->where('type', 'tire')*/
+            ->where('is_active', true)->get();
 
         return view('livewire.admin.fitments.fitment-manager', compact('items', 'makes', 'models', 'vehicles', 'products'));
     }
