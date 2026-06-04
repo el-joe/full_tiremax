@@ -8,10 +8,11 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class ServiceManager extends Component
 {
-    use WithCrudList;
+    use WithCrudList, WithFileUploads;
 
     public bool $showForm = false;
     public array $form = [
@@ -24,6 +25,10 @@ class ServiceManager extends Component
         'translations' => ['ar' => ['name' => '', 'description' => ''], 'en' => ['name' => '', 'description' => '']],
     ];
 
+    /** @var \Livewire\Features\SupportFileUploads\TemporaryUploadedFile|null */
+    public $imageFile = null;
+    public ?string $existingImage = null;
+
     protected function rules(): array
     {
         return [
@@ -31,12 +36,13 @@ class ServiceManager extends Component
             'form.translations.en.name' => ['required', 'string'],
             'form.duration_minutes' => ['integer', 'min:5', 'max:480'],
             'form.price' => ['numeric', 'min:0'],
+            'imageFile' => ['nullable', 'image', 'max:2048'],
         ];
     }
 
     public function openCreate(): void
     {
-        $this->reset('form', 'editingId');
+        $this->reset('form', 'editingId', 'imageFile', 'existingImage');
         $this->form['translations'] = ['ar' => ['name' => '', 'description' => ''], 'en' => ['name' => '', 'description' => '']];
         $this->form['is_active'] = true;
         $this->form['duration_minutes'] = 30;
@@ -47,6 +53,8 @@ class ServiceManager extends Component
     {
         $s = Service::findOrFail($id);
         $this->editingId = $id;
+        $this->existingImage = $s->image;
+        $this->imageFile = null;
         $this->form = [
             'slug' => $s->slug,
             'icon' => $s->icon,
@@ -65,28 +73,49 @@ class ServiceManager extends Component
     public function save(): void
     {
         $this->validate();
+
         $s = $this->editingId ? Service::findOrFail($this->editingId) : new Service();
+
+        $imagePath = $s->image ?? null;
+        if ($this->imageFile) {
+            $imagePath = $this->imageFile->store('services', 'public');
+        }
+
         $s->fill([
             'slug' => $this->form['slug'] ?: Str::slug($this->form['translations']['en']['name']),
             'icon' => $this->form['icon'],
+            'image' => $imagePath,
             'duration_minutes' => (int) $this->form['duration_minutes'],
             'price' => (float) $this->form['price'],
             'is_active' => (bool) $this->form['is_active'],
             'sort_order' => (int) $this->form['sort_order'],
         ])->save();
+
         foreach ($this->form['translations'] as $locale => $tr) {
             $s->translateOrNew($locale)->fill($tr);
         }
         $s->save();
+
         $this->showForm = false;
         $this->editingId = null;
+        $this->imageFile = null;
+        $this->existingImage = null;
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
+    }
+
+    public function removeImage(): void
+    {
+        $this->existingImage = null;
+        if ($this->editingId) {
+            Service::findOrFail($this->editingId)->update(['image' => null]);
+        }
     }
 
     public function confirmDelete(int $id): void
     {
         $this->dispatch('confirm-delete', id: $id);
     }
+
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
@@ -101,6 +130,7 @@ class ServiceManager extends Component
             ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate(15);
+
         return view('livewire.admin.services.service-manager', compact('items'));
     }
 }

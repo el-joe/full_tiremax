@@ -11,7 +11,7 @@ class Service extends Model implements TranslatableContract
 {
     use Translatable;
 
-    protected $fillable = ['slug', 'icon', 'duration_minutes', 'price', 'is_active', 'sort_order'];
+    protected $fillable = ['slug', 'icon', 'image', 'duration_minutes', 'price', 'is_active', 'sort_order'];
     protected $casts = ['is_active' => 'boolean', 'price' => 'decimal:2'];
 
     public array $translatedAttributes = ['name', 'description'];

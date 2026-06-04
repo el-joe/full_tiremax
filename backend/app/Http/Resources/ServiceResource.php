@@ -15,6 +15,7 @@ class ServiceResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'icon' => $this->icon,
+            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
             'duration_minutes' => $this->duration_minutes,
             'price' => (float) $this->price,
         ];

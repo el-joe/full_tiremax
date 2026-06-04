@@ -12,6 +12,7 @@
             <thead class="bg-stone-800/60">
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
+                    <th class="px-4 py-3 text-start">Image</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.name') }}</th>
                     <th class="px-4 py-3 text-start">Duration</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.price') }}</th>
@@ -22,6 +23,19 @@
                 @forelse ($items as $s)
                     <tr class="hover:bg-stone-800/40">
                         <td class="px-4 py-3 text-stone-400">{{ $s->id }}</td>
+                        <td class="px-4 py-3">
+                            @if ($s->image)
+                                <img src="{{ asset('storage/' . $s->image) }}" alt="{{ $s->name }}"
+                                    class="w-10 h-10 rounded-lg object-cover">
+                            @else
+                                <div class="w-10 h-10 rounded-lg bg-stone-800 flex items-center justify-center text-stone-600">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4-4 4 4 4-6 4 6" />
+                                    </svg>
+                                </div>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 font-bold">{{ $s->name }}</td>
                         <td class="px-4 py-3">{{ $s->duration_minutes }} min</td>
                         <td class="px-4 py-3">{{ number_format($s->price) }} IQD</td>
@@ -34,7 +48,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
+                        <td colspan="6" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -62,6 +76,40 @@
                             wire:model="form.translations.en.description"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"
                             rows="2"></textarea></div>
+
+                    {{-- Image upload --}}
+                    <div class="sm:col-span-2">
+                        <label class="text-xs text-stone-400">Image</label>
+                        <div class="mt-1 flex items-start gap-4">
+                            {{-- Preview --}}
+                            @if ($imageFile)
+                                <img src="{{ $imageFile->temporaryUrl() }}"
+                                    class="w-20 h-20 rounded-lg object-cover border border-stone-700">
+                            @elseif ($existingImage)
+                                <div class="relative">
+                                    <img src="{{ asset('storage/' . $existingImage) }}"
+                                        class="w-20 h-20 rounded-lg object-cover border border-stone-700">
+                                    <button type="button" wire:click="removeImage"
+                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none">×</button>
+                                </div>
+                            @else
+                                <div
+                                    class="w-20 h-20 rounded-lg bg-stone-800 border border-dashed border-stone-600 flex items-center justify-center text-stone-600">
+                                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M4 16l4-4 4 4 4-6 4 6" />
+                                    </svg>
+                                </div>
+                            @endif
+                            <div class="flex-1">
+                                <input type="file" wire:model="imageFile" accept="image/*"
+                                    class="w-full text-xs text-stone-400 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-stone-700 file:text-stone-200 file:text-xs hover:file:bg-stone-600 cursor-pointer">
+                                <p class="text-xs text-stone-500 mt-1">JPEG, PNG, WebP — max 2 MB</p>
+                                @error('imageFile') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <div><label class="text-xs text-stone-400">Duration (minutes)</label><input type="number"
                             wire:model="form.duration_minutes"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>

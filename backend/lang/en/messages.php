@@ -58,6 +58,7 @@ return [
         'governorates' => 'Governorates',
         'services' => 'Services',
         'offers' => 'Offers',
+        'flash_sales' => 'Flash Sales',
         'reviews' => 'Reviews',
         'whatsapp' => 'WhatsApp Templates',
         'settings' => 'Settings',
