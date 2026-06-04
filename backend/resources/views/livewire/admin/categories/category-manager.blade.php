@@ -52,7 +52,8 @@
             <div class="bg-stone-900 border border-stone-800 rounded-2xl w-full max-w-2xl p-6 space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold">
-                        {{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}</h3>
+                        {{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}
+                    </h3>
                     <button wire:click="$set('showForm', false)" class="text-stone-400 hover:text-stone-100">✕</button>
                 </div>
                 <div class="grid sm:grid-cols-2 gap-3">
@@ -72,11 +73,8 @@
                     </div>
                     <div>
                         <label class="text-xs text-stone-400">Type</label>
-                        <select wire:model="form.product_type"
-                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                            <option value="tire">Tire</option>
-                            <option value="battery">Battery</option>
-                        </select>
+                        <x-admin.select wire:model="form.product_type" :options="[['value' => 'tire', 'label' => 'Tire'], ['value' => 'battery', 'label' => 'Battery']]" :searchable="false" :nullable="false"
+                            placeholder="Select type" />
                     </div>
                     <div>
                         <label class="text-xs text-stone-400">Slug</label>

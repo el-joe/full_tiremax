@@ -15,6 +15,7 @@
         ['route' => 'admin.governorates.index', 'label' => __('messages.admin.governorates'), 'icon' => 'M12 2C8 6 6 9 6 12c0 4 3 7 6 10 3-3 6-6 6-10 0-3-2-6-6-10zm0 12a2 2 0 100-4 2 2 0 000 4z'],
         ['route' => 'admin.services.index', 'label' => __('messages.admin.services'), 'icon' => 'M11 3.05A9 9 0 1020.95 13M20.95 13H11V3.05'],
         ['route' => 'admin.offers.index', 'label' => __('messages.admin.offers'), 'icon' => 'M7 7h.01M7 3h5l9 9-9 9-9-9V3z'],
+        ['route' => 'admin.flash-sales.index', 'label' => __('messages.admin.flash_sales'), 'icon' => 'M13 10V3L4 14h7v7l9-11h-7z'],
     ];
 @endphp
 <aside
@@ -35,7 +36,7 @@
             @php $active = request()->routeIs($item['route']); @endphp
             <a href="{{ route($item['route']) }}"
                 class="flex items-center gap-3 px-3 py-2 rounded-lg transition
-                          {{ $active ? 'bg-yellow-500 text-stone-950 font-bold' : 'text-stone-300 hover:bg-stone-800 hover:text-yellow-500' }}">
+                              {{ $active ? 'bg-yellow-500 text-stone-950 font-bold' : 'text-stone-300 hover:bg-stone-800 hover:text-yellow-500' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}" />
                 </svg>

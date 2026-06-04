@@ -105,6 +105,20 @@ class Product extends Model implements TranslatableContract
         return $this->hasMany(Review::class);
     }
 
+    public function flashSales(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(FlashSale::class, 'flash_sale_products');
+    }
+
+    public function activeFlashSale(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        $now = now();
+        return $this->belongsToMany(FlashSale::class, 'flash_sale_products')
+            ->where('is_active', true)
+            ->where('starts_at', '<=', $now)
+            ->where('ends_at', '>=', $now);
+    }
+
     public function scopeActive(Builder $q): Builder
     {
         return $q->where('is_active', true);

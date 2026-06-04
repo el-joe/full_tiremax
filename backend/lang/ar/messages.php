@@ -58,6 +58,7 @@ return [
         'governorates' => 'المحافظات',
         'services' => 'الخدمات',
         'offers' => 'العروض',
+        'flash_sales' => 'تخفيضات فلاش',
         'reviews' => 'التقييمات',
         'whatsapp' => 'قوالب واتساب',
         'settings' => 'الإعدادات',

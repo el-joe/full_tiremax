@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\FitmentController;
+use App\Http\Controllers\Api\FlashSaleController;
 use App\Http\Controllers\Api\GovernorateController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\OrderController;
@@ -38,6 +39,9 @@ Route::prefix('v1')->group(function () {
         Route::get('branches', [BranchController::class, 'index']);
         Route::get('governorates', [GovernorateController::class, 'index']);
         Route::get('services', [ServiceController::class, 'index']);
+
+        Route::get('flash-sales', [FlashSaleController::class, 'index']);
+        Route::get('flash-sales/{flashSale}/products', [FlashSaleController::class, 'products']);
 
         Route::get('vehicles/makes', [VehicleController::class, 'makes']);
         Route::get('vehicles/makes/{make}/models', [VehicleController::class, 'models']);

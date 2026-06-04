@@ -2,11 +2,7 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.orders') }}</h2>
         <div class="flex gap-2 flex-wrap">
-            <select wire:model.live="statusFilter"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All statuses</option>
-                @foreach ($statuses as $st) <option value="{{ $st }}">{{ $st }}</option> @endforeach
-            </select>
+            <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" placeholder="All statuses" class="w-44" />
             <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
         </div>

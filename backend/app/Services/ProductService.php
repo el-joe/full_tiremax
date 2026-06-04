@@ -20,7 +20,7 @@ class ProductService
     {
         $q = Product::query()
             ->active()
-            ->with(['brand', 'category', 'images', 'badges', 'tireSpec', 'batterySpec'])
+            ->with(['brand', 'category', 'images', 'badges', 'tireSpec', 'batterySpec', 'activeFlashSale'])
             ->withCount(['reviews as reviews_count' => fn($q) => $q->where('is_approved', true)]);
 
         if (!empty($filters['type'])) {

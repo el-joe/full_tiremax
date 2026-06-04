@@ -7,6 +7,7 @@ use App\Livewire\Admin\Categories\CategoryManager;
 use App\Livewire\Admin\Customers\CustomerManager;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Fitments\FitmentManager;
+use App\Livewire\Admin\FlashSales\FlashSaleManager;
 use App\Livewire\Admin\Governorates\GovernorateManager;
 use App\Livewire\Admin\Offers\OfferManager;
 use App\Livewire\Admin\Orders\OrderManager;
@@ -50,6 +51,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('bookings', BookingManager::class)->name('bookings.index');
         Route::get('customers', CustomerManager::class)->name('customers.index');
         Route::get('offers', OfferManager::class)->name('offers.index');
+        Route::get('flash-sales', FlashSaleManager::class)->name('flash-sales.index');
 
         Route::post('logout', function () {
             auth('admin')->logout();

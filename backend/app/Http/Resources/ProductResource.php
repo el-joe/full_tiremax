@@ -9,6 +9,14 @@ class ProductResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        // Flash sale awareness
+        $activeFlashSale = $this->relationLoaded('activeFlashSale') ? $this->activeFlashSale->first() : null;
+        $isFlashSale = $activeFlashSale !== null;
+        $basePrice = (float) ($this->sale_price ?? $this->price);
+        $effectivePrice = $isFlashSale
+            ? (float) round($basePrice * (1 - $activeFlashSale->discount_percent / 100))
+            : $basePrice;
+
         return [
             'id' => $this->id,
             'sku' => $this->sku,
@@ -20,8 +28,16 @@ class ProductResource extends JsonResource
             'usage_notes' => $this->usage_notes,
             'price' => (float) $this->price,
             'sale_price' => $this->sale_price ? (float) $this->sale_price : null,
-            'effective_price' => (float) $this->effective_price,
+            'effective_price' => $effectivePrice,
             'has_discount' => $this->sale_price !== null && $this->sale_price < $this->price,
+            'is_flash_sale' => $isFlashSale,
+            'flash_sale' => $isFlashSale ? [
+                'id' => $activeFlashSale->id,
+                'title' => $activeFlashSale->title,
+                'discount_percent' => (float) $activeFlashSale->discount_percent,
+                'ends_at' => $activeFlashSale->ends_at->toIso8601String(),
+                'countdown_seconds' => (int) max(0, now()->diffInSeconds($activeFlashSale->ends_at)),
+            ] : null,
             'stock' => $this->stock,
             'in_stock' => $this->stock > 0,
             'manufacture_year' => $this->manufacture_year,
@@ -36,7 +52,10 @@ class ProductResource extends JsonResource
                 'url' => asset('storage/' . $i->path),
                 'is_primary' => $i->is_primary,
             ])),
-            'primary_image' => $this->whenLoaded('images', fn() => optional($this->images->firstWhere('is_primary', true) ?? $this->images->first(), fn($i) => asset('storage/' . $i->path))),
+            'primary_image' => $this->whenLoaded('images', fn() => optional(
+                $this->images->firstWhere('is_primary', true) ?? $this->images->first(),
+                fn($i) => asset('storage/' . $i->path)
+            )),
             'brand' => new BrandResource($this->whenLoaded('brand')),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'tire_spec' => $this->whenLoaded('tireSpec', fn() => $this->tireSpec ? [

@@ -9,31 +9,33 @@
         <div class="bg-stone-900 border border-stone-800 rounded-2xl p-5 grid sm:grid-cols-3 gap-4">
             <div>
                 <label class="text-xs text-stone-400">Type</label>
-                <select wire:model.live="form.type"
-                    class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                    <option value="tire">Tire</option>
-                    <option value="battery">Battery</option>
-                </select>
+                <x-admin.select
+                    wire:model.live="form.type"
+                    :options="[['value' => 'tire', 'label' => 'Tire'], ['value' => 'battery', 'label' => 'Battery']]"
+                    :searchable="false"
+                    :nullable="false"
+                    placeholder="Select type"
+                />
             </div>
             <div><label class="text-xs text-stone-400">SKU</label><input wire:model="form.sku"
                     class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">@error('form.sku')
                     <p class="text-red-400 text-xs">{{ $message }}</p>@enderror</div>
             <div>
                 <label class="text-xs text-stone-400">Brand</label>
-                <select wire:model="form.brand_id"
-                    class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                    <option value="">—</option>
-                    @foreach ($brands as $b) <option value="{{ $b->id }}">{{ $b->name }}</option> @endforeach
-                </select>
+                <x-admin.select
+                    wire:model="form.brand_id"
+                    :options="$brands->map(fn($b) => ['value' => $b->id, 'label' => $b->name])->all()"
+                    placeholder="—"
+                />
                 @error('form.brand_id')<p class="text-red-400 text-xs">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label class="text-xs text-stone-400">Category</label>
-                <select wire:model="form.category_id"
-                    class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                    <option value="">—</option>
-                    @foreach ($categories as $c) <option value="{{ $c->id }}">{{ $c->name }}</option> @endforeach
-                </select>
+                <x-admin.select
+                    wire:model="form.category_id"
+                    :options="$categories->map(fn($c) => ['value' => $c->id, 'label' => $c->name])->all()"
+                    placeholder="—"
+                />
             </div>
             <div><label class="text-xs text-stone-400">Manufacture year</label><input type="number"
                     wire:model="form.manufacture_year"
@@ -113,13 +115,13 @@
                 <div><label class="text-xs text-stone-400">Speed rating</label><input wire:model="form.tire.speed_rating"
                         class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
                 <div><label class="text-xs text-stone-400">Usage</label>
-                    <select wire:model="form.tire.usage_type"
-                        class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                        <option value="summer">Summer</option>
-                        <option value="winter">Winter</option>
-                        <option value="all_season">All-season</option>
-                        <option value="off_road">Off-road</option>
-                    </select>
+                    <x-admin.select
+                        wire:model="form.tire.usage_type"
+                        :options="[['value' => 'summer', 'label' => 'Summer'], ['value' => 'winter', 'label' => 'Winter'], ['value' => 'all_season', 'label' => 'All-season'], ['value' => 'off_road', 'label' => 'Off-road']]"
+                        :searchable="false"
+                        :nullable="false"
+                        placeholder="Select usage"
+                    />
                 </div>
                 <label class="flex items-center gap-2 mt-6"><input type="checkbox" wire:model="form.tire.runflat"
                         class="rounded bg-stone-800 text-yellow-500"> Run-flat</label>
