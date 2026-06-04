@@ -2,16 +2,18 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.bookings') }}</h2>
         <div class="flex gap-2 flex-wrap">
-            <select wire:model.live="statusFilter"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All statuses</option>
-                @foreach ($statuses as $st) <option value="{{ $st }}">{{ $st }}</option> @endforeach
-            </select>
-            <select wire:model.live="branchFilter"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All branches</option>
-                @foreach ($branches as $b) <option value="{{ $b->id }}">{{ $b->name }}</option> @endforeach
-            </select>
+            <x-admin.select
+                wire:model.live="statusFilter"
+                :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()"
+                placeholder="All statuses"
+                class="w-44"
+            />
+            <x-admin.select
+                wire:model.live="branchFilter"
+                :options="$branches->map(fn($b) => ['value' => $b->id, 'label' => $b->name])->all()"
+                placeholder="All branches"
+                class="w-44"
+            />
             <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
         </div>
@@ -40,12 +42,14 @@
                         <td class="px-4 py-3 text-stone-400">{{ optional($b->branch)->name }}</td>
                         <td class="px-4 py-3">{{ optional($b->scheduled_at)->format('Y-m-d H:i') }}</td>
                         <td class="px-4 py-3">
-                            <select wire:change="changeStatus({{ $b->id }}, $event.target.value)"
-                                class="bg-stone-800 border border-stone-700 rounded px-2 py-1 text-xs">
-                                @foreach ($statuses as $st)
-                                    <option value="{{ $st }}" @selected($b->status === $st)>{{ $st }}</option>
-                                @endforeach
-                            </select>
+                            <x-admin.select
+                                :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()"
+                                :value="$b->status"
+                                :searchable="false"
+                                :nullable="false"
+                                class="w-36 text-xs"
+                                x-on:select-change="$wire.changeStatus({{ $b->id }}, $event.detail.value)"
+                            />
                         </td>
                         <td class="px-4 py-3 text-end"><button wire:click="confirmDelete({{ $b->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button></td>

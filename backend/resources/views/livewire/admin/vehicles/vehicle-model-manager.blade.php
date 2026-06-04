@@ -2,10 +2,7 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.vehicle_models') }}</h2>
         <div class="flex gap-2 flex-wrap">
-            <select wire:model.live="makeId" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All makes</option>
-                @foreach ($makes as $mk) <option value="{{ $mk->id }}">{{ $mk->name }}</option> @endforeach
-            </select>
+            <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="All makes" class="w-48" />
             <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
             <button wire:click="openCreate"
@@ -53,11 +50,7 @@
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
                     <div class="sm:col-span-2"><label class="text-xs text-stone-400">Make</label>
-                        <select wire:model="form.vehicle_make_id"
-                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                            <option value="">—</option>
-                            @foreach ($makes as $mk) <option value="{{ $mk->id }}">{{ $mk->name }}</option> @endforeach
-                        </select>
+                        <x-admin.select wire:model="form.vehicle_make_id" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="—" />
                         @error('form.vehicle_make_id') <p class="text-red-400 text-xs">{{ $message }}</p> @enderror
                     </div>
                     <div><label class="text-xs text-stone-400">Name (AR)</label><input

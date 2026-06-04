@@ -28,7 +28,8 @@
                             {{ $o->discount_type === 'percent' ? $o->discount_value . '%' : number_format($o->discount_value) . ' IQD' }}
                         </td>
                         <td class="px-4 py-3 text-xs text-stone-400">{{ optional($o->starts_at)->format('Y-m-d') ?? '∞' }} →
-                            {{ optional($o->ends_at)->format('Y-m-d') ?? '∞' }}</td>
+                            {{ optional($o->ends_at)->format('Y-m-d') ?? '∞' }}
+                        </td>
                         <td class="px-4 py-3">{{ $o->used_count }}{{ $o->usage_limit ? '/' . $o->usage_limit : '' }}</td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="edit({{ $o->id }})"
@@ -56,11 +57,9 @@
                 <div class="grid sm:grid-cols-2 gap-3">
                     <div><label class="text-xs text-stone-400">Code</label><input wire:model="form.code"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Discount type</label><select wire:model="form.discount_type"
-                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                            <option value="percent">Percent</option>
-                            <option value="fixed">Fixed</option>
-                        </select></div>
+                    <div><label class="text-xs text-stone-400">Discount type</label><x-admin.select
+                            wire:model="form.discount_type" :options="[['value' => 'percent', 'label' => 'Percent'], ['value' => 'fixed', 'label' => 'Fixed']]" :searchable="false" :nullable="false"
+                            placeholder="Select type" /></div>
                     <div><label class="text-xs text-stone-400">Discount value</label><input type="number" step="0.01"
                             wire:model="form.discount_value"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>

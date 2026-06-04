@@ -2,16 +2,8 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.products') }}</h2>
         <div class="flex gap-2 flex-wrap">
-            <select wire:model.live="type" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All types</option>
-                <option value="tire">Tire</option>
-                <option value="battery">Battery</option>
-            </select>
-            <select wire:model.live="brandFilter"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All brands</option>
-                @foreach ($brands as $b) <option value="{{ $b->id }}">{{ $b->name }}</option> @endforeach
-            </select>
+            <x-admin.select wire:model.live="type" :options="[['value' => 'tire', 'label' => 'Tire'], ['value' => 'battery', 'label' => 'Battery']]" :searchable="false" placeholder="All types" class="w-40" />
+            <x-admin.select wire:model.live="brandFilter" :options="$brands->map(fn($b) => ['value' => $b->id, 'label' => $b->name])->all()" placeholder="All brands" class="w-48" />
             <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
             <a href="{{ route('admin.products.create') }}"
@@ -47,7 +39,8 @@
                         <td class="px-4 py-3 text-stone-400">{{ $p->type }}</td>
                         <td class="px-4 py-3">{{ number_format($p->effective_price) }} IQD</td>
                         <td class="px-4 py-3 {{ $p->stock <= $p->low_stock_threshold ? 'text-amber-400' : '' }}">
-                            {{ $p->stock }}</td>
+                            {{ $p->stock }}
+                        </td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="toggleActive({{ $p->id }})"
                                 class="text-xs me-2 {{ $p->is_active ? 'text-emerald-400' : 'text-stone-500' }}">

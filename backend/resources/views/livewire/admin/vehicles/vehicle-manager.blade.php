@@ -2,10 +2,7 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.vehicles') }}</h2>
         <div class="flex gap-2 flex-wrap">
-            <select wire:model.live="makeId" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All makes</option>
-                @foreach ($makes as $mk) <option value="{{ $mk->id }}">{{ $mk->name }}</option> @endforeach
-            </select>
+            <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="All makes" class="w-48" />
             <button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+
                 {{ __('messages.admin.add_new') }}</button>
@@ -56,18 +53,10 @@
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
                     <div><label class="text-xs text-stone-400">Make</label>
-                        <select wire:model.live="form.vehicle_make_id"
-                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                            <option value="">—</option>
-                            @foreach ($makes as $mk) <option value="{{ $mk->id }}">{{ $mk->name }}</option> @endforeach
-                        </select>
+                        <x-admin.select wire:model.live="form.vehicle_make_id" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="—" />
                     </div>
                     <div><label class="text-xs text-stone-400">Model</label>
-                        <select wire:model="form.vehicle_model_id"
-                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                            <option value="">—</option>
-                            @foreach ($models as $md) <option value="{{ $md->id }}">{{ $md->name }}</option> @endforeach
-                        </select>
+                        <x-admin.select wire:model="form.vehicle_model_id" :options="$models->map(fn($md) => ['value' => $md->id, 'label' => $md->name])->all()" placeholder="—" />
                     </div>
                     <div><label class="text-xs text-stone-400">Year from</label><input type="number"
                             wire:model="form.year_from"

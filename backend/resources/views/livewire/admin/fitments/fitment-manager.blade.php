@@ -2,14 +2,8 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.fitments') }}</h2>
         <div class="flex gap-2 flex-wrap">
-            <select wire:model.live="makeId" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All makes</option>
-                @foreach ($makes as $mk) <option value="{{ $mk->id }}">{{ $mk->name }}</option> @endforeach
-            </select>
-            <select wire:model.live="modelId" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">All models</option>
-                @foreach ($models as $md) <option value="{{ $md->id }}">{{ $md->name }}</option> @endforeach
-            </select>
+            <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="All makes" class="w-48" />
+            <x-admin.select wire:model.live="modelId" :options="$models->map(fn($md) => ['value' => $md->id, 'label' => $md->name])->all()" placeholder="All models" class="w-48" />
             <button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+
                 {{ __('messages.admin.add_new') }}</button>
@@ -73,23 +67,10 @@
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
                     <div class="sm:col-span-2"><label class="text-xs text-stone-400">Vehicle</label>
-                        <select wire:model="form.vehicle_id"
-                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                            <option value="">—</option>
-                            @foreach ($vehicles as $v) <option value="{{ $v->id }}">{{ optional($v->make)->name }}
-                                {{ optional($v->model)->name }}
-                                {{ $v->year_from }}{{ $v->year_to ? '-' . $v->year_to : '' }}
-                            </option> @endforeach
-                        </select>
+                        <x-admin.select wire:model="form.vehicle_id" :options="$vehicles->map(fn($v) => ['value' => $v->id, 'label' => optional($v->make)->name . ' ' . optional($v->model)->name . ' ' . $v->year_from . ($v->year_to ? '-' . $v->year_to : '')])->all()" placeholder="—" />
                     </div>
                     <div class="sm:col-span-2"><label class="text-xs text-stone-400">Product (Tire)</label>
-                        <select wire:model="form.product_id"
-                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                            <option value="">—</option>
-                            @foreach ($products as $p) <option value="{{ $p->id }}">{{ $p->sku }} –
-                                {{ optional($p->brand)->name }} – {{ $p->name }}
-                            </option> @endforeach
-                        </select>
+                        <x-admin.select wire:model="form.product_id" :options="$products->map(fn($p) => ['value' => $p->id, 'label' => $p->sku . ' – ' . optional($p->brand)->name . ' – ' . $p->name])->all()" placeholder="—" />
                     </div>
                     <div><label class="text-xs text-stone-400">Year from</label><input type="number"
                             wire:model="form.year_from"
