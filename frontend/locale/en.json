@@ -6,5 +6,21 @@
         "reservation": "Reservation",
         "search": "Search",
         "bookNow": "Book now"
+    },
+    "home": {
+        "controlStartsWith": "Control starts with",
+        "theRightTire": "The right tire",
+        "shop,book,andInstall—allInOnePlace,PoweredByTheLatestGlobalTireServiceTechnologies": "Shop, book, andInstall—allInOnePlace, Powered by the latest global tire service technologies",
+        "watchVideo": "Watch Video",
+        "chooseYourTireNow": "Choose Your Tire Now",
+        "searchByVehicle": "Search by Vehicle",
+        "searchBySize": "Search by Size",
+        "category": "Category",
+        "selectCategory": "Select Category",
+        "year": "Year",
+        "selectYear": "Select year",
+        "brand": "Brand",
+        "selectBrand": "Select Brand",
+        "findYourTireNow": "Find Your Tire Now"
     }
 }

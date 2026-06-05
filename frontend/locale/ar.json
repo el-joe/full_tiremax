@@ -1,1 +1,17 @@
-{}
+{
+    "header": {
+        "home": "الرئيسية",
+        "store": "المتجر",
+        "services": "الخدمات",
+        "reservation": "الحجز",
+        "search": "بحث",
+        "bookNow": "احجز الآن"
+    },
+    "home": {
+        "controlStartsWith": "التحكم يبدأ من",
+        "theRightTire": "الإطار الصحيح",
+        "shop,book,andInstall—allInOnePlace,PoweredByTheLatestGlobalTireServiceTechnologies": "اشتري – احجز – ركب… كل ده في مكان واحد مع أحدث التقنيات العالمية في صيانة الإطارات.",
+        "watchVideo": "شاهد الفيديو",
+        "chooseYourTireNow": "اختر إطارك الآن"
+    }
+}
