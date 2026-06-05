@@ -1,1 +1,10 @@
-{}
+{
+    "header": {
+        "home": "Home",
+        "store": "Store",
+        "services": "Services",
+        "reservation": "Reservation",
+        "search": "Search",
+        "bookNow": "Book now"
+    }
+}
