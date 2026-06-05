@@ -9,9 +9,18 @@
     },
     "home": {
         "controlStartsWith": "التحكم يبدأ من",
-        "theRightTire": "الإطار الصحيح",
-        "shop,book,andInstall—allInOnePlace,PoweredByTheLatestGlobalTireServiceTechnologies": "اشتري – احجز – ركب… كل ده في مكان واحد مع أحدث التقنيات العالمية في صيانة الإطارات.",
+        "theRightTire": "الإطار المناسب",
+        "shop,book,andInstall—allInOnePlace,PoweredByTheLatestGlobalTireServiceTechnologies": "تسوّق واحجز وقم بالتركيب — كل ذلك في مكان واحد، مدعوم بأحدث تقنيات خدمات الإطارات العالمية",
         "watchVideo": "شاهد الفيديو",
-        "chooseYourTireNow": "اختر إطارك الآن"
+        "chooseYourTireNow": "اختر إطارك الآن",
+        "searchByVehicle": "البحث حسب السيارة",
+        "searchBySize": "البحث حسب المقاس",
+        "category": "الفئة",
+        "selectCategory": "اختر الفئة",
+        "year": "سنة الصنع",
+        "selectYear": "اختر سنة الصنع",
+        "brand": "العلامة التجارية",
+        "selectBrand": "اختر العلامة التجارية",
+        "findYourTireNow": "اعثر على إطارك الآن"
     }
 }

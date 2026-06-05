@@ -2,15 +2,17 @@
 import { SearchIcon } from '@/components/Icons'
 import DropSelectList from '@/components/ui/DropSelectList'
 import { Button, HStack, Tabs } from '@chakra-ui/react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
 const FoundTireBox = () => {
     const t = useTranslations("home")
+    const locale = useLocale()
+    const dir = locale === "ar" ? "rtl" : "ltr"
     return (
         <Tabs.Root defaultValue="members" maxW={"1214px"} bg={"bg"} rounded={"24px"} overflow={"hidden"}>
-            <Tabs.List bg="primary" pt="4px">
+            <Tabs.List dir={dir} bg="primary" pt="4px">
                 <Tabs.Trigger value="members" bg="white" flex="1" justifyContent={"center"} _selected={{ bg: "primary", color: "white", "--indicator-color": "transparent" }}>
                     {t("searchByVehicle")}
                 </Tabs.Trigger>
@@ -18,8 +20,8 @@ const FoundTireBox = () => {
                     {t("searchBySize")}
                 </Tabs.Trigger>
             </Tabs.List>
-            <Tabs.Content value="members" py={"32px"} px={"31px"}><FoundByVehicle /></Tabs.Content>
-            <Tabs.Content value="projects" py={"32px"} px={"31px"}><FoundByVehicle /></Tabs.Content>
+            <Tabs.Content value="members" py={"32px"} px={"31px"} dir={dir}><FoundByVehicle /></Tabs.Content>
+            <Tabs.Content value="projects" py={"32px"} px={"31px"} dir={dir}><FoundByVehicle /></Tabs.Content>
         </Tabs.Root>
     )
 }
