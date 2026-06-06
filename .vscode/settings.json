@@ -12,5 +12,8 @@
         "statusBar.noFolderBackground": "#A02C18",
         "statusBar.noFolderForeground": "#FEF9F9"
     },
-    "commentTranslate.targetLanguage": "ar"
+    "commentTranslate.targetLanguage": "ar",
+    "cSpell.words": [
+        "Tira"
+    ]
 }

@@ -39,7 +39,24 @@
         "professionalMaintenanceBySpecializedTeam": "صيانة احترافية من فريق متخصص",
         "chooseAppointmentAndBranch": "اختر الموعد والفرع المناسب لك",
         "bookServiceNow": "احجز موعد الصيانة الآن",
-        "now!": "الآن!"
+        "now!": "الآن!",
+        "whyChooseTireMax": "لماذا تختار TiraMax",
+        "tireMax": "TireMax",
+        "genuineWarranty": "ضمان حقيقي",
+        "genuineWarrantyDescription": "ضمان استبدال فوري يصل لثلاث سنوات على جميع الإطارات والبطاريات.",
+        "routineMaintenance": "صيانه دوريه",
+        "quickTurnaround": "سرعة الإنجاز",
+        "fastServiceDescription": "فريق عمل مدرب وأجهزة حديثة لضمان تركيب الإطارات في دقائق معدودة.",
+        "whatOurCustomersSay": "آراء عملائنا",
+        "testimonialName1": "أحمد محمد",
+        "testimonialCity1": "بغداد",
+        "testimonial1": "أفضل خدمة إطارات في بغداد. دقة في المواعيد وأسعار منافسة جداً. الموازنة بالليزر فرقت كتير في قيادة السيارة.",
+        "testimonialName2": "أحمد محمد",
+        "testimonialCity2": "بغداد",
+        "testimonial2": "الضمان حقيقي فعلاً. كان عندي مشكلة بسيطة في أحد الإطارات وتم استبداله فوراً بدون أي تعقيدات. أنصح بالتعامل معهم",
+        "testimonialName3": "أحمد محمد",
+        "testimonialCity3": "بغداد",
+        "testimonial3": "تجربة شراء سهلة جداً من الموقع الإلكتروني. حجزت الموعد ورحت الفرع ركبت في أقل من ربع ساعة. شكراً تير ماكس"
     },
     "iqd": "د.ع"
 }
