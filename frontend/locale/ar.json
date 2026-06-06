@@ -19,8 +19,11 @@
         "selectCategory": "اختر الفئة",
         "year": "سنة الصنع",
         "selectYear": "اختر سنة الصنع",
-        "brand": "العلامة التجارية",
-        "selectBrand": "اختر العلامة التجارية",
-        "findYourTireNow": "اعثر على إطارك الآن"
-    }
+        "make": "العلامة التجارية",
+        "selectMake": "اختر العلامة التجارية",
+        "findYourTireNow": "اعثر على إطارك الآن",
+        "recommendedTiresForYou": "إطارات مختارة لك",
+        "filterBy": "فلترحسب"
+    },
+    "iqd": "د.ع"
 }

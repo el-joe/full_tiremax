@@ -40,7 +40,7 @@ const FoundByVehicle = () => {
             <HStack gap={"24px"} alignItems="end">
                 <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("category")} placeholder={t("selectCategory")} name="category" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
                 <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("year")} placeholder={t("selectYear")} name="year" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
-                <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("brand")} placeholder={t("selectBrand")} name="brand" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
+                <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("make")} placeholder={t("selectMake")} name="make" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
                 <Button flex={1} rounded={"12px"} type='submit'>{t("findYourTireNow")} <SearchIcon /></Button>
             </HStack></form>)
 }

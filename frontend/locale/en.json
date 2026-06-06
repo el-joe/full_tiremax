@@ -19,8 +19,11 @@
         "selectCategory": "Select Category",
         "year": "Year",
         "selectYear": "Select year",
-        "brand": "Brand",
-        "selectBrand": "Select Brand",
-        "findYourTireNow": "Find Your Tire Now"
-    }
+        "make": "make",
+        "selectMake": "Select Make",
+        "findYourTireNow": "Find Your Tire Now",
+        "recommendedTiresForYou": "Recommended Tires for You",
+        "filterBy": "Filter by"
+    },
+    "iqd": "IQD"
 }
