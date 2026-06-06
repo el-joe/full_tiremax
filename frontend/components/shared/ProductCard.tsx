@@ -14,16 +14,16 @@ const ProductCard = ({ product }: Props) => {
     const t = useTranslations()
     const locale = useLocale()
     return (
-        <Card.Root w="306px" overflow="hidden" bg={"white/2"} rounded={"32px"} p="24px" border="none" className='shadow-[0px_8px_10px_-6px_rgba(26,28,28,0.05)] shadow-[0px_20px_25px_-5px_rgba(26,28,28,0.05)]' h={"auto"} >
-            <Box p="16px" bg={"myGray"} rounded={"16px"} position={"relative"}>
+        <Card.Root w="306px" overflow="hidden" bg={"#F9F9F9"} rounded={"32px"} p="24px" border="none" className='shadow-[0px_8px_10px_-6px_rgba(26,28,28,0.05)] shadow-[0px_20px_25px_-5px_rgba(26,28,28,0.05)]' h={"auto"} >
+            <Box p="16px" bg={"#EEEEEE"} rounded={"16px"} position={"relative"}>
                 <IconButton variant="ghost" color={"primary"} fontWeight={"bold"} position={"absolute"} top="2" left="2" _hover={{ color: "white" }}><HeartIcon strokeWidth={"4"} /></IconButton>
                 <CustomBadge content={product.badges[0]} />
                 <Image src={product.images[0] || "/images/product-image.jpg"} alt={product.name} />
             </Box>
             <Card.Body gap="8px" alignItems={"start"} p="0" pt={"24px"}>
-                <Badge size={"md"} color={"gray-2"} fontSize={"10px"} rounded="12px" fontWeight={"bold"} textTransform={"uppercase"}>{product.brand.name}</Badge>
+                <Badge size={"md"} color={"gray-2"} fontSize={"10px"} rounded="12px" fontWeight={"bold"} textTransform={"uppercase"} bg={"myGray"}>{product.brand.name}</Badge>
                 <Card.Title lineClamp={"1"} fontSize={"18px"} lineHeight={"28px"}>{product.name}</Card.Title>
-                {product?.tire_spec?.size_string && <Badge fontSize={"10px"} fontWeight={"bold"} rounded="12px">{product?.tire_spec?.size_string}</Badge>}
+                {product?.tire_spec?.size_string && <Badge fontSize={"10px"} fontWeight={"bold"} rounded="12px" bg="myGray">{product?.tire_spec?.size_string}</Badge>}
                 <HStack alignItems={"center"}>
                     <RatingGroup.Root readOnly allowHalf count={5} defaultValue={product.expert_rating} size="sm" colorPalette={"yellow"}>
                         <RatingGroup.HiddenInput />

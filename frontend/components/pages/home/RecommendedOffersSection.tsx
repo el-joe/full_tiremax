@@ -1,0 +1,29 @@
+import { ChevronLeftIcon } from '@/components/Icons'
+import ProductCard from '@/components/shared/ProductCard'
+import { Link } from '@/i18n/navigation'
+import { IProduct } from '@/types'
+import { Container, Heading, HStack } from '@chakra-ui/react'
+import { getLocale, getTranslations } from 'next-intl/server'
+import React from 'react'
+
+type props = {
+    data: IProduct[]
+}
+
+const RecommendedOffersSection = async ({ data }: props) => {
+    const t = await getTranslations("home")
+    const locale = await getLocale()
+    return (
+        <Container bg="white" py="50px" rounded={"50px"} overflow={"hidden"}>
+            <HStack justifyContent={"space-between"} mb="48px">
+                <Heading as={"h2"} fontWeight={"700"} fontSize={"36px"}>{t("recommendedOffersForYou")}</Heading>
+                <Link href={"/"} ><HStack>{t("showAll")}<ChevronLeftIcon rotate={locale === "en" ? "180deg" : "0deg"} size={"md"} /></HStack></Link>
+            </HStack>
+            <HStack flexWrap={"wrap"} gap="18px" alignItems={"stretch"}>
+                {data.map(product => <ProductCard key={product.id} product={product} />)}
+            </HStack>
+        </Container>
+    )
+}
+
+export default RecommendedOffersSection

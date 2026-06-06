@@ -23,7 +23,9 @@
         "selectMake": "اختر العلامة التجارية",
         "findYourTireNow": "اعثر على إطارك الآن",
         "recommendedTiresForYou": "إطارات مختارة لك",
-        "filterBy": "فلترحسب"
+        "filterBy": "فلترحسب",
+        "recommendedOffersForYou": "عروض مختارة لك",
+        "showAll": "عرض الكل"
     },
     "iqd": "د.ع"
 }

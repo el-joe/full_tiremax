@@ -23,7 +23,9 @@
         "selectMake": "Select Make",
         "findYourTireNow": "Find Your Tire Now",
         "recommendedTiresForYou": "Recommended Tires for You",
-        "filterBy": "Filter by"
+        "filterBy": "Filter by",
+        "recommendedOffersForYou": "Recommended Offers for You",
+        "showAll": "Show all"
     },
     "iqd": "IQD"
 }
