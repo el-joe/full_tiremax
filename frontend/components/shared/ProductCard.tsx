@@ -38,7 +38,7 @@ const ProductCard = ({ product }: Props) => {
                         {product.effective_price.toLocaleString()}
                         {t("iqd")}
                     </Text>
-                    {!product.has_discount && <Text fontSize={"12px"} fontWeight="bold" textDecoration={"line-through"} color="gray-2">
+                    {product.has_discount && <Text fontSize={"12px"} fontWeight="bold" textDecoration={"line-through"} color="gray-2">
                         {product.price.toLocaleString()}
                         {t("iqd")}
                     </Text>}
