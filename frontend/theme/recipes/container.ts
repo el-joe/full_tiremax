@@ -1,4 +1,4 @@
-import { defineRecipe } from "@chakra-ui/react"
+import { defineRecipe } from "@chakra-ui/react";
 
 export const containerRecipe = defineRecipe({
   className: "chakra-container",
@@ -10,7 +10,7 @@ export const containerRecipe = defineRecipe({
     px: {
       base: "4",
       md: "6",
-      lg: "8",
+      lg: "79px",
     },
   },
   variants: {
@@ -27,4 +27,4 @@ export const containerRecipe = defineRecipe({
       },
     },
   },
-})
+});

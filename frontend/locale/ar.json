@@ -25,7 +25,21 @@
         "recommendedTiresForYou": "إطارات مختارة لك",
         "filterBy": "فلترحسب",
         "recommendedOffersForYou": "عروض مختارة لك",
-        "showAll": "عرض الكل"
+        "showAll": "عرض الكل",
+        "allInOneSolutionsForYourVehicle": "حلول متكاملة لسيارتك",
+        "findEverythingYourVehicleNeedsInOnePlace,FromPremiumTiresAndDependableBatteriesToExpertMaintenanceAndInstallationServices": "نوفر لك كل ما تحتاجه لسيارتك في مكان واحد، من إطارات عالية الجودة وبطاريات موثوقة إلى خدمات الصيانة والتركيب بأعلى مستوى من الاحترافية.",
+        "maintenanceServices": "خدمات الصيانه",
+        "bookAtServiceCenter": "الحجز داخل المركز",
+        "batteryInstallation": "تركيب البطاريات",
+        "tireInstallation": "تركيب الإطارات",
+        "quickAndEasyBooking": "حجز سريع وسهل",
+        "bookYourCarServiceNow": "احجز صيانة سيارتك الآن!",
+        "bookServiceDescription": "احصل على موعد فوري لصيانة سيارتك مع فريقنا المتخصص",
+        "smartBookingSystemWithoutConflicts": "نظام حجز ذكي بدون تداخل",
+        "professionalMaintenanceBySpecializedTeam": "صيانة احترافية من فريق متخصص",
+        "chooseAppointmentAndBranch": "اختر الموعد والفرع المناسب لك",
+        "bookServiceNow": "احجز موعد الصيانة الآن",
+        "now!": "الآن!"
     },
     "iqd": "د.ع"
 }

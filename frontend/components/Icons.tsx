@@ -264,3 +264,119 @@ export const ChevronLeftIcon = createIcon({
         </>
     ),
 })
+export const StarsIcon = createIcon({
+    displayName: "StarsIcon",
+    viewBox: "0 0 20 20",
+    defaultProps: { fill: "none" },
+    path: (
+        <>
+            <g clipPath="url(#clip0_231_10229)">
+                <path
+                    d="M8.2808 12.9166C8.20641 12.6283 8.05609 12.3651 7.84548 12.1545C7.63488 11.9439 7.3717 11.7935 7.0833 11.7191L1.9708 10.4008C1.88358 10.3761 1.80681 10.3235 1.75215 10.2512C1.69748 10.1788 1.66791 10.0907 1.66791 9.99998C1.66791 9.90931 1.69748 9.82112 1.75215 9.74878C1.80681 9.67644 1.88358 9.62391 1.9708 9.59915L7.0833 8.27998C7.37159 8.20565 7.63471 8.05546 7.84531 7.84502C8.0559 7.63457 8.20627 7.37156 8.2808 7.08332L9.59914 1.97082C9.62364 1.88325 9.67612 1.8061 9.74857 1.75115C9.82102 1.69619 9.90945 1.66644 10.0004 1.66644C10.0913 1.66644 10.1798 1.69619 10.2522 1.75115C10.3246 1.8061 10.3771 1.88325 10.4016 1.97082L11.7191 7.08332C11.7935 7.37171 11.9439 7.6349 12.1545 7.8455C12.3651 8.0561 12.6282 8.20642 12.9166 8.28082L18.0291 9.59832C18.1171 9.62257 18.1946 9.67499 18.2498 9.74755C18.3051 9.8201 18.335 9.90878 18.335 9.99998C18.335 10.0912 18.3051 10.1799 18.2498 10.2524C18.1946 10.325 18.1171 10.3774 18.0291 10.4016L12.9166 11.7191C12.6282 11.7935 12.3651 11.9439 12.1545 12.1545C11.9439 12.3651 11.7935 12.6283 11.7191 12.9166L10.4008 18.0291C10.3763 18.1167 10.3238 18.1939 10.2514 18.2488C10.1789 18.3038 10.0905 18.3335 9.99955 18.3335C9.90862 18.3335 9.82018 18.3038 9.74774 18.2488C9.67529 18.1939 9.62281 18.1167 9.5983 18.0291L8.2808 12.9166Z"
+                    stroke="currentColor"
+                    // strokeWidth="1.66667"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+                <path
+                    d="M16.6667 2.5V5.83333"
+                    stroke="currentColor"
+                    // strokeWidth="1.66667"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+                <path
+                    d="M18.3333 4.16669H15"
+                    stroke="currentColor"
+                    // strokeWidth="1.66667"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+                <path
+                    d="M3.33331 14.1667V15.8334"
+                    stroke="currentColor"
+                    // strokeWidth="1.66667"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+                <path
+                    d="M4.16667 15H2.5"
+                    stroke="currentColor"
+                    // strokeWidth="1.66667"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+            </g>
+            <defs>
+                <clipPath id="clip0_231_10229">
+                    <rect width={20} height={20} fill="currentColor" />
+                </clipPath>
+            </defs>
+        </>
+    ),
+})
+export const CheckCircleIcon = createIcon({
+    displayName: "CheckCircleIcon",
+    defaultProps: { fill: "none" },
+    path: (
+        <>
+            <g clipPath="url(#clip0_231_10246)">
+                <path
+                    d="M21.801 9.99999C22.2577 12.2413 21.9322 14.5714 20.8788 16.6018C19.8255 18.6322 18.1079 20.24 16.0125 21.1573C13.9171 22.0746 11.5706 22.2458 9.36428 21.6424C7.15795 21.0389 5.22517 19.6974 3.88825 17.8414C2.55134 15.9854 1.8911 13.7272 2.01764 11.4434C2.14418 9.15952 3.04986 6.98808 4.58363 5.29116C6.1174 3.59424 8.18656 2.47442 10.446 2.11844C12.7055 1.76247 15.0188 2.19185 17 3.33499"
+                    stroke="currentColor"
+                    // strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+                <path
+                    d="M9 11L12 14L22 4"
+                    stroke="currentColor"
+                    // strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+            </g>
+            <defs>
+                <clipPath id="clip0_231_10246">
+                    <rect width={24} height={24} fill="currentColor" />
+                </clipPath>
+            </defs>
+        </>
+    ),
+})
+export const CalenderIcon = createIcon({
+    displayName: "CalenderIcon",
+    defaultProps: { fill: "none" },
+    path: (
+        <>
+            <path
+                d="M8 2V6"
+                stroke="currentColor"
+                // strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M16 2V6"
+                stroke="currentColor"
+                // strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
+                stroke="currentColor"
+                // strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M3 10H21"
+                stroke="currentColor"
+                // strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </>
+    ),
+})

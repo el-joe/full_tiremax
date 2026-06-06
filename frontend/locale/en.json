@@ -25,7 +25,21 @@
         "recommendedTiresForYou": "Recommended Tires for You",
         "filterBy": "Filter by",
         "recommendedOffersForYou": "Recommended Offers for You",
-        "showAll": "Show all"
+        "showAll": "Show all",
+        "allInOneSolutionsForYourVehicle": "All-in-One Solutions for Your Vehicle",
+        "findEverythingYourVehicleNeedsInOnePlace,FromPremiumTiresAndDependableBatteriesToExpertMaintenanceAndInstallationServices": "Find everything your vehicle needs in one place, from premium tires and dependable batteries to expert maintenance and installation services.",
+        "maintenanceServices": "Maintenance Services",
+        "bookAtServiceCenter": "Book at the Service Center",
+        "batteryInstallation": "Battery Installation",
+        "tireInstallation": "Tire Installation",
+        "quickAndEasyBooking": "Quick and Easy Booking",
+        "bookYourCarServiceNow": "Book Your Car Service Now!",
+        "bookServiceDescription": "Schedule your vehicle service instantly with our professional team.",
+        "smartBookingSystemWithoutConflicts": "Smart Booking System with No Scheduling Conflicts",
+        "professionalMaintenanceBySpecializedTeam": "Professional Maintenance by a Specialized Team",
+        "chooseAppointmentAndBranch": "Select the Appointment Time and Branch That Suit You Best",
+        "bookServiceNow": "Book Your Service Now",
+        "now!": "Now!"
     },
     "iqd": "IQD"
 }

@@ -35,11 +35,11 @@
 body {
   background: var(--color-black);
   color: var(--foreground);
-  font-family:Almarai, Arial, Helvetica, sans-serif;
+  font-family: Almarai, Arial, Helvetica, sans-serif;
 }
 
 @utility container {
   max-width: 1440px;
-  padding-inline: 1rem;
+  padding-inline: 79px;
   margin-inline: auto;
 }
