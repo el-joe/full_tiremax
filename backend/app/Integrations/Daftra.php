@@ -780,4 +780,13 @@ class Daftra
         $created = $this->createClient($customer);
         return $created['Client'] ?? $created;
     }
+
+    /**
+     * Categories CRUD, stock sync, and other helpers can be added here as needed.
+     */
+
+    public function listCategories(int $page = 1, int $limit = 50): array
+    {
+        return $this->unwrap($this->http()->get('/product_categories', ['page' => $page, 'limit' => $limit]));
+    }
 }

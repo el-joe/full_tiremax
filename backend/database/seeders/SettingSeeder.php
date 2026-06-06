@@ -241,14 +241,6 @@ class SettingSeeder extends Seeder
 
             [
                 'group' => 'daftra',
-                'key' => 'account_hash',
-                'cast' => 'string',
-                'translatable' => false,
-                'value' => null
-            ],
-
-            [
-                'group' => 'daftra',
                 'key' => 'enabled',
                 'cast' => 'bool',
                 'translatable' => false,
