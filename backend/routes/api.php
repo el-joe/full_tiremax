@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\VehicleController;
+use App\Integrations\Daftra;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -89,4 +90,9 @@ Route::prefix('v1')->group(function () {
         // Reviews
         Route::post('reviews/{product}', [ReviewController::class, 'store']);
     });
+});
+
+Route::get('/daftra-test', function () {
+    $daftra = new Daftra();
+    return response()->json(['data' => $daftra->listProducts()]);
 });

@@ -38,8 +38,15 @@ class Daftra
     // HTTP client
     // ──────────────────────────────────────────────────────────────────────────
 
-    private function http(): PendingRequest
+    private function http($version = 'v1'): PendingRequest
     {
+        if ($version === 'v2') {
+            $url = str_replace('/api2', '/v2/api', $this->baseUrl);
+            return Http::baseUrl($url)
+                ->withHeaders(['Apikey' => $this->apiKey])
+                ->acceptJson()
+                ->timeout(30);
+        }
         return Http::baseUrl($this->baseUrl)
             ->withHeaders(['Apikey' => $this->apiKey])
             ->acceptJson()
@@ -779,5 +786,23 @@ class Daftra
 
         $created = $this->createClient($customer);
         return $created['Client'] ?? $created;
+    }
+
+    /**
+     * Categories CRUD, stock sync, and other helpers can be added here as needed.
+     */
+
+    public function listCategories(int $page = 1, int $limit = 50): array
+    {
+        return $this->unwrap($this->http()->get('/product_categories', ['page' => $page, 'limit' => $limit]));
+    }
+
+    /**
+     * list brands https://.daftra.com/v2/api/entity/brand/list/{{format}}'
+     */
+
+    public function listBrands(int $page = 1, int $limit = 50): array
+    {
+        return $this->unwrap($this->http('v2')->get('/entity/brand/list', ['page' => $page, 'limit' => $limit]));
     }
 }
