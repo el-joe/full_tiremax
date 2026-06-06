@@ -1,4 +1,4 @@
-import { defineRecipe } from "@chakra-ui/react"
+import { defineRecipe } from "@chakra-ui/react";
 
 export const textareaRecipe = defineRecipe({
   className: "chakra-textarea",
@@ -13,7 +13,7 @@ export const textareaRecipe = defineRecipe({
     _disabled: {
       layerStyle: "disabled",
     },
-    "--focus-color": "colors.colorPalette.focusRing",
+    "--focus-color": "colors.primary",
     "--error-color": "colors.border.error",
     _invalid: {
       focusRingColor: "var(--error-color)",
@@ -83,4 +83,4 @@ export const textareaRecipe = defineRecipe({
     size: "md",
     variant: "outline",
   },
-})
+});

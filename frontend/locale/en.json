@@ -56,7 +56,25 @@
         "testimonial2": "The warranty is truly genuine. I had a minor issue with one of the tires, and it was replaced immediately with no hassle at all. I highly recommend them.",
         "testimonialName3": "Ahmad Mohamed",
         "testimonialCity3": "Baghdad",
-        "testimonial3": "A very smooth purchase experience on the website. I booked an appointment and went to the branch, and my tires were installed in less than 15 minutes. Thank you, TireMax."
+        "testimonial3": "A very smooth purchase experience on the website. I booked an appointment and went to the branch, and my tires were installed in less than 15 minutes. Thank you, TireMax.",
+        "contactUs": "Contact Us",
+        "contactUsDescription": "Do you have a question or want to book a service? Our expert team is always here to help you and ensure your vehicle performs at its best.",
+        "customerServiceNumber": "Customer Service Number",
+        "email": "email",
+        "headOffice": "Head Office",
+        "headOfficeAddress": "Basra, Algeria District, Exhibition Street",
+        "branch2": "Branch 2",
+        "branch2Address": "Maysan, Algeria District, Exhibition Street",
+        "fullName": "Full name",
+        "enterYourFullName": "Enter your full name",
+        "phoneNumber": "Phone number",
+        "phoneNumberPlaceholder": "+98560054",
+        "inquirySubject": "Inquiry Subject",
+        "inquiryAboutPrices": "Inquiry about prices",
+        "message": "Message",
+        "howCanWeHelpYouToday": "How can we help you today",
+        "sendMessage": "Send message",
+        "orContactImmediatelyVia": "Or contact us instantly via:"
     },
     "iqd": "IQD"
 }

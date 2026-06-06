@@ -14,7 +14,7 @@ const ProductCard = ({ product }: Props) => {
     const t = useTranslations()
     const locale = useLocale()
     return (
-        <Card.Root w="306px" overflow="hidden" bg={"#F9F9F9"} rounded={"32px"} p="24px" border="none" className='shadow-[0px_8px_10px_-6px_rgba(26,28,28,0.05)] shadow-[0px_20px_25px_-5px_rgba(26,28,28,0.05)]' h={"auto"} >
+        <Card.Root w="305px" overflow="hidden" bg={"#F9F9F9"} rounded={"32px"} p="24px" border="none" className='shadow-[0px_8px_10px_-6px_rgba(26,28,28,0.05)] shadow-[0px_20px_25px_-5px_rgba(26,28,28,0.05)]' h={"auto"} >
             <Box p="16px" bg={"#EEEEEE"} rounded={"16px"} position={"relative"}>
                 <IconButton variant="ghost" color={"primary"} fontWeight={"bold"} position={"absolute"} top="2" left="2" _hover={{ color: "white" }}><HeartIcon strokeWidth={"4"} /></IconButton>
                 <CustomBadge content={product.badges[0]} />

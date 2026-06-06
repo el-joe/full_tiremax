@@ -18,7 +18,7 @@ const RecommendedSection = async ({ data }: props) => {
                 <Heading as={"h2"} fontWeight={"700"} fontSize={"36px"}>{t("recommendedTiresForYou")}</Heading>
                 <Button variant={"ghost"} color={'fg'} _hover={{ bg: "transparent" }}>{t("filterBy")}<FilterIcon /></Button>
             </HStack>
-            <HStack flexWrap={"wrap"} gap="18px" alignItems={"stretch"}>
+            <HStack flexWrap={"wrap"} gap="32px" alignItems={"stretch"}>
                 {data.map(product => <ProductCard key={product.id} product={product} />)}
             </HStack>
         </Container>

@@ -1,4 +1,5 @@
 import BannersGridSection from "@/components/pages/home/BannersGridSection";
+import ContactUsSection from "@/components/shared/ContactUsSection";
 import HeroSection from "@/components/pages/home/HeroSection";
 import RecommendedOffersSection from "@/components/pages/home/RecommendedOffersSection";
 import RecommendedSection from "@/components/pages/home/RecommendedSection";
@@ -16,6 +17,7 @@ export default async function Home() {
     <BannersGridSection />
     <ReservationSection />
     <RecommendedOffersSection data={data.data.offers} />
-    <WhyUsSection/>
+    <WhyUsSection />
+    <ContactUsSection />
   </>;
 }

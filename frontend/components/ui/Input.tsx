@@ -36,14 +36,14 @@ const Input: React.FC<IInputProps> = ({
 }) => {
   const inputElement =
     type === "password" ? (
-      <PasswordInput {...register} {...rest} />
+      <PasswordInput rounded={"16px"} bg="#F9FAFB" {...register} {...rest} />
     ) : (
-      <ChakraInput type={type} size={size} {...register} {...rest} />
+      <ChakraInput rounded={"16px"} bg="#F9FAFB" type={type} size={size} {...register} {...rest} />
     );
 
   return (
     <Field.Root invalid={err}>
-      {label && <Field.Label>{label}</Field.Label>}
+      {label && <Field.Label fontWeight={"semibold"} fontSize={"14px"}>{label}</Field.Label>}
       <InputGroup startElement={startElement} endElement={endElement}>
         {inputElement}
       </InputGroup>
