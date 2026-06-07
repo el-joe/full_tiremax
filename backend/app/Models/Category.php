@@ -10,7 +10,7 @@ class Category extends Model implements TranslatableContract
 {
     use Translatable;
 
-    protected $fillable = ['slug', 'product_type', 'icon', 'is_active', 'sort_order'];
+    protected $fillable = ['daftra_id', 'slug', 'product_type', 'icon', 'is_active', 'sort_order'];
     protected $casts = ['is_active' => 'boolean'];
 
     public array $translatedAttributes = ['name', 'description'];

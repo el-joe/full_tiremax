@@ -12,7 +12,7 @@ class Brand extends Model implements TranslatableContract
 {
     use Translatable, SoftDeletes;
 
-    protected $fillable = ['slug', 'logo', 'country', 'is_active', 'sort_order'];
+    protected $fillable = ['daftra_id', 'slug', 'logo', 'country', 'is_active', 'sort_order'];
 
     protected $casts = ['is_active' => 'boolean'];
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DaftraSyncLog extends Model
 {
-    protected $fillable = ['order_id', 'action', 'status', 'payload', 'response', 'attempts'];
+    protected $fillable = ['order_id', 'syncable_type', 'syncable_id', 'action', 'status', 'payload', 'response', 'attempts'];
     protected $casts = ['payload' => 'array', 'response' => 'array'];
 
     public function order(): BelongsTo
