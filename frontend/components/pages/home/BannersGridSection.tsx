@@ -6,11 +6,11 @@ import React from 'react'
 const BannersGridSection = async () => {
     const t = await getTranslations("home")
     return (
-        <Container bg="white" py="80px" roundedTop={"50px"} overflow={"hidden"}>
+        <Container bg="white" py={{ base: "24px", md: "42px", xl: "80px" }} roundedTop={"50px"} overflow={"hidden"}>
             <Grid
-                templateColumns="repeat(7, 1fr)"
-                gap={"31px"}>
-                <GridItem colSpan={3}>
+                templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(7, 1fr)" }}
+                gap={{ base: '12px', md: "17px", xl: "24px", "2xl": "31px" }}>
+                <GridItem colSpan={{ base: 3, md: 4, lg: 3 }}>
                     <VStack alignItems={'stretch'} gap={"31px"}>
                         <Box>
                             <Heading as="h2" fontSize={"28px"} fontWeight={"bold"} mb={"32px"}>{t("allInOneSolutionsForYourVehicle")}</Heading>
@@ -22,21 +22,21 @@ const BannersGridSection = async () => {
                         </Box>
                     </VStack>
                 </GridItem>
-                <GridItem colSpan={2} >
-                    <Box rounded={"20px"} overflow={"hidden"} position={"relative"} h={"full"}>
+                <GridItem colSpan={{ base: 3, lg: 2 }} >
+                    <Box rounded={"20px"} overflow={"hidden"} position={"relative"} h={"full"} minH={"185px"}>
                         <Image src={"/images/bookAtTheCenterBg.jpg"} alt='bg' objectFit={"cover"} position="absolute" inset={0} w={"full"} h="full" />
                         <Link href={"/"} className='bg-white absolute bottom-4 left-4 p-2.5! rounded-[10px]'>{t("maintenanceServices")}</Link>
                     </Box>
                 </GridItem>
-                <GridItem colSpan={2}>
-                    <VStack alignItems={"stretch"} gap="31px" h='full'>
-                        <Box rounded={"20px"} overflow={"hidden"} position={"relative"} h="calc(100% - 31px / 2)">
+                <GridItem colSpan={{ base: 3, md: 7, lg: 2 }}>
+                    <VStack alignItems={"stretch"} gap={{ base: '12px', md: "17px", xl: "24px", "2xl": "31px" }} h='full' flexDir={{ base: "row", lg: "column" }}>
+                        <Box flex={1} rounded={"20px"} overflow={"hidden"} position={"relative"} h="calc(100% - 31px / 2)" minH={"185px"}>
                             <Image src={"/images/battaryInstallationBg.jpg"} alt='bg' objectFit={"cover"} position="absolute" inset={0} w={"full"} h="full" />
-                            <Link href={"/"} className='bg-white absolute bottom-4 left-4 p-2.5! rounded-[10px]'>{t("batteryInstallation")}</Link>
+                            <Link href={"/"} className='bg-white absolute bottom-4 left-2 md:left-4 p-1! md:p-2.5! rounded-[10px] text-sm! md:text-base!'>{t("batteryInstallation")}</Link>
                         </Box>
-                        <Box rounded={"20px"} overflow={"hidden"} position={"relative"} h="calc(100% - 31px / 2)">
+                        <Box flex={1} rounded={"20px"} overflow={"hidden"} position={"relative"} h="calc(100% - 31px / 2)" minH={"185px"}>
                             <Image src={"/images/tireInstallationBg.jpg"} alt='bg' objectFit={"cover"} position="absolute" inset={0} w={"full"} h="full" />
-                            <Link href={"/"} className='bg-white absolute bottom-4 left-4 p-2.5! rounded-[10px]'>{t("tireInstallation")}</Link>
+                            <Link href={"/"} className='bg-white absolute bottom-4 left-2 md:left-4 p-1! md:p-2.5! rounded-[10px] text-sm! md:text-base!'>{t("tireInstallation")}</Link>
                         </Box>
                     </VStack>
                 </GridItem>
