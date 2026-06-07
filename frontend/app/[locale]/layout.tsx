@@ -11,6 +11,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Header from "@/components/layout/Header";
 import { ChakraUiProvider } from "@/providers/ChakraUiProvider";
+import Footer from "@/components/layout/Footer"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,6 +57,7 @@ export default async function RootLayout({
               <Toaster position="bottom-right" />
               <Header />
               <main className="md:pt-26">{children}</main>
+              <Footer />
             </ChakraUiProvider>
           </ReactQueryProvider>
         </NextIntlClientProvider>

@@ -7,6 +7,26 @@
         "search": "Search",
         "bookNow": "Book now"
     },
+    "footer": {
+        "footerCompanyDescription": "We are committed to delivering the highest standards of quality in tire and vehicle maintenance services to our customers across Iraq, offering world-class brands and guaranteed performance.",
+        "quickLinks": "Quick links",
+        "home": "Home",
+        "aboutUs": "About us",
+        "store": "Store",
+        "offers": "Offers",
+        "services": "Services",
+        "batteries": "Batteries",
+        "tires": "Tires",
+        "serviceCenter": "Service center",
+        "contactUs": "Contact Us",
+        "footerAddress": "Baghdad, Karrada, Al-Saadoun Street",
+        "serviceBooking": "Service Booking",
+        "footerServiceBookingDescription": "Book your appointment with ease and choose the time that suits you best—no waiting required.",
+        "bookYourAppointmentNow": "Book Your Appointment Now",
+        "privacyPolicy": "Privacy policy",
+        "allRightsReserved": "© 2024 TiraMax Iraq. All rights reserved",
+        "termsAndConditions": "Terms and conditions"
+    },
     "home": {
         "controlStartsWith": "Control starts with",
         "theRightTire": "The right tire",

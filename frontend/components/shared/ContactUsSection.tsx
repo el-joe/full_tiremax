@@ -1,5 +1,5 @@
 import { EmailFastIcon, LocationPinIcon, PhoneSignalIcon } from '@/components/Icons'
-import { Badge, Box, Center, Container, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { Box, Center, Container, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { getTranslations } from 'next-intl/server'
 import React from 'react'
 import ContactUsForm from './ContactUsForm'

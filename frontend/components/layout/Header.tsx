@@ -1,7 +1,6 @@
 "use client"
 import type { ButtonProps } from "@chakra-ui/react";
-import { Box, Button, Container, HStack, Input, InputGroup } from "@chakra-ui/react";
-import { getTranslations } from "next-intl/server";
+import { Button, Container, HStack, Input, InputGroup } from "@chakra-ui/react";
 import React from "react";
 import { BellIcon, CarIcon, CartIcon, DeviceMaintenanceIcon, HeartIcon, SearchIcon, SpannerIcon, UserCircleIcon } from "../Icons";
 import Logo from "../shared/Logo";

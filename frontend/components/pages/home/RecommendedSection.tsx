@@ -14,6 +14,7 @@ const RecommendedSection = async ({ data }: props) => {
 
     return (
         <Container bg="white" py="50px" rounded={"50px"} overflow={"hidden"} mb={"24px"}>
+            {/* header section */}
             <HStack justifyContent={"space-between"} mb="48px">
                 <Heading as={"h2"} fontWeight={"700"} fontSize={"36px"}>{t("recommendedTiresForYou")}</Heading>
                 <Button variant={"ghost"} color={'fg'} _hover={{ bg: "transparent" }}>{t("filterBy")}<FilterIcon /></Button>

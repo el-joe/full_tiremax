@@ -13,6 +13,7 @@ export default async function Home() {
   const { data } = await axiosInstance<{ data: IHomeResponse }>(endpoint)
   return <>
     <HeroSection />
+    {/* Recommended Tires for You section */}
     <RecommendedSection data={data.data.featured} />
     <BannersGridSection />
     <ReservationSection />

@@ -3,7 +3,7 @@ import { Box, Button, Center, HStack, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import Input from '../ui/Input'
 import { useTranslations } from 'next-intl'
-import { PhoneSignalIcon, SendMessageIcon, UserCircleIcon, WhatsappIcon } from '../Icons'
+import { PhoneSignalIcon, SendMessageIcon, UserCircleIcon, WhatsappLogoIcon } from '../Icons'
 import Textarea from '../ui/Textarea'
 import { Link } from '@/i18n/navigation'
 import { useForm } from 'react-hook-form'
@@ -27,7 +27,7 @@ const ContactUsForm = () => {
                     <HStack>
                         <Text>{t("orContactImmediatelyVia")}</Text>
                         <Link href="/">
-                            <Center bg="#41C452" rounded={"8px"} color={"white"} w="48px" h="48px"><WhatsappIcon size={"xl"} /></Center>
+                            <Center bg="#41C452" rounded={"8px"} color={"white"} w="48px" h="48px"><WhatsappLogoIcon size={"xl"} /></Center>
                         </Link>
                     </HStack>
                     <Button fontSize="20px" rounded={"16px"} px="48px" py="20px" type='submit'> <SendMessageIcon /> {t("sendMessage")}</Button>
