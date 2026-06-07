@@ -15,5 +15,7 @@ class ProductTranslation extends Model
         'usage_notes',
         'meta_title',
         'meta_description',
+        'product_id',
+        'locale',
     ];
 }

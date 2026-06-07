@@ -24,6 +24,7 @@ class Product extends Model implements TranslatableContract
     public const BADGE_NEW = 'new';
 
     protected $fillable = [
+        'daftra_id',
         'type',
         'sku',
         'brand_id',
