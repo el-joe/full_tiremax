@@ -27,6 +27,7 @@ const WhyUsSection = async () => {
                     <Text fontSize={"14px"}>{t("fastServiceDescription")}</Text>
                 </VStack>
             </HStack>
+            {/* testimonial */}
             <VStack mt={"120px"} mb={"64px"} gap={"16px"}>
                 <Heading textAlign={"center"} fontSize={"36px"} fontWeight={"bold"}>{t("whatOurCustomersSay")}</Heading>
                 <RatingGroup.Root readOnly colorPalette={"yellow"} count={5} defaultValue={5} size="lg">
@@ -34,7 +35,7 @@ const WhyUsSection = async () => {
                     <RatingGroup.Control />
                 </RatingGroup.Root>
             </VStack>
-            <HStack gap={"32px"} >
+            <HStack gap={"32px"} flexWrap={"wrap"} >
                 <Box p="32px" flex="1" bg="white" color={"black"} rounded={"24px"}>
                     <HStack mb={"24px"} justifyContent={"space-between"}>
                         <Box>

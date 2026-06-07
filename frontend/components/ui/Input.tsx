@@ -6,6 +6,7 @@ import {
   ConditionalValue,
   InputProps,
   InputGroup,
+  FieldRootProps,
 } from "@chakra-ui/react";
 import { PasswordInput } from "./password-input";
 
@@ -21,6 +22,7 @@ interface IInputProps extends Omit<
   size?: ConditionalValue<"sm" | "md" | "lg" | "xl" | "2xl" | "2xs" | "xs">;
   startElement?: React.ReactNode;
   endElement?: React.ReactNode;
+  rootProps?: FieldRootProps;
 }
 
 const Input: React.FC<IInputProps> = ({
@@ -32,6 +34,7 @@ const Input: React.FC<IInputProps> = ({
   size,
   startElement,
   endElement,
+  rootProps,
   ...rest
 }) => {
   const inputElement =
@@ -42,7 +45,7 @@ const Input: React.FC<IInputProps> = ({
     );
 
   return (
-    <Field.Root invalid={err}>
+    <Field.Root invalid={err} {...rootProps}>
       {label && <Field.Label fontWeight={"semibold"} fontSize={"14px"}>{label}</Field.Label>}
       <InputGroup startElement={startElement} endElement={endElement}>
         {inputElement}

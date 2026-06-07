@@ -8,7 +8,7 @@ const Footer = async () => {
     const t = await getTranslations("footer")
     return (
         <Container px={"46px"} pt="80px" pb={"32px"} color={"white"}>
-            <HStack justify={"space-between"} align={"start"}>
+            <HStack justify={"space-between"} align={"start"} flexWrap="wrap">
                 <Box>
                     <Image src="/images/logo.svg" mb={"16px"} alt='logo' />
                     <Text fontSize={"14px"} maxW={"315px"}>{t("footerCompanyDescription")}</Text>

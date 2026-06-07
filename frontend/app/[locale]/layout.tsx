@@ -50,7 +50,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${almarai.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning className="bg-black">
+      <body suppressHydrationWarning className="bg-black pb-20! md:pb-0!">
         <NextIntlClientProvider>
           <ReactQueryProvider>
             <ChakraUiProvider>
