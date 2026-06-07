@@ -11,17 +11,17 @@ const FoundTireBox = () => {
     const locale = useLocale()
     const dir = locale === "ar" ? "rtl" : "ltr"
     return (
-        <Tabs.Root defaultValue="members" maxW={"1214px"} bg={"bg"} rounded={"24px"} overflow={"hidden"}>
+        <Tabs.Root defaultValue="foundByVehicle" maxW={"1214px"} bg={"bg"} rounded={"24px"} overflow={"hidden"}>
             <Tabs.List dir={dir} bg="primary" pt="4px">
-                <Tabs.Trigger value="members" bg="white" flex="1" justifyContent={"center"} _selected={{ bg: "primary", color: "white", "--indicator-color": "transparent" }}>
+                <Tabs.Trigger value="foundByVehicle" bg="white" flex="1" justifyContent={"center"} _selected={{ bg: "primary", color: "white", "--indicator-color": "transparent" }}>
                     {t("searchByVehicle")}
                 </Tabs.Trigger>
-                <Tabs.Trigger value="projects" bg="white" flex="1" justifyContent={"center"} _selected={{ bg: "primary", color: "white", "--indicator-color": "transparent" }}>
+                <Tabs.Trigger value="foundBySize" bg="white" flex="1" justifyContent={"center"} _selected={{ bg: "primary", color: "white", "--indicator-color": "transparent" }}>
                     {t("searchBySize")}
                 </Tabs.Trigger>
             </Tabs.List>
-            <Tabs.Content value="members" py={"32px"} px={"31px"} dir={dir}><FoundByVehicle /></Tabs.Content>
-            <Tabs.Content value="projects" py={"32px"} px={"31px"} dir={dir}><FoundByVehicle /></Tabs.Content>
+            <Tabs.Content value="foundByVehicle" py={"32px"} px={"31px"} dir={dir}><FoundByVehicle /></Tabs.Content>
+            <Tabs.Content value="foundBySize" py={"32px"} px={"31px"} dir={dir}><FoundBySize /></Tabs.Content>
         </Tabs.Root>
     )
 }
@@ -42,5 +42,23 @@ const FoundByVehicle = () => {
                 <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("year")} placeholder={t("selectYear")} name="year" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
                 <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("make")} placeholder={t("selectMake")} name="make" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
                 <Button flex={1} rounded={"12px"} type='submit'>{t("findYourTireNow")} <SearchIcon /></Button>
-            </HStack></form>)
+            </HStack>
+        </form>)
+}
+const FoundBySize = () => {
+    const t = useTranslations("home")
+    const { handleSubmit } = useForm()
+    const onSubmit = handleSubmit((data) => {
+        console.log(data)
+    })
+
+    return (
+        <form onSubmit={onSubmit}>
+            <HStack gap={"24px"} alignItems="end">
+                <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("height")} placeholder={t("selectHeight")} name="height" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
+                <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("width")} placeholder={t("selectWidth")} name="width" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
+                <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("diameter")} placeholder={t("selectDiameter")} name="diameter" containerProps={{ flex: 1 }} triggerProps={{ rounded: "12px" }} />
+                <Button flex={1} rounded={"12px"} type='submit'>{t("findYourTireNow")} <SearchIcon /></Button>
+            </HStack>
+        </form>)
 }
