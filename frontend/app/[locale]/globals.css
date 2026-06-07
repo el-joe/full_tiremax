@@ -43,3 +43,7 @@ body {
   padding-inline: 79px;
   margin-inline: auto;
 }
+
+img {
+  max-height: 100%;
+}
