@@ -7,11 +7,13 @@ import Logo from "../shared/Logo";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Input from "../ui/Input";
+import useToggleLang from "@/hooks/useToggleLang";
 
 
 const Header = () => {
   const t = useTranslations("header")
   const pathname = usePathname();
+  const toggleLang = useToggleLang()
   return (
     <header>
       <Container pt={{ base: '16px', xl: "30px", "2xl": "40px" }}>
@@ -36,6 +38,7 @@ const Header = () => {
             zIndex={"10"}
             py={{ base: "12px" }}
             bg={{ base: "white", md: "none" }}>
+            <HeaderButton onClick={toggleLang} >{t("locale")}</HeaderButton>
             <HeaderButton href={"/"} ><CartIcon /></HeaderButton>
             <HeaderButton href={"/"}><BellIcon /></HeaderButton>
             <HeaderButton href={"/"}><UserCircleIcon /></HeaderButton>

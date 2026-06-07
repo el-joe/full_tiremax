@@ -5,7 +5,8 @@
         "services": "Services",
         "reservation": "Reservation",
         "search": "Search",
-        "bookNow": "Book now"
+        "bookNow": "Book now",
+    "locale":"ع"
     },
     "footer": {
         "footerCompanyDescription": "We are committed to delivering the highest standards of quality in tire and vehicle maintenance services to our customers across Iraq, offering world-class brands and guaranteed performance.",
