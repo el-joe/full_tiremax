@@ -8,7 +8,7 @@ const ReservationSection = async () => {
   const locale = await getLocale()
   return (
     <Container bg="primary" mb="21px" p={{ base: "40px", md: "60px", xl: "112px" }}>
-      <HStack gap={{ base: "34px", md: "80px", xl: "130px" }} flexDir={{ base: "column-reverse", xl: "row" }}>
+      <HStack gap={{ base: "34px", md: "60px", xl: "130px" }} flexDir={{ base: "column-reverse", lg: "row" }}>
         <Box flex="1">
           <Badge bg={"#FFFFFF33"} border={"1px solid #FFFFFF4D"} px="20px" py="9px" rounded="full" color={"white"} fontWeight={"bold"}> <StarsIcon size="sm" /> {t("quickAndEasyBooking")}</Badge>
           <Heading as={"h2"} fontSize={"48px"} fontWeight={'bold'} my={"28px"} lineHeight={"60px"}><Highlight query={t("now!")} styles={{ color: "white", display: "block" }} >{t("bookYourCarServiceNow")}</Highlight></Heading>
