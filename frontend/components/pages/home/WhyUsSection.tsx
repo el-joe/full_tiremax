@@ -7,25 +7,10 @@ const WhyUsSection = async () => {
     return (
         <Container py="80px" color={"white"} >
             <Heading textAlign={"center"} fontSize={"36px"} fontWeight={"bold"} mb={"64px"}><Highlight query={t("tireMax")} styles={{ color: "primary" }}>{t("whyChooseTireMax")}</Highlight></Heading>
-            <HStack gap="24px">
-                <VStack h="334px" flex="1" position={"relative"} rounded="48px" overflow={"hidden"} zIndex={1} justifyContent={"end"} alignItems={"start"} p="32px">
-                    <Image src={"/images/whyUsBg1.png"} alt="bg" position={"absolute"} inset={"0"} h="full" w={"full"} zIndex={-1} opacity={"40%"} />
-                    <Box position={"absolute"} inset="0" bg="#353534" zIndex={-2} />
-                    <Heading fontSize={"24px"} fontWeight={"semibold"}>{t("genuineWarranty")}</Heading>
-                    <Text fontSize={"14px"}>{t("genuineWarrantyDescription")}</Text>
-                </VStack>
-                <VStack h="334px" flex="1" position={"relative"} rounded="48px" overflow={"hidden"} zIndex={1} justifyContent={"end"} alignItems={"start"} p="32px">
-                    <Image src={"/images/whyUsBg2.jpg"} alt="bg" position={"absolute"} inset={"0"} h="full" w={"full"} zIndex={-1} opacity={"40%"} />
-                    <Box position={"absolute"} inset="0" bg="#353534" zIndex={-2} />
-                    <Heading fontSize={"24px"} fontWeight={"semibold"}>{t("routineMaintenance")}</Heading>
-                    <Text fontSize={"14px"}>{t("genuineWarrantyDescription")}</Text>
-                </VStack>
-                <VStack h="334px" flex="1" position={"relative"} rounded="48px" overflow={"hidden"} zIndex={1} justifyContent={"end"} alignItems={"start"} p="32px">
-                    <Image src={"/images/whyUsBg3.jpg"} alt="bg" position={"absolute"} inset={"0"} h="full" w={"full"} zIndex={-1} opacity={"40%"} />
-                    <Box position={"absolute"} inset="0" bg="#353534" zIndex={-2} />
-                    <Heading fontSize={"24px"} fontWeight={"semibold"}>{t("quickTurnaround")}</Heading>
-                    <Text fontSize={"14px"}>{t("fastServiceDescription")}</Text>
-                </VStack>
+            <HStack gap={{ base: "12px", md: "16px", xl: "24px" }} flexWrap={"wrap"}>
+                <WhyUsCart bg='/images/whyUsBg1.png' heading={t("genuineWarranty")} text={t("genuineWarrantyDescription")} />
+                <WhyUsCart bg='/images/whyUsBg2.jpg' heading={t("routineMaintenance")} text={t("genuineWarrantyDescription")} />
+                <WhyUsCart bg='/images/whyUsBg3.jpg' heading={t("quickTurnaround")} text={t("fastServiceDescription")} />
             </HStack>
             {/* testimonial */}
             <VStack mt={"120px"} mb={"64px"} gap={"16px"}>
@@ -35,37 +20,10 @@ const WhyUsSection = async () => {
                     <RatingGroup.Control />
                 </RatingGroup.Root>
             </VStack>
-            <HStack gap={"32px"} flexWrap={"wrap"} >
-                <Box p="32px" flex="1" bg="white" color={"black"} rounded={"24px"}>
-                    <HStack mb={"24px"} justifyContent={"space-between"}>
-                        <Box>
-                            <Heading fontSize={"16px"} fontWeight={"semibold"}>{t("testimonialName1")}</Heading>
-                            <Text fontSize={"12px"}>{t("testimonialCity1")}</Text>
-                        </Box>
-                        <Image src="/images/testimonialUserAvatar.jpg" alt='avatar' w="48px" h={"48px"} rounded={"12px"} outline={"2px solid {colors.primary}"} outlineOffset={"1px"} />
-                    </HStack>
-                    <Text color={"gray-2"}>&quot;{t("testimonial1")}&quot;</Text>
-                </Box>
-                <Box p="32px" flex="1" bg="white" color={"black"} rounded={"24px"}>
-                    <HStack mb={"24px"} justifyContent={"space-between"}>
-                        <Box>
-                            <Heading fontSize={"16px"} fontWeight={"semibold"}>{t("testimonialName2")}</Heading>
-                            <Text fontSize={"12px"}>{t("testimonialCity2")}</Text>
-                        </Box>
-                        <Image src="/images/testimonialUserAvatar.jpg" alt='avatar' w="48px" h={"48px"} rounded={"12px"} outline={"2px solid {colors.primary}"} outlineOffset={"1px"} />
-                    </HStack>
-                    <Text color={"gray-2"}>&quot;{t("testimonial2")}&quot;</Text>
-                </Box>
-                <Box p="32px" flex="1" bg="white" color={"black"} rounded={"24px"}>
-                    <HStack mb={"24px"} justifyContent={"space-between"}>
-                        <Box>
-                            <Heading fontSize={"16px"} fontWeight={"semibold"}>{t("testimonialName3")}</Heading>
-                            <Text fontSize={"12px"}>{t("testimonialCity3")}</Text>
-                        </Box>
-                        <Image src="/images/testimonialUserAvatar.jpg" alt='avatar' w="48px" h={"48px"} rounded={"12px"} outline={"2px solid {colors.primary}"} outlineOffset={"1px"} />
-                    </HStack>
-                    <Text color={"gray-2"}>&quot;{t("testimonial3")}&quot;</Text>
-                </Box>
+            <HStack gap={{ base: "12px", md: "18px", xl: "30px" }} flexWrap={"wrap"} alignItems={"stretch"}>
+                <ReviewCard name={t("testimonialName1")} address={t("testimonialCity1")} avatar='/images/testimonialUserAvatar.jpg' content={t("testimonial1")} />
+                <ReviewCard name={t("testimonialName2")} address={t("testimonialCity2")} avatar='/images/testimonialUserAvatar.jpg' content={t("testimonial2")} />
+                <ReviewCard name={t("testimonialName3")} address={t("testimonialCity3")} avatar='/images/testimonialUserAvatar.jpg' content={t("testimonial3")} />
             </HStack>
         </Container>
     )
@@ -74,14 +32,22 @@ const WhyUsSection = async () => {
 export default WhyUsSection
 
 
+const WhyUsCart = ({ bg, heading, text }: { bg: string, heading: string, text: string }) => (
+    <VStack h={{ base: "180px", md: "240px", xl: "334px" }} minW={"260px"} flex="1" position={"relative"} rounded="48px" overflow={"hidden"} zIndex={1} justifyContent={"end"} alignItems={"start"} p="32px">
+        <Image src={bg} alt="bg" position={"absolute"} inset={"0"} h="full" w={"full"} zIndex={-1} opacity={"40%"} />
+        <Box position={"absolute"} inset="0" bg="#353534" zIndex={-2} />
+        <Heading fontSize={"24px"} fontWeight={"semibold"}>{heading}</Heading>
+        <Text fontSize={"14px"}>{text}</Text>
+    </VStack>
+)
 
-
-//     "testimonialName1": "Ahmad Mohamed",
-//     "testimonialCity1": "Baghdad",
-//     "testimonial1": "The best tire service in Baghdad. Punctual appointments, highly competitive prices, and the laser wheel balancing made a noticeable difference in my driving experience.",
-//     "testimonialName2": "Ahmad Mohamed",
-//     "testimonialCity2": "Baghdad",
-//     "testimonial2": "The warranty is truly genuine. I had a minor issue with one of the tires, and it was replaced immediately with no hassle at all. I highly recommend them.",
-//     "testimonialName3": "Ahmad Mohamed",
-//     "testimonialCity3": "Baghdad",
-//     "testimonial3": "A very smooth purchase experience on the website. I booked an appointment and went to the branch, and my tires were installed in less than 15 minutes. Thank you, TiraMax."
+const ReviewCard = ({ name, address, avatar, content }: { name: string, address: string, avatar: string, content: string }) => (<Box p={{ base: "12px", md: "20px", xl: "32px" }} flex="1" bg="white" color={"black"} rounded={"24px"}>
+    <HStack mb={"24px"} justifyContent={"space-between"} minW={"260px"}>
+        <Box>
+            <Heading fontSize={"16px"} fontWeight={"semibold"}>{name}</Heading>
+            <Text fontSize={"12px"}>{address}</Text>
+        </Box>
+        <Image src={avatar} alt='avatar' w="48px" h={"48px"} rounded={"12px"} outline={"2px solid {colors.primary}"} outlineOffset={"1px"} />
+    </HStack>
+    <Text color={"gray-2"} fontSize={{ base: "9px", md: "12px", lg: "16px" }}>&quot;{content}&quot;</Text>
+</Box>)
