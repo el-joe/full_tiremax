@@ -8,7 +8,7 @@ type Props = {
 
 const ProductListView = ({ data }: Props) => {
     return (
-        <HStack flexWrap={"wrap"} gap={{ base: "14px", md: "14px", xl: "22px", "2xl": "32px" }} alignItems={"stretch"}>
+        <HStack flexWrap={"wrap"} gapX={{ base: "14px", md: "14px", xl: "18px", "2xl": "24px" }} gapY={"48px"} alignItems={"stretch"}>
             {data.map(product => <ProductCard key={product.id} product={product} />)}
         </HStack>
     )

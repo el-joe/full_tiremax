@@ -13,9 +13,11 @@ const ProductCard = ({ product }: Props) => {
     const t = useTranslations()
     const locale = useLocale()
     return (
-        <Card.Root minW={"137px"}
-            maxW={"306px"}
-            w={{ base: "calc(100% / 2 - 14px)", md: "calc(100% / 3 - 14px)", lg: "calc(100% / 4 - 14px)", xl: "calc(100% / 4 - 22px)", "2xl": "calc(100% / 4 - 32px)" }}
+        <Card.Root
+            //  minW={"137px"}
+            //     maxW={"306px"}
+            w={{ base: "calc(100% / 2 - 14px)", sm: "140px", md: "230px", lg: "215px", xl: "273px", "2xl": "306px" }}
+            // w={{ base: "calc(100% / 2 - 14px)", md: "calc(100% / 3 - 14px)", lg: "calc(100% / 4 - 14px)", xl: "calc(100% / 4 - 22px)", "2xl": "calc(100% / 4 - 32px)" }}
             overflow="hidden" bg={"#F9F9F9"}
             rounded={{ base: "12px", md: "19px", xl: "26px", "2xl": "32px" }}
             p={{ base: "9px", md: "14px", xl: "19px", "2xl": "24px" }}
@@ -38,7 +40,7 @@ const ProductCard = ({ product }: Props) => {
                     minW={"auto"}
                     minH={"auto"}
                     h={"auto"}><HeartIcon strokeWidth={"4"} size={{ base: "xs", md: "md" }} /></IconButton>
-                {product.badges.length &&
+                {!!product.badges.length &&
                     <CustomBadge content={product.badges[0]} />
                 }
                 <Image src={product.images[0] || "/images/product-image.jpg"} alt={product.name} w={"full"} objectFit={"cover"} />
