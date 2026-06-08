@@ -1,12 +1,13 @@
+import Container from '@/components/ui/Container'
 import { Link } from '@/i18n/navigation'
-import { Box, Container, Grid, GridItem, Heading, Image, Text, VStack } from '@chakra-ui/react'
+import { Box, Grid, GridItem, Heading, Image, Text, VStack } from '@chakra-ui/react'
 import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
 const BannersGridSection = async () => {
     const t = await getTranslations("home")
     return (
-        <Container bg="white" py={{ base: "24px", md: "42px", xl: "80px" }} roundedTop={"50px"} overflow={"hidden"}>
+        <Container>
             <Grid
                 templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(7, 1fr)" }}
                 gap={{ base: '12px', md: "17px", xl: "24px", "2xl": "31px" }}>

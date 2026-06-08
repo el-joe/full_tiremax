@@ -1,13 +1,14 @@
 import { EmailFastIcon, LocationPinIcon, PhoneSignalIcon } from '@/components/Icons'
-import { Box, Center, Container, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { Box, Center, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { getTranslations } from 'next-intl/server'
 import React from 'react'
 import ContactUsForm from './ContactUsForm'
+import Container from '../ui/Container'
 
 const ContactUsSection = async () => {
     const t = await getTranslations("home")
     return (
-        <Container bg="white" py={{ base: "24px", md: "42px", lg: "80px" }} roundedTop={"50px"} overflow={"hidden"}>
+        <Container>
             <VStack alignItems={"center"} gap={{ base: "8px", md: "14px", lg: "20", xl: "24px" }} mb={{ base: "16px", md: "28px", lg: "40px", xl: "48px" }}>
                 <Heading as="h2" fontSize={{ base: "20px", md: "26px", lg: "32px", xl: "38px" }} fontWeight={"bold"}>{t("contactUs")}</Heading>
                 <Text maxW={"527px"} textAlign={"center"} fontSize={{ base: "12px", md: "16px", lg: "18px" }}>{t("contactUsDescription")}</Text>

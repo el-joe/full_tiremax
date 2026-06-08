@@ -7,7 +7,7 @@ interface IProps<T extends FieldValues> extends Omit<
     Select.RootProps,
     "collection"
 > {
-    label: string | React.ReactNode;
+    label?: string | React.ReactNode;
     placeholder: string;
     list: { label: string | React.ReactNode; value: string }[];
     // onSelect?: (e: MenuSelectionDetails) => void;
@@ -24,7 +24,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
     const collection = createListCollection({ items: list })
     return (
         <Field.Root {...containerProps} invalid={err}>
-            <Field.Label>{label}</Field.Label>
+            <Field.Label fontWeight={"semibold"}>{label}</Field.Label>
             {!!control ? (
                 <Controller
                     control={control}
@@ -39,7 +39,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
                         >
                             <Select.HiddenSelect />
                             <Select.Control>
-                                <Select.Trigger>
+                                <Select.Trigger bg={"#F3F3F3"}>
                                     <Select.ValueText placeholder={placeholder} />
                                 </Select.Trigger>
                                 <Select.IndicatorGroup>
@@ -64,7 +64,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
                 <Select.HiddenSelect />
                 {/* <Select.Label>Select framework</Select.Label> */}
                 <Select.Control>
-                    <Select.Trigger {...triggerProps}>
+                    <Select.Trigger {...triggerProps} bg={"#F3F3F3"}>
                         <Select.ValueText placeholder={placeholder} />
                     </Select.Trigger>
                     <Select.IndicatorGroup>

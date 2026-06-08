@@ -1,4 +1,6 @@
+"use client"
 import { Tooltip as ChakraTooltip, Portal } from "@chakra-ui/react"
+import { useLocale } from "next-intl"
 import * as React from "react"
 
 export interface TooltipProps extends ChakraTooltip.RootProps {
@@ -22,12 +24,14 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       portalRef,
       ...rest
     } = props
+    const locale = useLocale()
+    const dir = locale === 'ar' ? "rtl" : "ltr"
 
     if (disabled) return children
 
     return (
       <ChakraTooltip.Root {...rest}>
-        <ChakraTooltip.Trigger asChild>{children}</ChakraTooltip.Trigger>
+        <ChakraTooltip.Trigger asChild direction={dir}>{children}</ChakraTooltip.Trigger>
         <Portal disabled={!portalled} container={portalRef}>
           <ChakraTooltip.Positioner>
             <ChakraTooltip.Content ref={ref} {...contentProps}>

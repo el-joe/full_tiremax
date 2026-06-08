@@ -1,4 +1,4 @@
-import { defineSlotRecipe } from "@chakra-ui/react"
+import { defineSlotRecipe } from "@chakra-ui/react";
 
 export const tabsSlotRecipe = defineSlotRecipe({
   slots: ["root", "trigger", "list", "content", "contentGroup", "indicator"],
@@ -137,7 +137,7 @@ export const tabsSlotRecipe = defineSlotRecipe({
       line: {
         list: {
           display: "flex",
-          borderColor: "border",
+          borderColor: "#D5C4AB33",
           _horizontal: {
             borderBottomWidth: "1px",
           },
@@ -157,7 +157,7 @@ export const tabsSlotRecipe = defineSlotRecipe({
             _horizontal: {
               layerStyle: "indicator.bottom",
               "--indicator-offset-y": "-1px",
-              "--indicator-color": "colors.colorPalette.solid",
+              "--indicator-color": "colors.primary",
             },
             _vertical: {
               layerStyle: "indicator.end",
@@ -273,4 +273,4 @@ export const tabsSlotRecipe = defineSlotRecipe({
     size: "md",
     variant: "line",
   },
-})
+});

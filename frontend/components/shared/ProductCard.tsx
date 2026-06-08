@@ -38,12 +38,16 @@ const ProductCard = ({ product }: Props) => {
                     minW={"auto"}
                     minH={"auto"}
                     h={"auto"}><HeartIcon strokeWidth={"4"} size={{ base: "xs", md: "md" }} /></IconButton>
-                <CustomBadge content={product.badges[0]} />
+                {product.badges.length &&
+                    <CustomBadge content={product.badges[0]} />
+                }
                 <Image src={product.images[0] || "/images/product-image.jpg"} alt={product.name} w={"full"} objectFit={"cover"} />
             </Box>
             <Card.Body gap="8px" alignItems={"start"} p="0" pt={{ base: "12px", md: "16px", xl: "20px", "2xl": "24px" }}>
                 <Badge size={{ base: "xs", md: "sm", xl: "md" }} color={"gray-2"} fontSize={{ base: "6px", md: "8px", xl: "10px" }} rounded="12px" fontWeight={"bold"} textTransform={"uppercase"} bg={"myGray"}>{product.brand.name}</Badge>
-                <Card.Title lineClamp={"1"} fontSize={{ base: "12px", md: "15px", xl: "18px" }} lineHeight={{ base: "14px", md: "20px", xl: "28px" }}>{product.name}</Card.Title>
+                <Tooltip content={product.name}>
+                    <Card.Title lineClamp={"1"} fontSize={{ base: "12px", md: "15px", xl: "18px" }} lineHeight={{ base: "14px", md: "20px", xl: "28px" }}>{product.name}</Card.Title>
+                </Tooltip>
                 {product?.tire_spec?.size_string && <Badge fontSize={{ base: "6px", md: "8px", xl: "10px" }} fontWeight={"bold"} rounded="12px" bg="myGray">{product?.tire_spec?.size_string}</Badge>}
                 <HStack alignItems={"center"}>
                     <RatingGroup.Root readOnly allowHalf count={5} defaultValue={product.expert_rating} size={{ base: "xs", md: "sm" }} colorPalette={"yellow"}>

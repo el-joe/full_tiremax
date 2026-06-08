@@ -2,7 +2,7 @@ import { LeftArrowIcon, PlayCircleIcon } from '@/components/Icons'
 import { Box, Button, Container, HStack, Span, Text, VStack } from '@chakra-ui/react'
 import { getLocale, getTranslations } from 'next-intl/server'
 import React from 'react'
-import FoundTireBox from './FoundTireBox'
+import TabsFilterBy from '../../shared/TabsFilterBy'
 
 const HeroSection = async () => {
     const t = await getTranslations("home")
@@ -23,7 +23,7 @@ const HeroSection = async () => {
                     <Button fontSize={{ base: "14px", xl: "18px" }} py={{ base: "15px", xl: "20pxx" }} px={{ base: "6px", md: "15px", xl: "" }} h={"auto"}>{t("chooseYourTireNow")}<LeftArrowIcon rotate={local === "en" ? "180deg" : ""} /></Button>
                 </HStack>
             </VStack>
-            <FoundTireBox />
+            <TabsFilterBy showButton />
         </Container >
     )
 }

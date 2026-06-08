@@ -6,7 +6,7 @@
         "reservation": "Reservation",
         "search": "Search",
         "bookNow": "Book now",
-    "locale":"ع"
+        "locale": "ع"
     },
     "footer": {
         "footerCompanyDescription": "We are committed to delivering the highest standards of quality in tire and vehicle maintenance services to our customers across Iraq, offering world-class brands and guaranteed performance.",
@@ -102,6 +102,37 @@
         "howCanWeHelpYouToday": "How can we help you today",
         "sendMessage": "Send message",
         "orContactImmediatelyVia": "Or contact us instantly via:"
+    },
+    "store": {
+        "store": "Product Catalog",
+        "offers": "Offers",
+        "productCatalogDescription": "Easily find the right tires and batteries for your vehicle.",
+        "filters": "Filters",
+        "clearFilters": "Clear Filters",
+        "filtersDescription": "Use the filters to find the right product based on size, price, and brand.",
+        "searchByVehicle": "Search by Vehicle",
+        "searchBySize": "Search by Size",
+        "category": "Category",
+        "selectCategory": "Select Category",
+        "year": "Year",
+        "selectYear": "Select year",
+        "make": "make",
+        "selectMake": "Select Make",
+        "height": "Height",
+        "selectHeight": "Select height",
+        "width": "Width",
+        "selectWidth": "Select width",
+        "diameter": "Diameter",
+        "selectDiameter": "Select diameter",
+        "priceRange": "Price range",
+        "applyFilters": "Find Your Tire Now",
+        "searchPlaceholder": "Search for tires, batteries, or brands...",
+        "search": "Search",
+        "show": "Show",
+        "from": "from",
+        "all":"All",
+        "tires": "Tires",
+        "batteries": "Batteries"
     },
     "iqd": "IQD"
 }
