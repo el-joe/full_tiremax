@@ -63,24 +63,23 @@ const useApiFilter = () => {
 
       params.set(key, value);
     });
-    console.log('filters', filters)
 
     const queryString = params.toString();
 
     router.push(queryString ? `${pathname}?${queryString}` : pathname);
   }
 
-  const removeAllFilters = useCallback(() => {
-    setFilters([])
+  const removeAllFilters = useCallback((except?: { targetEndpoint: string, filterName: string }[]) => {
     const params = new URLSearchParams(searchParams.toString());
 
     Array.from(params.keys())
-      .filter((key) => key.startsWith(`${FILTER_PREFIX}_`))
+      .filter((key) => key.startsWith(`${FILTER_PREFIX}_`) && !except?.find(e => key === `${FILTER_PREFIX}_${e?.targetEndpoint}_${e?.filterName}`))
       .forEach((key) => params.delete(key));
 
     const queryString = params.toString();
 
     router.push(queryString ? `${pathname}?${queryString}` : pathname);
+    setFilters([])
   }, [pathname, router, searchParams]);
 
 

@@ -11,7 +11,7 @@ type TFilterBody = {
 interface IFilterContext {
     applyFilter: (newFilter?: TFilterBody) => void;
     filters: TFilterBody[];
-    removeAllFilters: () => void;
+    removeAllFilters: (except?: { targetEndpoint: string, filterName: string }[]) => void;
     setFilter: (newFilter: TFilterBody) => void,
 }
 

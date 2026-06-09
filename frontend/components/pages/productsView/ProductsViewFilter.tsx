@@ -23,12 +23,11 @@ const ProductsViewFilter = () => {
         }
     })
     return (
-
         <VStack gap={"32px"} w={"320px"}>
             <Box w={"full"}>
                 <HStack justify={"space-between"} alignItems={"center"}>
                     <Heading as="h3" fontSize={"24px"} fontWeight={"semibold"}>{t("filters")}</Heading>
-                    <Button variant={"ghost"} fontSize={"12px"} fontWeight={"semibold"} color={"black"} _hover={{ color: "white" }} onClick={removeAllFilters}>{t("clearFilters")}</Button>
+                    <Button variant={"ghost"} fontSize={"12px"} fontWeight={"semibold"} color={"black"} _hover={{ color: "white" }} onClick={() => removeAllFilters([{ targetEndpoint: "products", filterName: "type" }, { targetEndpoint: "products", filterName: "search" }, { targetEndpoint: "products", filterName: "badge" }])}>{t("clearFilters")}</Button>
                 </HStack>
                 <Text fontSize={"10px"} lineHeight={"28px"} color={"gray-3"}>{t('filtersDescription')}</Text>
             </Box>
@@ -43,9 +42,8 @@ const ProductsViewFilter = () => {
                     </HStack>
                 }
             </Box>
-            <Button w="full" rounded={"16px"} fontSize={"18px"} fontWeight={"bold"} p="16px" onClick={applyFilter}><SearchIcon />{t("applyFilters")}</Button>
+            <Button w="full" rounded={"16px"} fontSize={"18px"} fontWeight={"bold"} p="16px" onClick={() => applyFilter()}><SearchIcon />{t("applyFilters")}</Button>
         </VStack>
-
     )
 }
 

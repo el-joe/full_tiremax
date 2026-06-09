@@ -5,7 +5,7 @@ import Input from '@/components/ui/Input'
 import { useProductFilterContext } from '@/providers/ProductFilterProvider'
 import { Button, CloseButton, Group, HStack } from '@chakra-ui/react'
 import { useTranslations } from 'next-intl'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 // best_seller | new | sale | featured
 const badges = ["best_seller", "new", "sale", "featured"]
 
