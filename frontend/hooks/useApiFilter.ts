@@ -37,21 +37,22 @@ const useApiFilter = () => {
 
     return result;
   })()])
-  const setFilter = (newFilter: QueryParam) => {
+  const setFilter = useCallback((newFilter: QueryParam) => {
+    console.log('newFilter', newFilter)
     if (filters.find(f => f.filterBy === newFilter.filterBy)) {
       return setFilters(p => [...p.filter(f => f.filterBy !== newFilter.filterBy), newFilter])
     }
 
     setFilters(p => [...p, newFilter])
-  }
+  }, [filters])
 
 
   const applyFilter = useCallback(
-    () => {
-      if (!filters.length) return
+    (newFilter?: QueryParam) => {
+      if (!filters.length && !newFilter) return
       const params = new URLSearchParams(searchParams.toString());
-
-      filters.forEach(({ targetEndpoint, filterBy, query }) => {
+      if (newFilter) setFilter(newFilter);
+      [...filters, newFilter].filter((f) => f !== undefined).forEach(({ targetEndpoint, filterBy, query }) => {
         const key = `${FILTER_PREFIX}_${targetEndpoint}_${filterBy}`;
         const value = query?.trim();
 
@@ -69,7 +70,7 @@ const useApiFilter = () => {
 
       router.push(queryString ? `${pathname}?${queryString}` : pathname);
     },
-    [filters, pathname, router, searchParams]
+    [filters, pathname, router, searchParams, setFilter]
   );
 
   const removeAllFilters = useCallback(() => {

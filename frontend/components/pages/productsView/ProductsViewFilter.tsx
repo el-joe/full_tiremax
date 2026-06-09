@@ -1,7 +1,7 @@
 "use client"
 import { Box, Button, Center, Heading, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
 import { useTranslations } from 'next-intl'
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 import TabsFilterBy from '../../shared/TabsFilterBy'
 import RangeSlider from '@/components/ui/RangeSlider'
 import { SearchIcon } from '@/components/Icons'
