@@ -1,5 +1,5 @@
 import { Tabs, Text } from '@chakra-ui/react'
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import React, { Suspense } from 'react'
 
 type props = {
@@ -10,9 +10,11 @@ type props = {
 
 const page = async ({ batteriesList, tiresList, allProductsList }: props) => {
     const t = await getTranslations("store")
+    const locale = await getLocale()
+    const dir = locale === "ar" ? "rtl" : "ltr"
     return (
         <Tabs.Root defaultValue="all">
-            <Tabs.List >
+            <Tabs.List dir={dir} >
                 <Tabs.Trigger value="all" _selected={{ _before: { background: "primary" } }}>
                     {t("all")}
                 </Tabs.Trigger>
@@ -23,13 +25,13 @@ const page = async ({ batteriesList, tiresList, allProductsList }: props) => {
                     {t("batteries")}
                 </Tabs.Trigger>
             </Tabs.List>
-            <Tabs.Content value="all">
+            <Tabs.Content value="all" dir={dir}>
                 <Suspense fallback={<Text fontSize={"48px"}>Loading</Text>}>{allProductsList}</Suspense>
             </Tabs.Content>
-            <Tabs.Content value="tires">
+            <Tabs.Content value="tires" dir={dir}>
                 <Suspense fallback={<Text fontSize={"48px"}>Loading</Text>}>{tiresList}</Suspense>
             </Tabs.Content>
-            <Tabs.Content value="batteries">
+            <Tabs.Content value="batteries" dir={dir}>
                 <Suspense fallback={<Text fontSize={"48px"}>Loading</Text>}>{batteriesList}</Suspense>
             </Tabs.Content>
         </Tabs.Root>

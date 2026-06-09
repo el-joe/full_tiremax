@@ -26,6 +26,7 @@ export interface IProduct {
   images: string[];
   primary_image: null;
   brand: Brand;
+  category: ICategory;
   tire_spec: TireSpec;
   battery_spec: null;
 }
@@ -49,4 +50,13 @@ export interface TireSpec {
   usage_type: string;
   runflat: boolean;
   size_string: string;
+}
+
+export interface ICategory {
+  "id": number,
+  "slug": string,
+  "name": string,
+  "description": string | null,
+  "product_type": string,
+  "icon": null
 }

@@ -26,9 +26,7 @@ const filterContext = createContext<IFilterContext>({
     applyFilter() { },
     filters: [],
     removeAllFilters() { },
-    setFilter({ targetEndpoint, filterBy, query, }) {
-
-    },
+    setFilter() { },
 })
 
 export const ProductFilterProvider = ({ children }: { children: React.ReactNode }) => {
