@@ -1,6 +1,7 @@
 "use client"
 import { SearchIcon } from '@/components/Icons'
 import DropSelectList from '@/components/ui/DropSelectList'
+import { useProductFilterContext } from '@/providers/ProductFilterProvider'
 import { Button, HStack, Tabs, TabsContentProps, TabsListProps, TabsRootProps } from '@chakra-ui/react'
 import { useLocale, useTranslations } from 'next-intl'
 import React from 'react'
@@ -37,6 +38,8 @@ export default TabsFilterBy
 
 const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
     const t = useTranslations("home")
+    const { setFilter, applyFilter, filters } = useProductFilterContext()
+
 
     return (
 
@@ -47,7 +50,8 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
                 name="category"
                 containerProps={{ flex: 1 }}
                 minW={"200px"}
-                triggerProps={{ rounded: "12px" }} />
+                value={[filters.find(f => f.filterBy === "category")?.query as string]}
+                triggerProps={{ rounded: "12px" }} onSelect={(d => setFilter({ filterBy: "category", query: d.value, targetEndpoint: "products" }))} />
             <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("year")} placeholder={t("selectYear")} name="year" containerProps={{ flex: 1 }} minW={"200px"} triggerProps={{ rounded: "12px" }} />
             <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("make")} placeholder={t("selectMake")} name="make" containerProps={{ flex: 1 }} minW={"200px"} triggerProps={{ rounded: "12px" }} />
             {showButton &&

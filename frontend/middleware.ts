@@ -6,6 +6,7 @@ export function middleware(request: NextRequest) {
   const i18nMiddleware = createMiddleware(routing);
   const response = i18nMiddleware(request);
   response.headers.set("x-pathname", request.nextUrl.pathname);
+  response.headers.set("x-params", request.nextUrl.searchParams.toString());
 
   return response;
 }
