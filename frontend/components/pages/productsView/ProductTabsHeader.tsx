@@ -2,7 +2,7 @@
 import useApiFilter from '@/hooks/useApiFilter'
 import { Button, HStack } from '@chakra-ui/react'
 import { useTranslations } from 'next-intl'
-import React, {useState } from 'react'
+import React, { useState } from 'react'
 
 const ProductTabsHeader = () => {
     const t = useTranslations("store")

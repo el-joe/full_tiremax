@@ -2,10 +2,11 @@
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { Pagination as ChakraPagination } from "@chakra-ui/react";
 import { LeftArrowIcon } from "../Icons";
 import { useLocale } from "next-intl";
+import { resolveApiPagination } from "@/helpers/resolveApiPagination";
 
 const PREFIX = process.env.NEXT_PUBLIC_PAGINATION_PREFIX ?? "paginate"
 
@@ -13,7 +14,6 @@ type Props = {
   currentPage: number;
   itemsCount: number;
   pageSize: number;
-  prefixName?: string;
   onPageChange?: (page: number) => void;
 };
 
@@ -21,7 +21,6 @@ const Pagination = ({
   currentPage,
   itemsCount,
   pageSize,
-  prefixName = "",
   onPageChange,
 }: Props) => {
   const locale = useLocale()
@@ -37,6 +36,16 @@ const Pagination = ({
     router.push(`${pathName}?${current.toString()}`);
     onPageChange?.(page);
   };
+
+  useEffect(() => {
+    (async () => {
+      const cp = await resolveApiPagination()
+      if (+cp?.page > (itemsCount / pageSize)) {
+        handlePageChange(1)
+      }
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemsCount, pageSize])
 
   return (
     <>
