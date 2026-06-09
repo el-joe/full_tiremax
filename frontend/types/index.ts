@@ -5,3 +5,4 @@ export type { IHomeResponse } from "./homeRes.type.ts";
 export type { IMake } from "./make.type.ts";
 export type { IVehicleModel } from "./vehicleModel.type.ts";
 export type { IYearVehicleModel } from "./yearVehicleModel.type.ts";
+export type { IApiMetaRes } from "./apiMetaRes.type.ts";

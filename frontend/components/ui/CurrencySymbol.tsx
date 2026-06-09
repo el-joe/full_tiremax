@@ -1,11 +1,11 @@
 "use client"
-import { Text, TextProps } from '@chakra-ui/react'
+import { Span, TextProps } from '@chakra-ui/react'
 import { useTranslations } from 'next-intl'
 
 const CurrencySymbol = (props: TextProps) => {
     const t = useTranslations()
     return (
-        <Text display={"inline-block"}{...props}>{t("iqd")}</Text>
+        <Span display={"inline-block"}{...props}>{t("iqd")}</Span>
     )
 }
 
