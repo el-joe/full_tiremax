@@ -38,20 +38,28 @@ const useApiFilter = () => {
     return result;
   })()])
   const setFilter = (newFilter: QueryParam) => {
+    if (filters.find(f => f.filterBy === newFilter.filterBy)) {
+      return setFilters(p => [...p.filter(f => f.filterBy !== newFilter.filterBy), newFilter])
+    }
+
     setFilters(p => [...p, newFilter])
   }
 
 
   const applyFilter = useCallback(
     () => {
+      if (!filters.length) return
+      console.log("filters", filters);
       const params = new URLSearchParams(searchParams.toString());
 
       filters.forEach(({ targetEndpoint, filterBy, query }) => {
         const key = `${FILTER_PREFIX}_${targetEndpoint}_${filterBy}`;
-        const value = query.trim();
+        const value = query?.trim();
 
         if (!value) {
+          console.log('value', value)
           params.delete(key);
+          setFilters(p => [...p.filter(f => f.filterBy !== filterBy),])
           return;
         }
 

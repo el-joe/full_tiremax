@@ -1,6 +1,6 @@
 "use client"
-import { createListCollection, Field, Portal, Select } from '@chakra-ui/react';
-import React from 'react'
+import { createListCollection, Field, Portal, Select, Spinner } from '@chakra-ui/react';
+import React, { useMemo } from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 
 interface IProps<T extends FieldValues> extends Omit<
@@ -9,7 +9,7 @@ interface IProps<T extends FieldValues> extends Omit<
 > {
     label?: string | React.ReactNode;
     placeholder: string;
-    list: { label: string | React.ReactNode; value: string }[];
+    list: { label: string; value: string }[];
     // onSelect?: (e: MenuSelectionDetails) => void;
     control?: Control<T>;
     name: Path<T>;
@@ -17,11 +17,19 @@ interface IProps<T extends FieldValues> extends Omit<
     errMes?: string;
     triggerProps?: Select.TriggerProps
     containerProps?: Field.RootProps
+    isLoading?: boolean
 }
 
 function DropSelectList<T extends FieldValues>({ list, placeholder, label, control, name, err,
-    errMes, triggerProps, containerProps, ...rest }: IProps<T>) {
-    const collection = createListCollection({ items: list })
+    errMes, triggerProps, containerProps, isLoading, ...rest }: IProps<T>) {
+    // const collection = createListCollection({ items: list })
+    const collection = useMemo(() => {
+        return createListCollection({
+            items: list ?? [],
+            itemToString: (list) => list.label,
+            itemToValue: (list) => list.value,
+        })
+    }, [list])
     return (
         <Field.Root {...containerProps} invalid={err}>
             <Field.Label fontWeight={"semibold"}>{label}</Field.Label>
@@ -43,6 +51,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
                                     <Select.ValueText placeholder={placeholder} />
                                 </Select.Trigger>
                                 <Select.IndicatorGroup>
+                                    <Select.ClearTrigger cursor={"pointer"} />
                                     <Select.Indicator />
                                 </Select.IndicatorGroup>
                             </Select.Control>
@@ -62,12 +71,15 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
                     )}
                 />) : <Select.Root {...rest} collection={collection}>
                 <Select.HiddenSelect />
-                {/* <Select.Label>Select framework</Select.Label> */}
                 <Select.Control>
                     <Select.Trigger {...triggerProps} bg={"#F3F3F3"}>
                         <Select.ValueText placeholder={placeholder} />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
+                        {isLoading && (
+                            <Spinner size="xs" borderWidth="1.5px" color="fg.muted" />
+                        )}
+                        <Select.ClearTrigger cursor={"pointer"} />
                         <Select.Indicator />
                     </Select.IndicatorGroup>
                 </Select.Control>

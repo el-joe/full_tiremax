@@ -2,10 +2,12 @@
 import { SearchIcon } from '@/components/Icons'
 import DropSelectList from '@/components/ui/DropSelectList'
 import { useProductFilterContext } from '@/providers/ProductFilterProvider'
+import { IMake, IVehicleModel, IYearVehicleModel } from '@/types'
+import axiosInstance from '@/utils/axiosInstance'
 import { Button, HStack, Tabs, TabsContentProps, TabsListProps, TabsRootProps } from '@chakra-ui/react'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useLocale, useTranslations } from 'next-intl'
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
 
 type props = {
     showButton?: boolean;
@@ -38,38 +40,90 @@ export default TabsFilterBy
 
 const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
     const t = useTranslations("home")
-    const { setFilter, applyFilter, filters } = useProductFilterContext()
+    const { filters, applyFilter } = useProductFilterContext()
+    const { data: makeData, isLoading: makeIsLoading } = useQuery({
+        queryKey: ["makeList"],
+        queryFn: async () => {
+            const { data } = await axiosInstance<{ data: IMake[] }>("vehicles/makes")
+            return data.data
+        }
+    })
+    const { data: modelData, isPending: modelIsLoading, mutate: modelMutate } = useMutation({
+        mutationKey: ["modelList"],
+        mutationFn: async (id: string) => {
+            const { data } = await axiosInstance<{ data: IVehicleModel[] }>(`vehicles/makes/${id}/models`)
+            return data.data
+        }
+    })
+    const { data: yearData, isPending: yearIsLoading, mutate: yearMutate } = useMutation({
+        mutationKey: ["modelList"],
+        mutationFn: async (id: string) => {
+            const { data } = await axiosInstance<{ data: IYearVehicleModel[] }>(`vehicles/models/${id}/years`)
+            return data.data
+        }
+    })
 
+    useEffect(() => {
+        const selectMakeId = filters.find(f => f.filterBy === "make")?.query?.trim()
+        if (!!selectMakeId && selectMakeId !== modelData?.[0].vehicle_make_id.toString()) {
+            modelMutate(selectMakeId as string)
+        }
+        if (!!filters.find(f => f.filterBy === "model")?.query.trim()) {
+            yearMutate(filters.find(f => f.filterBy === "model")?.query.trim() as string)
+        }
+    }, [filters, modelData, modelMutate, yearMutate])
 
     return (
 
         <HStack gapX={{ base: "4px", md: "12px", xl: "24px" }} alignItems="end" flexWrap={"wrap"}>
-            <DropSelectList list={[{ label: "option1", value: "option1" }]}
-                label={t("category")}
-                placeholder={t("selectCategory")}
-                name="category"
-                containerProps={{ flex: 1 }}
-                minW={"200px"}
-                value={[filters.find(f => f.filterBy === "category")?.query as string]}
-                triggerProps={{ rounded: "12px" }} onSelect={(d => setFilter({ filterBy: "category", query: d.value, targetEndpoint: "products" }))} />
-            <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("year")} placeholder={t("selectYear")} name="year" containerProps={{ flex: 1 }} minW={"200px"} triggerProps={{ rounded: "12px" }} />
-            <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("make")} placeholder={t("selectMake")} name="make" containerProps={{ flex: 1 }} minW={"200px"} triggerProps={{ rounded: "12px" }} />
+            <DropFilterList list={makeData?.map(m => ({ label: m.name, value: m.id.toString() })) ?? []} isLoading={makeIsLoading} name="make" label={t("make")} placeholder={t("selectMake")} />
+            <DropFilterList list={modelData?.map(m => ({ label: m.name, value: m.id.toString() })) ?? []} isLoading={modelIsLoading} label={t("model")} placeholder={t("selectModel")} name="model" />
+            <DropFilterList list={yearData?.map(m => ({ label: m.year_from.toString(), value: m.year_from.toString() })) ?? []} isLoading={yearIsLoading} label={t("year")} placeholder={t("selectYear")} name="year" />
             {showButton &&
-                <Button rounded={"12px"} type='submit' fontSize={{ base: "12px" }} w={{ base: "full", md: "auto" }}>{t("findYourTireNow")} <SearchIcon /></Button>
+                <Button rounded={"12px"} type='submit' fontSize={{ base: "12px" }} w={{ base: "full", md: "auto" }} onClick={applyFilter}>{t("findYourTireNow")} <SearchIcon /></Button>
             }
         </HStack>
     )
 }
 const FoundBySize = ({ showButton }: { showButton?: boolean }) => {
     const t = useTranslations("home")
+    const { applyFilter } = useProductFilterContext()
+
     return (
         <HStack gapX={{ base: "4px", md: "12px", xl: "24px" }} alignItems="end" flexWrap={"wrap"}>
-            <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("height")} placeholder={t("selectHeight")} name="height" containerProps={{ flex: 1 }} minW={"200px"} triggerProps={{ rounded: "12px" }} />
-            <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("width")} placeholder={t("selectWidth")} name="width" containerProps={{ flex: 1 }} minW={"200px"} triggerProps={{ rounded: "12px" }} />
-            <DropSelectList list={[{ label: "option1", value: "option1" }]} label={t("diameter")} placeholder={t("selectDiameter")} name="diameter" containerProps={{ flex: 1 }} minW={"200px"} triggerProps={{ rounded: "12px" }} />
+            <DropFilterList list={[{ label: "option1", value: "option1" }]} label={t("height")} placeholder={t("selectHeight")} name="height" />
+            <DropFilterList list={[{ label: "option1", value: "option1" }]} label={t("width")} placeholder={t("selectWidth")} name="width" />
+            <DropFilterList list={[{ label: "option1", value: "option1" }]} label={t("diameter")} placeholder={t("selectDiameter")} name="diameter" />
             {showButton &&
-                <Button rounded={"12px"} type='submit' fontSize={{ base: "12px" }} w={{ base: "full", md: "auto" }}>{t("findYourTireNow")} <SearchIcon /></Button>
+                <Button rounded={"12px"} type='submit' fontSize={{ base: "12px" }} w={{ base: "full", md: "auto" }} onClick={applyFilter}>{t("findYourTireNow")} <SearchIcon /></Button>
             }
         </HStack>
     )
+}
+
+type TDropFilterProps = {
+    label: string;
+    placeholder: string;
+    name: string;
+    list: { label: string, value: string }[]
+    isLoading?: boolean
+}
+
+
+const DropFilterList = ({ label, placeholder, name, list, isLoading }: TDropFilterProps) => {
+    const { setFilter, filters } = useProductFilterContext()
+    const v = [filters.find(f => f.filterBy === name)?.query as string]
+    // const v = !!filters.find(f => f.filterBy === name)?.query ? [filters.find(f => f.filterBy === name)?.query as string] : undefined
+    return (<DropSelectList
+        isLoading={isLoading}
+        list={list}
+        label={label}
+        placeholder={placeholder}
+        name="model"
+        containerProps={{ flex: 1 }}
+        minW={"200px"}
+        value={v}
+        triggerProps={{ rounded: "12px" }}
+        onValueChange={(d => setFilter({ filterBy: name, query: d.value[0], targetEndpoint: "products" }))}
+    />)
 }

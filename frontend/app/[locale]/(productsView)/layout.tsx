@@ -17,7 +17,7 @@ const layout = async ({ children }: Props) => {
     const t = await getTranslations("store")
 
     return (
-        <Container>
+        <Container overflow={"visible"}>
             <Heading textAlign={"center"} fontSize={"38px"} fontWeight={"extrabold"}>{t(currentPageTitle)}</Heading>
             <Text textAlign={"center"} mt={"16px"} mb={"70px"} color={"gray"} fontSize={"18px"}>{t("productCatalogDescription")}</Text>
             <HStack gap={"32px"} align="start">

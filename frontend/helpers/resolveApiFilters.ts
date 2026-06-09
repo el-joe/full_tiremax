@@ -1,4 +1,5 @@
-import { headers } from "next/headers";
+import { apiFilterServer } from "./apiFilterServer";
+
 
 const FILTER_PREFIX = process.env.NEXT_PUBLIC_FILTER_PREFIX ?? "filter";
 
@@ -12,7 +13,7 @@ export async function resolveApiFilters(): Promise<ApiFilter[]> {
     let searchParams: URLSearchParams;
 
     if (typeof window === "undefined") {
-        const headerParams = (await headers()).get("x-params") ?? "";
+        const headerParams = await apiFilterServer()
         searchParams = new URLSearchParams(headerParams);
     } else {
         searchParams = new URLSearchParams(window.location.search);
