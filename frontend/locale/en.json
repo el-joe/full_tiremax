@@ -133,7 +133,11 @@
         "from": "from",
         "all": "All",
         "tires": "Tires",
-        "batteries": "Batteries"
+        "batteries": "Batteries",
+        "best_seller":"Best seller",
+        "new":"New",
+        "sale":"Sale",
+        "featured":"Featured"
     },
     "iqd": "IQD"
 }

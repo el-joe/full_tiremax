@@ -1,5 +1,6 @@
 "use client"
 import { createListCollection, Field, Portal, Select, Spinner } from '@chakra-ui/react';
+import { useLocale } from 'next-intl';
 import React, { useMemo } from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 
@@ -30,6 +31,8 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
             itemToValue: (list) => list.value,
         })
     }, [list])
+    const locale = useLocale()
+    const dir = locale === "ar" ? "rtl" : "ltr"
     return (
         <Field.Root {...containerProps} invalid={err}>
             <Field.Label fontWeight={"semibold"}>{label}</Field.Label>
@@ -87,7 +90,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
                     <Select.Positioner>
                         <Select.Content>
                             {collection.items.map((item) => (
-                                <Select.Item item={item} key={item.value}>
+                                <Select.Item item={item} key={item.value} dir={dir} >
                                     {item.label}
                                     <Select.ItemIndicator />
                                 </Select.Item>

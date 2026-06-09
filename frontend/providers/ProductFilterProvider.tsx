@@ -2,23 +2,17 @@
 import useApiFilter from "@/hooks/useApiFilter";
 import { createContext, useContext } from "react";
 
+type TFilterBody = {
+    targetEndpoint: string;
+    filterBy: string;
+    query: string;
+}
+
 interface IFilterContext {
-    applyFilter: () => void;
-    filters: {
-        targetEndpoint: string;
-        filterBy: string;
-        query: string;
-    }[];
+    applyFilter: (newFilter?: TFilterBody) => void;
+    filters: TFilterBody[];
     removeAllFilters: () => void;
-    setFilter: ({
-        targetEndpoint,
-        filterBy,
-        query,
-    }: {
-        targetEndpoint: string;
-        filterBy: string;
-        query: string;
-    }) => void,
+    setFilter: (newFilter: TFilterBody) => void,
 }
 
 

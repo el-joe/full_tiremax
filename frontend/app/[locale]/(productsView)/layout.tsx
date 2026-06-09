@@ -17,19 +17,19 @@ const layout = async ({ children }: Props) => {
     const t = await getTranslations("store")
 
     return (
-        <Container overflow={"visible"}>
-            <Heading textAlign={"center"} fontSize={"38px"} fontWeight={"extrabold"}>{t(currentPageTitle)}</Heading>
-            <Text textAlign={"center"} mt={"16px"} mb={"70px"} color={"gray"} fontSize={"18px"}>{t("productCatalogDescription")}</Text>
-            <HStack gap={"32px"} align="start">
-                <ProductFilterProvider>
+        <ProductFilterProvider>
+            <Container overflow={"visible"}>
+                <Heading textAlign={"center"} fontSize={"38px"} fontWeight={"extrabold"}>{t(currentPageTitle)}</Heading>
+                <Text textAlign={"center"} mt={"16px"} mb={"70px"} color={"gray"} fontSize={"18px"}>{t("productCatalogDescription")}</Text>
+                <HStack gap={"32px"} align="start">
                     <ProductsViewFilter />
-                </ProductFilterProvider>
-                <VStack flex={1} align={"stretch"} gap="48px">
-                    <Search />
-                    {children}
-                </VStack>
-            </HStack>
-        </Container>
+                    <VStack flex={1} align={"stretch"} gap="48px">
+                        <Search />
+                        {children}
+                    </VStack>
+                </HStack>
+            </Container>
+        </ProductFilterProvider>
     )
 }
 
