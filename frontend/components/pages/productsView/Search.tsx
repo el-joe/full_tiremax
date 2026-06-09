@@ -29,7 +29,9 @@ const Search = () => {
                     endElement={value ? <CloseButton
                         size="xs"
                         onClick={() => {
-                            setFilter({ targetEndpoint: "products", filterBy: "search", query: "" })
+                            if (searchFilter?.query !== "") {
+                                setFilter({ targetEndpoint: "products", filterBy: "search", query: "" })
+                            }
                             setValue('')
                         }}
                         me="-2"

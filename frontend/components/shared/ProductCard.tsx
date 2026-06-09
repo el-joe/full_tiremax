@@ -5,6 +5,7 @@ import React from 'react'
 import { BadgeBestIcon, BestPriceCircleIcon, CartPlusIcon, HeartIcon, NewIcon, PercentageCircleIcon } from '../Icons'
 import { Tooltip } from '../ui/tooltip'
 import { useLocale, useTranslations } from 'next-intl'
+import CurrencySymbol from '../ui/CurrencySymbol'
 
 type Props = {
     product: IProduct
@@ -63,7 +64,8 @@ const ProductCard = ({ product }: Props) => {
                 <VStack alignItems="start" gap="0">
                     <Text fontSize={{ base: "16px", md: "20px", xl: "28px" }} lineHeight={"28px"} fontWeight="bold" letterSpacing="tight" mt="2">
                         {product.effective_price.toLocaleString()}
-                        {t("iqd")}
+                        {/* {t("iqd")} */}
+                        <CurrencySymbol />
                     </Text>
                     {product.has_discount && <Text fontSize={"12px"} fontWeight="bold" textDecoration={"line-through"} color="gray-2">
                         {product.price.toLocaleString()}

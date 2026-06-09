@@ -1,7 +1,7 @@
 "use client"
 import { Box, Button, Center, Heading, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
 import { useTranslations } from 'next-intl'
-import React from 'react'
+import React, { useState } from 'react'
 import TabsFilterBy from '../../shared/TabsFilterBy'
 import RangeSlider from '@/components/ui/RangeSlider'
 import { SearchIcon } from '@/components/Icons'
@@ -9,10 +9,12 @@ import { useProductFilterContext } from '@/providers/ProductFilterProvider'
 import { useQuery } from '@tanstack/react-query'
 import axiosInstance from '@/utils/axiosInstance'
 import { IBrand } from '@/types'
-
+const maxRange = 200000
 const ProductsViewFilter = () => {
     const t = useTranslations('store')
     const { applyFilter, removeAllFilters, filters, setFilter } = useProductFilterContext()
+    const minRangeVal = +(filters.find(f => f.filterBy === "min_price")?.query || 0)
+    const maxRangeVal = +(filters.find(f => f.filterBy === "max_price")?.query || maxRange)
     const { data: brandData, isLoading: brandIsLoading } = useQuery({
         queryKey: ["makeList"],
         queryFn: async () => {
@@ -31,7 +33,8 @@ const ProductsViewFilter = () => {
                 <Text fontSize={"10px"} lineHeight={"28px"} color={"gray-3"}>{t('filtersDescription')}</Text>
             </Box>
             <TabsFilterBy triggerListProps={{ rounded: "16px", overflow: "hidden", borderBottomWidth: "0", borderTopWidth: "2px" }} tabsRootProps={{ rounded: "0", minH: "300px" }} tabsContentProps={{ p: "0", pt: "32px" }} />
-            <RangeSlider label={t("priceRange")} maxVal={500} />
+            {/* price range filter */}
+            <RangeSlider step={0.5} minStepsBetweenThumbs={8} label={t("priceRange")} maxVal={maxRange} defaultValue={[minRangeVal, maxRangeVal]} onRangeChangeEnd={(values) => { setFilter({ targetEndpoint: "products", filterBy: "min_price", query: values[0].toString() }); setFilter({ targetEndpoint: "products", filterBy: "max_price", query: values[1].toString() }) }} />
             <Box w="full">
                 <Heading fontSize={"14px"} fontWeight={"semibold"} mb={"16px"}>{t("brand")}</Heading>
                 {brandIsLoading ? <Center> <Spinner size={"lg"} /></Center> :
