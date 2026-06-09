@@ -2,11 +2,11 @@
 import useApiFilter from '@/hooks/useApiFilter'
 import { Button, HStack } from '@chakra-ui/react'
 import { useTranslations } from 'next-intl'
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 
 const ProductTabsHeader = () => {
     const t = useTranslations("store")
-    const { setFilter, filters, applyFilter } = useApiFilter()
+    const { filters, applyFilter } = useApiFilter()
     const typeFilter = filters.find(f => f.filterBy === "type")
     const [activeType, setActiveType] = useState<string>(typeFilter?.query ?? "")
     return (

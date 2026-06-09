@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
@@ -37,43 +37,41 @@ const useApiFilter = () => {
 
     return result;
   })()])
-  const setFilter = useCallback((newFilter: QueryParam) => {
-    console.log('newFilter', newFilter)
+  const setFilter = (newFilter: QueryParam) => {
     if (filters.find(f => f.filterBy === newFilter.filterBy)) {
       return setFilters(p => [...p.filter(f => f.filterBy !== newFilter.filterBy), newFilter])
     }
 
+    console.log('filters', filters)
     setFilters(p => [...p, newFilter])
-  }, [filters])
+  }
 
 
-  const applyFilter = useCallback(
-    (newFilter?: QueryParam) => {
-      if (!filters.length && !newFilter) return
-      const params = new URLSearchParams(searchParams.toString());
-      if (newFilter) setFilter(newFilter);
-      [...filters, newFilter].filter((f) => f !== undefined).forEach(({ targetEndpoint, filterBy, query }) => {
-        const key = `${FILTER_PREFIX}_${targetEndpoint}_${filterBy}`;
-        const value = query?.trim();
+  const applyFilter = (newFilter?: QueryParam) => {
+    if (!filters.length && !newFilter) return
+    const params = new URLSearchParams(searchParams.toString());
+    if (!!newFilter) setFilter(newFilter);
+    [...filters, newFilter].filter((f) => f !== undefined).forEach(({ targetEndpoint, filterBy, query }) => {
+      const key = `${FILTER_PREFIX}_${targetEndpoint}_${filterBy}`;
+      const value = query?.trim();
 
-        if (!value) {
-          params.delete(key);
-          setFilters(p => [...p.filter(f => f.filterBy !== filterBy)])
-          return;
-        }
+      if (!value) {
+        params.delete(key);
+        setFilters(p => [...p.filter(f => f.filterBy !== filterBy)])
+        return;
+      }
 
-        params.set(key, value);
-      });
-      console.log('filters', filters)
+      params.set(key, value);
+    });
+    console.log('filters', filters)
 
-      const queryString = params.toString();
+    const queryString = params.toString();
 
-      router.push(queryString ? `${pathname}?${queryString}` : pathname);
-    },
-    [filters, pathname, router, searchParams, setFilter]
-  );
+    router.push(queryString ? `${pathname}?${queryString}` : pathname);
+  }
 
   const removeAllFilters = useCallback(() => {
+    setFilters([])
     const params = new URLSearchParams(searchParams.toString());
 
     Array.from(params.keys())
@@ -83,8 +81,9 @@ const useApiFilter = () => {
     const queryString = params.toString();
 
     router.push(queryString ? `${pathname}?${queryString}` : pathname);
-    setFilters([])
   }, [pathname, router, searchParams]);
+
+
 
   return {
     filters,
