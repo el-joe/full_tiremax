@@ -13,6 +13,7 @@
   --color-blue: #1976d2;
   --color-green: #2e7d32;
   --color-dark-yellow: #6b4c00;
+  scroll-behavior: smooth;
 }
 
 @theme inline {
