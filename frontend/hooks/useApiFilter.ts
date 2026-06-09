@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
@@ -49,7 +49,6 @@ const useApiFilter = () => {
   const applyFilter = useCallback(
     () => {
       if (!filters.length) return
-      console.log("filters", filters);
       const params = new URLSearchParams(searchParams.toString());
 
       filters.forEach(({ targetEndpoint, filterBy, query }) => {
@@ -57,14 +56,14 @@ const useApiFilter = () => {
         const value = query?.trim();
 
         if (!value) {
-          console.log('value', value)
           params.delete(key);
-          setFilters(p => [...p.filter(f => f.filterBy !== filterBy),])
+          setFilters(p => [...p.filter(f => f.filterBy !== filterBy)])
           return;
         }
 
         params.set(key, value);
       });
+      console.log('filters', filters)
 
       const queryString = params.toString();
 
@@ -89,7 +88,6 @@ const useApiFilter = () => {
   return {
     filters,
     applyFilter,
-    // exFilters,
     setFilter,
     removeAllFilters,
   };

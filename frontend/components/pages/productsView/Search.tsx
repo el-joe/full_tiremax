@@ -5,11 +5,17 @@ import Input from '@/components/ui/Input'
 import useApiFilter from '@/hooks/useApiFilter'
 import { Button, CloseButton, Group, HStack } from '@chakra-ui/react'
 import { useTranslations } from 'next-intl'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Search = () => {
     const t = useTranslations("store")
+    const [value, setValue] = useState<string>("")
     const { filters, setFilter, applyFilter } = useApiFilter()
+    useEffect(() => {
+        if (filters.find(f => f.filterBy === "search")?.query === "") {
+            applyFilter()
+        }
+    }, [applyFilter, filters])
     return (
         <HStack justify={"space-between"} align={"start"}>
             <Group attached minW={"672px"} align="stretch">
@@ -17,14 +23,16 @@ const Search = () => {
                     placeholder={t("searchPlaceholder")}
                     py={"19px"}
                     h="auto"
-                    value={filters.find(f => f.filterBy === "search")?.query}
-                    onChange={(e) => { setFilter({ targetEndpoint: "products", filterBy: "search", query: e.target.value }) }}
+                    value={value}
+                    onChange={(e) => { setValue(e.target.value); setFilter({ targetEndpoint: "products", filterBy: "search", query: e.target.value }) }}
                     endElement={<CloseButton
                         size="xs"
                         onClick={() => {
                             setFilter({ targetEndpoint: "products", filterBy: "search", query: "" })
-                            applyFilter()
-                        }}
+                            setValue('')
+                        }
+
+                        }
                         me="-2"
                         color={"black"}
                     />}

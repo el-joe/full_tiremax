@@ -80,7 +80,7 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
             <DropFilterList list={modelData?.map(m => ({ label: m.name, value: m.id.toString() })) ?? []} isLoading={modelIsLoading} label={t("model")} placeholder={t("selectModel")} name="model" />
             <DropFilterList list={yearData?.map(m => ({ label: m.year_from.toString(), value: m.year_from.toString() })) ?? []} isLoading={yearIsLoading} label={t("year")} placeholder={t("selectYear")} name="year" />
             {showButton &&
-                <Button rounded={"12px"} type='submit' fontSize={{ base: "12px" }} w={{ base: "full", md: "auto" }} onClick={applyFilter}>{t("findYourTireNow")} <SearchIcon /></Button>
+                <Button rounded={"12px"} minW="200px" flex="1" type='submit' fontSize={{ base: "12px" }} w={{ base: "full", md: "auto" }} onClick={applyFilter}>{t("findYourTireNow")} <SearchIcon /></Button>
             }
         </HStack>
     )
