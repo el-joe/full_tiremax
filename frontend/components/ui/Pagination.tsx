@@ -58,21 +58,21 @@ const Pagination = ({
       >
         <ButtonGroup size="sm">
           <ChakraPagination.PrevTrigger asChild>
-            <IconButton w={"40px"} h="40px" rounded="8px" bg="#F3F3F3" fontWeight={"semibold"} color="black" >
+            <IconButton w={"40px"} h="40px" rounded="8px" bg="gray-4" fontWeight={"semibold"} color="black" >
               <LeftArrowIcon rotate={dir === "rtl" ? '180deg' : ""} />
             </IconButton>
           </ChakraPagination.PrevTrigger>
 
           <ChakraPagination.Items
             render={(page) => (
-              <IconButton w={"40px"} h="40px" rounded="8px" bg="#F3F3F3" fontWeight={"semibold"} _selected={{ bg: "primary" }} color="black" >
+              <IconButton w={"40px"} h="40px" rounded="8px" bg="gray-4" fontWeight={"semibold"} _selected={{ bg: "primary" }} color="black" >
                 {page.value}
               </IconButton>
             )}
           />
 
           <ChakraPagination.NextTrigger asChild>
-            <IconButton w={"40px"} h="40px" rounded="8px" bg="#F3F3F3" fontWeight={"semibold"} color="black">
+            <IconButton w={"40px"} h="40px" rounded="8px" bg="gray-4" fontWeight={"semibold"} color="black">
               <LeftArrowIcon rotate={dir === "rtl" ? "" : '180deg'} />
             </IconButton>
           </ChakraPagination.NextTrigger>

@@ -9,6 +9,7 @@
   --color-gray: #e8e8e8;
   --color-gray-2: #71717a;
   --color-gray-3: #333333;
+  --color-gray-4: #f3f3f3;
   --color-red: #ae1819;
   --color-blue: #1976d2;
   --color-green: #2e7d32;
@@ -25,6 +26,7 @@
   --color-gray: var(--color-gray);
   --color-gray-2: var(--color-gray-2);
   --color-gray-3: var(--color-gray-3);
+  --color-gray-4: var(--color-gray-4);
   --color-red: var(--color-red);
   --color-blue: var(--color-blue);
   --color-green: var(--color-green);

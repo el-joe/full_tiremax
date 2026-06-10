@@ -139,5 +139,31 @@
         "sale": "تخفيض",
         "featured": "مميز"
     },
+    "productView": {
+        "store": "المتجر",
+        "priceIncludesInstallationAndBalancing": "السعر يشمل التركيب والترصيص داخل البصرة",
+        "shippingAvailableAllGovernorates": "تتوفر خدمة الشحن لكافة المحافظات",
+        "size": "القياس",
+        "countryOfOrigin": "بلد المنشأ",
+        "make": "الماركة",
+        "treadPattern": "النقشة",
+        "manufactureYear": "سنة الإنتاج",
+        "usageType": "نوع الاستخدام",
+        "loadAndSpeed": "الحمولة والسرعة",
+        "availability": "حالة التوفر",
+        "availableNow": "متوفر الآن",
+        "notAvailable": "غير متوفر",
+        "dualWarrantySystem": "نظام الضمان المزدوج",
+        "manufacture'sWarranty": "ضمان مصنعي",
+        "manufacture'sWarrantyDescription": " ضمان من الشركة المصنعة ضد عيوب التصنيع لمدة.",
+        "months": "شهر",
+        "authorizedWarranty": "ضمان وكالة",
+        "tireMaxExclusiveMaintenance": "خدمة صيانة ومتابعة دورية مقدمة حصرياً من وكاله TireMax.",
+        "userReviews": "تقييمات المستخدمين",
+        "showAllReviews": "عرض كافة المراجعات",
+        "total": "المجموع الكلي",
+        "addToCart": "إضافة إلى السلة"
+    },
+    "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع"
 }

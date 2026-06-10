@@ -50,7 +50,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
                         >
                             <Select.HiddenSelect />
                             <Select.Control>
-                                <Select.Trigger bg={"#F3F3F3"}>
+                                <Select.Trigger bg={"gray-4"}>
                                     <Select.ValueText placeholder={placeholder} />
                                 </Select.Trigger>
                                 <Select.IndicatorGroup>
@@ -75,7 +75,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
                 />) : <Select.Root {...rest} collection={collection}>
                 <Select.HiddenSelect />
                 <Select.Control>
-                    <Select.Trigger {...triggerProps} bg={"#F3F3F3"}>
+                    <Select.Trigger {...triggerProps} bg={"gray-4"}>
                         <Select.ValueText placeholder={placeholder} />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
