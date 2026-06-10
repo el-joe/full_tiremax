@@ -15,44 +15,49 @@ const ProductDetails = async ({ product }: Props) => {
   const t = await getTranslations("productView")
   const locale = await getLocale()
   return (
-    <VStack gap={"32px"} align={"stretch"} flex={1}>
-      <Heading as={"h2"} fontSize={"48px"} lineHeight={"48px"} fontWeight={"bold"}>{product?.name}</Heading>
-      <Text fontSize={"18px"}>{product?.description ?? product?.short_description}</Text>
-      <Box bg="gray-4" p="24px" rounded={"16px"} borderStart={"4px solid {colors.primary}"}>
-        <Text fontSize={"36px"} fontWeight={'bold'} color={"primary"} mb={"16px"}>{product.effective_price.toLocaleString()}<CurrencySymbol fontSize={"18px"} color={"black"} type='long' /></Text>
-        <HStack mb={"8px"}><FaRegCheckCircle className='text-primary' /><Text>{t("priceIncludesInstallationAndBalancing")}</Text></HStack>
-        <HStack><MdOutlineLocalShipping className='text-primary' /><Text>{t("shippingAvailableAllGovernorates")}</Text></HStack>
+    <VStack gap={{ base: "16px", lg: "26px", xl: "32px" }} align={"stretch"} flex={1}>
+      {/* product name */}
+      <Heading as={"h2"} fontSize={{ base: "16px", md: "26px", lg: "32px", xl: "48px" }} lineHeight={{ base: "16px", md: "26px", lg: "32px", xl: "48px" }} fontWeight={"bold"}>{product?.name}</Heading>
+      {/* product description */}
+      <Text fontSize={{ base: "12px", md: "14px", lg: "16px", xl: "18px" }}>{product?.description ?? product?.short_description}</Text>
+      {/* price card */}
+      <Box bg="gray-4" p={{ base: "12px", lg: "16px", xl: "24px" }} rounded={"16px"} borderStart={"4px solid {colors.primary}"}>
+        {/* price */}
+        <Text fontSize={{ base: "22px", lg: "28px", xl: "36px" }} fontWeight={'bold'} color={"primary"} mb={"16px"}>{product.effective_price.toLocaleString()}<CurrencySymbol fontSize={{ base: "12px", xl: "18px" }} color={"black"} type='long' /></Text>
+        <HStack mb={"8px"}><FaRegCheckCircle className='text-primary' /><Text fontSize={{ base: "11px", xl: "14px" }} >{t("priceIncludesInstallationAndBalancing")}</Text></HStack>
+        <HStack><MdOutlineLocalShipping className='text-primary' /><Text fontSize={{ base: "11px", xl: "14px" }} >{t("shippingAvailableAllGovernorates")}</Text></HStack>
       </Box>
       {/* details cards  */}
-      <HStack flexWrap={"wrap"} gap={"16px"}>
+      <HStack flexWrap={"wrap"} gap={{ base: "11px", xl: "16px" }} align={"stretch"}>
         <DetailsByType product={product} />
       </HStack>
+      {/* warranty */}
       <Box>
-        <Heading fontSize={"18px"} fontWeight={"semibold"} mb={"16px"}>{t("dualWarrantySystem")}</Heading>
-        <HStack gap={"16px"}>
+        <Heading fontSize={{ base: "12px", md: "14px", lg: "16px", xl: "18px" }} fontWeight={"semibold"} mb={"16px"}>{t("dualWarrantySystem")}</Heading>
+        <HStack gap={{ base: "11px", xl: "16px" }} align={"stretch"}>
           {/* manufacture warranty card */}
           {product.manufacturer_warranty_months > 0 &&
-            <Box p={"20px"} rounded={"16px"} border={"2px solid {colors.primary}"} w="calc((100% - 16px) / 2)">
+            <Box p={{ base: "8px", lg: "12px", xl: "16px" }} rounded={"16px"} border={"2px solid {colors.primary}"} w={{ base: "calc((100% - 11px) / 2)", xl: "calc((100% - 16px) / 2)" }}>
               <HStack gap={"8px"} align={"start"}>
-                <Center minW="40px" h="40px" rounded={"full"} bg="#FDB60433" color={"#7C5800"}>
+                <Center minW={{ base: "26px", lg: "40px" }} h={{ base: "22px", lg: "40px" }} rounded={"full"} bg="#FDB60433" color={"#7C5800"}>
                   <RiShieldCheckLine />
                 </Center>
                 <Box>
-                  <Text fontSize={"14px"} fontWeight={"semibold"} mb="4px">{t("manufacture'sWarranty")}</Text>
-                  <Text fontSize={"12px"} color={"gray-2"}>{t("manufacture'sWarrantyDescription")} {product?.manufacturer_warranty_months} {t("months")}</Text>
+                  <Text fontSize={{ base: "12px", lg: "14px" }} fontWeight={"semibold"} mb="4px">{t("manufacture'sWarranty")}</Text>
+                  <Text fontSize={{ base: "9px", lg: "12px" }} color={"gray-2"}>{t("manufacture'sWarrantyDescription")} {product?.manufacturer_warranty_months} {t("months")}</Text>
                 </Box>
               </HStack>
             </Box>
           }
           {/* agency warranty card */}
-          <Box p={"20px"} rounded={"16px"} border={"2px solid #E5E7EB"} w="calc((100% - 16px) / 2)">
+          <Box p={{ base: "8px", lg: "12px", xl: "16px" }} rounded={"16px"} border={"2px solid #E5E7EB"} w={{ base: "calc((100% - 11px) / 2)", xl: "calc((100% - 16px) / 2)" }}>
             <HStack gap={"8px"} align={"start"}>
-              <Center minW="40px" h="40px" rounded={"full"} bg="#F4F4F5" color={"#6B7280"}>
+              <Center minW={{ base: "26px", lg: "40px" }} h={{ base: "22px", lg: "40px" }} rounded={"full"} bg="#F4F4F5" color={"#6B7280"}>
                 <FaStoreAlt />
               </Center>
               <Box>
-                <Text fontSize={"14px"} fontWeight={"semibold"} mb="4px">{t("authorizedWarranty")}</Text>
-                <Text fontSize={"12px"} color={"gray-2"}>{t("tireMaxExclusiveMaintenance")}</Text>
+                <Text fontSize={{ base: "12px", lg: "14px" }} fontWeight={"semibold"} mb="4px">{t("authorizedWarranty")}</Text>
+                <Text fontSize={{ base: "9px", lg: "12px" }} color={"gray-2"}>{t("tireMaxExclusiveMaintenance")}</Text>
               </Box>
             </HStack>
           </Box>
@@ -61,7 +66,7 @@ const ProductDetails = async ({ product }: Props) => {
       {/* reviews */}
       <Box>
         <HStack mb={"16px"} justify={"space-between"}>
-          <Text fontSize={"18px"} fontWeight={"semibold"}>{t("userReviews")}</Text>
+          <Text fontSize={{ base: "12px", md: "14px", lg: "16px", xl: "18px" }} fontWeight={"semibold"}>{t("userReviews")}</Text>
           <HStack>
             <RatingGroup.Root readOnly allowHalf count={5} defaultValue={product.expert_rating} size={{ base: "sm", md: "lg" }} colorPalette={"yellow"}>
               <RatingGroup.HiddenInput />
@@ -116,7 +121,7 @@ const DetailsByType = async ({ product }: { product: IProduct }) => {
 
 const DetailCard = async ({ title, body, bodyColor, bodyDir }: { title: string, body: string, bodyColor?: string, bodyDir?: string }) => {
   const locale = await getLocale()
-  return <Box bg={"gray-4"} p={"16px"} rounded={"16px"} w="calc((100% - 16px)/ 2)">
+  return <Box bg={"gray-4"} p={{ base: "8px", lg: "12px", xl: "16px" }} rounded={"16px"} w={{ base: "calc((100% - 11px) / 2)", xl: "calc((100% - 16px) / 2)" }}>
     <Text fontSize={"10px"} mb={"4px"} fontWeight={"semibold"} color={"gray-2"}>{title}</Text>
     <Text fontWeight={"semibold"} color={bodyColor ?? "black"} textAlign={locale === "ar" && bodyDir === "ltr" ? "end" : "start"} dir={bodyDir}>{body}</Text>
   </Box>

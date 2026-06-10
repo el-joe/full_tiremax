@@ -3,7 +3,7 @@ import { IProduct } from '@/types'
 import { Box, Image } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from "swiper/react"
-import { EffectFade, FreeMode, Navigation, Thumbs } from "swiper/modules"
+import { EffectFade, FreeMode, Thumbs } from "swiper/modules"
 import type { Swiper as SwiperType } from 'swiper/types'
 
 const images = ["/images/product-image.jpg",
@@ -21,7 +21,7 @@ type Props = {
 export default function ProductImagesPreview({ product }: Props) {
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType>()
     return (
-        <Box flex={1.3} maxW={"722px"}>
+        <Box flex={1} maxW={{ base: "full", md: "396px", lg: "582px", xl: "654px", "2xl": "722px" }}>
             <Swiper
                 modules={[EffectFade, Thumbs]}
                 effect='fade'
@@ -31,23 +31,25 @@ export default function ProductImagesPreview({ product }: Props) {
                 }}
             >
                 {(product?.images.length ? product.images : images).map(image => <SwiperSlide key={image}>
-                    <Image src={image} alt='' w="720px" h={"523px"} objectFit={"fill"} rounded={"12px"} />
+                    <Image src={image} alt='' w="full" aspectRatio={"1/0.8"} objectFit={"fill"} rounded={"12px"} />
                 </SwiperSlide>)}
             </Swiper>
-            <Swiper
-                className='mt-6! py-2! productSwiperThumbs'
-                onSwiper={setThumbsSwiper}
-                spaceBetween={"16px"}
-                slidesPerView={"auto"}
-                freeMode={true}
-                watchSlidesProgress={true}
-                loop
-                modules={[FreeMode, Thumbs]}
-            >
-                {(product?.images.length ? product.images : images).map(image => <SwiperSlide key={image}>
-                    <Image src={image} alt='' w={"158px"} h={"158px"} objectFit={"fill"} rounded={"8px"} />
-                </SwiperSlide>)}
-            </Swiper>
+            <Box mt={{ base: "6px", lg: "10px", xl: "12px" }}>
+                <Swiper
+                    className='py-2! productSwiperThumbs'
+                    onSwiper={setThumbsSwiper}
+                    spaceBetween={"16px"}
+                    slidesPerView={"auto"}
+                    freeMode={true}
+                    watchSlidesProgress={true}
+                    loop
+                    modules={[FreeMode, Thumbs]}
+                >
+                    {(product?.images.length ? product.images : images).map(image => <SwiperSlide key={image}>
+                        <Image src={image} alt='' w={{ base: "86px", md: "86px", lg: "107px", xl: "127px", "2xl": "158px" }} aspectRatio={"1/1"} objectFit={"fill"} rounded={"8px"} />
+                    </SwiperSlide>)}
+                </Swiper>
+            </Box>
         </Box>
     )
 }

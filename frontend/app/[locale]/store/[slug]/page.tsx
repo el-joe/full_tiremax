@@ -13,7 +13,7 @@ const page = async ({ params }: props) => {
     const slug = (await params).slug
     const { data } = await axiosInstance<{ data: IProduct }>(`products/${slug}`)
     return (
-        <HStack gap={"40px"} flexWrap={'wrap'} align={"start"}>
+        <HStack gap={{ base: "16px", md: "26px", lg: "32px", xl: "40px" }} flexWrap={'wrap'} align={"start"}>
             <ProductImagesPreview product={data.data} />
             <ProductDetails product={data.data} />
         </HStack>
