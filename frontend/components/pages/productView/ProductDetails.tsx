@@ -1,5 +1,5 @@
 import CurrencySymbol from '@/components/ui/CurrencySymbol'
-import { IProduct } from '@/types'
+import { IProduct, IProductReviewMeta, IReview } from '@/types'
 import { Box, Center, Heading, HStack, Image, RatingGroup, Span, Text, VStack } from '@chakra-ui/react'
 import { getLocale, getTranslations } from 'next-intl/server'
 import React from 'react'
@@ -7,11 +7,13 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { MdOutlineLocalShipping } from "react-icons/md";
 import { RiShieldCheckLine } from "react-icons/ri";
 import { FaStoreAlt } from "react-icons/fa";
+import ProductReviews from './ProductReviews'
 type Props = {
   product: IProduct
+  reviews: { data: IReview[], meta: IProductReviewMeta }
 }
 
-const ProductDetails = async ({ product }: Props) => {
+const ProductDetails = async ({ product, reviews }: Props) => {
   const t = await getTranslations("productView")
   const locale = await getLocale()
   return (
@@ -64,28 +66,7 @@ const ProductDetails = async ({ product }: Props) => {
         </HStack>
       </Box>
       {/* reviews */}
-      <Box>
-        <HStack mb={"16px"} justify={"space-between"}>
-          <Text fontSize={{ base: "12px", md: "14px", lg: "16px", xl: "18px" }} fontWeight={"semibold"}>{t("userReviews")}</Text>
-          <HStack>
-            <RatingGroup.Root readOnly allowHalf count={5} defaultValue={product.expert_rating} size={{ base: "sm", md: "lg" }} colorPalette={"yellow"}>
-              <RatingGroup.HiddenInput />
-              <RatingGroup.Control dir={locale === "en" ? "ltr" : "rtl"} />
-            </RatingGroup.Root>
-            <Text fontWeight={"bold"}>{product?.views_count}</Text>
-          </HStack>
-        </HStack>
-        <Box p={"20px"} rounded={"16px"} border={"2px solid {colors.primary}"} >
-          <HStack gap={"8px"} align={"start"} justify={"space-between"}>
-            <Box>
-              <Text fontSize={"14px"} fontWeight={"semibold"} mb="4px">Saeed Sayed</Text>
-              <Text fontSize={"12px"} color={"gray-2"}>منذ يومين</Text>
-            </Box>
-            <Image src={"/images/testimonialUserAvatar.jpg"} alt='avatar' w="48px" h={"48px"} rounded={"12px"} outline={"2px solid {colors.primary}"} outlineOffset={"1px"} />
-          </HStack>
-          <Text fontSize={"14px"} color={"gray-2"}>أفضل إطارات جربتها على الإطلاق، هدوء تام وثبات عالي جداً في المنعطفات.</Text>
-        </Box>
-      </Box>
+      <ProductReviews reviews={{ reviews: reviews.data, meta: reviews?.meta }} />
     </VStack>
   )
 }
