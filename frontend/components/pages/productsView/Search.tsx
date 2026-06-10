@@ -16,13 +16,14 @@ const Search = () => {
     const [value, setValue] = useState<string>(searchFilter?.query || "")
     return (
         <HStack justify={"space-between"} align={"start"}>
-            <Group attached minW={"672px"} align="stretch">
+            <Group attached maxW={"672px"} align="stretch" flex="1">
                 <Input roundedEnd={"0"}
                     placeholder={t("searchPlaceholder")}
-                    py={"19px"}
+                    py={{ base: "4px", md: "8px", xl: "19px" }}
                     h="auto"
                     value={value}
                     onChange={(e) => { setValue(e.target.value) }}
+                    fontSize={{ base: "12px", md: "14px", lg: "16px" }}
                     endElement={value ? <CloseButton
                         size="xs"
                         onClick={() => {
@@ -34,9 +35,9 @@ const Search = () => {
                         color={"black"}
                     /> : undefined}
                 />
-                <Button roundedEnd={"16px"} h="auto" onClick={() => applyFilter({ targetEndpoint: "products", filterBy: "search", query: value })}><SearchIcon />{t("search")}</Button>
+                <Button roundedEnd={"16px"} h="auto" onClick={() => applyFilter({ targetEndpoint: "products", filterBy: "search", query: value })} px={{ base: "4px", md: "7px", xl: "12px" }}><SearchIcon />{t("search")}</Button>
             </Group>
-            <DropSelectList list={badges.map(b => ({ label: t(b), value: b }))} onValueChange={(v) => { applyFilter({ targetEndpoint: "products", filterBy: "badge", query: v.value[0] }) }} placeholder='select option' name='' containerProps={{ w: "190px" }} triggerProps={{ h: "36px", rounded: "16px", minH: "auto" }} />
+            <DropSelectList list={badges.map(b => ({ label: t(b), value: b }))} onValueChange={(v) => { applyFilter({ targetEndpoint: "products", filterBy: "badge", query: v.value[0] }) }} placeholder='select option' name='' containerProps={{ w: { base: "110px", md: "190px" } }} triggerProps={{ h: { base: "30px", xl: "36px" }, rounded: "16px", minH: "auto" }} />
         </HStack>
     )
 }

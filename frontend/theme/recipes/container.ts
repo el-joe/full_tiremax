@@ -10,7 +10,9 @@ export const containerRecipe = defineRecipe({
     px: {
       base: "4",
       md: "6",
-      lg: "60px",
+      lg: "30px",
+      xl: "40px",
+      "2xl": "60px",
     },
   },
   variants: {

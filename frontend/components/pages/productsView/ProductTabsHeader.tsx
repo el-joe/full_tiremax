@@ -10,7 +10,7 @@ const ProductTabsHeader = () => {
     const typeFilter = filters.find(f => f.filterBy === "type")
     const [activeType, setActiveType] = useState<string>(typeFilter?.query ?? "")
     return (
-        <HStack mb={"48px"} borderBottom={"1px solid #D5C4AB33"} ps={"120px"}>
+        <HStack borderBottom={"1px solid #D5C4AB33"} ps={{ base: "39px", md: "52px", xl: "120px" }}>
             <Button onClick={() => { setActiveType(""); applyFilter({ targetEndpoint: "products", filterBy: "type", query: "" }) }}
                 variant={'ghost'}
                 color={"black"}

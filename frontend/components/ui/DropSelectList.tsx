@@ -35,7 +35,7 @@ function DropSelectList<T extends FieldValues>({ list, placeholder, label, contr
     const dir = locale === "ar" ? "rtl" : "ltr"
     return (
         <Field.Root {...containerProps} invalid={err}>
-            <Field.Label fontWeight={"semibold"}>{label}</Field.Label>
+            {!!label && <Field.Label fontWeight={"semibold"}>{label}</Field.Label>}
             {!!control ? (
                 <Controller
                     control={control}

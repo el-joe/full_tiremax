@@ -42,7 +42,6 @@ const useApiFilter = () => {
       return setFilters(p => [...p.filter(f => f.filterBy !== newFilter.filterBy), newFilter])
     }
 
-    console.log('filters', filters)
     setFilters(p => [...p, newFilter])
   }
 

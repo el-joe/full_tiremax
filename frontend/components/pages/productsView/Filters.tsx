@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import axiosInstance from '@/utils/axiosInstance'
 import { IBrand } from '@/types'
 const maxRange = 200000
-const ProductsViewFilter = () => {
+const Filters = ({ setDialog }: { setDialog?: (state: boolean) => void }) => {
     const t = useTranslations('store')
     const { applyFilter, removeAllFilters, filters, setFilter } = useProductFilterContext()
     const minRangeVal = +(filters.find(f => f.filterBy === "min_price")?.query || 0)
@@ -23,11 +23,11 @@ const ProductsViewFilter = () => {
         }
     })
     return (
-        <VStack gap={"32px"} w={"320px"}>
+        <VStack gap={"32px"} w={{ base: "full", md: "200px", lg: "240px", xl: "270px", "2xl": "320px" }}>
             <Box w={"full"}>
                 <HStack justify={"space-between"} alignItems={"center"}>
-                    <Heading as="h3" fontSize={"24px"} fontWeight={"semibold"}>{t("filters")}</Heading>
-                    <Button variant={"ghost"} fontSize={"12px"} fontWeight={"semibold"} color={"black"} _hover={{ color: "white" }} onClick={() => removeAllFilters([{ targetEndpoint: "products", filterName: "type" }, { targetEndpoint: "products", filterName: "search" }, { targetEndpoint: "products", filterName: "badge" }])}>{t("clearFilters")}</Button>
+                    <Heading as="h3" fontSize={"24px"} fontWeight={"semibold"} ms={{ base: "30px", md: "0" }}>{t("filters")}</Heading>
+                    <Button variant={"ghost"} fontSize={"12px"} fontWeight={"semibold"} color={"black"} _hover={{ color: "white" }} onClick={() => { removeAllFilters([{ targetEndpoint: "products", filterName: "type" }, { targetEndpoint: "products", filterName: "search" }, { targetEndpoint: "products", filterName: "badge" }]); setDialog?.(false) }}>{t("clearFilters")}</Button>
                 </HStack>
                 <Text fontSize={"10px"} lineHeight={"28px"} color={"gray-3"}>{t('filtersDescription')}</Text>
             </Box>
@@ -42,10 +42,10 @@ const ProductsViewFilter = () => {
                     </HStack>
                 }
             </Box>
-            <Button w="full" rounded={"16px"} fontSize={"18px"} fontWeight={"bold"} p="16px" onClick={() => applyFilter()}><SearchIcon />{t("applyFilters")}</Button>
+            <Button w="full" rounded={"16px"} fontSize={"18px"} fontWeight={"bold"} p="16px" onClick={() => { applyFilter(); setDialog?.(false) }}><SearchIcon />{t("applyFilters")}</Button>
         </VStack>
     )
 }
 
-export default ProductsViewFilter
+export default Filters
 
