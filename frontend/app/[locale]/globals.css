@@ -50,3 +50,15 @@ body {
 img {
   max-height: 100%;
 }
+
+.productSwiperThumbs .swiper-slide {
+  width: fit-content;
+  opacity: 0.4;
+  border-radius: 8px;
+}
+
+.productSwiperThumbs .swiper-slide-thumb-active {
+  opacity: 1;
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}

@@ -15,7 +15,7 @@ const ProductDetails = async ({ product }: Props) => {
   const t = await getTranslations("productView")
   const locale = await getLocale()
   return (
-    <VStack gap={"32px"} align={"stretch"}>
+    <VStack gap={"32px"} align={"stretch"} flex={1}>
       <Heading as={"h2"} fontSize={"48px"} lineHeight={"48px"} fontWeight={"bold"}>{product?.name}</Heading>
       <Text fontSize={"18px"}>{product?.description ?? product?.short_description}</Text>
       <Box bg="gray-4" p="24px" rounded={"16px"} borderStart={"4px solid {colors.primary}"}>
@@ -25,14 +25,7 @@ const ProductDetails = async ({ product }: Props) => {
       </Box>
       {/* details cards  */}
       <HStack flexWrap={"wrap"} gap={"16px"}>
-        <DetailCard title={t("size")} body={product?.tire_spec?.size_string} />
-        <DetailCard title={t("countryOfOrigin")} body={product?.tire_spec?.size_string} />
-        <DetailCard title={t("make")} body={product?.brand?.name} />
-        <DetailCard title={t("treadPattern")} body={product?.pattern_name} />
-        <DetailCard title={t("manufactureYear")} body={product?.manufacture_year.toString()} />
-        <DetailCard title={t("usageType")} body={product?.tire_spec?.usage_type} />
-        <DetailCard title={t("loadAndSpeed")} body={`${product?.tire_spec?.load_index}(${product?.tire_spec?.speed_rating})`} />
-        <DetailCard title={t("availability")} body={product?.in_stock ? t("availableNow") : t("notAvailable")} bodyColor={product?.in_stock ? "green" : "red"} />
+        <DetailsByType product={product} />
       </HStack>
       <Box>
         <Heading fontSize={"18px"} fontWeight={"semibold"} mb={"16px"}>{t("dualWarrantySystem")}</Heading>
@@ -41,7 +34,7 @@ const ProductDetails = async ({ product }: Props) => {
           {product.manufacturer_warranty_months > 0 &&
             <Box p={"20px"} rounded={"16px"} border={"2px solid {colors.primary}"} w="calc((100% - 16px) / 2)">
               <HStack gap={"8px"} align={"start"}>
-                <Center w="40px" h="40px" rounded={"full"} bg="#FDB60433" color={"#7C5800"}>
+                <Center minW="40px" h="40px" rounded={"full"} bg="#FDB60433" color={"#7C5800"}>
                   <RiShieldCheckLine />
                 </Center>
                 <Box>
@@ -54,7 +47,7 @@ const ProductDetails = async ({ product }: Props) => {
           {/* agency warranty card */}
           <Box p={"20px"} rounded={"16px"} border={"2px solid #E5E7EB"} w="calc((100% - 16px) / 2)">
             <HStack gap={"8px"} align={"start"}>
-              <Center w="40px" h="40px" rounded={"full"} bg="#F4F4F5" color={"#6B7280"}>
+              <Center minW="40px" h="40px" rounded={"full"} bg="#F4F4F5" color={"#6B7280"}>
                 <FaStoreAlt />
               </Center>
               <Box>
@@ -94,9 +87,37 @@ const ProductDetails = async ({ product }: Props) => {
 
 export default ProductDetails
 
-const DetailCard = ({ title, body, bodyColor }: { title: string, body: string, bodyColor?: string }) => {
+const DetailsByType = async ({ product }: { product: IProduct }) => {
+  const t = await getTranslations("productView")
+  if (product?.type === "battery") {
+    return <>
+      <DetailCard title={t("cca")} body={product?.battery_spec?.cca.toString()} />
+      <DetailCard title={t("countryOfOrigin")} body={product?.brand?.country} />
+      <DetailCard title={t("make")} body={product?.brand?.name} />
+      <DetailCard title={t("sizeCode")} body={product?.battery_spec?.size_code} />
+      <DetailCard title={t("manufactureYear")} body={product?.manufacture_year.toString()} />
+      <DetailCard title={t("batteryType")} body={product?.battery_spec?.battery_type} />
+      <DetailCard title={t("voltageAndCapacity")} body={`${product?.battery_spec?.voltage} V (${product?.battery_spec?.ampere_hour} A/H)`} bodyDir='ltr' />
+      <DetailCard title={t("availability")} body={product?.in_stock ? t("availableNow") : t("notAvailable")} bodyColor={product?.in_stock ? "green" : "red"} />
+    </>
+  } else {
+    return <>
+      <DetailCard title={t("size")} body={product?.tire_spec?.size_string} />
+      <DetailCard title={t("countryOfOrigin")} body={product?.brand?.country} />
+      <DetailCard title={t("make")} body={product?.brand?.name} />
+      <DetailCard title={t("treadPattern")} body={product?.pattern_name} />
+      <DetailCard title={t("manufactureYear")} body={product?.manufacture_year.toString()} />
+      <DetailCard title={t("usageType")} body={product?.tire_spec?.usage_type} />
+      <DetailCard title={t("loadAndSpeed")} body={`${product?.tire_spec?.load_index}(${product?.tire_spec?.speed_rating})`} />
+      <DetailCard title={t("availability")} body={product?.in_stock ? t("availableNow") : t("notAvailable")} bodyColor={product?.in_stock ? "green" : "red"} />
+    </>
+  }
+}
+
+const DetailCard = async ({ title, body, bodyColor, bodyDir }: { title: string, body: string, bodyColor?: string, bodyDir?: string }) => {
+  const locale = await getLocale()
   return <Box bg={"gray-4"} p={"16px"} rounded={"16px"} w="calc((100% - 16px)/ 2)">
     <Text fontSize={"10px"} mb={"4px"} fontWeight={"semibold"} color={"gray-2"}>{title}</Text>
-    <Text fontWeight={"semibold"} color={bodyColor ?? "black"}>{body}</Text>
+    <Text fontWeight={"semibold"} color={bodyColor ?? "black"} textAlign={locale === "ar" && bodyDir === "ltr" ? "end" : "start"} dir={bodyDir}>{body}</Text>
   </Box>
 }

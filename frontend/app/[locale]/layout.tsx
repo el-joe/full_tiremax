@@ -9,6 +9,8 @@ import { Toaster } from "react-hot-toast";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import 'swiper/css/thumbs';
+import 'swiper/css/free-mode';
 import Header from "@/components/layout/Header";
 import { ChakraUiProvider } from "@/providers/ChakraUiProvider";
 import Footer from "@/components/layout/Footer"

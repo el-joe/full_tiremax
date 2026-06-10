@@ -28,7 +28,7 @@ export interface IProduct {
   brand: Brand;
   category: ICategory;
   tire_spec: TireSpec;
-  battery_spec: null;
+  battery_spec: IBatterySpec;
 }
 
 export interface Brand {
@@ -52,11 +52,20 @@ export interface TireSpec {
   size_string: string;
 }
 
+export interface IBatterySpec {
+  voltage: number,
+  ampere_hour: number,
+  cca: number,
+  battery_type: string,
+  terminal_position: string,
+  size_code: string
+}
+
 export interface ICategory {
-  "id": number,
-  "slug": string,
-  "name": string,
-  "description": string | null,
-  "product_type": string,
-  "icon": null
+  id: number,
+  slug: string,
+  name: string,
+  description: string | null,
+  product_type: string,
+  icon: null
 }
