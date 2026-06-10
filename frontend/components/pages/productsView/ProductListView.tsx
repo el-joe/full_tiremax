@@ -18,7 +18,7 @@ const ProductListView = ({ data, paginationInfo }: Props) => {
                 {data.map(product => <ProductCard key={product.id} product={product} />)}
             </HStack>
             <Box justifySelf={"center"} mt={"68px"}>
-                <Pagination currentPage={paginationInfo.pagination.current_page} itemsCount={paginationInfo.pagination.total} pageSize={paginationInfo.pagination.per_page} />
+                <Pagination currentPage={paginationInfo?.pagination?.current_page} itemsCount={paginationInfo?.pagination?.total} pageSize={paginationInfo?.pagination?.per_page} />
             </Box>
         </Box>
     )
