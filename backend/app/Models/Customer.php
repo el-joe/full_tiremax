@@ -23,6 +23,7 @@ class Customer extends Authenticatable implements JWTSubject
         'is_active',
         'phone_verified_at',
         'email_verified_at',
+        'daftra_id',
     ];
 
     protected $hidden = ['password', 'remember_token'];

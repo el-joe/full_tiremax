@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\BookingCreated;
 use App\Models\Booking;
 use App\Models\Branch;
 use App\Models\Customer;
@@ -45,6 +46,8 @@ class BookingService
                     : Booking::STATUS_PENDING,
                 'customer_notes' => $data['customer_notes'] ?? null,
             ]);
+
+            BookingCreated::dispatch($booking);
 
             return $booking->load(['branch', 'service']);
         });
