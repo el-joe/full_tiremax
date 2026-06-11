@@ -43,6 +43,7 @@ const ProductCard = ({ product }: Props) => {
                         minW={"auto"}
                         minH={"auto"}
                         h={"auto"}><HeartIcon strokeWidth={"4"} size={{ base: "xs", md: "md" }} /></IconButton>
+                    {/* badge */}
                     {!!product.badges.length &&
                         <CustomBadge content={product.badges[0]} />
                     }

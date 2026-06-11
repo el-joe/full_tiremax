@@ -4,15 +4,15 @@ export interface IProduct {
   type: string;
   name: string;
   short_description: string;
-  description: null;
+  description: string | null;
   pattern_name: string;
-  usage_notes: null;
+  usage_notes: string | null;
   price: number;
-  sale_price: null;
+  sale_price: number | null;
   effective_price: number;
   has_discount: boolean;
   is_flash_sale: boolean;
-  flash_sale: null;
+  flash_sale: number | null;
   stock: number;
   in_stock: boolean;
   manufacture_year: number;
@@ -24,7 +24,7 @@ export interface IProduct {
   is_featured: boolean;
   badges: string[];
   images: string[];
-  primary_image: null;
+  primary_image: string | null;
   brand: Brand;
   category: ICategory;
   tire_spec: TireSpec;
@@ -35,8 +35,8 @@ export interface Brand {
   id: number;
   slug: string;
   name: string;
-  description: null;
-  logo: null;
+  description: string | null;
+  logo: string | null;
   country: string;
   is_active: boolean;
 }
@@ -67,5 +67,5 @@ export interface ICategory {
   name: string,
   description: string | null,
   product_type: string,
-  icon: null
+  icon: string | null
 }

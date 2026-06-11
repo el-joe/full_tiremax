@@ -14,6 +14,9 @@ import 'swiper/css/free-mode';
 import Header from "@/components/layout/Header";
 import { ChakraUiProvider } from "@/providers/ChakraUiProvider";
 import Footer from "@/components/layout/Footer"
+import { CartProvider } from "@/providers/CartProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
+import { FavProvider } from "@/providers/FavProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,10 +59,16 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <ReactQueryProvider>
             <ChakraUiProvider>
-              <Toaster position="bottom-right" />
-              <Header />
-              <main className="md:pt-26">{children}</main>
-              <Footer />
+              <AuthProvider>
+                <FavProvider>
+                  <CartProvider>
+                    <Toaster position="bottom-right" />
+                    <Header />
+                    <main className="md:pt-26">{children}</main>
+                    <Footer />
+                  </CartProvider>
+                </FavProvider>
+              </AuthProvider>
             </ChakraUiProvider>
           </ReactQueryProvider>
         </NextIntlClientProvider>

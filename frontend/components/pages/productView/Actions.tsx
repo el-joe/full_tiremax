@@ -1,6 +1,8 @@
 "use client"
 import { CartPlusIcon, HeartIcon } from '@/components/Icons'
 import CurrencySymbol from '@/components/ui/CurrencySymbol'
+import { useCartContext } from '@/providers/CartProvider'
+import { useFavContext } from '@/providers/FavProvider'
 import { ICustomerCart, IProduct } from '@/types'
 import axiosInstance from '@/utils/axiosInstance'
 import { Box, Button, HStack, IconButton, Text } from '@chakra-ui/react'
@@ -16,26 +18,36 @@ type Props = {
 
 const Actions = ({ product }: Props) => {
     const t = useTranslations("productView")
+    const { addOrUpdateItem } = useCartContext()
+    const { toggleFavorite } = useFavContext()
     // add to cart mutation
-    const { mutate: addToCart, isPending: isAddingToCart } = useMutation({
-        mutationKey: ['addToCart'],
-        mutationFn: async (body: { product_id: number, quantity: number }) => {
-            await axiosInstance.post<{ data: ICustomerCart }>('cart/items', body)
-        },
-        onError: (err: AxiosError) => {
-            toast.error("Oops! something want wrong")
-        }
-    })
+    // const { mutate: addToCart, isPending: isAddingToCart } = useMutation({
+    //     mutationKey: ['addToCart'],
+    //     mutationFn: async (body: { product_id: number, quantity: number }) => {
+    //         await axiosInstance.post<{ data: ICustomerCart }>('cart/items', body)
+    //     },
+    //     onError: (err: AxiosError) => {
+    //         if (err.status === 401) {
+    //             toast.error("You need to login at first")
+    //         } else {
+    //             toast.error("Oops! something want wrong")
+    //         }
+    //     }
+    // })
     // add to fav mutation
-    const { mutate: addToFav, isPending: isAddingToFav } = useMutation({
-        mutationKey: ['addToCart'],
-        mutationFn: async (productId: number) => {
-            await axiosInstance.post<{ data: ICustomerCart }>(`favorites/${productId}/toggle`)
-        },
-        onError: (err: AxiosError) => {
-            toast.error("Oops! something want wrong")
-        }
-    })
+    // const { mutate: addToFav, isPending: isAddingToFav } = useMutation({
+    //     mutationKey: ['addToCart'],
+    //     mutationFn: async (productId: number) => {
+    //         await axiosInstance.post<{ data: ICustomerCart }>(`favorites/${productId}/toggle`)
+    //     },
+    //     onError: (err: AxiosError) => {
+    //         if (err.status === 401) {
+    //             toast.error("You need to login at first")
+    //         } else {
+    //             toast.error("Oops! something want wrong")
+    //         }
+    //     }
+    // })
     return (
         <HStack justify={"space-between"} py={"16px"} bg={"gray-4"} position={"absolute"} bottom={0} insetX={0} px={"24px"}>
             <Box>
@@ -47,9 +59,9 @@ const Actions = ({ product }: Props) => {
             </Box>
             <HStack gap={"12px"}>
                 {/* add to cart button */}
-                <Button loading={isAddingToCart} rounded={"8px"} fontSize={{ base: "11px", md: "16px" }} p={{ base: "8px", md: "11px", xl: "16px" }} h={"auto"} onClick={() => addToCart({ product_id: product.id, quantity: 1 })}><CartPlusIcon />{t("addToCart")}</Button>
+                <Button rounded={"8px"} fontSize={{ base: "11px", md: "16px" }} p={{ base: "8px", md: "11px", xl: "16px" }} h={"auto"} onClick={() => addOrUpdateItem(product, 1)}><CartPlusIcon />{t("addToCart")}</Button>
                 {/* add to fav button */}
-                <IconButton loading={isAddingToFav} rounded={"8px"} fontSize={{ base: "11px", md: "16px" }} p={{ base: "8px", md: "11px", xl: "16px" }} h={"auto"} onClick={() => addToFav(product.id)}><HeartIcon /></IconButton>
+                <IconButton rounded={"8px"} fontSize={{ base: "11px", md: "16px" }} p={{ base: "8px", md: "11px", xl: "16px" }} h={"auto"} onClick={() => toggleFavorite(product)}><HeartIcon /></IconButton>
             </HStack>
         </HStack>
     )
