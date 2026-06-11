@@ -1,9 +1,11 @@
 
+"use client"
 import { ICustomerCart, IProduct } from "@/types";
 import { ICartItem } from "@/types/customerCart.type";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -19,6 +21,7 @@ const EMPTY_CART: ICustomerCart = {
 };
 
 export const useCart = () => {
+    const t = useTranslations()
     const [cart, setCart] = useState<ICustomerCart>(() => {
         try {
             return JSON.parse(localStorage.getItem(LOCAL_STORAGE_CART_KEY) ?? "null") ?? EMPTY_CART;
@@ -109,10 +112,11 @@ export const useCart = () => {
                 subtotal,
             };
         });
-        toast.success("product added to cart")
-    }, []);
+        toast.success(`"${product.name}". ${t('addedToTheCart')}`)
+    }, [t]);
 
     const removeItem = useCallback((productId: number) => {
+        const removedItem = cart.items.find(i => i.product_id === productId)
         setCart(prev => {
             const items = prev.items.filter(i => i.product_id !== productId);
             const subtotal = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0);
@@ -124,7 +128,8 @@ export const useCart = () => {
                 subtotal,
             };
         });
-    }, []);
+        toast.success(`"${removedItem?.product.name}". ${t("removedFromTheCart")}`)
+    }, [cart.items, t]);
 
     const clearCart = useCallback(() => setCart(EMPTY_CART), []);
 

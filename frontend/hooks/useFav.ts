@@ -2,10 +2,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ICustomerFav, IProduct } from "@/types";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const LOCAL_STORAGE_KEY = "customerFavorites";
 
 export const useFavorites = () => {
+    const t = useTranslations()
     const [favorites, setFavorites] = useState<ICustomerFav[]>(() => {
         try {
             const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -37,15 +39,15 @@ export const useFavorites = () => {
 
             return [...prev, product];
         });
-        toast.success(`${product.name} added from your favorites`)
-    }, []);
+        toast.success(`"${product.name}". ${t("addedToYourFavorites")}`)
+    }, [t]);
 
     const removeFavorite = useCallback((productId: number) => {
         setFavorites((prev) =>
             prev.filter((item) => item.id !== productId)
         );
-        toast.success(`${favorites.find(i => i.id === productId)?.name} removed from your favorites`)
-    }, [favorites]);
+        toast.success(`"${favorites.find(i => i.id === productId)?.name}". ${t("removedFromYourFavorites")}`)
+    }, [favorites, t]);
 
     const toggleFavorite = useCallback((product: IProduct) => {
         const exists = favorites.some((item) => item.id === product.id);

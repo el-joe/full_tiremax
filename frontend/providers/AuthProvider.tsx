@@ -1,6 +1,6 @@
 "use client"
 import { useAuth } from "@/hooks/useAuth";
-import { IProduct, IUserProfile } from "@/types";
+import { IUserProfile } from "@/types";
 import { createContext, useContext } from "react";
 
 interface IAuthContext {

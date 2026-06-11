@@ -169,5 +169,9 @@
         "addToCart": "Add to cart"
     },
     "iraqiDinar": "Iraqi Dinar",
-    "iqd": "IQD"
+    "iqd": "IQD",
+    "addedToYourFavorites": "Added to your favorites",
+    "removedFromYourFavorites": "Removed from your favorites",
+    "addedToTheCart": "Added to the cart",
+    "removedFromTheCart": "Removed from the cart"
 }

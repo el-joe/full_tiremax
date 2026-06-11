@@ -7,6 +7,8 @@ import { Tooltip } from '../ui/tooltip'
 import { useLocale, useTranslations } from 'next-intl'
 import CurrencySymbol from '../ui/CurrencySymbol'
 import { Link } from '@/i18n/navigation'
+import { useFavContext } from '@/providers/FavProvider'
+import { useCartContext } from '@/providers/CartProvider'
 
 type Props = {
     product: IProduct
@@ -14,6 +16,8 @@ type Props = {
 const ProductCard = ({ product }: Props) => {
     const t = useTranslations()
     const locale = useLocale()
+    const { isFavorite, toggleFavorite } = useFavContext()
+    const { addOrUpdateItem } = useCartContext()
     return (
         <Link href={`/store/${product.id}`}>
             <Card.Root
@@ -26,7 +30,7 @@ const ProductCard = ({ product }: Props) => {
                 p={{ base: "9px", md: "14px", xl: "19px", "2xl": "24px" }}
                 border="none"
                 className='shadow-[0px_8px_10px_-6px_rgba(26,28,28,0.05)] shadow-[0px_20px_25px_-5px_rgba(26,28,28,0.05)]'
-                h={"auto"} >
+                h={"full"} >
                 <Box p={{ base: "6px", md: "9px", xl: "12px", "2xl": "16px" }}
                     bg={"#EEEEEE"}
                     rounded={{ base: "6px", md: "12px", xl: "16px" }}
@@ -42,7 +46,11 @@ const ProductCard = ({ product }: Props) => {
                         p={{ base: "4px" }}
                         minW={"auto"}
                         minH={"auto"}
-                        h={"auto"}><HeartIcon strokeWidth={"4"} size={{ base: "xs", md: "md" }} /></IconButton>
+                        onClick={(e) => {
+                            e.preventDefault()
+                            toggleFavorite(product)
+                        }}
+                        h={"auto"}><HeartIcon strokeWidth={"4"} fill={isFavorite(product.id) ? "primary" : "none"} size={{ base: "xs", md: "md" }} /></IconButton>
                     {/* badge */}
                     {!!product.badges.length &&
                         <CustomBadge content={product.badges[0]} />
@@ -75,7 +83,8 @@ const ProductCard = ({ product }: Props) => {
                             {t("iqd")}
                         </Text>}
                     </VStack>
-                    <IconButton variant="solid" rounded={"8px"} p={{ base: "8px" }} minW={"auto"} minH={"auto"} h={"auto"}><CartPlusIcon size={{ base: "xs", md: "sm", xl: "xl" }} /></IconButton>
+                    {/* add to cart button */}
+                    <IconButton variant="solid" rounded={"8px"} p={{ base: "8px" }} minW={"auto"} minH={"auto"} h={"auto"} onClick={(e) => { e.preventDefault(); addOrUpdateItem(product, 1) }}><CartPlusIcon size={{ base: "xs", md: "sm", xl: "xl" }} /></IconButton>
                 </Card.Footer>
             </Card.Root>
         </Link>

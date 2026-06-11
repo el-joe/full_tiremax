@@ -169,5 +169,9 @@
         "addToCart": "إضافة إلى السلة"
     },
     "iraqiDinar": "دينار عراقي",
-    "iqd": "د.ع"
+    "iqd": "د.ع",
+    "addedToYourFavorites": "تمت الإضافة إلى المفضلة",
+    "removedFromYourFavorites": "تمت الإزالة من المفضلة",
+    "addedToTheCart": "تمت الإضافة إلى سلة التسوق",
+    "removedFromTheCart": "تمت الإزالة من سلة التسوق"
 }

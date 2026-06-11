@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { EffectFade, FreeMode, Thumbs } from "swiper/modules"
 import type { Swiper as SwiperType } from 'swiper/types'
 import { BadgeBestIcon, BestPriceCircleIcon, NewIcon, PercentageCircleIcon } from '@/components/Icons'
-import { zIndex } from '@/theme/tokens/z-index'
 
 const images = ["/images/product-image.jpg",
     "/images/product-image2.jpg",
