@@ -17,6 +17,7 @@
                     <th class="px-4 py-3 text-start">Total</th>
                     <th class="px-4 py-3 text-start">Status</th>
                     <th class="px-4 py-3 text-start">Date</th>
+                    <th class="px-4 py-3 text-start">Daftra</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -32,6 +33,18 @@
                         <td class="px-4 py-3"><span
                                 class="px-2 py-0.5 bg-stone-800 rounded-full text-xs">{{ $o->status }}</span></td>
                         <td class="px-4 py-3 text-stone-400 text-xs">{{ $o->created_at->format('Y-m-d H:i') }}</td>
+                        <td class="px-4 py-3">
+                            @if ($o->daftra_invoice_id)
+                                @if ($o->daftra_invoice_url)
+                                    <a href="{{ $o->daftra_invoice_url }}" target="_blank"
+                                        class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono hover:underline">#{{ $o->daftra_invoice_id }}</a>
+                                @else
+                                    <span class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono">#{{ $o->daftra_invoice_id }}</span>
+                                @endif
+                            @else
+                                <span class="text-stone-600 text-xs">—</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="view({{ $o->id }})" class="text-yellow-500 text-xs me-3">View</button>
                             <button wire:click="confirmDelete({{ $o->id }})"
@@ -40,7 +53,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
+                        <td colspan="8" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -104,6 +117,18 @@
                             class="font-bold">{{ number_format($viewing->total) }}</span>
                     </div>
                 </div>
+
+                @if ($viewing->daftra_invoice_id)
+                    <div class="border-t border-stone-800 pt-3 flex items-center gap-3">
+                        <span class="text-xs text-stone-400">Daftra Invoice:</span>
+                        @if ($viewing->daftra_invoice_url)
+                            <a href="{{ $viewing->daftra_invoice_url }}" target="_blank"
+                                class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono hover:underline">#{{ $viewing->daftra_invoice_id }}</a>
+                        @else
+                            <span class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono">#{{ $viewing->daftra_invoice_id }}</span>
+                        @endif
+                    </div>
+                @endif
 
                 <div class="border-t border-stone-800 pt-3">
                     <h4 class="font-bold text-stone-200 mb-2">Change status</h4>

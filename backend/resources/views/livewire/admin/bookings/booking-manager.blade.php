@@ -28,6 +28,7 @@
                     <th class="px-4 py-3 text-start">Branch</th>
                     <th class="px-4 py-3 text-start">Scheduled</th>
                     <th class="px-4 py-3 text-start">Status</th>
+                    <th class="px-4 py-3 text-start">Daftra</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -51,12 +52,19 @@
                                 x-on:select-change="$wire.changeStatus({{ $b->id }}, $event.detail.value)"
                             />
                         </td>
+                        <td class="px-4 py-3">
+                            @if ($b->daftra_invoice_id)
+                                <span class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono">#{{ $b->daftra_invoice_id }}</span>
+                            @else
+                                <span class="text-stone-600 text-xs">—</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-end"><button wire:click="confirmDelete({{ $b->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button></td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
+                        <td colspan="8" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
                     </tr>
                 @endforelse
             </tbody>
