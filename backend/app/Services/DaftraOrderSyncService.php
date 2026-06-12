@@ -148,7 +148,14 @@ class DaftraOrderSyncService
             'address' => $order->shipping_address ?? ($customer?->address ?? ''),
         ]);
 
-        return $clientData['id'] ?? $clientData['Client']['id'] ?? 0;
+        $daftraId = $clientData['id'] ?? $clientData['Client']['id'] ?? 0;
+
+        // Persist daftra_id on the customer so future orders skip the search
+        if ($daftraId && $customer && !$customer->daftra_id) {
+            $customer->update(['daftra_id' => (string) $daftraId]);
+        }
+
+        return $daftraId;
     }
 
     /**

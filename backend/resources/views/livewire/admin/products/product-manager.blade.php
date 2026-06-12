@@ -22,6 +22,7 @@
                     <th class="px-4 py-3 text-start">Type</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.price') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.stock') }}</th>
+                    <th class="px-4 py-3 text-start">Daftra</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -41,6 +42,13 @@
                         <td class="px-4 py-3 {{ $p->stock <= $p->low_stock_threshold ? 'text-amber-400' : '' }}">
                             {{ $p->stock }}
                         </td>
+                        <td class="px-4 py-3">
+                            @if ($p->daftra_id)
+                                <span class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono">#{{ $p->daftra_id }}</span>
+                            @else
+                                <span class="text-stone-600 text-xs">—</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="toggleActive({{ $p->id }})"
                                 class="text-xs me-2 {{ $p->is_active ? 'text-emerald-400' : 'text-stone-500' }}">
@@ -54,7 +62,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
+                        <td colspan="9" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
                     </tr>
                 @endforelse
             </tbody>

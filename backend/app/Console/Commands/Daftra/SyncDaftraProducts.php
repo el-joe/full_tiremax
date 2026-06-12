@@ -25,7 +25,7 @@ class SyncDaftraProducts extends Command
         }
 
         $limit = (int) $this->option('limit');
-        $page  = $this->option('page') ? (int) $this->option('page') : null;
+        $page = $this->option('page') ? (int) $this->option('page') : null;
 
         if ($page !== null) {
             return $this->syncSinglePage($service, $page, $limit);
@@ -54,7 +54,7 @@ class SyncDaftraProducts extends Command
         $bar = null;
 
         $result = $service->syncAll($limit, function (int $page, array $pageResult) use (&$bar) {
-            $pageCount    = (int) ($pageResult['pagination']['page_count']   ?? 1);
+            $pageCount = (int) ($pageResult['pagination']['page_count'] ?? 1);
             $totalResults = (int) ($pageResult['pagination']['total_results'] ?? 0);
 
             if ($bar === null && $pageCount > 1) {
@@ -91,8 +91,8 @@ class SyncDaftraProducts extends Command
 
         $this->line(sprintf(
             '  Page <fg=cyan>%d/%d</>  synced=<fg=green>%d</>  errors=<fg=red>%d</>  total=%d',
-            $pag['page']         ?? $page,
-            $pag['page_count']   ?? '?',
+            $pag['page'] ?? $page,
+            $pag['page_count'] ?? '?',
             $result['synced'],
             $result['errors'],
             $pag['total_results'] ?? '?'

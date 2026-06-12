@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderPlaced;
 use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\Governorate;
@@ -117,6 +118,8 @@ class OrderService
             ]);
 
             $this->cartService->clear($customer);
+
+            OrderPlaced::dispatch($order);
 
             return $order->load('items.product', 'governorate', 'branch');
         });

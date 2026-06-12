@@ -14,6 +14,7 @@
                     <th class="px-4 py-3 text-start">Email</th>
                     <th class="px-4 py-3 text-start">Orders</th>
                     <th class="px-4 py-3 text-start">Status</th>
+                    <th class="px-4 py-3 text-start">Daftra</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -28,12 +29,19 @@
                         <td class="px-4 py-3"><button wire:click="toggleActive({{ $c->id }})"
                                 class="px-2 py-0.5 rounded-full text-xs {{ $c->is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-stone-700' }}">{{ $c->is_active ? 'Active' : 'Inactive' }}</button>
                         </td>
+                        <td class="px-4 py-3">
+                            @if ($c->daftra_id)
+                                <span class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono">#{{ $c->daftra_id }}</span>
+                            @else
+                                <span class="text-stone-600 text-xs">—</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-end"><button wire:click="confirmDelete({{ $c->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button></td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
+                        <td colspan="8" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
                     </tr>
                 @endforelse
             </tbody>

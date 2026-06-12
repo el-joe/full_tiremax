@@ -17,6 +17,7 @@
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.name') }}</th>
                     <th class="px-4 py-3 text-start">Type</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
+                    <th class="px-4 py-3 text-start">Daftra</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -29,6 +30,13 @@
                         <td class="px-4 py-3"><span
                                 class="px-2 py-0.5 rounded-full text-xs {{ $c->is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-stone-700 text-stone-300' }}">{{ $c->is_active ? __('messages.admin.active') : __('messages.admin.inactive') }}</span>
                         </td>
+                        <td class="px-4 py-3">
+                            @if ($c->daftra_id)
+                                <span class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono">#{{ $c->daftra_id }}</span>
+                            @else
+                                <span class="text-stone-600 text-xs">—</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="edit({{ $c->id }})"
                                 class="text-yellow-500 hover:underline text-xs me-3">{{ __('messages.admin.edit') }}</button>
@@ -38,7 +46,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
+                        <td colspan="6" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
                     </tr>
                 @endforelse
             </tbody>

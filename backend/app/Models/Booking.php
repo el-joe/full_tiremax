@@ -25,6 +25,7 @@ class Booking extends Model
         'status',
         'customer_notes',
         'admin_notes',
+        'daftra_invoice_id',
     ];
 
     protected $casts = [
