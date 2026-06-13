@@ -62,7 +62,7 @@ export default async function RootLayout({
               <AuthProvider>
                 <FavProvider>
                   <CartProvider>
-                    <Toaster position="bottom-right" toastOptions={{ duration: 6000 }} />
+                    <Toaster position="bottom-right" toastOptions={{ duration: 6000, }} />
                     <Header />
                     <main className="md:pt-26">{children}</main>
                     <Footer />

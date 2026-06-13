@@ -168,6 +168,16 @@
         "total": "Total",
         "addToCart": "Add to cart"
     },
+    "cartAndPayment": {
+        "shoppingCart": "Shopping cart",
+        "orderSummary": "Order summary",
+        "subtotal": "Subtotal",
+        "proceedToCheckout": "Procid to checkout",
+        "flexible72HourReturnGuarantee": "Flexible 72-Hour Return Guarantee",
+        "easyReturnsAndExchangesDescription": "Your satisfaction is protected! Enjoy easy returns and exchanges.",
+        "sixMonthAfterSalesSupport": "6-Month After-Sales Support",
+        "afterSalesSupportDescription": "We're always here for you! Enjoy exceptional after-sales service."
+    },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",
     "addedToYourFavorites": "Added to your favorites",

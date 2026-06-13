@@ -3,14 +3,9 @@ import { CartPlusIcon, HeartIcon } from '@/components/Icons'
 import CurrencySymbol from '@/components/ui/CurrencySymbol'
 import { useCartContext } from '@/providers/CartProvider'
 import { useFavContext } from '@/providers/FavProvider'
-import { ICustomerCart, IProduct } from '@/types'
-import axiosInstance from '@/utils/axiosInstance'
+import { IProduct } from '@/types'
 import { Box, Button, HStack, IconButton, Text } from '@chakra-ui/react'
-import { useMutation } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
-import React from 'react'
-import toast from 'react-hot-toast'
 
 type Props = {
     product: IProduct
@@ -20,34 +15,6 @@ const Actions = ({ product }: Props) => {
     const t = useTranslations("productView")
     const { addOrUpdateItem } = useCartContext()
     const { toggleFavorite } = useFavContext()
-    // add to cart mutation
-    // const { mutate: addToCart, isPending: isAddingToCart } = useMutation({
-    //     mutationKey: ['addToCart'],
-    //     mutationFn: async (body: { product_id: number, quantity: number }) => {
-    //         await axiosInstance.post<{ data: ICustomerCart }>('cart/items', body)
-    //     },
-    //     onError: (err: AxiosError) => {
-    //         if (err.status === 401) {
-    //             toast.error("You need to login at first")
-    //         } else {
-    //             toast.error("Oops! something want wrong")
-    //         }
-    //     }
-    // })
-    // add to fav mutation
-    // const { mutate: addToFav, isPending: isAddingToFav } = useMutation({
-    //     mutationKey: ['addToCart'],
-    //     mutationFn: async (productId: number) => {
-    //         await axiosInstance.post<{ data: ICustomerCart }>(`favorites/${productId}/toggle`)
-    //     },
-    //     onError: (err: AxiosError) => {
-    //         if (err.status === 401) {
-    //             toast.error("You need to login at first")
-    //         } else {
-    //             toast.error("Oops! something want wrong")
-    //         }
-    //     }
-    // })
     return (
         <HStack justify={"space-between"} py={"16px"} bg={"gray-4"} position={"absolute"} bottom={0} insetX={0} px={"24px"}>
             <Box>

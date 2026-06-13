@@ -1,7 +1,7 @@
 
 "use client"
 import { ICustomerCart, IProduct } from "@/types";
-import { ICartItem } from "@/types/customerCart.type";
+import { ICartItem, ICartProduct } from "@/types/customerCart.type";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -66,7 +66,7 @@ export const useCart = () => {
         onError,
     });
 
-    const addOrUpdateItem = useCallback((product: IProduct, quantity: number) => {
+    const addOrUpdateItem = useCallback((product: IProduct | ICartProduct, quantity: number) => {
         setCart(prev => {
             const existing = prev.items.find(i => i.product_id === product.id);
 

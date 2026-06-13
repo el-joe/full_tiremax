@@ -62,7 +62,11 @@ const ProductCard = ({ product }: Props) => {
                     <Tooltip content={product.name}>
                         <Card.Title lineClamp={"1"} fontSize={{ base: "12px", md: "15px", xl: "18px" }} lineHeight={{ base: "14px", md: "20px", xl: "28px" }}>{product.name}</Card.Title>
                     </Tooltip>
-                    {product?.tire_spec?.size_string && <Badge fontSize={{ base: "6px", md: "8px", xl: "10px" }} fontWeight={"bold"} rounded="12px" bg="myGray">{product?.tire_spec?.size_string}</Badge>}
+                    <HStack>
+                        {product?.battery_spec?.battery_type && <Badge fontSize={{ base: "6px", md: "8px", xl: "10px" }} fontWeight={"bold"} rounded="12px" bg="myGray">{product?.battery_spec?.battery_type}</Badge>}
+                        {product?.tire_spec?.size_string && <Badge fontSize={{ base: "6px", md: "8px", xl: "10px" }} fontWeight={"bold"} rounded="12px" bg="myGray">{product?.tire_spec?.size_string}</Badge>}
+                        {product?.category?.name && <Badge fontSize={{ base: "6px", md: "8px", xl: "10px" }} fontWeight={"bold"} rounded="12px" bg="myGray">{product?.category?.name}</Badge>}
+                    </HStack>
                     <HStack alignItems={"center"}>
                         <RatingGroup.Root readOnly allowHalf count={5} defaultValue={product.expert_rating} size={{ base: "xs", md: "sm" }} colorPalette={"yellow"}>
                             <RatingGroup.HiddenInput />

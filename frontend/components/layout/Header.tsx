@@ -39,7 +39,7 @@ const Header = () => {
             py={{ base: "12px" }}
             bg={{ base: "white", md: "none" }}>
             <HeaderButton onClick={toggleLang} >{t("locale")}</HeaderButton>
-            <HeaderButton href={"/"} ><CartIcon /></HeaderButton>
+            <HeaderButton href={"/cart"} ><CartIcon /></HeaderButton>
             <HeaderButton href={"/"}><BellIcon /></HeaderButton>
             <HeaderButton href={"/"}><UserCircleIcon /></HeaderButton>
             <HeaderButton href={"/"}><HeartIcon /></HeaderButton>
