@@ -27,9 +27,11 @@ const RangeSlider = ({
   ...rest
 }: Props & Slider.RootProps & React.RefAttributes<HTMLDivElement>) => {
   const [realValues, setRealValues] = useState<number[]>(defaultValue);
-  const [rangeValues, setRangeValues] = useState<number[]>(getRangeValue(defaultValue, maxVal))
+  const [rangeValues, setRangeValues] = useState<number[]>(
+    getRangeValue(defaultValue, maxVal),
+  );
   const changeRangeValue = (newRangeValue: number[]) => {
-    setRangeValues(newRangeValue)
+    setRangeValues(newRangeValue);
     const newRealValues = newRangeValue.map(
       (RangeV) => +((RangeV / 100) * maxVal).toFixed(),
     );
@@ -37,12 +39,14 @@ const RangeSlider = ({
   };
   useEffect(() => {
     onChange?.(realValues);
-    return () => { };
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [realValues]);
   return (
     <Field.Root gap={"16px"}>
-      <Field.Label fontWeight={"semibold"} fontSize={"14px"}>{label}</Field.Label>
+      <Field.Label fontWeight={"semibold"} fontSize={"14px"}>
+        {label}
+      </Field.Label>
       <Slider.Root
         step={step}
         w="full"
@@ -61,11 +65,20 @@ const RangeSlider = ({
           <Slider.Track h={"4px"}>
             <Slider.Range bg={"primary"} />
           </Slider.Track>
-          <Slider.Thumbs borderColor={"primary"} w={"10px"} h={"18px"} cursor={"pointer"} />
+          <Slider.Thumbs
+            borderColor={"primary"}
+            w={"10px"}
+            h={"18px"}
+            cursor={"pointer"}
+          />
         </Slider.Control>
         <HStack justify={"space-between"}>
-          <Text><CurrencySymbol /> {realValues[0]}</Text>
-          <Text><CurrencySymbol /> {realValues[1]}</Text>
+          <Text>
+            <CurrencySymbol /> {realValues[0]}
+          </Text>
+          <Text>
+            <CurrencySymbol /> {realValues[1]}
+          </Text>
         </HStack>
       </Slider.Root>
     </Field.Root>

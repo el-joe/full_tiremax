@@ -51,7 +51,7 @@ export const PasswordInput = React.forwardRef<
     defaultVisible,
     visible: visibleProp,
     onVisibleChange,
-    visibilityIcon = { on: "eo", off: 'ec' },
+    visibilityIcon = { on: "eo", off: "ec" },
     ...rest
   } = props;
 

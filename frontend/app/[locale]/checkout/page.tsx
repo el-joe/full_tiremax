@@ -1,11 +1,10 @@
-import CartSummary from "@/components/pages/cart/CartSummary";
-import ItemsList from "@/components/pages/cart/ItemsList";
+import CheckoutSummary from "@/components/pages/checkout/CheckoutSummary";
 import Container from "@/components/ui/Container";
 import { Heading, HStack } from "@chakra-ui/react";
 import { getTranslations } from "next-intl/server";
 import React from "react";
 
-export default async function page() {
+const page = async () => {
   const t = await getTranslations("cartAndPayment");
   return (
     <Container>
@@ -23,9 +22,10 @@ export default async function page() {
         justify={"center"}
         flexWrap={"wrap"}
       >
-        <ItemsList />
-        <CartSummary />
+        <CheckoutSummary />
       </HStack>
     </Container>
   );
-}
+};
+
+export default page;

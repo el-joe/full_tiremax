@@ -15,7 +15,7 @@ import { useTranslations } from "next-intl";
 import { GoShieldCheck } from "react-icons/go";
 import { MdOutlineHandshake } from "react-icons/md";
 
-const CartSummary = () => {
+const CheckoutSummary = () => {
   const t = useTranslations("cartAndPayment");
   const { cart, totalQuantity } = useCartContext();
   if (!totalQuantity) {
@@ -128,7 +128,7 @@ const CartSummary = () => {
   );
 };
 
-export default CartSummary;
+export default CheckoutSummary;
 
 {
   /* <MdOutlineHandshake /> */

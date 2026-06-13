@@ -9,16 +9,18 @@ import { IHomeResponse } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
 
 export default async function Home() {
-  const endpoint = "home"
-  const { data } = await axiosInstance<{ data: IHomeResponse }>(endpoint)
-  return <>
-    <HeroSection />
-    {/* Recommended Tires for You section */}
-    <RecommendedSection data={data.data.featured} />
-    <BannersGridSection />
-    <ReservationSection />
-    <RecommendedOffersSection data={data.data.offers} />
-    <WhyUsSection />
-    <ContactUsSection />
-  </>;
+  const endpoint = "home";
+  const { data } = await axiosInstance<{ data: IHomeResponse }>(endpoint);
+  return (
+    <>
+      <HeroSection />
+      {/* Recommended Tires for You section */}
+      <RecommendedSection data={data.data.featured} />
+      <BannersGridSection />
+      <ReservationSection />
+      <RecommendedOffersSection data={data.data.offers} />
+      <WhyUsSection />
+      <ContactUsSection />
+    </>
+  );
 }

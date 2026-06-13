@@ -41,12 +41,23 @@ const Input: React.FC<IInputProps> = ({
     type === "password" ? (
       <PasswordInput rounded={"16px"} bg="#F9FAFB" {...register} {...rest} />
     ) : (
-      <ChakraInput rounded={"16px"} bg="#F9FAFB" type={type} size={size} {...register} {...rest} />
+      <ChakraInput
+        rounded={"16px"}
+        bg="#F9FAFB"
+        type={type}
+        size={size}
+        {...register}
+        {...rest}
+      />
     );
 
   return (
     <Field.Root invalid={err} {...rootProps}>
-      {label && <Field.Label fontWeight={"semibold"} fontSize={"14px"}>{label}</Field.Label>}
+      {label && (
+        <Field.Label fontWeight={"semibold"} fontSize={"14px"}>
+          {label}
+        </Field.Label>
+      )}
       <InputGroup startElement={startElement} endElement={endElement}>
         {inputElement}
       </InputGroup>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
@@ -8,7 +8,7 @@ import { LeftArrowIcon } from "../Icons";
 import { useLocale } from "next-intl";
 import { resolveApiPagination } from "@/helpers/resolveApiPagination";
 
-const PREFIX = process.env.NEXT_PUBLIC_PAGINATION_PREFIX ?? "paginate"
+const PREFIX = process.env.NEXT_PUBLIC_PAGINATION_PREFIX ?? "paginate";
 
 type Props = {
   currentPage: number;
@@ -23,13 +23,12 @@ const Pagination = ({
   pageSize,
   onPageChange,
 }: Props) => {
-  const locale = useLocale()
+  const locale = useLocale();
   const router = useRouter();
   const pathName = usePathname();
   const params = useSearchParams();
   const current = new URLSearchParams(Array.from(params.entries()));
-  const dir = locale === "ar" ? "rtl" : "ltr"
-
+  const dir = locale === "ar" ? "rtl" : "ltr";
 
   const handlePageChange = (page: number) => {
     current.set(`${PREFIX}_page`, String(page));
@@ -39,13 +38,13 @@ const Pagination = ({
 
   useEffect(() => {
     (async () => {
-      const cp = await resolveApiPagination()
-      if (+cp?.page > (itemsCount / pageSize)) {
-        handlePageChange(1)
+      const cp = await resolveApiPagination();
+      if (+cp?.page > itemsCount / pageSize) {
+        handlePageChange(1);
       }
-    })()
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemsCount, pageSize])
+  }, [itemsCount, pageSize]);
 
   return (
     <>
@@ -58,22 +57,44 @@ const Pagination = ({
       >
         <ButtonGroup size="sm">
           <ChakraPagination.PrevTrigger asChild>
-            <IconButton w={"40px"} h="40px" rounded="8px" bg="gray-4" fontWeight={"semibold"} color="black" >
-              <LeftArrowIcon rotate={dir === "rtl" ? '180deg' : ""} />
+            <IconButton
+              w={"40px"}
+              h="40px"
+              rounded="8px"
+              bg="gray-4"
+              fontWeight={"semibold"}
+              color="black"
+            >
+              <LeftArrowIcon rotate={dir === "rtl" ? "180deg" : ""} />
             </IconButton>
           </ChakraPagination.PrevTrigger>
 
           <ChakraPagination.Items
             render={(page) => (
-              <IconButton w={"40px"} h="40px" rounded="8px" bg="gray-4" fontWeight={"semibold"} _selected={{ bg: "primary" }} color="black" >
+              <IconButton
+                w={"40px"}
+                h="40px"
+                rounded="8px"
+                bg="gray-4"
+                fontWeight={"semibold"}
+                _selected={{ bg: "primary" }}
+                color="black"
+              >
                 {page.value}
               </IconButton>
             )}
           />
 
           <ChakraPagination.NextTrigger asChild>
-            <IconButton w={"40px"} h="40px" rounded="8px" bg="gray-4" fontWeight={"semibold"} color="black">
-              <LeftArrowIcon rotate={dir === "rtl" ? "" : '180deg'} />
+            <IconButton
+              w={"40px"}
+              h="40px"
+              rounded="8px"
+              bg="gray-4"
+              fontWeight={"semibold"}
+              color="black"
+            >
+              <LeftArrowIcon rotate={dir === "rtl" ? "" : "180deg"} />
             </IconButton>
           </ChakraPagination.NextTrigger>
         </ButtonGroup>
