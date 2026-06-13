@@ -22,7 +22,7 @@ const CartSummary = () => {
                 <Text fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }} fontWeight={"bold"} color={"primary"} ps={"12px"}>{cart.subtotal.toLocaleString()} <CurrencySymbol /></Text>
             </Box>
             <Link href={"checkout"} className='w-full' ><Button w={"full"} shadow={"0px 15px 30px 0px #FFB80040"} py={{ base: "18px", lg: "20px", "2xl": "24px" }} rounded={"16px"} fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }} fontWeight={"extrabold"}>{t("proceedToCheckout")}</Button></Link>
-            <VStack gap={"24px"}>
+            <VStack gap={"24px"} align={"start"}>
                 <HStack gap={{ base: "14px", lg: "18px", "2xl": "20px" }}>
                     <Center minW={{ base: "28px", lg: "32px", "2xl": "46px" }} h={{ base: "30px", lg: "34px", "2xl": "48px" }} bg={"primary"} rounded={"16px"} color={"white"} fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}><GoShieldCheck strokeWidth={"1px"} /></Center>
                     <Box>

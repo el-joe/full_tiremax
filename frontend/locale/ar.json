@@ -168,6 +168,16 @@
         "total": "المجموع الكلي",
         "addToCart": "إضافة إلى السلة"
     },
+    "cartAndPayment": {
+        "shoppingCart": "سلة التسوق",
+        "orderSummary": "ملخص الطلب",
+        "subtotal": "الإجمالي الفرعي",
+        "proceedToCheckout": "تابع عمليه الشراء",
+        "flexible72HourReturnGuarantee": "ضمان استرجاع مرن خلال 72 ساعة",
+        "easyReturnsAndExchangesDescription": "حقك محفوظ! إمكانية الإرجاع والتبديل بكل سهولة.",
+        "sixMonthAfterSalesSupport": "دعم ما بعد البيع لمدة 6 شهور",
+        "afterSalesSupportDescription": "نحن معك دائماً! خدمات ما بعد البيع المتميزة."
+    },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",
     "addedToYourFavorites": "تمت الإضافة إلى المفضلة",
