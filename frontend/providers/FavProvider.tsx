@@ -7,7 +7,7 @@ interface IFavContext {
   addFavorite: (product: IProduct) => void;
   clearFavorites: () => void;
   favoriteIds: Set<number>;
-  favorites: ICustomerFav[];
+  favorites: IProduct[];
   favoritesCount: number;
   isFavorite: (productId: number) => boolean;
   removeFavorite: (productId: number) => void;

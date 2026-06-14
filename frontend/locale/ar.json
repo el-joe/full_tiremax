@@ -6,7 +6,12 @@
         "reservation": "الحجز",
         "search": "بحث",
         "bookNow": "احجز الآن",
-        "locale": "EN"
+        "locale": "EN",
+        "toggleLang": "Switch to english language",
+        "cart": "سلة التسوق",
+        "notifications": "الإشعارات",
+        "profile": "الملف الشخصي",
+        "favorites": "المفضلة"
     },
     "footer": {
         "footerCompanyDescription": "نحن ملتزمون بتقديم أعلى مستويات الجودة في خدمات الإطارات وصيانة السيارات لعملائنا في العراق، مع ماركات عالمية وأداء مضمون.",

@@ -17,6 +17,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Input from "../ui/Input";
 import useToggleLang from "@/hooks/useToggleLang";
+import { Tooltip } from "../ui/tooltip";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -28,7 +29,7 @@ const Header = () => {
         <HStack
           justify={"center"}
           mb={{ base: "16px", xl: "30px", "2xl": "40px" }}
-          gap={{ base: "8px", sm: "12px", xl: "20px", "2xl": "38px" }}
+          gap={{ base: "8px", sm: "12px", xl: "20px" }}
           flexWrap={{ base: "wrap" }}
         >
           <Logo />
@@ -82,19 +83,29 @@ const Header = () => {
             py={{ base: "12px" }}
             bg={{ base: "white", md: "none" }}
           >
-            <HeaderButton onClick={toggleLang}>{t("locale")}</HeaderButton>
-            <HeaderButton href={"/cart"}>
-              <CartIcon />
-            </HeaderButton>
-            <HeaderButton href={"/"}>
-              <BellIcon />
-            </HeaderButton>
-            <HeaderButton href={"/"}>
-              <UserCircleIcon />
-            </HeaderButton>
-            <HeaderButton href={"/"}>
-              <HeartIcon />
-            </HeaderButton>
+            <Tooltip content={t("toggleLang")}>
+              <HeaderButton onClick={toggleLang}>{t("locale")}</HeaderButton>
+            </Tooltip>
+            <Tooltip content={t("cart")}>
+              <HeaderButton href={"/cart"}>
+                <CartIcon />
+              </HeaderButton>
+            </Tooltip>
+            <Tooltip content={t("notifications")}>
+              <HeaderButton href={"/"}>
+                <BellIcon />
+              </HeaderButton>
+            </Tooltip>
+            <Tooltip content={t("profile")}>
+              <HeaderButton href={"/"}>
+                <UserCircleIcon />
+              </HeaderButton>
+            </Tooltip>
+            <Tooltip content={t("favorites")}>
+              <HeaderButton href={"/favorites"}>
+                <HeartIcon />
+              </HeaderButton>
+            </Tooltip>
             <HeaderButton href={"/"}>{t("bookNow")}</HeaderButton>
           </HStack>
         </HStack>
@@ -116,7 +127,7 @@ const HeaderButton = ({ children, href, ...props }: THeaderButtonProps) => {
       <Link href={href}>
         <Button
           rounded={"4xl"}
-          gap={{ base: "1px", md: "12px" }}
+          gap={{ base: "1px", md: "4px" }}
           {...props}
           px={{ base: "4px", xl: "5px", "2xl": "14px" }}
           py={{ base: "2px", md: "8px" }}
@@ -131,7 +142,7 @@ const HeaderButton = ({ children, href, ...props }: THeaderButtonProps) => {
   return (
     <Button
       rounded={"4xl"}
-      gap={{ base: "1px", md: "12px" }}
+      gap={{ base: "1px", md: "4px" }}
       {...props}
       px={{ base: "4px", xl: "5px", "2xl": "14px" }}
       py={{ base: "2px", md: "8px" }}

@@ -6,7 +6,12 @@
         "reservation": "Reservation",
         "search": "Search",
         "bookNow": "Book now",
-        "locale": "ع"
+        "locale": "ع",
+        "toggleLang": "التبديل الي اللغة العربية",
+        "cart": "Cart",
+        "notifications": "Notifications",
+        "profile": "Profile",
+        "favorites": "Favorites"
     },
     "footer": {
         "footerCompanyDescription": "We are committed to delivering the highest standards of quality in tire and vehicle maintenance services to our customers across Iraq, offering world-class brands and guaranteed performance.",
@@ -216,6 +221,10 @@
         "theAddressIsRequired": "The address is required",
         "theAddressMustBeMoreThen12Character": "The address must be more then 12 character",
         "theAddressMustBeLessThen12Character": "The address must be less then 12 character"
+    },
+    "favorites": {
+        "favorites": "Favorites",
+        "savedProductsDescription": "Products you've saved for later."
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",

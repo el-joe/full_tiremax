@@ -8,7 +8,7 @@ const LOCAL_STORAGE_KEY = "customerFavorites";
 
 export const useFavorites = () => {
     const t = useTranslations()
-    const [favorites, setFavorites] = useState<ICustomerFav[]>(() => {
+    const [favorites, setFavorites] = useState<IProduct[]>(() => {
         try {
             const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
             return stored ? JSON.parse(stored) : [];

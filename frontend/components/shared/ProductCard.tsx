@@ -36,7 +36,7 @@ const ProductCard = ({ product }: Props) => {
   const { isFavorite, toggleFavorite } = useFavContext();
   const { addOrUpdateItem } = useCartContext();
   return (
-    <Link href={`/store/${product.id}`}>
+    <Link href={`/store/${product?.id}`}>
       <Card.Root
         //  minW={"137px"}
         //     maxW={"306px"}
@@ -84,17 +84,17 @@ const ProductCard = ({ product }: Props) => {
           >
             <HeartIcon
               strokeWidth={"4"}
-              fill={isFavorite(product.id) ? "primary" : "none"}
+              fill={isFavorite(product?.id) ? "primary" : "none"}
               size={{ base: "xs", md: "md" }}
             />
           </IconButton>
           {/* badge */}
-          {!!product.badges.length && (
-            <CustomBadge content={product.badges[0]} />
+          {!!product?.badges.length && (
+            <CustomBadge content={product?.badges[0]} />
           )}
           <Image
-            src={product.images[0] || "/images/product-image.jpg"}
-            alt={product.name}
+            src={product?.images[0] || "/images/product-image.jpg"}
+            alt={product?.name}
             w={"full"}
             objectFit={"cover"}
           />
@@ -114,15 +114,15 @@ const ProductCard = ({ product }: Props) => {
             textTransform={"uppercase"}
             bg={"myGray"}
           >
-            {product.brand.name}
+            {product?.brand.name}
           </Badge>
-          <Tooltip content={product.name}>
+          <Tooltip content={product?.name}>
             <Card.Title
               lineClamp={"1"}
               fontSize={{ base: "12px", md: "15px", xl: "18px" }}
               lineHeight={{ base: "14px", md: "20px", xl: "28px" }}
             >
-              {product.name}
+              {product?.name}
             </Card.Title>
           </Tooltip>
           <HStack>
@@ -162,7 +162,7 @@ const ProductCard = ({ product }: Props) => {
               readOnly
               allowHalf
               count={5}
-              defaultValue={product.expert_rating}
+              defaultValue={product?.expert_rating}
               size={{ base: "xs", md: "sm" }}
               colorPalette={"yellow"}
             >
@@ -174,7 +174,7 @@ const ProductCard = ({ product }: Props) => {
               fontSize={{ base: "8px", md: "12px" }}
               lineHeight={"16px"}
             >
-              ({product.views_count})
+              ({product?.views_count})
             </Text>
           </HStack>
         </Card.Body>
@@ -192,18 +192,18 @@ const ProductCard = ({ product }: Props) => {
               letterSpacing="tight"
               mt="2"
             >
-              {product.effective_price.toLocaleString()}
+              {product?.effective_price?.toLocaleString()}
               {/* {t("iqd")} */}
               <CurrencySymbol />
             </Text>
-            {product.has_discount && (
+            {product?.has_discount && (
               <Text
                 fontSize={"12px"}
                 fontWeight="bold"
                 textDecoration={"line-through"}
                 color="gray-2"
               >
-                {product.price.toLocaleString()}
+                {product?.price?.toLocaleString()}
                 {t("iqd")}
               </Text>
             )}
