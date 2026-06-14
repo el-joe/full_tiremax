@@ -210,7 +210,12 @@
         "installmentPayment": "Installment payment",
         "exclusiveInstallmentPlan": "An exclusive flexible installment plan.",
         "card": "Card",
-        "paymentViaCreditCard": "Payment via credit card"
+        "paymentViaCreditCard": "Payment via credit card",
+        "confirmOrder": "Confirm order",
+        "selectGovernorateIsRequired": "Select governorate is required",
+        "theAddressIsRequired": "The address is required",
+        "theAddressMustBeMoreThen12Character": "The address must be more then 12 character",
+        "theAddressMustBeLessThen12Character": "The address must be less then 12 character"
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",

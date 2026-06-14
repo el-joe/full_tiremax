@@ -19,7 +19,7 @@ import {
   type CreateOrderInput,
   createOrderSchema,
 } from "@/Schemas/createOrderSchemas";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Input from "@/components/ui/Input";
 import { HTMLInputTypeAttribute, useEffect } from "react";
 import { FaPhoneAlt, FaRegCalendarAlt, FaRegUserCircle } from "react-icons/fa";
@@ -70,6 +70,8 @@ const paymentMethods = [
 ];
 export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
+  const locale = useLocale();
+  const dir = locale === "ar" ? "rtl" : "ltr";
   const {
     register,
     handleSubmit,
@@ -133,7 +135,11 @@ export default function CheckoutForm() {
                 startElement={<FaRegUserCircle />}
                 register={register("customer_name")}
                 err={!!errors?.customer_name?.message}
-                errMes={errors?.customer_name?.message}
+                errMes={
+                  !!errors?.customer_name?.message
+                    ? t(errors?.customer_name?.message)
+                    : ""
+                }
                 h={"auto"}
                 p="16px"
               />
@@ -143,7 +149,11 @@ export default function CheckoutForm() {
                 startElement={<FaPhoneAlt />}
                 register={register("customer_phone")}
                 err={!!errors?.customer_phone?.message}
-                errMes={errors?.customer_phone?.message}
+                errMes={
+                  !!errors.customer_phone?.message
+                    ? t(errors?.customer_phone?.message)
+                    : ""
+                }
                 h="auto"
                 p="16px"
               />
@@ -162,7 +172,11 @@ export default function CheckoutForm() {
                 }
                 name="governorate_id"
                 err={!!errors?.governorate_id?.message}
-                errMes={errors?.governorate_id?.message}
+                errMes={
+                  !!errors.governorate_id?.message
+                    ? t(errors?.governorate_id?.message)
+                    : ""
+                }
                 triggerProps={{
                   bg: "#F9FAFB",
                   h: "auto",
@@ -178,14 +192,20 @@ export default function CheckoutForm() {
                 label={t("fullAddress")}
                 placeholder={t("fullAddressPlaceholder")}
                 err={!!errors?.shipping_address?.message}
-                errMes={errors?.shipping_address?.message}
+                errMes={
+                  !!errors?.shipping_address?.message
+                    ? t(errors?.shipping_address?.message)
+                    : ""
+                }
               />
               <Textarea
                 register={register("notes")}
                 label={t("notes")}
                 placeholder={t("notesPlaceholder")}
                 err={!!errors?.notes?.message}
-                errMes={errors?.notes?.message}
+                errMes={
+                  !!errors?.notes?.message ? t(errors?.notes?.message) : ""
+                }
               />
             </HStack>
           </GroupContainer>
@@ -267,8 +287,9 @@ export default function CheckoutForm() {
                   e.value as CreateOrderInput["payment_method"],
                 );
               }}
+              dir={dir}
             >
-              <RadioCard.Label>
+              <RadioCard.Label dir={dir}>
                 <Heading mb={"40px"} fontSize={"24px"} fontWeight={"extrabold"}>
                   {t("paymentMethod")}
                 </Heading>
@@ -286,6 +307,7 @@ export default function CheckoutForm() {
                     minW={"calc((100% - 40px) / 2)"}
                     maxW={"calc((100% - 40px) / 2)"}
                     rounded={"24px"}
+                    dir={dir}
                   >
                     <RadioCard.ItemHiddenInput />
                     <RadioCard.ItemControl>

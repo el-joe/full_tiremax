@@ -5,8 +5,8 @@ export const createOrderSchema = z
         // type: z.enum(["basra", "delivery"]),
 
         // branch_id: z.number().int().optional(),
-        governorate_id: z.string(),
-        shipping_address: z.string().min(12).max(255),
+        governorate_id: z.string("selectGovernorateIsRequired"),
+        shipping_address: z.string("theAddressIsRequired").min(12, "theAddressMustBeMoreThen12Character").max(255, "theAddressMustBeLessThen12Character"),
 
         payment_method: z.enum(["cod", "card", "transfer"]).default("cod").optional(),
         customer_name: z.string().max(120).optional(),

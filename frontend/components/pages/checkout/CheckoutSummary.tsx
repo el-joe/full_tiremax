@@ -7,6 +7,7 @@ import {
   Center,
   Heading,
   HStack,
+  Image,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -16,10 +17,7 @@ import { MdOutlineHandshake } from "react-icons/md";
 
 const CheckoutSummary = () => {
   const t = useTranslations("cartAndPayment");
-  const { cart, totalQuantity } = useCartContext();
-  if (!totalQuantity) {
-    return <></>;
-  }
+  const { cart } = useCartContext();
   return (
     <VStack
       py={{ base: "14px", lg: "26px", "2xl": "40px" }}
@@ -40,8 +38,40 @@ const CheckoutSummary = () => {
       >
         {t("orderSummary")}
       </Heading>
+      {/* products list */}
+      <VStack align={"stretch"} w={"full"}>
+        {cart.items.map((item) => (
+          <HStack
+            key={item.id}
+            gap="16px"
+            align={"stretch"}
+            justify={"stretch"}
+          >
+            <Image
+              src={item.product.primary_image ?? "/images/product-image.jpg"}
+              alt={item.product.name}
+              w="74px"
+              rounded={"4px"}
+            />
+            <VStack justify={"space-between"} align={"stretch"} flex={1}>
+              <Heading fontSize={"16px"} fontWeight={"bold"}>
+                {item.product.name}
+              </Heading>
+              <Text
+                mt="auto"
+                fontSize={"16px"}
+                fontWeight={"bold"}
+                textAlign={"end"}
+              >
+                {item.product.effective_price.toLocaleString()}
+                <CurrencySymbol />
+              </Text>
+            </VStack>
+          </HStack>
+        ))}
+      </VStack>
       {/* total */}
-      <Box>
+      <HStack justify={"space-between"} w={"full"}>
         <Heading
           fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
           fontWeight={"extrabold"}
@@ -56,7 +86,7 @@ const CheckoutSummary = () => {
         >
           {cart.subtotal.toLocaleString()} <CurrencySymbol />
         </Text>
-      </Box>
+      </HStack>
       {/* processed button */}
       <Button
         w={"full"}
@@ -68,7 +98,7 @@ const CheckoutSummary = () => {
         form="checkoutForm"
         type="submit"
       >
-        {t("proceedToCheckout")}
+        {t("confirmOrder")}
       </Button>
       {/* warranties list */}
       <VStack gap={"24px"} align={"start"}>
@@ -127,6 +157,10 @@ const CheckoutSummary = () => {
           </Box>
         </HStack>
       </VStack>
+      {/* confirm order disclaimer */}
+      <Text fontSize={"12px"} color={"gray-2"}>
+        {t("confirmOrderDisclaimer")}
+      </Text>
     </VStack>
   );
 };
