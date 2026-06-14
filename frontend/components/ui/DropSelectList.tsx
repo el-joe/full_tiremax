@@ -61,16 +61,21 @@ function DropSelectList<T extends FieldValues>({
             <Select.Root
               name={field.name}
               value={field.value}
-              onValueChange={({ value }) => field.onChange(value)}
+              onValueChange={({ value }) => {
+                field.onChange(value[0]);
+              }}
               onInteractOutside={() => field.onBlur()}
               collection={collection}
             >
               <Select.HiddenSelect />
               <Select.Control>
-                <Select.Trigger bg={"gray-4"}>
+                <Select.Trigger bg={"gray-4"} {...triggerProps}>
                   <Select.ValueText placeholder={placeholder} />
                 </Select.Trigger>
                 <Select.IndicatorGroup>
+                  {isLoading && (
+                    <Spinner size="xs" borderWidth="1.5px" color="fg.muted" />
+                  )}
                   <Select.ClearTrigger cursor={"pointer"} />
                   <Select.Indicator />
                 </Select.IndicatorGroup>
@@ -94,7 +99,7 @@ function DropSelectList<T extends FieldValues>({
         <Select.Root {...rest} collection={collection}>
           <Select.HiddenSelect />
           <Select.Control>
-            <Select.Trigger {...triggerProps} bg={"gray-4"}>
+            <Select.Trigger bg={"gray-4"} {...triggerProps}>
               <Select.ValueText placeholder={placeholder} />
             </Select.Trigger>
             <Select.IndicatorGroup>

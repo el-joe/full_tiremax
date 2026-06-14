@@ -17,9 +17,9 @@ export const radioCardSlotRecipe = defineSlotRecipe({
       userSelect: "none",
       position: "relative",
       borderRadius: "l2",
-      _focus: {
-        bg: "colorPalette.muted/20",
-      },
+      bg: "#F9FAFB",
+      // _focus: {
+      // },
       _disabled: {
         opacity: "0.5",
       },
@@ -202,17 +202,17 @@ export const radioCardSlotRecipe = defineSlotRecipe({
           borderWidth: "1px",
           _checked: {
             boxShadow: "0 0 0 1px var(--shadow-color)",
-            boxShadowColor: "colorPalette.solid",
-            borderColor: "colorPalette.solid",
+            boxShadowColor: "{colors.primary}",
+            borderColor: "{colors.primary}",
           },
         },
         itemIndicator: {
           borderWidth: "1px",
           borderColor: "border.emphasized",
           _checked: {
-            bg: "colorPalette.solid",
+            bg: "{colors.primary}",
             color: "colorPalette.contrast",
-            borderColor: "colorPalette.solid",
+            borderColor: "{colors.primary}",
           },
         },
       },

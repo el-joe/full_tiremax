@@ -1,3 +1,4 @@
+import CheckoutForm from "@/components/pages/checkout/CheckoutForm";
 import CheckoutSummary from "@/components/pages/checkout/CheckoutSummary";
 import Container from "@/components/ui/Container";
 import { Heading, HStack } from "@chakra-ui/react";
@@ -14,7 +15,7 @@ const page = async () => {
         fontWeight={"extrabold"}
         mb={{ base: "24px", md: "36px", lg: "40px", "2xl": "60px" }}
       >
-        {t("shoppingCart")}
+        {t("checkout")}
       </Heading>
       <HStack
         gap={{ base: "22px", md: "22px", lg: "30px", "2xl": "48px" }}
@@ -22,6 +23,7 @@ const page = async () => {
         justify={"center"}
         flexWrap={"wrap"}
       >
+        <CheckoutForm />
         <CheckoutSummary />
       </HStack>
     </Container>

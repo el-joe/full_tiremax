@@ -1,6 +1,5 @@
 "use client";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
-import { Link } from "@/i18n/navigation";
 import { useCartContext } from "@/providers/CartProvider";
 import {
   Box,
@@ -33,6 +32,7 @@ const CheckoutSummary = () => {
       align={"start"}
       maxW={"422px"}
     >
+      {/* order summary title */}
       <Heading
         fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
         fontWeight={"extrabold"}
@@ -40,12 +40,13 @@ const CheckoutSummary = () => {
       >
         {t("orderSummary")}
       </Heading>
+      {/* total */}
       <Box>
         <Heading
           fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
           fontWeight={"extrabold"}
         >
-          {t("subtotal")}
+          {t("total")}
         </Heading>
         <Text
           fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
@@ -56,18 +57,20 @@ const CheckoutSummary = () => {
           {cart.subtotal.toLocaleString()} <CurrencySymbol />
         </Text>
       </Box>
-      <Link href={"checkout"} className="w-full">
-        <Button
-          w={"full"}
-          shadow={"0px 15px 30px 0px #FFB80040"}
-          py={{ base: "18px", lg: "20px", "2xl": "24px" }}
-          rounded={"16px"}
-          fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
-          fontWeight={"extrabold"}
-        >
-          {t("proceedToCheckout")}
-        </Button>
-      </Link>
+      {/* processed button */}
+      <Button
+        w={"full"}
+        shadow={"0px 15px 30px 0px #FFB80040"}
+        py={{ base: "18px", lg: "20px", "2xl": "24px" }}
+        rounded={"16px"}
+        fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
+        fontWeight={"extrabold"}
+        form="checkoutForm"
+        type="submit"
+      >
+        {t("proceedToCheckout")}
+      </Button>
+      {/* warranties list */}
       <VStack gap={"24px"} align={"start"}>
         <HStack gap={{ base: "14px", lg: "18px", "2xl": "20px" }}>
           <Center

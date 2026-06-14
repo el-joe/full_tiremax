@@ -3,9 +3,7 @@ import { IProduct } from "@/types";
 import {
   Badge,
   Box,
-  Button,
   Card,
-  FormatNumber,
   HStack,
   IconButton,
   Image,
@@ -56,7 +54,7 @@ const ProductCard = ({ product }: Props) => {
         rounded={{ base: "12px", md: "19px", xl: "26px", "2xl": "32px" }}
         p={{ base: "9px", md: "14px", xl: "19px", "2xl": "24px" }}
         border="none"
-        className="shadow-[0px_8px_10px_-6px_rgba(26,28,28,0.05)] shadow-[0px_20px_25px_-5px_rgba(26,28,28,0.05)]"
+        className="shadow-[0px_8px_10px_-6px_rgba(26,28,28,0.05)]"
         h={"full"}
       >
         <Box
