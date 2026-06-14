@@ -1,5 +1,6 @@
 "use client";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
+import { Link } from "@/i18n/navigation";
 import { useCartContext } from "@/providers/CartProvider";
 import {
   Box,
@@ -27,7 +28,7 @@ const CheckoutSummary = () => {
       shadow={"0px 40px 80px -20px #00000014"}
       borderTop={"3px solid {colors.primary}"}
       flex={1}
-      align={"start"}
+      align={"stretch"}
       maxW={"422px"}
     >
       {/* order summary title */}
@@ -39,39 +40,40 @@ const CheckoutSummary = () => {
         {t("orderSummary")}
       </Heading>
       {/* products list */}
-      <VStack align={"stretch"} w={"full"}>
+      <VStack align={"stretch"}>
         {cart.items.map((item) => (
-          <HStack
-            key={item.id}
-            gap="16px"
-            align={"stretch"}
-            justify={"stretch"}
-          >
-            <Image
-              src={item.product.primary_image ?? "/images/product-image.jpg"}
-              alt={item.product.name}
-              w="74px"
-              rounded={"4px"}
-            />
-            <VStack justify={"space-between"} align={"stretch"} flex={1}>
-              <Heading fontSize={"16px"} fontWeight={"bold"}>
-                {item.product.name}
-              </Heading>
-              <Text
-                mt="auto"
-                fontSize={"16px"}
-                fontWeight={"bold"}
-                textAlign={"end"}
-              >
-                {item.product.effective_price.toLocaleString()}
-                <CurrencySymbol />
-              </Text>
-            </VStack>
-          </HStack>
+          <Link key={item.id} href={`store/${item.product.id}`}>
+            <HStack gap="16px" align={"stretch"} justify={"stretch"}>
+              <Image
+                src={item.product.primary_image ?? "/images/product-image.jpg"}
+                alt={item.product.name}
+                w={{ base: "44px", md: "56px", lg: "62px", xl: "74px" }}
+                h={{ base: "44px", md: "56px", lg: "62px", xl: "74px" }}
+                rounded={"4px"}
+              />
+              <VStack justify={"space-between"} align={"stretch"} flex={1}>
+                <Heading
+                  fontSize={{ base: "9px", md: "14px", xl: "16px" }}
+                  fontWeight={"bold"}
+                >
+                  {item.product.name}
+                </Heading>
+                <Text
+                  mt="auto"
+                  fontSize={"16px"}
+                  fontWeight={"bold"}
+                  textAlign={"end"}
+                >
+                  {item.product.effective_price.toLocaleString()}
+                  <CurrencySymbol />
+                </Text>
+              </VStack>
+            </HStack>
+          </Link>
         ))}
       </VStack>
       {/* total */}
-      <HStack justify={"space-between"} w={"full"}>
+      <HStack justify={"space-between"}>
         <Heading
           fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
           fontWeight={"extrabold"}
@@ -89,7 +91,6 @@ const CheckoutSummary = () => {
       </HStack>
       {/* processed button */}
       <Button
-        w={"full"}
         shadow={"0px 15px 30px 0px #FFB80040"}
         py={{ base: "18px", lg: "20px", "2xl": "24px" }}
         rounded={"16px"}
@@ -158,7 +159,7 @@ const CheckoutSummary = () => {
         </HStack>
       </VStack>
       {/* confirm order disclaimer */}
-      <Text fontSize={"12px"} color={"gray-2"}>
+      <Text fontSize={{ base: "8px", xl: "12px" }} color={"gray-2"}>
         {t("confirmOrderDisclaimer")}
       </Text>
     </VStack>

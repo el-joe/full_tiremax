@@ -117,18 +117,21 @@ export default function CheckoutForm() {
   };
 
   return (
-    <Box flex={1} maxW={"880px"}>
+    <Box flex={1} w={"880px"} minW={"420px"}>
       {isCreatingOrder && (
         <Center position={"fixed"} inset={0} zIndex={"10"} bg={"black/20"}>
           <Spinner size={"xl"} />
         </Center>
       )}
       <form id="checkoutForm" onSubmit={handleSubmit(onSubmit)}>
-        <VStack gap={"80px"} align={"stretch"}>
+        <VStack gap={{ base: "32px", xl: "80px" }} align={"stretch"}>
           {/* personal information */}
           <GroupContainer>
             <Heading>{t("personalInformation")}</Heading>
-            <HStack gap={"40px"} align={"start"}>
+            <HStack
+              gap={{ base: "14px", lg: "26px", xl: "40px" }}
+              align={"start"}
+            >
               <Input
                 label={t("fullName")}
                 placeholder={t("enterYourFullName")}
@@ -158,7 +161,10 @@ export default function CheckoutForm() {
                 p="16px"
               />
             </HStack>
-            <HStack gap={"40px"} align={"start"}>
+            <HStack
+              gap={{ base: "14px", lg: "26px", xl: "40px" }}
+              align={"start"}
+            >
               <DropSelectList
                 label={t("governorate")}
                 placeholder={t("selectGovernorate")}
@@ -185,7 +191,11 @@ export default function CheckoutForm() {
                 }}
               />
             </HStack>
-            <HStack gap={"40px"} align={"start"}>
+            <HStack
+              gap={{ base: "14px", lg: "26px", xl: "40px" }}
+              align={"start"}
+              flexWrap={"wrap"}
+            >
               {/* address input */}
               <Textarea
                 register={register("shipping_address")}
@@ -197,6 +207,11 @@ export default function CheckoutForm() {
                     ? t(errors?.shipping_address?.message)
                     : ""
                 }
+                containerProps={{
+                  w: "calc((100% - 40px) / 2)",
+                  minW: "220px",
+                  flex: 1,
+                }}
               />
               <Textarea
                 register={register("notes")}
@@ -206,6 +221,11 @@ export default function CheckoutForm() {
                 errMes={
                   !!errors?.notes?.message ? t(errors?.notes?.message) : ""
                 }
+                containerProps={{
+                  w: "calc((100% - 40px) / 2)",
+                  minW: "200px",
+                  flex: 1,
+                }}
               />
             </HStack>
           </GroupContainer>
@@ -304,8 +324,10 @@ export default function CheckoutForm() {
                   <RadioCard.Item
                     key={item.value}
                     value={item.value}
-                    minW={"calc((100% - 40px) / 2)"}
-                    maxW={"calc((100% - 40px) / 2)"}
+                    minW={"200px"}
+                    w={"calc((100% - 40px) / 2)"}
+                    // maxW={"calc((100% - 40px) / 2)"}
+                    flex={"auto"}
                     rounded={"24px"}
                     dir={dir}
                   >
@@ -354,7 +376,7 @@ export default function CheckoutForm() {
 
 const GroupContainer = ({ children }: { children: React.ReactNode }) => (
   <VStack
-    gap={"24px"}
+    gap={{ base: "12px", xl: "24px" }}
     align={"stretch"}
     p={"32px"}
     rounded={"16px"}

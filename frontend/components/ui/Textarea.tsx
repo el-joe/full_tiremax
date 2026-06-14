@@ -3,6 +3,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import {
   Textarea as ChakraTextarea,
   Field,
+  FieldRootProps,
   TextareaProps,
 } from "@chakra-ui/react";
 
@@ -11,6 +12,7 @@ interface ITextareaProps extends TextareaProps {
   register?: UseFormRegisterReturn;
   err?: boolean;
   errMes?: string;
+  containerProps?: FieldRootProps;
 }
 
 const Textarea: React.FC<ITextareaProps> = ({
@@ -18,10 +20,11 @@ const Textarea: React.FC<ITextareaProps> = ({
   register,
   err,
   errMes,
+  containerProps,
   ...rest
 }) => {
   return (
-    <Field.Root invalid={err}>
+    <Field.Root invalid={err} {...containerProps}>
       {label && <Field.Label>{label}</Field.Label>}
       <ChakraTextarea
         _focus={{
