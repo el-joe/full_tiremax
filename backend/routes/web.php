@@ -17,6 +17,7 @@ use App\Livewire\Admin\Services\ServiceManager;
 use App\Livewire\Admin\Vehicles\VehicleManager;
 use App\Livewire\Admin\Vehicles\VehicleMakeManager;
 use App\Livewire\Admin\Vehicles\VehicleModelManager;
+use App\Livewire\Admin\Automation\AutomationManager;
 use App\Livewire\Admin\Bookings\BookingManager;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +53,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('customers', CustomerManager::class)->name('customers.index');
         Route::get('offers', OfferManager::class)->name('offers.index');
         Route::get('flash-sales', FlashSaleManager::class)->name('flash-sales.index');
+        Route::get('automation', AutomationManager::class)->name('automation.index');
 
         Route::post('logout', function () {
             auth('admin')->logout();

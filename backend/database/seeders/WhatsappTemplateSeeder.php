@@ -84,6 +84,20 @@ class WhatsappTemplateSeeder extends Seeder
 
             // ── Automated follow-ups ──────────────────────────────────────
             [
+                'key' => 'invoice',
+                'trigger_after_days' => 0,
+                'is_active' => true,
+                'variables' => ['customer_name', 'order_ref', 'order_total', 'order_date', 'invoice_url'],
+                'en' => [
+                    'subject' => 'Your Invoice 🧾',
+                    'body' => "Hello {{customer_name}} 👋\n\nThank you for your order from TireMax!\n\n🧾 Order: *{{order_ref}}*\n💰 Total: *{{order_total}} IQD*\n📅 Date: {{order_date}}\n\n{{invoice_url}}\n\nIraq Max Tire",
+                ],
+                'ar' => [
+                    'subject' => 'فاتورة طلبك 🧾',
+                    'body' => "مرحباً {{customer_name}} 👋\n\nشكراً لطلبك من TireMax!\n\n🧾 رقم الطلب: *{{order_ref}}*\n💰 الإجمالي: *{{order_total}} د.ع*\n📅 التاريخ: {{order_date}}\n\n{{invoice_url}}\n\nإيراق ماكس تاير",
+                ],
+            ],
+            [
                 'key' => 'review_request',
                 'trigger_after_days' => 3,
                 'is_active' => true,
@@ -109,6 +123,48 @@ class WhatsappTemplateSeeder extends Seeder
                 'ar' => [
                     'subject' => 'حان وقت فحص إطاراتك؟ 🔄',
                     'body' => "مرحباً {{customer_name}}،\n\nمرت 3 أشهر على شرائك *{{product_name}}*.\n\nالفحص الدوري للإطارات يحسّن الأمان ويقلل استهلاك الوقود.\n\n🛒 تصفح عروضنا الأخيرة:\n👉 {{shop_url}}\n\nنحن دائماً هنا لمساعدتك!\nإيراق ماكس تاير",
+                ],
+            ],
+            [
+                'key' => 'balance_check',
+                'trigger_after_days' => 180,
+                'is_active' => true,
+                'variables' => ['customer_name', 'order_ref'],
+                'en' => [
+                    'subject' => 'Tire Maintenance Reminder 🔧',
+                    'body' => "Hi {{customer_name}} 🔧\n\nIt's been 6 months since your last order *{{order_ref}}*.\n\nWe recommend checking your tire pressure and alignment for your safety.\n\nContact us to book a free inspection!\n\nIraq Max Tire",
+                ],
+                'ar' => [
+                    'subject' => 'تذكير بصيانة الإطارات 🔧',
+                    'body' => "مرحباً {{customer_name}} 🔧\n\nمرت 6 أشهر على آخر طلبك *{{order_ref}}*.\n\nننصحك بفحص ضغط إطاراتك وتوازنها للحفاظ على سلامتك.\n\nتواصل معنا لحجز فحص مجاني!\n\nإيراق ماكس تاير",
+                ],
+            ],
+            [
+                'key' => 'offer_proposal',
+                'trigger_after_days' => 270,
+                'is_active' => true,
+                'variables' => ['customer_name', 'order_ref'],
+                'en' => [
+                    'subject' => 'A Special Offer Just for You 🎁',
+                    'body' => "Hi {{customer_name}} 🎁\n\nAs a valued customer, we have an exclusive offer waiting for you!\n\nContact us today and get the best prices on your next set of tires.\n\nIraq Max Tire",
+                ],
+                'ar' => [
+                    'subject' => 'عرض خاص لك 🎁',
+                    'body' => "مرحباً {{customer_name}} 🎁\n\nبصفتك عميلاً مميزاً، لدينا عرض حصري ينتظرك!\n\nتواصل معنا اليوم وتمتع بأفضل الأسعار على إطاراتك القادمة.\n\nإيراق ماكس تاير",
+                ],
+            ],
+            [
+                'key' => 'tire_change_reminder',
+                'trigger_after_days' => 365,
+                'is_active' => true,
+                'variables' => ['customer_name', 'order_ref'],
+                'en' => [
+                    'subject' => 'Time to Change Your Tires! ⏰',
+                    'body' => "Hi {{customer_name}} ⏰\n\nA full year has passed since your order *{{order_ref}}* from TireMax!\n\nIt's time to inspect and possibly replace your tires.\nContact us to book an appointment — we're happy to help!\n\nIraq Max Tire",
+                ],
+                'ar' => [
+                    'subject' => 'حان وقت تغيير الإطارات! ⏰',
+                    'body' => "مرحباً {{customer_name}} ⏰\n\nمرت سنة كاملة على طلبك *{{order_ref}}* من TireMax!\n\nحان وقت فحص إطاراتك وتغييرها إذا لزم الأمر.\nتواصل معنا لحجز موعد — يسعدنا مساعدتك!\n\nإيراق ماكس تاير",
                 ],
             ],
             [

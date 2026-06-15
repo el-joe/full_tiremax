@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('daftra:sync-products')->everyThirtyMinutes();
+Schedule::command('automation:process')->dailyAt('09:00');

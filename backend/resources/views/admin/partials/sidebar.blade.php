@@ -16,6 +16,7 @@
         ['route' => 'admin.services.index', 'label' => __('messages.admin.services'), 'icon' => 'M11 3.05A9 9 0 1020.95 13M20.95 13H11V3.05'],
         ['route' => 'admin.offers.index', 'label' => __('messages.admin.offers'), 'icon' => 'M7 7h.01M7 3h5l9 9-9 9-9-9V3z'],
         ['route' => 'admin.flash-sales.index', 'label' => __('messages.admin.flash_sales'), 'icon' => 'M13 10V3L4 14h7v7l9-11h-7z'],
+        ['route' => 'admin.automation.index', 'label' => 'Automation', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
     ];
 @endphp
 <aside
