@@ -42,7 +42,13 @@ const serviceStepsData = [
 export default async function WhyChoose() {
   const t = await getTranslations("services");
   return (
-    <VStack gap={"80px"} align={"stretch"} textAlign={"center"} py={"128px"}>
+    <VStack
+      gap={"80px"}
+      align={"stretch"}
+      textAlign={"center"}
+      py={"128px"}
+      borderY={"1px solid #E4E4E7"}
+    >
       <Heading fontSize={"30px"} fontWeight={"black"}>
         {t("whyChooseTireMax")}
       </Heading>

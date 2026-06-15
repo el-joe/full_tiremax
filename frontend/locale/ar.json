@@ -266,6 +266,7 @@
         "exceptionalPrecisionDescription": "إتقان في أدق التفاصيل.",
         "dedicatedSupport": "دعم مخصص",
         "dedicatedSupportDescription": "رعاية تمتد لما بعد البيع.",
+        "dedicatedSupportDescriptionHighlight": "لما بعد البيع.",
         "customerCareDescription": "في تاير ماكس، نهتم بسيارتك وكأنها سيارتنا. نظامنا المتطور يضمن لك المتابعة المستمرة لتبقى دائماً في أمان على الطريق.",
         "smartReminders": "تذكيرات ذكية",
         "smartRemindersDescription": "ننبهك بمواعيد تبديل الزيت والإطارات تلقائياً.",
@@ -275,7 +276,10 @@
         "freeInspectionsDescription": "فحص ضغط الهواء وسلامة الإطارات مجاناً لعملائنا.",
         "extendedWarranty": "ضمان ممتد",
         "extendedWarrantyDescription": "نوفر لك راحة البال مع باقات الضمان الحقيقية.",
-        "customerSatisfaction": "رضا العملاء"
+        "customerSatisfaction": "رضا العملاء",
+        "ctaTitle": "جاهز تخلي سيارتك في أفضل حالة؟",
+        "ctaDescription": "لا تنتظر حدوث عطل، بادر بحجز موعد صيانة اليوم واستمتع براحة البال والقيادة الآمنة على الطريق.",
+        "bookYourAppointmentNow": "احجز موعدك الآن"
     },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",

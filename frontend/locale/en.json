@@ -265,7 +265,8 @@
         "exceptionalPrecision": "Exceptional Precision",
         "exceptionalPrecisionDescription": "Attention to every detail for outstanding results.",
         "dedicatedSupport": "Dedicated Support",
-        "dedicatedSupportDescription": "Ongoing care and assistance, even after your purchase.",
+        "dedicatedSupportDescription": "Ongoing assistance, even after purchase.",
+        "dedicatedSupportDescriptionHighlight": "even after purchase.",
         "customerCareDescription": "At Tire Max, we treat your vehicle as if it were our own. Our advanced system keeps you informed and supported, helping you stay safe on the road.",
         "smartReminders": "Smart Reminders",
         "smartRemindersDescription": "Automatic reminders for oil changes and tire replacements.",
@@ -275,7 +276,10 @@
         "freeInspectionsDescription": "Complimentary tire pressure and tire safety checks for our customers.",
         "extendedWarranty": "Extended Warranty",
         "extendedWarrantyDescription": "Enjoy added peace of mind with our genuine warranty plans.",
-        "customerSatisfaction": "Customer Satisfaction"
+        "customerSatisfaction": "Customer Satisfaction",
+        "ctaTitle": "Ready to Keep Your Vehicle in Top Condition?",
+        "ctaDescription": "Don't wait for a breakdown. Book your service appointment today and enjoy peace of mind and safer driving on the road.",
+        "bookYourAppointmentNow": "Book Your Appointment Now"
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",
