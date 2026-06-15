@@ -35,7 +35,8 @@ const OrderSummary = ({ data }: props) => {
       borderTop={"3px solid {colors.primary}"}
       flex={1}
       align={"stretch"}
-      maxW={"422px"}
+      // maxW={"422px"}
+      w={"full"}
     >
       {/* order summary title */}
       <Heading
@@ -95,7 +96,7 @@ const OrderSummary = ({ data }: props) => {
           {data.total.toLocaleString()} <CurrencySymbol />
         </Text>
       </HStack>
-      {/* processed button */}
+      {/* track button */}
       <Button
         shadow={"0px 15px 30px 0px #FFB80040"}
         py={{ base: "18px", lg: "20px", "2xl": "24px" }}
@@ -107,19 +108,23 @@ const OrderSummary = ({ data }: props) => {
       >
         <GiRadarSweep /> {t("trackOrder")}
       </Button>
-      <Button
-        py={{ base: "18px", lg: "20px", "2xl": "24px" }}
-        rounded={"16px"}
-        fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
-        fontWeight={"extrabold"}
-        form="checkoutForm"
-        type="submit"
-        bg="gray-4"
-        color={"black"}
-      >
-        <GoHome />
-        {t("backToHome")}
-      </Button>
+      {/* home button */}
+      <Link href={"/"} className="block w-full">
+        <Button
+          py={{ base: "18px", lg: "20px", "2xl": "24px" }}
+          rounded={"16px"}
+          fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
+          fontWeight={"extrabold"}
+          form="checkoutForm"
+          type="submit"
+          bg="gray-4"
+          color={"black"}
+          w="full"
+        >
+          <GoHome />
+          {t("backToHome")}
+        </Button>
+      </Link>
     </VStack>
   );
 };

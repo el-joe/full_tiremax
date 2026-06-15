@@ -50,13 +50,12 @@ const Filters = ({ setDialog }: { setDialog?: (state: boolean) => void }) => {
       }}
     >
       <Box w={"full"}>
-        <HStack justify={"space-between"} alignItems={"center"}>
-          <Heading
-            as="h3"
-            fontSize={"24px"}
-            fontWeight={"semibold"}
-            ms={{ base: "30px", md: "0" }}
-          >
+        <HStack
+          justify={"space-between"}
+          alignItems={"center"}
+          pe={{ base: "30px", md: "0" }}
+        >
+          <Heading as="h3" fontSize={"24px"} fontWeight={"semibold"}>
             {t("filters")}
           </Heading>
           <Button

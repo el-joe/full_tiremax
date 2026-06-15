@@ -55,8 +55,8 @@ const Header = () => {
               {t("services")}
             </HeaderButton>
             <HeaderButton
-              href={"/reservation"}
-              variant={pathname === "/reservation" ? "solid" : "ghost"}
+              href={"/services/reservation"}
+              variant={pathname === "/services/reservation" ? "solid" : "ghost"}
             >
               <DeviceMaintenanceIcon />
               {t("reservation")}

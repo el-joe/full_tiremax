@@ -36,18 +36,21 @@ const ProductCard = ({ product }: Props) => {
   const { isFavorite, toggleFavorite } = useFavContext();
   const { addOrUpdateItem } = useCartContext();
   return (
-    <Link href={`/store/${product?.id}`}>
+    <Link
+      href={`/store/${product?.id}`}
+      className="w-[calc((100%-14px)/2)] sm:w-35 md:w-57.5 lg:w-53.75 xl:w-68.25 2xl:w-76.5"
+    >
       <Card.Root
         //  minW={"137px"}
         //     maxW={"306px"}
-        w={{
-          base: "calc(100% / 2 - 14px)",
-          sm: "140px",
-          md: "230px",
-          lg: "215px",
-          xl: "273px",
-          "2xl": "306px",
-        }}
+        // w={{
+        //   base: "calc((100% - 14px) / 2)",
+        //   sm: "140px",
+        //   md: "230px",
+        //   lg: "215px",
+        //   xl: "273px",
+        //   "2xl": "306px",
+        // }}
         // w={{ base: "calc(100% / 2 - 14px)", md: "calc(100% / 3 - 14px)", lg: "calc(100% / 4 - 14px)", xl: "calc(100% / 4 - 22px)", "2xl": "calc(100% / 4 - 32px)" }}
         overflow="hidden"
         bg={"#F9F9F9"}
