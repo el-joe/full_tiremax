@@ -220,7 +220,19 @@
         "selectGovernorateIsRequired": "Select governorate is required",
         "theAddressIsRequired": "The address is required",
         "theAddressMustBeMoreThen12Character": "The address must be more then 12 character",
-        "theAddressMustBeLessThen12Character": "The address must be less then 12 character"
+        "theAddressMustBeLessThen12Character": "The address must be less then 12 character",
+        "orderConfirmedSuccessfully": "Your order has been confirmed successfully.",
+        "orderConfirmationMessage": "Thank you for choosing Tire Max. We have received your order and are preparing it with the utmost care.",
+        "date": "Date",
+        "productSummary": "Product Summary",
+        "estimatedDeliveryDate": "Estimated Delivery Date",
+        "endingWith": "Ending in **** 4242",
+        "deliveryAddress": "Delivery Address",
+        "trackOrder": "Track Order",
+        "backToHome": "Back to Home",
+        "needHelp": "Need Help?",
+        "supportDescription": "Our support team is available around the clock to answer your questions and assist you.",
+        "chatWithAnExpert": "Talk to an Expert"
     },
     "favorites": {
         "favorites": "Favorites",

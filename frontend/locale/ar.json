@@ -220,7 +220,23 @@
         "selectGovernorateIsRequired": "اختيار المحافظة مطلوب",
         "theAddressIsRequired": "العنوان مطلوب",
         "theAddressMustBeMoreThen12Character": "يجب أن يكون العنوان أكثر من 12 حرفًا",
-        "theAddressMustBeLessThen12Character": "يجب ألا يزيد العنوان عن 12 حرفًا"
+        "theAddressMustBeLessThen12Character": "يجب ألا يزيد العنوان عن 12 حرفًا",
+        "orderConfirmedSuccessfully": "تم تأكيد طلبك بنجاح",
+        "orderConfirmationMessage": "شكراً لثقتك بـ Tire Max. لقد تم استلام طلبك وبدأنا في تجهيزه بكل عناية.",
+        "date": "التاريخ",
+        "productSummary": "ملخص المنتجات",
+        "estimatedDeliveryDate": "موعد التوصيل المتوقع",
+        "endingWith": "ينتهي بـ **** ٤٢٤٢",
+        "deliveryAddress": "عنوان التوصيل",
+        "trackOrder": "تتبع الطلب",
+        "backToHome": "العودة للرئيسية",
+        "needHelp": "تحتاج مساعدة؟",
+        "supportDescription": "فريق الدعم الفني جاهز للإجابة على استفساراتكم على مدار الساعة.",
+        "chatWithAnExpert": "تحدث مع خبير"
+    },
+    "favorites": {
+        "favorites": "قائمة المفضلة",
+        "savedProductsDescription": "المنتجات التي قمت بحفظها لشرائها لاحقاً"
     },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",

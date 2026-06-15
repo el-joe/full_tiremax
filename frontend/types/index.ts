@@ -10,3 +10,4 @@ export type { IReview } from "./review.type.ts";
 export type { ICustomerCart } from "./customerCart.type.ts";
 export type { ICustomerFav } from "./customerFav.type.ts";
 export type { IUserProfile } from "./userProfile.type.ts";
+export type { IOrder } from "./order.type.ts";
