@@ -15,18 +15,20 @@ export default async function page() {
     "services",
   );
   return (
-    <Container px={"120px"}>
+    <Container>
       <VStack
         textAlign={"center"}
         mx={"auto"}
         maxW={"680px"}
         gap={"16px"}
-        mb={"88px"}
+        mb={{ base: "44px", lg: "88px" }}
       >
-        <Heading fontSize={"34px"} fontWeight={"bold"}>
+        <Heading fontSize={{ base: "24px", md: "34px" }} fontWeight={"bold"}>
           {t("completeVehicleServices")}
         </Heading>
-        <Text fontSize={"18px"}>{t("completeVehicleServicesDescription")}</Text>
+        <Text fontSize={{ base: "14px", md: "18px" }}>
+          {t("completeVehicleServicesDescription")}
+        </Text>
       </VStack>
       <ServicesList services={services.data} />
       <ServiceSteps />

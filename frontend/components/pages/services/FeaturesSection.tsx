@@ -53,8 +53,18 @@ export default async function FeaturesSection() {
   const t = await getTranslations("services");
   const locale = await getLocale();
   return (
-    <HStack gap="32px" py={"96px"} align={"start"}>
-      <VStack gap={"24px"} flex={"1"} align={"stretch"} justify={"start"}>
+    <HStack
+      gap="32px"
+      py={{ base: "26px", md: "46px", xl: "96px" }}
+      align={"start"}
+      flexWrap={"wrap"}
+    >
+      <VStack
+        gap={{ base: "8px", md: "16px", xl: "24px" }}
+        flex={"1"}
+        align={"stretch"}
+        justify={"start"}
+      >
         <Badge
           bg={"#FFB8001A"}
           color={"primary"}
@@ -69,7 +79,7 @@ export default async function FeaturesSection() {
         </Badge>
         <Heading
           maxW={"286px"}
-          fontSize={locale === "ar" ? "48px" : "28px"}
+          fontSize={locale === "ar" ? { base: "32px", xl: "48px" } : "28px"}
           lineHeight={"48px"}
         >
           <Highlight
@@ -79,21 +89,24 @@ export default async function FeaturesSection() {
             {t("dedicatedSupportDescription")}
           </Highlight>
         </Heading>
-        <Text fontSize={"20px"} color={"gray-2"}>
+        <Text fontSize={{ base: "14px", lg: "20px" }} color={"gray-2"}>
           {t("customerCareDescription")}
         </Text>
-        <HStack flexWrap={"wrap"} gap={"32px"}>
+        <HStack
+          flexWrap={"wrap"}
+          gap={{ base: "11px", md: "16px", xl: "32px" }}
+        >
           {features.map((feature) => (
             <FeatureCard key={feature.id} feature={feature} />
           ))}
         </HStack>
       </VStack>
-      <Box position="relative">
+      <Box position="relative" flex={{ base: 1, md: "0.7" }} minW={"300px"}>
         <Image src={"/images/servicesFeatureSectionImage.png"} alt="bg" />
         <HStack
-          minW={"172px"}
+          w={{ base: "102px", lg: "172px" }}
           px={"8px"}
-          h={"98px"}
+          h={{ base: "62px", lg: "98px" }}
           bg={"white"}
           boxShadow={"0 25px 50px -12px #00000040"}
           rounded={"24px"}
@@ -101,16 +114,25 @@ export default async function FeaturesSection() {
           bottom={"-10px"}
           justify={"center"}
         >
-          <Center minW={"48px"} h={"48px"} bg="primary" rounded={"full"}>
-            <Icon size={"lg"} color={"white"}>
+          <Center
+            minW={{ base: "32px", lg: "48px" }}
+            h={{ base: "32px", lg: "48px" }}
+            bg="primary"
+            rounded={"full"}
+          >
+            <Icon size={{ base: "md", lg: "lg" }} color={"white"}>
               <MdOutlineStars />
             </Icon>
           </Center>
           <Box>
-            <Text fontSize={"12px"} fontWeight={"bold"} color={"gray-2"}>
+            <Text
+              fontSize={{ base: "8px", lg: "12px" }}
+              fontWeight={"bold"}
+              color={"gray-2"}
+            >
               {t("customerSatisfaction")}
             </Text>
-            <Text fontSize={"24px"} fontWeight={"black"}>
+            <Text fontSize={{ base: "14px", lg: "24px" }} fontWeight={"black"}>
               100%
             </Text>
           </Box>
@@ -128,16 +150,21 @@ const FeatureCard = async ({
   const t = await getTranslations("services");
   return (
     <HStack minW={"calc((100% - 32px) / 2)"} flex={1}>
-      <Center minW={"48px"} h={"48px"} bg="gray-4" rounded={"16px"}>
-        <Icon size={"lg"} color={"primary"}>
+      <Center
+        minW={{ base: "32px", lg: "48px" }}
+        h={{ base: "32px", lg: "48px" }}
+        bg="gray-4"
+        rounded={"16px"}
+      >
+        <Icon size={{ base: "md", lg: "lg" }} color={"primary"}>
           <feature.icon />
         </Icon>
       </Center>
       <Box>
-        <Heading fontSize={"18px"} fontWeight={"bold"}>
+        <Heading fontSize={{ base: "14px", lg: "18px" }} fontWeight={"bold"}>
           {t(feature.title)}
         </Heading>
-        <Text fontSize={"14px"} color="gray-2">
+        <Text fontSize={{ base: "11px", lg: "14px" }} color="gray-2">
           {t(feature.description)}
         </Text>
       </Box>

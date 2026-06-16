@@ -43,27 +43,38 @@ export default async function WhyChoose() {
   const t = await getTranslations("services");
   return (
     <VStack
-      gap={"80px"}
+      gap={{ base: "22px", md: "42px", lg: "80px" }}
       align={"stretch"}
       textAlign={"center"}
-      py={"128px"}
+      py={{ base: "22px", md: "66px", lg: "128px" }}
       borderY={"1px solid #E4E4E7"}
     >
       <Heading fontSize={"30px"} fontWeight={"black"}>
         {t("whyChooseTireMax")}
       </Heading>
-      <HStack justify={"space-between"} align={"start"}>
+      <HStack justify={"space-between"} align={"start"} gap={{ base: "4px" }}>
         {serviceStepsData.map((step) => (
           <VStack key={step.id} flex={1}>
-            <Center minW="80px" h="80px" rounded={"12px"} bg={"#F9FAFB"}>
-              <Icon size={"2xl"} color={"primary"}>
+            <Center
+              minW={{ base: "32px", lg: "80px" }}
+              h={{ base: "32px", lg: "80px" }}
+              rounded={"12px"}
+              bg={"#F9FAFB"}
+            >
+              <Icon size={{ base: "md", lg: "2xl" }} color={"primary"}>
                 <step.icon />
               </Icon>
             </Center>
-            <Text fontSize={"18px"} fontWeight={"black"}>
+            <Text
+              fontSize={{ base: "10px", md: "14px", lg: "18px" }}
+              fontWeight={"black"}
+            >
               {t(step.name)}
             </Text>
-            <Text fontSize={"14px"} color={"gray-2"}>
+            <Text
+              fontSize={{ base: "8px", md: "10px", lg: "14px" }}
+              color={"gray-2"}
+            >
               {t(step.description)}
             </Text>
           </VStack>

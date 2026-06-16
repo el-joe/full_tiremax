@@ -6,40 +6,42 @@ export default async function ReservationBanner() {
   const t = await getTranslations("services");
   return (
     <VStack
-      h={{ base: "180px", md: "240px", xl: "561px" }}
+      h={{ base: "320px", md: "561px" }}
       flex="1"
       position={"relative"}
       overflow={"hidden"}
       zIndex={1}
-      p="32px"
+      //   p="32px"
       color={"white"}
-      mx={"-120px"}
-      mb={"-80px"}
+      mx={{ base: "-16px", lg: "-120px" }}
+      mb={{ base: "-24px", lg: "-80px" }}
       justify={"center"}
-      gap={"32px"}
+      gap={{ base: "12px", md: "32px" }}
       textAlign={"center"}
     >
       <Image
         src={"/images/servicesReserveBanner.png"}
         alt="bg"
         position={"absolute"}
-        // filter={"grayscale(1)"}
         inset={"0"}
         h="full"
         w={"full"}
         zIndex={-1}
-        // opacity={"40%"}
       />
       <Box position={"absolute"} inset="0" bg="#00000099" zIndex={-1} />
       <Heading
-        fontSize={"60px"}
+        fontSize={{ base: "24px", md: "60px" }}
         fontWeight={"extrabold"}
-        maxW={"600px"}
-        lineHeight={"60px"}
+        maxW={{ base: "200px", md: "600px" }}
+        lineHeight={{ base: "24px", md: "60px" }}
       >
         {t("ctaTitle")}
       </Heading>
-      <Text fontSize={"20px"} color={"#D1D5DB"} maxW={"665px"}>
+      <Text
+        fontSize={{ base: "14px", md: "20px" }}
+        color={"#D1D5DB"}
+        maxW={"665px"}
+      >
         {t("ctaDescription")}
       </Text>
       <Button

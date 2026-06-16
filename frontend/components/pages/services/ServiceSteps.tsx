@@ -36,29 +36,45 @@ export default async function ServiceSteps() {
   const t = await getTranslations("services");
   return (
     <VStack
-      gap={"64px"}
+      gap={{ base: "22px", lg: "44px", xl: "64px" }}
       align={"stretch"}
       textAlign={"center"}
       bg={"#F9FAFBCC"}
-      py={"80px"}
+      py={{ base: "22px", lg: "34px", xl: "80px" }}
       roundedTop={"48px"}
-      px={"24px"}
+      px={{ base: "4px", md: "12px", lg: "24px" }}
     >
-      <Heading fontSize={"30px"} fontWeight={"black"}>
+      <Heading
+        fontSize={{ base: "18px", md: "22px", xl: "30px" }}
+        fontWeight={"black"}
+      >
         {t("serviceJourneyTitle")}
       </Heading>
-      <HStack justify={"space-between"} align={"start"}>
+      <HStack justify={"space-between"} align={"start"} gap={{ base: "4px" }}>
         {serviceStepsData.map((step) => (
           <VStack key={step.id} flex={1}>
-            <Center minW="80px" h="80px" rounded={"12px"} bg={"primary"}>
-              <Icon size={"2xl"} color={"white"}>
+            <Center
+              minW={{ base: "32px", lg: "80px" }}
+              h={{ base: "32px", lg: "80px" }}
+              rounded={"12px"}
+              bg={"primary"}
+            >
+              <Icon size={{ base: "md", lg: "2xl" }} color={"white"}>
                 <step.icon />
               </Icon>
             </Center>
-            <Text fontSize={"20px"} fontWeight={"black"}>
+            <Text
+              fontSize={{ base: "12px", md: "16px", lg: "20px" }}
+              fontWeight={"black"}
+            >
               {t(step.name)}
             </Text>
-            <Text color={"gray-2"}>{t(step.description)}</Text>
+            <Text
+              color={"gray-2"}
+              fontSize={{ base: "9px", md: "12px", lg: "16px" }}
+            >
+              {t(step.description)}
+            </Text>
           </VStack>
         ))}
       </HStack>

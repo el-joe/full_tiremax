@@ -19,7 +19,12 @@ type Props = {
 export default async function ServicesList({ services }: Props) {
   const t = await getTranslations("services");
   return (
-    <HStack gap={"32px"} flexWrap={"wrap"} mb={"66px"}>
+    <HStack
+      gap={{ base: "16px", md: "32px" }}
+      flexWrap={"wrap"}
+      mb={{ base: "34px", lg: "66px" }}
+      align={"stretch"}
+    >
       {services.map((service) => (
         <ServiceCard key={service.id} service={service} />
       ))}
@@ -36,10 +41,9 @@ export default async function ServicesList({ services }: Props) {
           base: "calc((100% - 14px) / 2)",
           sm: "140px",
           md: "230px",
-          lg: "215px",
-          xl: "273px",
-          "2xl": "calc((100% - 64px) / 3)",
+          lg: "calc((100% - 64px) / 3)",
         }}
+        flex={1}
       >
         <Image
           src={"/images/serviceBanner.png"}
@@ -83,12 +87,8 @@ const ServiceCard = async ({ service }: { service: IService }) => {
     <Card.Root
       overflow="hidden"
       w={{
-        base: "calc((100% - 14px) / 2)",
-        sm: "140px",
-        md: "230px",
-        lg: "215px",
-        xl: "273px",
-        "2xl": "calc((100% - 64px) / 3)",
+        base: "calc((100% - 16px) / 2)",
+        md: "calc((100% - 64px) / 3)",
       }}
       rounded={"24px"}
       border={"none"}
@@ -97,10 +97,10 @@ const ServiceCard = async ({ service }: { service: IService }) => {
       <Image
         src={service?.image_url ?? "/images/serviceImage.jpg"}
         alt="Green double couch with wooden legs"
-        h={"200px"}
+        h={{ base: "140px", lg: "200px" }}
       />
-      <Card.Body gap="2" p={"32px"}>
-        <Card.Title fontSize={"24px"} fontWeight={"bold"}>
+      <Card.Body gap="2" p={{ base: "8px", sm: "16px", xl: "32px" }}>
+        <Card.Title fontSize={{ xl: "24px" }} fontWeight={"bold"}>
           {service?.name}
         </Card.Title>
         <Card.Description color={"gray-2"}>
@@ -109,7 +109,11 @@ const ServiceCard = async ({ service }: { service: IService }) => {
       </Card.Body>
       <Card.Footer justifyContent={"stretch"}>
         <Link href={"#"} className="flex-1">
-          <Button w={"full"} h={"56px"} fontWeight={"bold"}>
+          <Button
+            w={"full"}
+            h={{ base: "36px", xl: "56px" }}
+            fontWeight={"bold"}
+          >
             {t("bookNow")}
           </Button>
         </Link>
