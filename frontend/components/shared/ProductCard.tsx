@@ -38,7 +38,7 @@ const ProductCard = ({ product }: Props) => {
   return (
     <Link
       href={`/store/${product?.id}`}
-      className="w-[calc((100%-14px)/2)] sm:w-35 md:w-57.5 lg:w-53.75 xl:w-68.25 2xl:w-76.5"
+      className="w-[calc((100%-14px)/2)] sm:w-[140px] md:w-[230px] lg:w-[215px] xl:w-[273px] 2xl:w-[306px]"
     >
       <Card.Root
         //  minW={"137px"}

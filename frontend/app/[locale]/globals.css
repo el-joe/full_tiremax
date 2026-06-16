@@ -16,7 +16,9 @@
   --color-dark-yellow: #6b4c00;
   scroll-behavior: smooth;
 }
-
+@theme {
+  --breakpoint-2xl: 90rem;
+}
 @theme inline {
   --color-primary: var(--color-primary);
   --color-background: var(--background);

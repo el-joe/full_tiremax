@@ -32,7 +32,7 @@ const serviceStepsData = [
     description: "serviceWarrantyDescription",
   },
   {
-    id: 4,
+    id: 5,
     icon: GoShieldCheck,
     name: "exceptionalPrecision",
     description: "exceptionalPrecisionDescription",
