@@ -12,3 +12,4 @@ export type { ICustomerFav } from "./customerFav.type.ts";
 export type { IUserProfile } from "./userProfile.type.ts";
 export type { IOrder } from "./order.type.ts";
 export type { IService } from "./service.type.ts";
+export type { IBranch } from "./branch.type.ts";

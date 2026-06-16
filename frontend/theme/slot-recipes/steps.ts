@@ -126,7 +126,7 @@ export const stepsSlotRecipe = defineSlotRecipe({
         },
         separator: {
           _complete: {
-            bg: "colorPalette.solid",
+            bg: "primary",
           },
         },
       },
