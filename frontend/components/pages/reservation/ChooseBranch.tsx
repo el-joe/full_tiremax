@@ -85,6 +85,7 @@ const BranchCard = ({ data }: { data: IBranch }) => {
       align={"start"}
       overflow={"hidden"}
       w={"calc((100% - 16px) / 2 )"}
+      h={"268px"}
     >
       <Image
         src={"/images/branchCardImage.jpg"}
@@ -92,7 +93,7 @@ const BranchCard = ({ data }: { data: IBranch }) => {
         w={"160px"}
         h={"268px"}
       />
-      <VStack p={"24px"} gap={"20px"} align={"stretch"} flex={1}>
+      <VStack p={"20px"} gap={"18px"} align={"stretch"} flex={1}>
         <HStack justify={"space-between"} align={"start"}>
           <Box>
             <Heading fontSize={"18px"} fontWeight={"extrabold"}>

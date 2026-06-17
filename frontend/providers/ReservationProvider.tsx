@@ -70,9 +70,13 @@ interface IreservationContext {
   reservationData: {
     service: IService | null;
     branch: IBranch | null;
+    date: string | null;
+    time: string | null;
   };
   setService: (serviceId: number) => void;
   setBrach: (branchId: number) => void;
+  setDate: (date: string) => void;
+  setTime: (time: string) => void;
 }
 
 const initialState: IreservationContext = {
@@ -82,9 +86,11 @@ const initialState: IreservationContext = {
   branchesList: [],
   isServicesListLoading: true,
   isBranchesListLoading: true,
-  reservationData: { service: null, branch: null },
+  reservationData: { service: null, branch: null, date: null, time: null },
   setService: () => {},
   setBrach: () => {},
+  setDate: () => {},
+  setTime: () => {},
 };
 
 const reservationContext = createContext<IreservationContext>(initialState);
@@ -96,7 +102,7 @@ export const ReservationProvider = ({
 }) => {
   const [reservationData, setReservationData] = useState<
     IreservationContext["reservationData"]
-  >({ service: null, branch: null });
+  >({ service: null, branch: null, date: null, time: null });
   const useSteps = useChakraSteps({
     defaultStep: 0,
     count: steps.length,
@@ -128,6 +134,14 @@ export const ReservationProvider = ({
     const branch = (branchesList ?? []).find((s) => s.id === serviceId) ?? null;
     setReservationData((p) => ({ ...p, branch }));
   };
+  //   set date
+  const setDate = (date: string) => {
+    setReservationData((p) => ({ ...p, date }));
+  };
+  //   set time
+  const setTime = (time: string) => {
+    setReservationData((p) => ({ ...p, time }));
+  };
 
   useEffect(() => {
     console.log(reservationData);
@@ -150,6 +164,8 @@ export const ReservationProvider = ({
         reservationData,
         setService,
         setBrach,
+        setDate,
+        setTime,
       }}
     >
       {children}

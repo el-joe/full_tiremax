@@ -1,7 +1,15 @@
 "use client";
 import Container from "@/components/ui/Container";
 import { useReservationContext } from "@/providers/ReservationProvider";
-import { Center, Heading, Icon, Steps, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Heading,
+  Icon,
+  Steps,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { useLocale, useTranslations } from "next-intl";
 import { IconType } from "react-icons/lib";
 
@@ -61,7 +69,9 @@ export default function Page() {
 
         {steps.map((step, index) => (
           <Steps.Content key={index} index={index} dir={dir} pt={"47px"}>
-            {step.content}
+            <Box maxW={"1086px"} mx={"auto"}>
+              {step.content}
+            </Box>
           </Steps.Content>
         ))}
         <Steps.CompletedContent>All steps are complete!</Steps.CompletedContent>
