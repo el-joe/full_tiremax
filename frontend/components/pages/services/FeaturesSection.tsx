@@ -56,7 +56,7 @@ export default async function FeaturesSection() {
     <HStack
       gap="32px"
       py={{ base: "26px", md: "46px", xl: "96px" }}
-      align={"start"}
+      align={"stretch"}
       flexWrap={"wrap"}
     >
       <VStack

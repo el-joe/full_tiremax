@@ -96,7 +96,7 @@ const ServiceCard = ({ data }: { data: IService }) => {
           color={"gray-2"}
           pb={{ base: "10px", lg: "20px" }}
         >
-          {data?.description ?? "fixe your car today"}
+          {data?.description}
         </Text>
       </Box>
       <Box>

@@ -47,19 +47,15 @@ const Footer = async () => {
             gap={"8px"}
           >
             <Link href={"/"}>
-              {" "}
               <Text _hover={{ color: "white" }}> {t("home")}</Text>
             </Link>
-            <Link href={"/"}>
-              {" "}
+            <Link href={"/services"}>
               <Text _hover={{ color: "white" }}> {t("aboutUs")}</Text>
             </Link>
-            <Link href={"/"}>
-              {" "}
+            <Link href={"/store"}>
               <Text _hover={{ color: "white" }}> {t("store")}</Text>
             </Link>
-            <Link href={"/"}>
-              {" "}
+            <Link href={"/offers"}>
               <Text _hover={{ color: "white" }}> {t("offers")}</Text>
             </Link>
           </VStack>
@@ -74,16 +70,13 @@ const Footer = async () => {
             fontSize={"14px"}
             gap={"8px"}
           >
-            <Link href={"/"}>
-              {" "}
+            <Link href={"/services"}>
               <Text _hover={{ color: "white" }}> {t("batteries")}</Text>
             </Link>
-            <Link href={"/"}>
-              {" "}
+            <Link href={"/services"}>
               <Text _hover={{ color: "white" }}> {t("tires")}</Text>
             </Link>
-            <Link href={"/"}>
-              {" "}
+            <Link href={"/services"}>
               <Text _hover={{ color: "white" }}> {t("serviceCenter")}</Text>
             </Link>
           </VStack>
@@ -108,10 +101,12 @@ const Footer = async () => {
           <Text color={"#CBCBCB"} my={"16px"}>
             {t("footerServiceBookingDescription")}
           </Text>
-          <Button>
-            {t("bookYourAppointmentNow")}
-            <CalenderIcon />
-          </Button>
+          <Link href={"/services/reservation"}>
+            <Button>
+              {t("bookYourAppointmentNow")}
+              <CalenderIcon />
+            </Button>
+          </Link>
         </Box>
       </HStack>
       <Box h={"1px"} bg={"white"} w={"97%"} mx={"auto"} my={"61px"} />

@@ -106,7 +106,9 @@ const Header = () => {
                 <HeartIcon />
               </HeaderButton>
             </Tooltip>
-            <HeaderButton href={"/"}>{t("bookNow")}</HeaderButton>
+            <HeaderButton href={"/services/reservation"}>
+              {t("bookNow")}
+            </HeaderButton>
           </HStack>
         </HStack>
       </Container>

@@ -108,7 +108,7 @@ const ServiceCard = async ({ service }: { service: IService }) => {
         </Card.Description>
       </Card.Body>
       <Card.Footer justifyContent={"stretch"}>
-        <Link href={"#"} className="flex-1">
+        <Link href={"/services/reservation"} className="flex-1">
           <Button
             w={"full"}
             h={{ base: "36px", xl: "56px" }}
