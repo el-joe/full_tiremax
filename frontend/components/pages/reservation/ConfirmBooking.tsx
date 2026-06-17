@@ -67,7 +67,8 @@ export default function ConfirmBooking() {
           gap={"24px"}
           flex={{ base: "1", md: "0.6" }}
           align={"stretch"}
-          minW={"260px"}
+          maxW={"346px"}
+          mx={"auto"}
         >
           <BranchInfoCard />
           <NotesCard />
