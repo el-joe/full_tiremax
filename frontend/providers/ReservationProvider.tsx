@@ -9,7 +9,7 @@ import {
   useSteps as useChakraSteps,
   type UseStepsReturn,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createContext,
   ReactNode,
@@ -17,6 +17,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineTool } from "react-icons/ai";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoCalendarClearOutline } from "react-icons/io5";
@@ -73,10 +74,12 @@ interface IreservationContext {
     date: string | null;
     time: string | null;
   };
+  isCreatingBooking: boolean;
   setService: (serviceId: number) => void;
   setBrach: (branchId: number) => void;
   setDate: (date: string) => void;
   setTime: (time: string) => void;
+  createBooking: () => void;
 }
 
 const initialState: IreservationContext = {
@@ -87,10 +90,12 @@ const initialState: IreservationContext = {
   isServicesListLoading: true,
   isBranchesListLoading: true,
   reservationData: { service: null, branch: null, date: null, time: null },
+  isCreatingBooking: false,
   setService: () => {},
   setBrach: () => {},
   setDate: () => {},
   setTime: () => {},
+  createBooking: () => {},
 };
 
 const reservationContext = createContext<IreservationContext>(initialState);
@@ -123,6 +128,21 @@ export const ReservationProvider = ({
       return data.data;
     },
   });
+  //   mutation booking
+  const { mutate: mutateBooking, isPending: isCreatingBooking } = useMutation({
+    mutationKey: ["createBooking"],
+    mutationFn: async (body: {
+      branch_id: number;
+      service_id: number;
+      scheduled_at: string;
+    }) => {
+      const { data } = await axiosInstance.post("bookings", body);
+      return data;
+    },
+    onError: () => {
+      toast.error("Oops! something want wrang");
+    },
+  });
   //   set service
   const setService = (serviceId: number) => {
     const service =
@@ -142,13 +162,19 @@ export const ReservationProvider = ({
   const setTime = (time: string) => {
     setReservationData((p) => ({ ...p, time }));
   };
+  const createBooking = () => {
+    const { service, branch, date, time } = reservationData;
+    if (!service || !branch || !date || !time) return;
+    const body = {
+      service_id: service.id,
+      branch_id: branch.id,
+      scheduled_at: `${reservationData.date}T${reservationData.time}`,
+    };
+    mutateBooking(body);
+  };
 
   useEffect(() => {
     console.log(reservationData);
-    // switch (true) {
-    //   case reservationData.service && !reservationData.branch:
-    //     useSteps.setStep(1);
-    // }
     return () => {};
   }, [reservationData]);
 
@@ -166,6 +192,8 @@ export const ReservationProvider = ({
         setBrach,
         setDate,
         setTime,
+        createBooking,
+        isCreatingBooking,
       }}
     >
       {children}

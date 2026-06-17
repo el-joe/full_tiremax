@@ -20,20 +20,24 @@ export default function Page() {
   const dir = locale === "ar" ? "rlt" : "ltr";
   return (
     <Container>
-      <Heading textAlign={"center"} fontSize={"36px"} fontWeight={"extrabold"}>
+      <Heading
+        textAlign={"center"}
+        fontSize={{ base: "24px", md: "36px" }}
+        fontWeight={"extrabold"}
+      >
         {t("bookServiceAppointment")}
       </Heading>
       <Text
         textAlign={"center"}
-        mt="16px"
-        mb={"48px"}
-        fontSize={"18px"}
+        mt={{ base: "8px", md: "16px" }}
+        mb={{ base: "12px", md: "48px" }}
+        fontSize={{ base: "12px", md: "18px" }}
         color={"gray-2"}
       >
         {t("bookServiceAppointmentDescription")}
       </Text>
       <Steps.RootProvider value={useSteps} dir={dir}>
-        <Steps.List dir={dir} w={"740px"} mx={"auto"}>
+        <Steps.List dir={dir} w={{ base: "100%", lg: "740px" }} mx={"auto"}>
           {steps.map((step, index) => (
             <Steps.Item key={step.id} index={index} dir={dir}>
               <Steps.Status
@@ -68,7 +72,12 @@ export default function Page() {
         </Steps.List>
 
         {steps.map((step, index) => (
-          <Steps.Content key={index} index={index} dir={dir} pt={"47px"}>
+          <Steps.Content
+            key={index}
+            index={index}
+            dir={dir}
+            pt={{ base: "0", md: "47px" }}
+          >
             {step.content}
           </Steps.Content>
         ))}
@@ -107,14 +116,19 @@ const StepIndicator = ({
     },
   };
   return (
-    <VStack gap={"4px"}>
-      <Center w={"70px"} h={"70px"} rounded={"16px"} {...IconStyle[status]}>
-        <Icon size={"2xl"}>
+    <VStack gap={{ base: "0", md: "4px" }}>
+      <Center
+        w={{ base: "22px", md: "56px", lg: "70px" }}
+        h={{ base: "22px", md: "56px", lg: "70px" }}
+        rounded={{ base: "4px", md: "16px" }}
+        {...IconStyle[status]}
+      >
+        <Icon size={{ base: "xs", md: "2xl" }}>
           <StepIcon />
         </Icon>
       </Center>
       <Text
-        fontSize={"14px"}
+        fontSize={{ base: "8px", md: "14px" }}
         maxW={"90px"}
         textAlign={"center"}
         fontWeight={"bold"}
@@ -122,7 +136,11 @@ const StepIndicator = ({
       >
         {t(stepName)}
       </Text>
-      <Text fontSize={"12px"} color={"#99A1AF"}>
+      <Text
+        fontSize={{ base: "6px", md: "12px" }}
+        lineHeight={{ base: "6px", md: "unset" }}
+        color={"#99A1AF"}
+      >
         {t(stepNum)}
       </Text>
     </VStack>

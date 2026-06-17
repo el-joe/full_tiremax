@@ -34,6 +34,8 @@ export default function ConfirmBooking() {
   const locale = useLocale();
   const {
     useSteps: { goToPrevStep },
+    createBooking,
+    isCreatingBooking,
   } = useReservationContext();
   return (
     <>
@@ -46,18 +48,36 @@ export default function ConfirmBooking() {
           {locale === "ar" ? <FaArrowRight /> : <FaArrowLeft />}
         </IconButton>
         <VStack align={"start"}>
-          <Heading fontSize={"24px"} fontWeight={"bold"}>
+          <Heading fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }}>
             {t("bookingConfirmation")}
           </Heading>
-          <Text color={"#6B7280"}>{t("reviewBookingDetails")}:</Text>
+          <Text color={"#6B7280"} fontSize={{ base: "12px", md: "16px" }}>
+            {t("reviewBookingDetails")}:
+          </Text>
         </VStack>
       </HStack>
-      <HStack gap={"66px"} align={"start"}>
+      <HStack
+        gap={{ base: "22px", xl: "66px" }}
+        align={{ base: "stretch", md: "start" }}
+        flexDir={{ base: "column", md: "row" }}
+        w={"full"}
+      >
         <ReservationDetailsCard />
-        <VStack gap={"24px"} flex={0.6} align={"stretch"}>
+        <VStack
+          gap={"24px"}
+          flex={{ base: "1", md: "0.6" }}
+          align={"stretch"}
+          minW={"260px"}
+        >
           <BranchInfoCard />
           <NotesCard />
-          <Button h="60px" fontSize={"18px"} fontWeight={"extrabold"}>
+          <Button
+            h="60px"
+            fontSize={"18px"}
+            fontWeight={"extrabold"}
+            onClick={() => createBooking()}
+            loading={isCreatingBooking}
+          >
             <FaCheck />
             {t("confirmBookingButton")}
           </Button>
@@ -73,7 +93,7 @@ const ReservationDetailsCard = () => {
   return (
     <VStack
       gap={"24px"}
-      p="32px"
+      p={{ base: "18px", lg: "32px" }}
       bg="primary"
       rounded={"16px"}
       flex={1}
@@ -103,10 +123,14 @@ const ReservationDetailsCard = () => {
             </Icon>
             <Text fontSize={"14px"}>{t("service")}</Text>
           </HStack>
-          <Text fontSize={"18px"} fontWeight={"bold"} my={"8px 4px"}>
+          <Text
+            fontSize={{ base: "13px", md: "16px", lg: "18px" }}
+            fontWeight={"bold"}
+            my={"8px 4px"}
+          >
             {reservationData.service?.name}
           </Text>
-          <Text fontSize={"14px"}>
+          <Text fontSize={{ base: "12px", lg: "14px" }}>
             {reservationData.service?.duration_minutes} {t("minute")}
           </Text>
         </Box>
@@ -123,10 +147,14 @@ const ReservationDetailsCard = () => {
             </Icon>
             <Text fontSize={"14px"}>{t("branch")}</Text>
           </HStack>
-          <Text fontSize={"18px"} fontWeight={"bold"} my={"8px 4px"}>
+          <Text
+            fontSize={{ base: "13px", md: "16px", lg: "18px" }}
+            fontWeight={"bold"}
+            my={"8px 4px"}
+          >
             {reservationData.branch?.name}
           </Text>
-          <Text fontSize={"14px"}>
+          <Text fontSize={{ base: "12px", lg: "14px" }}>
             {reservationData.branch?.address} {t("minute")}
           </Text>
         </Box>
@@ -141,9 +169,13 @@ const ReservationDetailsCard = () => {
             <Icon>
               <CiCalendar />
             </Icon>
-            <Text fontSize={"14px"}>{t("date")}</Text>
+            <Text fontSize={{ base: "12px", lg: "14px" }}>{t("date")}</Text>
           </HStack>
-          <Text fontSize={"18px"} fontWeight={"bold"} my={"8px 4px"}>
+          <Text
+            fontSize={{ base: "13px", md: "16px", lg: "18px" }}
+            fontWeight={"bold"}
+            my={"8px 4px"}
+          >
             {new Date(reservationData.date ?? "").toDateString()}
           </Text>
         </Box>
@@ -160,7 +192,11 @@ const ReservationDetailsCard = () => {
             </Icon>
             <Text fontSize={"14px"}>{t("time")}</Text>
           </HStack>
-          <Text fontSize={"18px"} fontWeight={"bold"} my={"8px 4px"}>
+          <Text
+            fontSize={{ base: "13px", md: "16px", lg: "18px" }}
+            fontWeight={"bold"}
+            my={"8px 4px"}
+          >
             {reservationData.time}
           </Text>
         </Box>

@@ -36,7 +36,11 @@ export default function ChooseService() {
           <Heading>Loading</Heading>
         </Center>
       ) : (
-        <HStack flexWrap={"wrap"} gap={"24px"}>
+        <HStack
+          flexWrap={"wrap"}
+          gap={{ base: "12px", md: "18px", lg: "24px" }}
+          align={"stretch"}
+        >
           {servicesList?.map((service) => (
             <ServiceCard key={service.id} data={service} />
           ))}
@@ -55,48 +59,64 @@ const ServiceCard = ({ data }: { data: IService }) => {
   const locale = useLocale();
   return (
     <VStack
-      w={"calc((100% - 72px) / 4)"}
-      p="24px"
+      w={{
+        base: "calc((100% - 12px) / 2)",
+        md: "calc((100% - 54px) / 4)",
+        lg: "calc((100% - 72px) / 4)",
+      }}
+      p={{ base: "12px", lg: "24px" }}
       rounded={"16px"}
       border="1px solid {colors.gray-4}"
       align={"stretch"}
-      gap={"16px"}
+      gap={{ base: "7px", lg: "16px" }}
       boxShadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0 #0000001A"}
     >
       <Center
         alignSelf={"start"}
-        minW={"56px"}
-        h={"56px"}
-        rounded={"12px"}
+        minW={{ base: "32px", lg: "56px" }}
+        h={{ base: "32px", lg: "56px" }}
+        rounded={{ base: "6px", lg: "12px" }}
         bg={"#FDB6041A"}
         color={"primary"}
       >
-        <Icon size={"xl"}>
+        <Icon size={{ base: "md", lg: "xl" }}>
           {data?.icon ? <data.icon /> : <AiOutlineTool />}
         </Icon>
       </Center>
       <Box>
-        <Heading fontSize={"18px"} fontWeight={"extrabold"} mb={"8px"}>
+        <Heading
+          fontSize={{ base: "14px", lg: "18px" }}
+          fontWeight={"extrabold"}
+          mb={{ base: "3px", lg: "8px" }}
+        >
           {data?.name}
         </Heading>
-        <Text fontSize={"14px"} color={"gray-2"} pb={"20px"}>
+        <Text
+          fontSize={{ base: "11px", lg: "14px" }}
+          color={"gray-2"}
+          pb={{ base: "10px", lg: "20px" }}
+        >
           {data?.description ?? "fixe your car today"}
         </Text>
       </Box>
       <Box>
         <HStack justify={"space-between"} mb={"8px"}>
-          <Text fontSize={"14px"} color={"gray-2"}>
+          <Text fontSize={{ base: "11px", lg: "14px" }} color={"gray-2"}>
             {t("duration")}
           </Text>
-          <Text fontSize={"14px"}>
+          <Text fontSize={{ base: "11px", lg: "14px" }}>
             {data?.duration_minutes} {t("minute")}
           </Text>
         </HStack>
         <HStack justify={"space-between"} mb={"8px"}>
-          <Text fontSize={"14px"} color={"gray-2"}>
+          <Text fontSize={{ base: "11px", lg: "14px" }} color={"gray-2"}>
             {t("cost")}
           </Text>
-          <Text fontSize={"14px"} fontWeight={"bold"} color={"primary"}>
+          <Text
+            fontSize={{ base: "11px", lg: "14px" }}
+            fontWeight={"bold"}
+            color={"primary"}
+          >
             {data?.price < 1 ? (
               t("free")
             ) : (
@@ -107,7 +127,11 @@ const ServiceCard = ({ data }: { data: IService }) => {
           </Text>
         </HStack>
       </Box>
-      <Box pt={"16px"} borderTop={"1px solid #F3F4F6"}>
+      <Box
+        pt={{ base: "8px", lg: "16px" }}
+        borderTop={"1px solid #F3F4F6"}
+        mt={"auto"}
+      >
         <Button
           variant={"ghost"}
           color={"primary"}

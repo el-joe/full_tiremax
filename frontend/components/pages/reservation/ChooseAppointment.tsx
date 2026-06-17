@@ -42,10 +42,10 @@ export default function ChooseAppointment() {
           {locale === "ar" ? <FaArrowRight /> : <FaArrowLeft />}
         </IconButton>
         <VStack align={"start"}>
-          <Heading fontSize={"24px"} fontWeight={"bold"}>
+          <Heading fontSize={{ base: "18px", md: "24px" }} fontWeight={"bold"}>
             {t("chooseDateAndTime")}
           </Heading>
-          <Text color={"#6B7280"}>
+          <Text color={"#6B7280"} fontSize={{ base: "12px", md: "16px" }}>
             {t("selectedBranch")}:
             <Span color={"primary"} ms={"3px"} fontWeight={"bold"}>
               {reservationData.branch?.name}
@@ -53,26 +53,33 @@ export default function ChooseAppointment() {
           </Text>
         </VStack>
       </HStack>
-      <HStack gap={"24px"} align={"stretch"}>
+      <HStack gap={"24px"} align={"stretch"} flexWrap={"wrap"}>
         {/* date picker box */}
         <VStack
           border={"2px solid #E5E7EB"}
           gap={"24px"}
           rounded={"16px"}
-          p={"34px"}
+          p={{ base: "18px", lg: "34px" }}
           boxShadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0 #0000001A"}
           w={"calc((100% - 24px) / 2)"}
           align={"stretch"}
+          minW={"280px"}
+          flex={1}
         >
           {/* header */}
           <HStack justify={"start"} gap={"12px"}>
-            <Center w={"48px"} h="48px" rounded={"14px"} bg={"#FDB6041A"}>
-              <Icon size={"lg"} color={"primary"}>
+            <Center
+              w={{ base: "26px", lg: "48px" }}
+              h={{ base: "26px", lg: "48px" }}
+              rounded={{ base: "6px", lg: "14px" }}
+              bg={"#FDB6041A"}
+            >
+              <Icon size={{ lg: "lg" }} color={"primary"}>
                 <MdOutlineCalendarToday />
               </Icon>
             </Center>
             <Heading>{t("chooseDate")}</Heading>
-            {/* date picker */}
+            {/* date picker input */}
           </HStack>
           <DatePicker
             onValueChange={(date) => {
@@ -90,7 +97,7 @@ export default function ChooseAppointment() {
             bg={"#F9FAFB"}
             rounded={"14px"}
             inputProps={{
-              p: "22px 16px",
+              p: { base: "12px", lg: "22px 16px" },
               h: "auto",
               rounded: "14px",
               border: "2px solid #D1D5DC",
@@ -99,7 +106,7 @@ export default function ChooseAppointment() {
           {/* selected date badge */}
           {reservationData.date && (
             <HStack
-              p="16px"
+              p={{ base: "8px", lg: "16px" }}
               border="1px solid #B9F8CF"
               bg="#F0FDF4"
               rounded={"14px"}
@@ -116,7 +123,7 @@ export default function ChooseAppointment() {
             </HStack>
           )}
           <HStack
-            p="16px"
+            p={{ base: "8px", lg: "16px" }}
             border="1px solid #BEDBFF"
             bg="#EFF6FF"
             rounded={"14px"}
@@ -134,15 +141,22 @@ export default function ChooseAppointment() {
           border={"2px solid #E5E7EB"}
           gap={"24px"}
           rounded={"16px"}
-          p={"34px"}
+          p={{ base: "18px", lg: "34px" }}
           boxShadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0 #0000001A"}
           w={"calc((100% - 24px) / 2)"}
           align={"stretch"}
+          minW={"280px"}
+          flex={1}
         >
           {/* header */}
           <HStack justify={"start"} gap={"12px"}>
-            <Center w={"48px"} h="48px" rounded={"14px"} bg={"#EFF6FF"}>
-              <Icon size={"lg"} color={"#155DFC"}>
+            <Center
+              w={{ base: "26px", lg: "48px" }}
+              h={{ base: "26px", lg: "48px" }}
+              rounded={{ base: "6px", lg: "14px" }}
+              bg={"#EFF6FF"}
+            >
+              <Icon size={{ lg: "lg" }} color={"#155DFC"}>
                 <FaRegClock />
               </Icon>
             </Center>
@@ -176,7 +190,7 @@ export default function ChooseAppointment() {
           {/* selected date badge */}
           {reservationData.time && (
             <HStack
-              p="16px"
+              p={{ base: "8px", lg: "16px" }}
               border="1px solid #B9F8CF"
               bg="#F0FDF4"
               rounded={"14px"}
@@ -193,15 +207,20 @@ export default function ChooseAppointment() {
           )}
         </VStack>
       </HStack>
+      {/* confirmation bar */}
       <HStack
         justify={"space-between"}
-        p="24px"
+        p={{ base: "8px", lg: "24px" }}
         border={"1px solid #E5E7EB"}
         rounded="16px"
         mt="32px"
       >
         <Box>
-          <Text fontSize={"18px"} fontWeight={"extrabold"} mb={"6px"}>
+          <Text
+            fontSize={{ base: "14px", md: "18px" }}
+            fontWeight={"extrabold"}
+            mb={"6px"}
+          >
             {t("selectedAppointment")}
           </Text>
           <HStack gap={"16px"}>
@@ -210,7 +229,7 @@ export default function ChooseAppointment() {
               <Icon color={"primary"} strokeWidth={"1px"}>
                 <CiCalendar />
               </Icon>
-              <Text fontSize={"14px"} color={"#4A5565"}>
+              <Text fontSize={{ base: "9px", md: "14px" }} color={"#4A5565"}>
                 {reservationData.date ? reservationData.date : t("notSelected")}
               </Text>
             </HStack>
@@ -219,7 +238,7 @@ export default function ChooseAppointment() {
               <Icon color={"primary"} strokeWidth={"1px"}>
                 <FaRegClock />
               </Icon>
-              <Text fontSize={"14px"} color={"#4A5565"}>
+              <Text fontSize={{ base: "9px", md: "14px" }} color={"#4A5565"}>
                 {reservationData.time ? reservationData.time : t("notSelected")}
               </Text>
             </HStack>
@@ -227,14 +246,14 @@ export default function ChooseAppointment() {
         </Box>
         <Button
           disabled={!reservationData.date || !reservationData.time}
-          h={"60px"}
+          h={{ base: "42px", md: "60px" }}
           rounded="14px"
           onClick={() => {
             if (reservationData.date && reservationData.time) {
               goToNextStep();
             }
           }}
-          fontSize={"18px"}
+          fontSize={{ base: "12px", md: "18px" }}
           fontWeight={"extrabold"}
         >
           {t("continueToConfirmation")}

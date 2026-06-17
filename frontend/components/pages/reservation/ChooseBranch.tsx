@@ -46,10 +46,10 @@ export default function ChooseBranch() {
           {locale === "ar" ? <FaArrowRight /> : <FaArrowLeft />}
         </IconButton>
         <VStack align={"start"}>
-          <Heading fontSize={"24px"} fontWeight={"bold"}>
+          <Heading fontSize={{ base: "18px", md: "24px" }} fontWeight={"bold"}>
             {t("chooseNearestBranch")}
           </Heading>
-          <Text color={"#6B7280"}>
+          <Text color={"#6B7280"} fontSize={{ base: "12px", md: "16px" }}>
             {t("selectedService")}:
             <Span color={"primary"} ms={"3px"} fontWeight={"bold"}>
               {reservationData.service?.name}
@@ -62,7 +62,7 @@ export default function ChooseBranch() {
           <Heading>Loading</Heading>
         </Center>
       ) : (
-        <HStack>
+        <HStack flexWrap={"wrap"} gap={{ base: "10px", lg: "16px" }}>
           {branchesList.map((branch) => (
             <BranchCard key={branch.id} data={branch} />
           ))}
@@ -86,58 +86,74 @@ const BranchCard = ({ data }: { data: IBranch }) => {
       boxShadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0 #0000001A"}
       align={"start"}
       overflow={"hidden"}
-      w={"calc((100% - 16px) / 2 )"}
-      h={"268px"}
+      h={"-webkit-fill-available"}
+      w={{
+        base: "full",
+        md: "calc((100% - 10px) / 2 )",
+        lg: "calc((100% - 16px) / 2 )",
+      }}
     >
       <Image
         src={"/images/branchCardImage.jpg"}
         alt="bg"
-        w={"160px"}
-        h={"268px"}
+        w={{ base: "92px", lg: "160px" }}
+        h={"full"}
       />
-      <VStack p={"20px"} gap={"18px"} align={"stretch"} flex={1}>
+      <VStack
+        p={{ base: "8px", lg: "20px" }}
+        gap={{ base: "8px", lg: "18px" }}
+        align={"stretch"}
+        flex={1}
+      >
         <HStack justify={"space-between"} align={"start"}>
           <Box>
-            <Heading fontSize={"18px"} fontWeight={"extrabold"}>
+            <Heading
+              fontSize={{ base: "14px", lg: "18px" }}
+              fontWeight={"extrabold"}
+            >
               {data.name}
             </Heading>
             <HStack>
-              <Icon color={"primary"}>
+              <Icon color={"primary"} size={{ base: "xs", lg: "sm" }}>
                 <FaStar />
               </Icon>
-              <Text fontWeight={"bold"}>4.8</Text>
-              <Text color={"gray-2"}>(288{t("rate")})</Text>
+              <Text fontWeight={"bold"} fontSize={{ base: "12px", lg: "16px" }}>
+                4.8
+              </Text>
+              <Text color={"gray-2"} fontSize={{ base: "12px", lg: "16px" }}>
+                (288{t("rate")})
+              </Text>
             </HStack>
           </Box>
           <HStack>
-            <Icon color={"primary"} size={"xl"}>
+            <Icon color={"primary"} size={{ base: "sm", lg: "xl" }}>
               <TiLocationArrowOutline />
             </Icon>
-            <Text>2.5 {t("km")}</Text>
+            <Text fontSize={{ base: "12px", lg: "16px" }}>2.5 {t("km")}</Text>
           </HStack>
         </HStack>
-        <VStack gap={"12px"} align={"start"}>
+        <VStack gap={{ base: "8px", lg: "12px" }} align={"start"}>
           <HStack gap={"12px"}>
-            <Icon color={"primary"} size={"md"}>
+            <Icon color={"primary"} size={{ base: "sm", lg: "md" }}>
               <SlLocationPin />
             </Icon>
-            <Text fontSize={"14px"} color={"gray-2"}>
+            <Text fontSize={{ base: "9px", lg: "14px" }} color={"gray-2"}>
               {data?.address}
             </Text>
           </HStack>
           <HStack gap={"12px"}>
-            <Icon color={"primary"} size={"md"}>
+            <Icon color={"primary"} size={{ base: "sm", lg: "md" }}>
               <FiPhone />
             </Icon>
-            <Text fontSize={"14px"} color={"gray-2"}>
+            <Text fontSize={{ base: "9px", lg: "14px" }} color={"gray-2"}>
               {data?.phone}
             </Text>
           </HStack>
           <HStack gap={"12px"}>
-            <Icon color={"primary"} size={"md"}>
+            <Icon color={"primary"} size={{ base: "sm", lg: "md" }}>
               <SlClock />
             </Icon>
-            <Text fontSize={"14px"} color={"gray-2"}>
+            <Text fontSize={{ base: "9px", lg: "14px" }} color={"gray-2"}>
               {/* {formatTimeRange("09:00:00", "22:00:00", locale)} */}
               {formatTimeRange(
                 data?.schedules[0]?.opens_at ?? "",
@@ -147,7 +163,7 @@ const BranchCard = ({ data }: { data: IBranch }) => {
             </Text>
           </HStack>
         </VStack>
-        <Box pt={"20px"} borderTop={"1px solid #F3F4F6"}>
+        <Box pt={{ base: "10px", lg: "20px" }} borderTop={"1px solid #F3F4F6"}>
           <Button
             variant={"ghost"}
             color={"primary"}
