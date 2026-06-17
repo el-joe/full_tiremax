@@ -69,9 +69,7 @@ export default function Page() {
 
         {steps.map((step, index) => (
           <Steps.Content key={index} index={index} dir={dir} pt={"47px"}>
-            <Box maxW={"1086px"} mx={"auto"}>
-              {step.content}
-            </Box>
+            {step.content}
           </Steps.Content>
         ))}
         <Steps.CompletedContent>All steps are complete!</Steps.CompletedContent>

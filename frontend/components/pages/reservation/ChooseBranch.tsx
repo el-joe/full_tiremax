@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useLocale, useTranslations } from "next-intl";
 import {
+  FaArrowLeft,
   FaArrowRight,
   FaChevronLeft,
   FaChevronRight,
@@ -33,6 +34,7 @@ export default function ChooseBranch() {
     isBranchesListLoading,
   } = useReservationContext();
   const t = useTranslations("reservation");
+  const locale = useLocale();
   return (
     <>
       <HStack gap={"16px"} mb={"32px"}>
@@ -41,7 +43,7 @@ export default function ChooseBranch() {
           color={"#6B7280"}
           onClick={() => goToPrevStep()}
         >
-          <FaArrowRight />
+          {locale === "ar" ? <FaArrowRight /> : <FaArrowLeft />}
         </IconButton>
         <VStack align={"start"}>
           <Heading fontSize={"24px"} fontWeight={"bold"}>

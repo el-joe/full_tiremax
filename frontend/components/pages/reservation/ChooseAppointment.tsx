@@ -15,15 +15,16 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import React from "react";
 import { CiCalendar } from "react-icons/ci";
-import { FaArrowRight, FaRegClock } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaRegClock } from "react-icons/fa";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import { RiErrorWarningLine } from "react-icons/ri";
 
 export default function ChooseAppointment() {
   const t = useTranslations("reservation");
+  const locale = useLocale();
   const {
     reservationData,
     useSteps: { goToPrevStep, goToNextStep },
@@ -31,14 +32,14 @@ export default function ChooseAppointment() {
     setTime,
   } = useReservationContext();
   return (
-    <>
+    <Box maxW={"1086px"} mx={"auto"}>
       <HStack gap={"16px"} mb={"32px"}>
         <IconButton
           variant={"ghost"}
           color={"#6B7280"}
           onClick={() => goToPrevStep()}
         >
-          <FaArrowRight />
+          {locale === "ar" ? <FaArrowRight /> : <FaArrowLeft />}
         </IconButton>
         <VStack align={"start"}>
           <Heading fontSize={"24px"} fontWeight={"bold"}>
@@ -172,6 +173,24 @@ export default function ChooseAppointment() {
               ))}
             </HStack>
           )}
+          {/* selected date badge */}
+          {reservationData.time && (
+            <HStack
+              p="16px"
+              border="1px solid #B9F8CF"
+              bg="#F0FDF4"
+              rounded={"14px"}
+              color={"#008236"}
+              gap={"14px"}
+            >
+              <Icon size={"md"}>
+                <MdOutlineCalendarToday />
+              </Icon>
+              <Text fontSize={"14px"}>
+                {t("selectedTime")}: {reservationData.time}
+              </Text>
+            </HStack>
+          )}
         </VStack>
       </HStack>
       <HStack
@@ -198,7 +217,7 @@ export default function ChooseAppointment() {
             {/* selected time */}
             <HStack>
               <Icon color={"primary"} strokeWidth={"1px"}>
-                <CiCalendar />
+                <FaRegClock />
               </Icon>
               <Text fontSize={"14px"} color={"#4A5565"}>
                 {reservationData.time ? reservationData.time : t("notSelected")}
@@ -215,11 +234,13 @@ export default function ChooseAppointment() {
               goToNextStep();
             }
           }}
+          fontSize={"18px"}
+          fontWeight={"extrabold"}
         >
           {t("continueToConfirmation")}
         </Button>
       </HStack>
-    </>
+    </Box>
   );
 }
 
