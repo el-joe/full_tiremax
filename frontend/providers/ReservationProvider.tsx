@@ -10,13 +10,7 @@ import {
   type UseStepsReturn,
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineTool } from "react-icons/ai";
 import { FaRegCheckCircle } from "react-icons/fa";

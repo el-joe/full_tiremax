@@ -18,6 +18,7 @@ import { CiHeart } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuBellDot } from "react-icons/lu";
 import { FiShoppingCart } from "react-icons/fi";
+import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -63,14 +64,8 @@ const Header = () => {
             </HeaderButton>
           </HStack>
           {/* search */}
-          <Input
-            startElement={<SearchIcon size={"md"} />}
-            placeholder={t("search")}
-            bg={"white"}
-            rounded={"20px"}
-            rootProps={{ flex: 1 }}
-            minW={"120px"}
-          />
+          <HeaderSearch />
+          {/* icon buttons */}
           <HStack
             gap={"8px"}
             justify={"space-evenly"}

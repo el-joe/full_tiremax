@@ -15,7 +15,7 @@ interface IFilterContext {
     except?: { targetEndpoint: string; filterName: string }[],
   ) => void;
   setFilter: (newFilter: TFilterBody) => void;
-  getFiltersString: () => string;
+  getFiltersString: (newFilter?: TFilterBody) => string;
 }
 
 const filterContext = createContext<IFilterContext>({

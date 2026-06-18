@@ -266,6 +266,7 @@ export default function CheckoutForm() {
                     <Text color={"gray-2"}>{t("deliveryFee")}</Text>
                     <Text fontWeight={"bold"} color={"primary"}>
                       {(governorateData?.find(
+                        // eslint-disable-next-line react-hooks/incompatible-library
                         (e) => e.id === +watch("governorate_id"),
                       )?.shipping_fee as number) < 1 ? (
                         t("freeDelivery")

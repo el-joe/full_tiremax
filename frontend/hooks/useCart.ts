@@ -32,20 +32,20 @@ export const useCart = () => {
     }
   });
 
-  const recalculate = useCallback(
-    (items: ICartItem[]) => {
-      const subtotal = items.reduce((a, i) => a + i.unit_price * i.quantity, 0);
+  //   const recalculate = useCallback(
+  //     (items: ICartItem[]) => {
+  //       const subtotal = items.reduce((a, i) => a + i.unit_price * i.quantity, 0);
 
-      return {
-        ...EMPTY_CART,
-        ...cart,
-        items,
-        items_count: items.reduce((a, i) => a + i.quantity, 0),
-        subtotal,
-      };
-    },
-    [cart],
-  );
+  //       return {
+  //         ...EMPTY_CART,
+  //         ...cart,
+  //         items,
+  //         items_count: items.reduce((a, i) => a + i.quantity, 0),
+  //         subtotal,
+  //       };
+  //     },
+  //     [cart],
+  //   );
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_CART_KEY, JSON.stringify(cart));
