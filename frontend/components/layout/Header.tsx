@@ -92,7 +92,7 @@ const Header = () => {
               </HeaderButton>
             </Tooltip>
             <Tooltip content={t("profile")}>
-              <HeaderButton href={"/"}>
+              <HeaderButton href={"/profile"}>
                 <FaRegUserCircle />
               </HeaderButton>
             </Tooltip>
