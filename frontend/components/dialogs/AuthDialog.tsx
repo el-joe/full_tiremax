@@ -7,13 +7,19 @@ import { LuLogIn, LuUserPlus } from "react-icons/lu";
 import useDir from "@/hooks/useDir";
 import { useTranslations } from "next-intl";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useQueryState } from "nuqs";
 
 export default function AuthDialog() {
   const dir = useDir();
   const t = useTranslations("auth");
   const { authDialog } = useAuthContext();
+  const [, setAuthDialogPram] = useQueryState("authDialog");
   return (
-    <Dialog value={authDialog} closeIconButton>
+    <Dialog
+      value={authDialog}
+      closeIconButton
+      onExitComplete={() => setAuthDialogPram(null)}
+    >
       <Tabs.Root defaultValue="members">
         <Tabs.List dir={dir}>
           <Tabs.Trigger value="members">

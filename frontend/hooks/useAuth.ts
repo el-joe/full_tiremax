@@ -119,6 +119,16 @@ export const useAuth = () => {
     });
     setIsLogged(true);
     setAuthDialogParam(null);
+    authDialog.setOpen(false);
+  };
+
+  //   show auth dialog for fn need that before call
+  const protectedWithAuth = (fn: () => void) => {
+    if (!isLogged) {
+      authDialog.setOpen(true);
+    } else {
+      return fn();
+    }
   };
 
   //   logout fn
@@ -142,10 +152,8 @@ export const useAuth = () => {
   useEffect(() => {
     if (authDialogParam === "on") {
       authDialog.setOpen(true);
-    } else {
-      authDialog.setOpen(false);
     }
-  }, [authDialog, authDialogParam]);
+  }, [authDialogParam]);
   return {
     customer,
     isLogged,
@@ -159,5 +167,6 @@ export const useAuth = () => {
     registerError,
     logout,
     authDialog,
+    protectedWithAuth,
   };
 };

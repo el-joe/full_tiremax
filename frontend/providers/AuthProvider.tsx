@@ -21,6 +21,7 @@ interface IAuthContext {
   register: (credential: TRegisterCredential) => void;
   registerError: Error | null;
   registerIsError: boolean;
+  protectedWithAuth: (fn: () => void) => void;
 }
 
 const initialState: IAuthContext = {
@@ -36,6 +37,7 @@ const initialState: IAuthContext = {
   register: () => {},
   registerError: null,
   registerIsError: false,
+  protectedWithAuth() {},
 };
 
 const authContext = createContext<IAuthContext>(initialState);
@@ -54,6 +56,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     register,
     registerError,
     registerIsError,
+    protectedWithAuth,
   } = useAuth();
   return (
     <authContext.Provider
@@ -70,6 +73,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         register,
         registerError,
         registerIsError,
+        protectedWithAuth,
       }}
     >
       {children}

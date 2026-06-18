@@ -23,6 +23,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IconType } from "react-icons/lib";
 import { LuMapPin } from "react-icons/lu";
+import { useAuthContext } from "./AuthProvider";
 
 const steps = [
   {
@@ -105,6 +106,7 @@ export const ReservationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const { protectedWithAuth } = useAuthContext();
   const [reservationData, setReservationData] = useState<
     IreservationContext["reservationData"]
   >({ service: null, branch: null, date: null, time: null });
@@ -176,7 +178,7 @@ export const ReservationProvider = ({
       branch_id: branch.id,
       scheduled_at: `${reservationData.date}T${reservationData.time}`,
     };
-    mutateBooking(body);
+    protectedWithAuth(() => mutateBooking(body));
   };
 
   useEffect(() => {

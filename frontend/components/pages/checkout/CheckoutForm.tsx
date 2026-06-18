@@ -32,6 +32,7 @@ import { RiBankLine } from "react-icons/ri";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useDir from "@/hooks/useDir";
+import { useAuthContext } from "@/providers/AuthProvider";
 const paymentMethods = [
   {
     icon: FaMoneyBills,
@@ -66,6 +67,7 @@ const paymentMethods = [
 ];
 export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
+  const { protectedWithAuth } = useAuthContext();
   const dir = useDir();
   const {
     register,
@@ -73,7 +75,7 @@ export default function CheckoutForm() {
     control,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<CreateOrderInput>({
     resolver: zodResolver(createOrderSchema),
     defaultValues: {
@@ -101,14 +103,14 @@ export default function CheckoutForm() {
       const { data: res } = await axiosInstance.post("orders", body);
       return res;
     },
-    onError: (err: AxiosError) => {
-      console.log("err", err.response);
+    onError: () => {
       toast.error("Oops! something want wrang");
     },
   });
 
   const onSubmit: SubmitHandler<CreateOrderInput> = async (data) => {
-    createOrder(data);
+    // wrap mutate call so it matches protectedWithAuth signature
+    protectedWithAuth(() => createOrder(data));
   };
 
   return (
