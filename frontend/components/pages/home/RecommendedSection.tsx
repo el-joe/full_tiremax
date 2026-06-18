@@ -1,9 +1,10 @@
-import { FilterIcon } from "@/components/Icons";
+import { ChevronLeftIcon } from "@/components/Icons";
 import ProductCard from "@/components/shared/ProductCard";
 import Container from "@/components/ui/Container";
+import { Link } from "@/i18n/navigation";
 import { IProduct } from "@/types";
-import { Button, Heading, HStack } from "@chakra-ui/react";
-import { getTranslations } from "next-intl/server";
+import { Heading, HStack } from "@chakra-ui/react";
+import { getLocale, getTranslations } from "next-intl/server";
 import React from "react";
 
 type props = {
@@ -12,7 +13,7 @@ type props = {
 
 const RecommendedSection = async ({ data }: props) => {
   const t = await getTranslations("home");
-
+  const locale = await getLocale();
   return (
     <Container roundedBottom={"50px"} mb={"24px"}>
       {/* header section */}
@@ -27,10 +28,15 @@ const RecommendedSection = async ({ data }: props) => {
         >
           {t("recommendedTiresForYou")}
         </Heading>
-        <Button variant={"ghost"} color={"fg"} _hover={{ bg: "transparent" }}>
-          {t("filterBy")}
-          <FilterIcon />
-        </Button>
+        <Link href={"/store"}>
+          <HStack>
+            {t("showAll")}
+            <ChevronLeftIcon
+              rotate={locale === "en" ? "180deg" : "0deg"}
+              size={"md"}
+            />
+          </HStack>
+        </Link>
       </HStack>
       <HStack
         flexWrap={"wrap"}

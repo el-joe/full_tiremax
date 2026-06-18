@@ -1,6 +1,8 @@
 "use client";
 import { SearchIcon } from "@/components/Icons";
 import DropSelectList from "@/components/ui/DropSelectList";
+import useDir from "@/hooks/useDir";
+import { Link } from "@/i18n/navigation";
 import { useProductFilterContext } from "@/providers/ProductFilterProvider";
 import { IMake, IVehicleModel, IYearVehicleModel } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
@@ -13,7 +15,7 @@ import {
   TabsRootProps,
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 type props = {
@@ -30,12 +32,12 @@ const TabsFilterBy = ({
   tabsRootProps,
 }: props) => {
   const t = useTranslations("home");
-  const locale = useLocale();
-  const dir = locale === "ar" ? "rtl" : "ltr";
+  const dir = useDir();
   return (
     <Tabs.Root
       defaultValue="foundByVehicle"
       maxW={"1214px"}
+      mx={"auto"}
       bg={"bg"}
       rounded={"24px"}
       overflow={"hidden"}
@@ -102,7 +104,7 @@ export default TabsFilterBy;
 
 const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
   const t = useTranslations("home");
-  const { filters, applyFilter } = useProductFilterContext();
+  const { filters, applyFilter, getFiltersString } = useProductFilterContext();
   const { data: makeData, isLoading: makeIsLoading } = useQuery({
     queryKey: ["makeList"],
     queryFn: async () => {
@@ -193,17 +195,19 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
         name="year"
       />
       {showButton && (
-        <Button
-          rounded={"12px"}
-          minW="200px"
-          flex="1"
-          type="submit"
-          fontSize={{ base: "12px" }}
-          w={{ base: "full", md: "auto" }}
-          onClick={() => applyFilter()}
-        >
-          {t("findYourTireNow")} <SearchIcon />
-        </Button>
+        <Link href={`/store?${getFiltersString()}`}>
+          <Button
+            rounded={"12px"}
+            minW="200px"
+            flex="1"
+            type="submit"
+            fontSize={{ base: "12px" }}
+            w={{ base: "full", md: "auto" }}
+            onClick={() => applyFilter()}
+          >
+            {t("findYourTireNow")} <SearchIcon />
+          </Button>
+        </Link>
       )}
     </HStack>
   );

@@ -2,12 +2,12 @@
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Filters from "./Filters";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import useDir from "@/hooks/useDir";
 
 const SmallScreenFilters = () => {
   const t = useTranslations("store");
-  const locale = useLocale();
-  const dir = locale === "ar" ? "rtl" : "ltr";
+  const dir = useDir();
   const [open, setOpen] = useState(false);
   return (
     <Dialog.Root open={open} onOpenChange={(e) => setOpen(e.open)}>

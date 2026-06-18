@@ -9,7 +9,6 @@ export type { IApiMetaRes, IProductReviewMeta } from "./apiMetaRes.type.ts";
 export type { IReview } from "./review.type.ts";
 export type { ICustomerCart } from "./customerCart.type.ts";
 export type { ICustomerFav } from "./customerFav.type.ts";
-export type { IUserProfile } from "./userProfile.type.ts";
 export type { IOrder } from "./order.type.ts";
 export type { IService } from "./service.type.ts";
 export type { IBranch } from "./branch.type.ts";

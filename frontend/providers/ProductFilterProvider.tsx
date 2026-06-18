@@ -15,6 +15,7 @@ interface IFilterContext {
     except?: { targetEndpoint: string; filterName: string }[],
   ) => void;
   setFilter: (newFilter: TFilterBody) => void;
+  getFiltersString: () => string;
 }
 
 const filterContext = createContext<IFilterContext>({
@@ -22,6 +23,7 @@ const filterContext = createContext<IFilterContext>({
   filters: [],
   removeAllFilters() {},
   setFilter() {},
+  getFiltersString: () => "",
 });
 
 export const ProductFilterProvider = ({
@@ -29,10 +31,22 @@ export const ProductFilterProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { applyFilter, filters, removeAllFilters, setFilter } = useApiFilter();
+  const {
+    applyFilter,
+    filters,
+    removeAllFilters,
+    setFilter,
+    getFiltersString,
+  } = useApiFilter();
   return (
     <filterContext.Provider
-      value={{ applyFilter, filters, removeAllFilters, setFilter }}
+      value={{
+        applyFilter,
+        filters,
+        removeAllFilters,
+        setFilter,
+        getFiltersString,
+      }}
     >
       {children}
     </filterContext.Provider>

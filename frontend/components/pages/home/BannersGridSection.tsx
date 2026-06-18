@@ -53,7 +53,7 @@ const BannersGridSection = async () => {
                 h="full"
               />
               <Link
-                href={"/"}
+                href={"/services"}
                 className="bg-white absolute bottom-4 left-4 p-2.5! rounded-[10px]"
               >
                 {t("maintenanceServices")}
@@ -79,7 +79,7 @@ const BannersGridSection = async () => {
               h="full"
             />
             <Link
-              href={"/"}
+              href={"/services"}
               className="bg-white absolute bottom-4 left-4 p-2.5! rounded-[10px]"
             >
               {t("maintenanceServices")}
@@ -111,7 +111,7 @@ const BannersGridSection = async () => {
                 h="full"
               />
               <Link
-                href={"/"}
+                href={"/services"}
                 className="bg-white absolute bottom-4 left-2 md:left-4 p-1! md:p-2.5! rounded-[10px] text-sm! md:text-base!"
               >
                 {t("batteryInstallation")}
@@ -135,7 +135,7 @@ const BannersGridSection = async () => {
                 h="full"
               />
               <Link
-                href={"/"}
+                href={"/services"}
                 className="bg-white absolute bottom-4 left-2 md:left-4 p-1! md:p-2.5! rounded-[10px] text-sm! md:text-base!"
               >
                 {t("tireInstallation")}

@@ -2,27 +2,23 @@
 import {
   Box,
   Center,
-  ConditionalValue,
-  FieldRootProps,
   Heading,
   HStack,
   Icon,
-  InputProps,
   RadioCard,
   Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { SubmitHandler, useForm, UseFormRegisterReturn } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type CreateOrderInput,
   createOrderSchema,
 } from "@/Schemas/createOrderSchemas";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import Input from "@/components/ui/Input";
-import { HTMLInputTypeAttribute, useEffect } from "react";
-import { FaPhoneAlt, FaRegCalendarAlt, FaRegUserCircle } from "react-icons/fa";
+import { FaPhoneAlt, FaRegUserCircle } from "react-icons/fa";
 import DropSelectList from "@/components/ui/DropSelectList";
 import Textarea from "@/components/ui/Textarea";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -32,10 +28,10 @@ import { LuMapPin } from "react-icons/lu";
 import { MdOutlineLocalShipping } from "react-icons/md";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
 import { FaMoneyBills, FaRegCreditCard } from "react-icons/fa6";
-import { CiMobile1 } from "react-icons/ci";
 import { RiBankLine } from "react-icons/ri";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import useDir from "@/hooks/useDir";
 const paymentMethods = [
   {
     icon: FaMoneyBills,
@@ -70,8 +66,7 @@ const paymentMethods = [
 ];
 export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
-  const locale = useLocale();
-  const dir = locale === "ar" ? "rtl" : "ltr";
+  const dir = useDir();
   const {
     register,
     handleSubmit,

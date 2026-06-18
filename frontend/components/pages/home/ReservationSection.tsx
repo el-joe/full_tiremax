@@ -5,6 +5,7 @@ import {
   SpannerIcon,
   StarsIcon,
 } from "@/components/Icons";
+import { Link } from "@/i18n/navigation";
 import {
   Badge,
   Box,
@@ -108,11 +109,13 @@ const ReservationSection = async () => {
               {t("chooseAppointmentAndBranch")}
             </List.Item>
           </List.Root>
-          <Button bg="black-2" fontSize={"18px"} fontWeight={"semibold"}>
-            <CalenderIcon />
-            {t("bookServiceNow")}
-            <LeftArrowIcon rotate={locale === "en" ? "180deg" : "0"} />
-          </Button>
+          <Link href={"/services/reservation"}>
+            <Button bg="black-2" fontSize={"18px"} fontWeight={"semibold"}>
+              <CalenderIcon />
+              {t("bookServiceNow")}
+              <LeftArrowIcon rotate={locale === "en" ? "180deg" : "0"} />
+            </Button>
+          </Link>
         </Box>
         <Box flex="1">
           <Image

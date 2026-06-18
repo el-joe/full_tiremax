@@ -1,17 +1,21 @@
 "use client";
-import { Box, Button, Center, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  HStack,
+  Icon,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import React from "react";
 import Input from "../ui/Input";
 import { useTranslations } from "next-intl";
-import {
-  PhoneSignalIcon,
-  SendMessageIcon,
-  UserCircleIcon,
-  WhatsappLogoIcon,
-} from "../Icons";
+import { PhoneSignalIcon, SendMessageIcon, WhatsappLogoIcon } from "../Icons";
 import Textarea from "../ui/Textarea";
 import { Link } from "@/i18n/navigation";
 import { useForm } from "react-hook-form";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const ContactUsForm = () => {
   const t = useTranslations("home");
@@ -32,7 +36,11 @@ const ContactUsForm = () => {
           <Input
             label={t("fullName")}
             placeholder={t("enterYourFullName")}
-            startElement={<UserCircleIcon size={"md"} />}
+            startElement={
+              <Icon size={"md"}>
+                <FaRegUserCircle />
+              </Icon>
+            }
           />
           <Input
             label={t("phoneNumber")}

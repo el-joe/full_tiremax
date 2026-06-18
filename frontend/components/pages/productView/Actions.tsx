@@ -1,11 +1,12 @@
 "use client";
-import { CartPlusIcon, HeartIcon } from "@/components/Icons";
+import { CartPlusIcon } from "@/components/Icons";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
 import { useCartContext } from "@/providers/CartProvider";
 import { useFavContext } from "@/providers/FavProvider";
 import { IProduct } from "@/types";
 import { Box, Button, HStack, IconButton, Text } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
+import { CiHeart } from "react-icons/ci";
 
 type Props = {
   product: IProduct;
@@ -63,7 +64,7 @@ const Actions = ({ product }: Props) => {
           h={"auto"}
           onClick={() => toggleFavorite(product)}
         >
-          <HeartIcon />
+          <CiHeart />
         </IconButton>
       </HStack>
     </HStack>

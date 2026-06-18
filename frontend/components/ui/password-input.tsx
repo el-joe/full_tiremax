@@ -17,6 +17,7 @@ import {
   useControllableState,
 } from "@chakra-ui/react";
 import * as React from "react";
+import { GoEye, GoEyeClosed } from "react-icons/go";
 
 export interface PasswordVisibilityProps {
   /**
@@ -51,7 +52,7 @@ export const PasswordInput = React.forwardRef<
     defaultVisible,
     visible: visibleProp,
     onVisibleChange,
-    visibilityIcon = { on: "eo", off: "ec" },
+    visibilityIcon = { on: <GoEye />, off: <GoEyeClosed /> },
     ...rest
   } = props;
 
@@ -68,6 +69,7 @@ export const PasswordInput = React.forwardRef<
       endElement={
         <VisibilityTrigger
           disabled={rest.disabled}
+          color={"black"}
           onPointerDown={(e) => {
             if (rest.disabled) return;
             if (e.button !== 0) return;

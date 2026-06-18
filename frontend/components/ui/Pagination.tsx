@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { Pagination as ChakraPagination } from "@chakra-ui/react";
 import { LeftArrowIcon } from "../Icons";
-import { useLocale } from "next-intl";
 import { resolveApiPagination } from "@/helpers/resolveApiPagination";
+import useDir from "@/hooks/useDir";
 
 const PREFIX = process.env.NEXT_PUBLIC_PAGINATION_PREFIX ?? "paginate";
 
@@ -23,12 +23,11 @@ const Pagination = ({
   pageSize,
   onPageChange,
 }: Props) => {
-  const locale = useLocale();
   const router = useRouter();
   const pathName = usePathname();
   const params = useSearchParams();
   const current = new URLSearchParams(Array.from(params.entries()));
-  const dir = locale === "ar" ? "rtl" : "ltr";
+  const dir = useDir();
 
   const handlePageChange = (page: number) => {
     current.set(`${PREFIX}_page`, String(page));

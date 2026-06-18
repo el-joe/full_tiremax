@@ -147,21 +147,27 @@ export const ReservationProvider = ({
   const setService = (serviceId: number) => {
     const service =
       (servicesList ?? []).find((s) => s.id === serviceId) ?? null;
-    setReservationData((p) => ({ ...p, service }));
+    setReservationData({
+      branch: null,
+      date: null,
+      time: null,
+      service,
+    });
   };
   //   set branch
   const setBrach = (serviceId: number) => {
     const branch = (branchesList ?? []).find((s) => s.id === serviceId) ?? null;
-    setReservationData((p) => ({ ...p, branch }));
+    setReservationData((p) => ({ ...p, date: null, time: null, branch }));
   };
   //   set date
   const setDate = (date: string) => {
-    setReservationData((p) => ({ ...p, date }));
+    setReservationData((p) => ({ ...p, time: null, date }));
   };
   //   set time
   const setTime = (time: string) => {
     setReservationData((p) => ({ ...p, time }));
   };
+  // create booking
   const createBooking = () => {
     const { service, branch, date, time } = reservationData;
     if (!service || !branch || !date || !time) return;

@@ -5,7 +5,7 @@ import { getLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { Toaster } from "react-hot-toast";
-
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -17,6 +17,9 @@ import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/providers/CartProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { FavProvider } from "@/providers/FavProvider";
+import { ProductFilterProvider } from "@/providers/ProductFilterProvider";
+import AuthDialog from "@/components/dialogs/AuthDialog";
+import getDir from "@/helpers/getDir";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,33 +51,40 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
+  const dir = await getDir();
   return (
     <html
       lang={locale}
-      dir={locale === "ar" ? "rtl" : "ltr"}
+      dir={dir}
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${almarai.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="bg-black pb-20! md:pb-0!">
-        <NextIntlClientProvider>
-          <ReactQueryProvider>
-            <ChakraUiProvider>
-              <AuthProvider>
-                <FavProvider>
-                  <CartProvider>
-                    <Toaster
-                      position="bottom-right"
-                      toastOptions={{ duration: 6000 }}
-                    />
-                    <Header />
-                    <main className="md:pt-26">{children}</main>
-                    <Footer />
-                  </CartProvider>
-                </FavProvider>
-              </AuthProvider>
-            </ChakraUiProvider>
-          </ReactQueryProvider>
-        </NextIntlClientProvider>
+        <NuqsAdapter>
+          <NextIntlClientProvider>
+            <ReactQueryProvider>
+              <ChakraUiProvider>
+                <AuthProvider>
+                  <FavProvider>
+                    <CartProvider>
+                      <ProductFilterProvider>
+                        <Toaster
+                          position="bottom-right"
+                          toastOptions={{ duration: 6000 }}
+                        />
+                        <Header />
+                        <main className="md:pt-26">{children}</main>
+                        <Footer />
+                        {/* dialogs */}
+                        <AuthDialog />
+                      </ProductFilterProvider>
+                    </CartProvider>
+                  </FavProvider>
+                </AuthProvider>
+              </ChakraUiProvider>
+            </ReactQueryProvider>
+          </NextIntlClientProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

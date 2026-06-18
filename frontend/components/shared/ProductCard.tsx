@@ -5,6 +5,7 @@ import {
   Box,
   Card,
   HStack,
+  Icon,
   IconButton,
   Image,
   RatingGroup,
@@ -16,7 +17,6 @@ import {
   BadgeBestIcon,
   BestPriceCircleIcon,
   CartPlusIcon,
-  HeartIcon,
   NewIcon,
   PercentageCircleIcon,
 } from "../Icons";
@@ -26,6 +26,8 @@ import CurrencySymbol from "../ui/CurrencySymbol";
 import { Link } from "@/i18n/navigation";
 import { useFavContext } from "@/providers/FavProvider";
 import { useCartContext } from "@/providers/CartProvider";
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 
 type Props = {
   product: IProduct;
@@ -85,11 +87,9 @@ const ProductCard = ({ product }: Props) => {
             }}
             h={"auto"}
           >
-            <HeartIcon
-              strokeWidth={"4"}
-              fill={isFavorite(product?.id) ? "primary" : "none"}
-              size={{ base: "xs", md: "md" }}
-            />
+            <Icon size={{ base: "xs", md: "md" }} strokeWidth={"2px"}>
+              {isFavorite(product?.id) ? <FaHeart /> : <CiHeart />}
+            </Icon>
           </IconButton>
           {/* badge */}
           {!!product?.badges.length && (

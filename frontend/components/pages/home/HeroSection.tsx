@@ -11,6 +11,7 @@ import {
 import { getLocale, getTranslations } from "next-intl/server";
 import React from "react";
 import TabsFilterBy from "../../shared/TabsFilterBy";
+import { Link } from "@/i18n/navigation";
 
 const HeroSection = async () => {
   const t = await getTranslations("home");
@@ -77,15 +78,17 @@ const HeroSection = async () => {
             {t("watchVideo")}
             <PlayCircleIcon />
           </Button>
-          <Button
-            fontSize={{ base: "14px", xl: "18px" }}
-            py={{ base: "15px", xl: "20pxx" }}
-            px={{ base: "6px", md: "15px", xl: "" }}
-            h={"auto"}
-          >
-            {t("chooseYourTireNow")}
-            <LeftArrowIcon rotate={local === "en" ? "180deg" : ""} />
-          </Button>
+          <Link href={"/store"}>
+            <Button
+              fontSize={{ base: "14px", xl: "18px" }}
+              py={{ base: "15px", xl: "20pxx" }}
+              px={{ base: "6px", md: "15px", xl: "" }}
+              h={"auto"}
+            >
+              {t("chooseYourTireNow")}
+              <LeftArrowIcon rotate={local === "en" ? "180deg" : ""} />
+            </Button>
+          </Link>
         </HStack>
       </VStack>
       <TabsFilterBy showButton />

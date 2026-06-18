@@ -3,14 +3,10 @@ import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Container, HStack } from "@chakra-ui/react";
 import React from "react";
 import {
-  BellIcon,
   CarIcon,
-  CartIcon,
   DeviceMaintenanceIcon,
-  HeartIcon,
   SearchIcon,
   SpannerIcon,
-  UserCircleIcon,
 } from "../Icons";
 import Logo from "../shared/Logo";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -18,6 +14,10 @@ import { useTranslations } from "next-intl";
 import Input from "../ui/Input";
 import useToggleLang from "@/hooks/useToggleLang";
 import { Tooltip } from "../ui/tooltip";
+import { CiHeart } from "react-icons/ci";
+import { FaRegUserCircle } from "react-icons/fa";
+import { LuBellDot } from "react-icons/lu";
+import { FiShoppingCart } from "react-icons/fi";
 
 const Header = () => {
   const t = useTranslations("header");
@@ -88,22 +88,22 @@ const Header = () => {
             </Tooltip>
             <Tooltip content={t("cart")}>
               <HeaderButton href={"/cart"}>
-                <CartIcon />
+                <FiShoppingCart />
               </HeaderButton>
             </Tooltip>
             <Tooltip content={t("notifications")}>
               <HeaderButton href={"/"}>
-                <BellIcon />
+                <LuBellDot />
               </HeaderButton>
             </Tooltip>
             <Tooltip content={t("profile")}>
               <HeaderButton href={"/"}>
-                <UserCircleIcon />
+                <FaRegUserCircle />
               </HeaderButton>
             </Tooltip>
             <Tooltip content={t("favorites")}>
               <HeaderButton href={"/favorites"}>
-                <HeartIcon />
+                <CiHeart strokeWidth={"2px"} />
               </HeaderButton>
             </Tooltip>
             <HeaderButton href={"/services/reservation"}>

@@ -1,4 +1,5 @@
 "use client";
+import useDir from "@/hooks/useDir";
 import {
   createListCollection,
   Field,
@@ -6,7 +7,6 @@ import {
   Select,
   Spinner,
 } from "@chakra-ui/react";
-import { useLocale } from "next-intl";
 import React, { useMemo } from "react";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
@@ -48,8 +48,7 @@ function DropSelectList<T extends FieldValues>({
       itemToValue: (list) => list.value,
     });
   }, [list]);
-  const locale = useLocale();
-  const dir = locale === "ar" ? "rtl" : "ltr";
+  const dir = useDir();
   return (
     <Field.Root {...containerProps} invalid={err}>
       {!!label && <Field.Label fontWeight={"semibold"}>{label}</Field.Label>}
