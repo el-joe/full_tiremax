@@ -103,7 +103,8 @@ export default function CheckoutForm() {
       const { data: res } = await axiosInstance.post("orders", body);
       return res;
     },
-    onError: () => {
+    onError: (err: AxiosError) => {
+      if (err.status === 401) return;
       toast.error("Oops! something want wrang");
     },
   });

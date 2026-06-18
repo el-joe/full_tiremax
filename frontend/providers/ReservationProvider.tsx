@@ -24,6 +24,7 @@ import { IoCalendarClearOutline } from "react-icons/io5";
 import { IconType } from "react-icons/lib";
 import { LuMapPin } from "react-icons/lu";
 import { useAuthContext } from "./AuthProvider";
+import { AxiosError } from "axios";
 
 const steps = [
   {
@@ -141,7 +142,8 @@ export const ReservationProvider = ({
       const { data } = await axiosInstance.post("bookings", body);
       return data;
     },
-    onError: () => {
+    onError: (err: AxiosError) => {
+      if (err.status === 401) return;
       toast.error("Oops! something want wrang");
     },
   });
@@ -180,11 +182,6 @@ export const ReservationProvider = ({
     };
     protectedWithAuth(() => mutateBooking(body));
   };
-
-  useEffect(() => {
-    console.log(reservationData);
-    return () => {};
-  }, [reservationData]);
 
   return (
     <reservationContext.Provider

@@ -3,7 +3,6 @@ import { resolveApiFilters } from "@/helpers/resolveApiFilters";
 import { resolveLocale } from "@/helpers/resolveLocale";
 import { resolveApiPagination } from "@/helpers/resolveApiPagination";
 import resolveCookie from "@/helpers/resolveCookie";
-import { redirect } from "next/navigation";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -47,7 +46,6 @@ axiosInstance.interceptors.request.use(async (config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log("error", { ...error });
     if (error?.status === 401) {
       // 1. Get current parameters from the browser URL
       const urlParams = new URLSearchParams(window.location.search);

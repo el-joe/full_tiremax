@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Button, Box, VStack, Badge } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,16 +12,19 @@ import { useAuthContext } from "@/providers/AuthProvider";
 export default function RegisterForm() {
   const t = useTranslations("auth");
   const locale = useLocale();
+
+  // rename provider register -> registerUser to avoid name collision with RHF register
   const {
-    register: handleRegister,
+    register: registerUser,
     isRegistering,
     registerIsError,
     registerError,
   } = useAuthContext();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -34,7 +38,8 @@ export default function RegisterForm() {
   });
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
-    handleRegister({
+    // Delegate registration logic to auth provider (keeps side effects out of form)
+    registerUser({
       name: data.name,
       phone: data.phone,
       password: data.password,
@@ -45,10 +50,10 @@ export default function RegisterForm() {
     });
   };
 
-  const getErrorMessage = (errorMessage?: string) => {
-    if (!errorMessage) return "";
-    return t(errorMessage);
-  };
+  const getErrorMessage = React.useCallback(
+    (errorMessage?: string) => (errorMessage ? t(errorMessage) : ""),
+    [t],
+  );
 
   return (
     <Box minW="320px" w="full">
@@ -121,16 +126,19 @@ export default function RegisterForm() {
             h="auto"
             p="16px"
           />
+
           {registerIsError && (
             <Badge
-              p={"12px"}
-              rounded={"12px"}
-              fontWeight={"semibold"}
-              colorPalette={"red"}
+              p="12px"
+              rounded="12px"
+              fontWeight="semibold"
+              colorPalette="red"
+              aria-live="polite"
             >
               {registerError?.message}
             </Badge>
           )}
+
           <Button
             type="submit"
             size="lg"

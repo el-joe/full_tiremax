@@ -1,7 +1,7 @@
 import { ICustomerProfile } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import { AxiosError } from "axios";
 import { useQueryState } from "nuqs";
@@ -19,23 +19,27 @@ export type TRegisterCredential = {
   address?: string;
   locale?: string;
 };
+
 export const useAuth = () => {
   const t = useTranslations("auth");
   const authDialog = useDialog();
   const [authDialogParam, setAuthDialogParam] = useQueryState("authDialog");
+
   const [customer, setCustomer] = useState<ICustomerProfile | null>(() => {
     if (typeof window === "undefined") return null;
     const storedUser = localStorage.getItem("customerInfo");
     const token = getCookie("tiremax_token");
     return !!storedUser && !!token ? JSON.parse(storedUser) : null;
   });
+
   const [isLogged, setIsLogged] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     const storedUser = localStorage.getItem("customerInfo");
     const token = getCookie("tiremax_token");
     return !!storedUser && !!token;
   });
-  //   login mutation
+
+  // login mutation
   const {
     mutate: login,
     error: loginError,
@@ -64,11 +68,13 @@ export const useAuth = () => {
     onError: (err: AxiosError<{ message?: string }>) => {
       const apiMessage = err.response?.data?.message;
       if (apiMessage) {
+        // propagate API message into the error object so UI can display it
         err.message = apiMessage;
       }
     },
   });
-  //   register mutation
+
+  // register mutation
   const {
     mutate: register,
     error: registerError,
@@ -101,37 +107,40 @@ export const useAuth = () => {
       }
     },
   });
-  // set new customer
-  const saveUser = ({
-    customerInfo,
-    token,
-    expiresIn,
-  }: {
-    customerInfo: ICustomerProfile;
-    token: string;
-    expiresIn: number;
-  }) => {
-    if (!customerInfo || !token) return;
-    setCustomer(customerInfo);
-    localStorage.setItem("customerInfo", JSON.stringify(customerInfo));
-    setCookie("tiremax_token", token, {
-      maxAge: expiresIn,
-    });
-    setIsLogged(true);
-    setAuthDialogParam(null);
-    authDialog.setOpen(false);
-  };
 
-  //   show auth dialog for fn need that before call
-  const protectedWithAuth = (fn: () => void) => {
-    if (!isLogged) {
-      authDialog.setOpen(true);
-    } else {
+  // memoize saveUser to avoid re-creating it every render
+  const saveUser = useCallback(
+    ({
+      customerInfo,
+      token,
+      expiresIn,
+    }: {
+      customerInfo: ICustomerProfile;
+      token: string;
+      expiresIn: number;
+    }) => {
+      if (!customerInfo || !token) return;
+      setCustomer(customerInfo);
+      localStorage.setItem("customerInfo", JSON.stringify(customerInfo));
+      setCookie("tiremax_token", token, { maxAge: expiresIn });
+      setIsLogged(true);
+      setAuthDialogParam(null);
+      authDialog.setOpen(false);
+    },
+    [authDialog, setAuthDialogParam],
+  );
+
+  const protectedWithAuth = useCallback(
+    (fn: () => void) => {
+      if (!isLogged) {
+        authDialog.setOpen(true);
+        return;
+      }
       return fn();
-    }
-  };
+    },
+    [authDialog, isLogged],
+  );
 
-  //   logout fn
   const logout = () => {
     localStorage.removeItem("customerInfo");
     deleteCookie("tiremax_token");
@@ -139,7 +148,6 @@ export const useAuth = () => {
     setIsLogged(false);
   };
 
-  //   check has stored user data and token
   useEffect(() => {
     const storedUser = localStorage.getItem("customerInfo");
     const token = getCookie("tiremax_token");
@@ -148,12 +156,14 @@ export const useAuth = () => {
       deleteCookie("tiremax_token");
     }
   }, []);
-  // auth dialog controller
+
   useEffect(() => {
     if (authDialogParam === "on") {
       authDialog.setOpen(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authDialogParam]);
+
   return {
     customer,
     isLogged,

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Button, Box, VStack, Badge } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,26 +12,25 @@ import { useAuthContext } from "@/providers/AuthProvider";
 export default function LoginForm() {
   const t = useTranslations("auth");
   const { login, isLogging, loginIsError, loginError } = useAuthContext();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      identifier: "",
-      password: "",
-    },
+    defaultValues: { identifier: "", password: "" },
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    // delegate to auth provider
     login({ login: data.identifier, password: data.password });
   };
 
-  const getErrorMessage = (errorMessage?: string) => {
-    if (!errorMessage) return "";
-    return t(errorMessage);
-  };
+  const getErrorMessage = React.useCallback(
+    (errorMessage?: string) => (errorMessage ? t(errorMessage) : ""),
+    [t],
+  );
 
   return (
     <Box minW="320px" w="full">
@@ -57,16 +57,20 @@ export default function LoginForm() {
             h="auto"
             p="16px"
           />
+
           {loginIsError && (
             <Badge
-              p={"12px"}
-              rounded={"12px"}
-              fontWeight={"semibold"}
-              colorPalette={"red"}
+              p="12px"
+              rounded="12px"
+              fontWeight="semibold"
+              colorPalette="red"
+              aria-live="polite"
             >
+              {/* API messages may be translation keys or plain strings; call t() for keys */}
               {loginError?.message}
             </Badge>
           )}
+
           <Button
             type="submit"
             size="lg"
