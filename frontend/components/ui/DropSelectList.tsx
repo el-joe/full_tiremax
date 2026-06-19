@@ -25,6 +25,7 @@ interface IProps<T extends FieldValues> extends Omit<
   triggerProps?: Select.TriggerProps;
   containerProps?: Field.RootProps;
   isLoading?: boolean;
+  contentProps?: Select.ContentProps;
 }
 
 function DropSelectList<T extends FieldValues>({
@@ -38,6 +39,7 @@ function DropSelectList<T extends FieldValues>({
   triggerProps,
   containerProps,
   isLoading,
+  contentProps,
   ...rest
 }: IProps<T>) {
   // const collection = createListCollection({ items: list })
@@ -81,7 +83,7 @@ function DropSelectList<T extends FieldValues>({
               </Select.Control>
               <Portal>
                 <Select.Positioner>
-                  <Select.Content>
+                  <Select.Content {...contentProps}>
                     {collection.items.map((item) => (
                       <Select.Item item={item} key={item.value}>
                         {item.label}
@@ -111,7 +113,7 @@ function DropSelectList<T extends FieldValues>({
           </Select.Control>
           <Portal>
             <Select.Positioner>
-              <Select.Content>
+              <Select.Content {...contentProps}>
                 {collection.items.map((item) => (
                   <Select.Item item={item} key={item.value} dir={dir}>
                     {item.label}

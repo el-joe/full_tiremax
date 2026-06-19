@@ -1,21 +1,23 @@
 import { z } from "zod";
 
-export const createOrderSchema = z
-    .object({
-        // type: z.enum(["basra", "delivery"]),
+export const createOrderSchema = z.object({
+  // type: z.enum(["basra", "delivery"]),
 
-        // branch_id: z.number().int().optional(),
-        governorate_id: z.string("selectGovernorateIsRequired"),
-        shipping_address: z.string("theAddressIsRequired").min(12, "theAddressMustBeMoreThen12Character").max(255, "theAddressMustBeLessThen12Character"),
+  // branch_id: z.number().int().optional(),
+  governorate_id: z.string("selectGovernorateIsRequired"),
+  shipping_address: z
+    .string("theAddressIsRequired")
+    .min(12, "theAddressMustBeMoreThen12Character")
+    .max(255, "theAddressMustBeLessThen12Character"),
 
-        payment_method: z.enum(["cod", "card", "transfer"]).default("cod").optional(),
-        customer_name: z.string().max(120).optional(),
-        customer_phone: z.string().max(20).optional(),
-        customer_email: z.string().email().max(120).optional(),
-        notes: z.string().max(500).optional(),
-        // discount: z.coerce.number().min(0).optional(),
-        // installation_fee: z.coerce.number().min(0).optional(),
-    })
+  payment_method: z.enum(["cod", "card", "transfer"]).default("cod").optional(),
+  customer_name: z.string().max(120).optional(),
+  customer_phone: z.string().max(20).optional(),
+  customer_email: z.string().email().max(120).optional(),
+  notes: z.string().max(500).optional(),
+  // discount: z.coerce.number().min(0).optional(),
+  // installation_fee: z.coerce.number().min(0).optional(),
+});
 // .superRefine((data, ctx) => {
 //     if (data.type === "basra" && data.branch_id == null) {
 //         ctx.addIssue({

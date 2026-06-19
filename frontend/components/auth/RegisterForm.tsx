@@ -13,7 +13,6 @@ export default function RegisterForm() {
   const t = useTranslations("auth");
   const locale = useLocale();
 
-  // rename provider register -> registerUser to avoid name collision with RHF register
   const {
     register: registerUser,
     isRegistering,
@@ -38,7 +37,6 @@ export default function RegisterForm() {
   });
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
-    // Delegate registration logic to auth provider (keeps side effects out of form)
     registerUser({
       name: data.name,
       phone: data.phone,

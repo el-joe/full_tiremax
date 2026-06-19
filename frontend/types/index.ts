@@ -14,3 +14,4 @@ export type { IService } from "./service.type.ts";
 export type { IBranch } from "./branch.type.ts";
 export type { ICustomerProfile } from "./customerProfile.type.ts";
 export type { IReservation } from "./reservation.type.ts";
+export type { IAddress } from "./address.type.ts";

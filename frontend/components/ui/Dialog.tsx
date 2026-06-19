@@ -33,7 +33,7 @@ export default function Dialog({
       <Portal>
         <ChakraDialog.Backdrop />
         <ChakraDialog.Positioner>
-          <ChakraDialog.Content>
+          <ChakraDialog.Content w={"unset"} maxW={"unset"} minW={"320px"}>
             {dialogTitle ||
               (closeIconButton && (
                 <ChakraDialog.Header>
@@ -42,7 +42,7 @@ export default function Dialog({
                   )}
                 </ChakraDialog.Header>
               ))}
-            <ChakraDialog.Body>{children}</ChakraDialog.Body>
+            <ChakraDialog.Body dir={dir}>{children}</ChakraDialog.Body>
             {closeIconButton && (
               <ChakraDialog.CloseTrigger asChild>
                 <CloseButton size="sm" color={"black"} />

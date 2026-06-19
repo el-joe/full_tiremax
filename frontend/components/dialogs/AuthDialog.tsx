@@ -20,22 +20,22 @@ export default function AuthDialog() {
       closeIconButton
       onExitComplete={() => setAuthDialogPram(null)}
     >
-      <Tabs.Root defaultValue="members">
+      <Tabs.Root defaultValue="login">
         <Tabs.List dir={dir}>
-          <Tabs.Trigger value="members">
+          <Tabs.Trigger value="login">
             <LuLogIn />
             {t("login")}
           </Tabs.Trigger>
-          <Tabs.Trigger value="projects">
+          <Tabs.Trigger value="register">
             <LuUserPlus />
             {t("register")}
           </Tabs.Trigger>
         </Tabs.List>
-        <Tabs.Content value="members" dir={dir}>
+        <Tabs.Content value="login" dir={dir} minW={"440px"}>
           {" "}
           <LoginForm />
         </Tabs.Content>
-        <Tabs.Content value="projects" dir={dir}>
+        <Tabs.Content value="register" dir={dir} minW={"440px"}>
           {" "}
           <RegisterForm />
         </Tabs.Content>
