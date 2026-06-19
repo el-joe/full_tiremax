@@ -397,7 +397,13 @@
         "all": "All",
         "delivered": "Delivered",
         "onTheWay": "On the Way",
-        "processing": "Processing"
+        "processing": "Processing",
+        "manageBookingsDescription": "Manage all your service bookings",
+        "bookingNumber": "Booking Number",
+        "reschedule": "Reschedule",
+        "cancelBooking": "Cancel Booking",
+        "keepBooking": "Keep Booking",
+        "cancelBookingWarning": "You won't be able to restore the booking once it has been canceled."
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",

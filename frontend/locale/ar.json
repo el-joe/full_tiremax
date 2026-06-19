@@ -397,7 +397,13 @@
         "all": "الكل",
         "delivered": "تم التوصيل",
         "onTheWay": "في الطريق",
-        "processing": "قيد المعالجة"
+        "processing": "قيد المعالجة",
+        "manageBookingsDescription": "إدارة جميع حجوزات الخدمات الخاصة بك",
+        "bookingNumber": "رقم الحجز",
+        "reschedule": "إعادة الجدولة",
+        "cancelBooking": "إلغاء الحجز",
+        "keepBooking": "الاحتفاظ بالحجز",
+        "cancelBookingWarning": "لن تتمكن من استعادة الحجز بعد إلغائه."
     },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",

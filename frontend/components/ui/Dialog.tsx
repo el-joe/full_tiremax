@@ -1,3 +1,4 @@
+"use client";
 import React, { ReactNode } from "react";
 import {
   Dialog as ChakraDialog,
@@ -5,6 +6,7 @@ import {
   type DialogRootProviderProps,
   Portal,
 } from "@chakra-ui/react";
+import useDir from "@/hooks/useDir";
 
 type Props = DialogRootProviderProps & {
   children: ReactNode;
@@ -20,10 +22,13 @@ export default function Dialog({
   closeIconButton,
   ...rest
 }: Props) {
+  const dir = useDir();
   return (
     <ChakraDialog.RootProvider {...rest}>
       {trigger && (
-        <ChakraDialog.Trigger asChild>{trigger}</ChakraDialog.Trigger>
+        <ChakraDialog.Trigger asChild dir={dir}>
+          {trigger}
+        </ChakraDialog.Trigger>
       )}
       <Portal>
         <ChakraDialog.Backdrop />
