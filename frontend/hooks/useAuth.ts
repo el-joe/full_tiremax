@@ -158,11 +158,13 @@ export const useAuth = () => {
   }, []);
 
   useEffect(() => {
-    if (authDialogParam === "on") {
+    if (authDialogParam === "on" && isLogged) {
+      setAuthDialogParam(null);
+    } else if (authDialogParam === "on" && !isLogged) {
       authDialog.setOpen(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authDialogParam]);
+  }, [authDialogParam, isLogged]);
 
   return {
     customer,

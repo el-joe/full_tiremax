@@ -1,0 +1,21 @@
+import ProfileNav from "@/components/pages/profile/ProfileNav";
+import Container from "@/components/ui/Container";
+import { Box, HStack } from "@chakra-ui/react";
+import React from "react";
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function layout({ children }: Props) {
+  return (
+    <Container>
+      <HStack gap={0} align={"stretch"}>
+        <ProfileNav />
+        <Box px={"60px"} flex={1}>
+          {children}
+        </Box>
+      </HStack>
+    </Container>
+  );
+}

@@ -11,6 +11,7 @@ import { IoClose } from "react-icons/io5";
 export default function HeaderSearch() {
   const t = useTranslations("header");
   const [searchHistory, setSearchHistory] = useState<string[]>(() => {
+    if (typeof window === "undefined") return;
     const storedSearchH = localStorage.getItem("searchHistory");
     if (!!storedSearchH) {
       return JSON.parse(storedSearchH);

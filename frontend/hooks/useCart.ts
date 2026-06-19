@@ -1,6 +1,6 @@
 "use client";
 import { ICustomerCart, IProduct } from "@/types";
-import { ICartItem, ICartProduct } from "@/types/customerCart.type";
+import { ICartProduct } from "@/types/customerCart.type";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
