@@ -391,7 +391,13 @@
         "date": "Date",
         "status": "Status",
         "total": "Total",
-        "viewDetails": "View Details"
+        "viewDetails": "View Details",
+        "youHave": "You Have",
+        "order": "Orders",
+        "all": "All",
+        "delivered": "Delivered",
+        "onTheWay": "On the Way",
+        "processing": "Processing"
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",

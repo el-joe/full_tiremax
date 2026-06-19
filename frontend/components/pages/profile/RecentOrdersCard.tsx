@@ -44,7 +44,9 @@ export default function RecentOrders() {
   const { data: recentOrdersList, isLoading } = useQuery({
     queryKey: ["orders"],
     queryFn: async () => {
-      const { data } = await axiosInstance<{ data: IOrder[] }>("orders");
+      const { data } = await axiosInstance<{ data: IOrder[] }>(
+        "orders?per_page=5",
+      );
       return data.data;
     },
   });

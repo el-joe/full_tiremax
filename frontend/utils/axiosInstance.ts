@@ -47,6 +47,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.status === 401) {
+      if (typeof window === "undefined") return Promise.reject(error);
       // 1. Get current parameters from the browser URL
       const urlParams = new URLSearchParams(window.location.search);
 

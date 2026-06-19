@@ -391,7 +391,13 @@
         "date": "التاريخ",
         "status": "الحالة",
         "total": "الإجمالي",
-        "viewDetails": "عرض التفاصيل"
+        "viewDetails": "عرض التفاصيل",
+        "youHave": "لديك",
+        "order": "طلبات",
+        "all": "الكل",
+        "delivered": "تم التوصيل",
+        "onTheWay": "في الطريق",
+        "processing": "قيد المعالجة"
     },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",
