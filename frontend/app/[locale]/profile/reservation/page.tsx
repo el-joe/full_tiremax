@@ -1,7 +1,5 @@
-import OrdersHeader from "@/components/pages/profile/orders/OrdersHeader";
-import OrdersList from "@/components/pages/profile/orders/OrdersList";
 import ReservationList from "@/components/pages/profile/reservation/ReservationList";
-import { IApiMetaRes, IOrder, IReservation } from "@/types";
+import { IApiMetaRes, IReservation } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
 import { AxiosError } from "axios";
 import React from "react";
@@ -33,7 +31,7 @@ const reservation = [
     },
   },
   {
-    id: 1,
+    id: 2,
     reference: "BKG-20260604-0001",
     scheduled_at: new Date("2026-06-10T10:00:00+03:00"),
     duration_minutes: 30,
@@ -49,7 +47,7 @@ const reservation = [
       longitude: 47.7834,
     },
     service: {
-      id: 1,
+      id: 3,
       slug: "tire-fitting",
       name: "Tire Fitting",
       description: "Professional mounting and fitting of new tires",
@@ -58,7 +56,7 @@ const reservation = [
     },
   },
   {
-    id: 1,
+    id: 3,
     reference: "BKG-20260604-0001",
     scheduled_at: new Date("2026-06-10T10:00:00+03:00"),
     duration_minutes: 30,

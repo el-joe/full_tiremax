@@ -1,3 +1,4 @@
+"use client";
 import CancelReservationDialog from "@/components/dialogs/CancelReservationDialog";
 import { Link } from "@/i18n/navigation";
 import { IReservation } from "@/types";
@@ -12,7 +13,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { AiOutlineTool } from "react-icons/ai";
 import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa";
@@ -20,12 +21,8 @@ import { FaClockRotateLeft } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 
-export default async function ReservationList({
-  data,
-}: {
-  data: IReservation[];
-}) {
-  const t = await getTranslations("profile");
+export default function ReservationList({ data }: { data: IReservation[] }) {
+  const t = useTranslations("profile");
   if (!data.length)
     return (
       <Center>
@@ -115,6 +112,7 @@ export default async function ReservationList({
                   <FaClockRotateLeft /> {t("reschedule")}
                 </Button>
                 <CancelReservationDialog
+                  reservationId={reserve?.id}
                   trigger={
                     <Button
                       border="1px solid #FFC9C9"
@@ -125,7 +123,6 @@ export default async function ReservationList({
                       <IoMdClose /> {t("cancelBooking")}
                     </Button>
                   }
-                  reservationId={reserve?.id}
                 />
                 <Link
                   href={`/profile/reservation/${reserve.id}`}

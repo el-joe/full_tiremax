@@ -25,11 +25,11 @@ export default function Dialog({
   const dir = useDir();
   return (
     <ChakraDialog.RootProvider {...rest}>
-      {trigger && (
-        <ChakraDialog.Trigger asChild dir={dir}>
-          {trigger}
-        </ChakraDialog.Trigger>
-      )}
+      {/* {trigger && ( */}
+      <ChakraDialog.Trigger asChild dir={dir}>
+        {trigger}
+      </ChakraDialog.Trigger>
+      {/* )} */}
       <Portal>
         <ChakraDialog.Backdrop />
         <ChakraDialog.Positioner>
