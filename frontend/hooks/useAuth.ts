@@ -19,6 +19,14 @@ export type TRegisterCredential = {
   address?: string;
   locale?: string;
 };
+export type TUpdateCustomer = {
+  name?: string;
+  phone?: string;
+  email?: string;
+  password?: string;
+  password_confirmation?: string;
+  locale?: string;
+};
 
 export const useAuth = () => {
   const t = useTranslations("auth");
@@ -108,7 +116,34 @@ export const useAuth = () => {
     },
   });
 
-  // memoize saveUser to avoid re-creating it every render
+  // update customer info mutation
+  const {
+    mutate: updateCustomer,
+    error: updateCustomerError,
+    isPending: updateCustomerIsPending,
+    isError: updateCustomerIsError,
+  } = useMutation({
+    mutationKey: ["updateCustomerInfo"],
+    mutationFn: async (body: TUpdateCustomer) => {
+      const { data } = await axiosInstance.put<{
+        data: ICustomerProfile;
+      }>("auth/me", body);
+      return data.data;
+    },
+    onSuccess: (res) => {
+      saveUser({
+        customerInfo: res,
+      });
+      toast.success(`${t("profileUpdated")}`);
+    },
+    onError: (err: AxiosError<{ message?: string }>) => {
+      const apiMessage = err.response?.data?.message;
+      if (apiMessage) {
+        err.message = apiMessage;
+      }
+    },
+  });
+
   const saveUser = useCallback(
     ({
       customerInfo,
@@ -116,13 +151,15 @@ export const useAuth = () => {
       expiresIn,
     }: {
       customerInfo: ICustomerProfile;
-      token: string;
-      expiresIn: number;
+      token?: string;
+      expiresIn?: number;
     }) => {
-      if (!customerInfo || !token) return;
+      if (!customerInfo && !token) return;
       setCustomer(customerInfo);
       localStorage.setItem("customerInfo", JSON.stringify(customerInfo));
-      setCookie("tiremax_token", token, { maxAge: expiresIn });
+      if (token) {
+        setCookie("tiremax_token", token, { maxAge: expiresIn });
+      }
       setIsLogged(true);
       setAuthDialogParam(null);
       authDialog.setOpen(false);
@@ -180,5 +217,9 @@ export const useAuth = () => {
     logout,
     authDialog,
     protectedWithAuth,
+    updateCustomer,
+    updateCustomerError,
+    updateCustomerIsPending,
+    updateCustomerIsError,
   };
 };

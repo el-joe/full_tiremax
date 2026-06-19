@@ -2,6 +2,7 @@
 import {
   TLoginCredential,
   TRegisterCredential,
+  TUpdateCustomer,
   useAuth,
 } from "@/hooks/useAuth";
 import { ICustomerProfile } from "@/types";
@@ -22,6 +23,10 @@ interface IAuthContext {
   registerError: Error | null;
   registerIsError: boolean;
   protectedWithAuth: (fn: () => void) => void;
+  updateCustomer: (data: TUpdateCustomer) => void;
+  updateCustomerError: Error | null;
+  updateCustomerIsPending: boolean;
+  updateCustomerIsError: boolean;
 }
 
 const initialState: IAuthContext = {
@@ -38,6 +43,10 @@ const initialState: IAuthContext = {
   registerError: null,
   registerIsError: false,
   protectedWithAuth() {},
+  updateCustomer: () => {},
+  updateCustomerError: null,
+  updateCustomerIsPending: false,
+  updateCustomerIsError: false,
 };
 
 const authContext = createContext<IAuthContext>(initialState);
@@ -57,6 +66,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     registerError,
     registerIsError,
     protectedWithAuth,
+    updateCustomer,
+    updateCustomerError,
+    updateCustomerIsPending,
+    updateCustomerIsError,
   } = useAuth();
   return (
     <authContext.Provider
@@ -74,6 +87,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         registerError,
         registerIsError,
         protectedWithAuth,
+        updateCustomer,
+        updateCustomerError,
+        updateCustomerIsPending,
+        updateCustomerIsError,
       }}
     >
       {children}
