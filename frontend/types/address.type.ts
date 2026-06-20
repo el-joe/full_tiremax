@@ -1,13 +1,23 @@
-import { IconType } from "react-icons/lib";
-
 export interface IAddress {
   id: number;
-  icon: IconType;
-  title: string;
-  name: string;
-  address_line1: string;
-  address_line2: string;
-  full_address: string;
+  full_name: string;
   phone: string;
+  governorate: Governorate;
+  city: City;
+  address: string;
   is_default: boolean;
+}
+
+export interface City {
+  id: number;
+  name_ar: string;
+  name_en: string;
+}
+
+export interface Governorate {
+  id: number;
+  code: string;
+  name: string;
+  is_basra: boolean;
+  shipping_fee: number;
 }

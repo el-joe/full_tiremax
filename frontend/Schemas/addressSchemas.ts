@@ -3,12 +3,12 @@ import { z } from "zod";
 export const createAddressSchema = z.object({
   governorate_id: z.string("selectGovernorateIsRequired"),
   city_id: z.string("selectCityIsRequired"),
-  full_address: z
+  address: z
     .string("theAddressIsRequired")
     .min(12, "theAddressMustBeMoreThen12Character")
     .max(255, "theAddressMustBeLessThen12Character"),
 
-  name: z.string().max(120).optional(),
+  full_name: z.string().max(120).optional(),
   phone: z.string().max(20).optional(),
 });
 

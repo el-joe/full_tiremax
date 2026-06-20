@@ -450,7 +450,9 @@
         "phoneNumberMaxLength": "Phone number must not exceed 20 digits",
         "phoneNumberMinLength": "Phone number must be at least 9 digits",
         "nameMaxLength": "Name must not exceed 120 characters",
-        "nameMinLength": "Name must be at least 6 characters long"
+        "nameMinLength": "Name must be at least 6 characters long",
+        "setAsDefaultAddressWarning": "Are you sure you want to set this address as your default address?",
+        "set": "Set"
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",

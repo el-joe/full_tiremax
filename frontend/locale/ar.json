@@ -451,7 +451,9 @@
         "phoneNumberMaxLength": "يجب ألا يزيد رقم الهاتف عن 20 رقمًا",
         "phoneNumberMinLength": "يجب أن يتكون رقم الهاتف من 9 أرقام على الأقل",
         "nameMaxLength": "يجب ألا يزيد الاسم عن 120 حرفًا",
-        "nameMinLength": "يجب أن يتكون الاسم من 6 أحرف على الأقل"
+        "nameMinLength": "يجب أن يتكون الاسم من 6 أحرف على الأقل",
+        "setAsDefaultAddressWarning": "هل أنت متأكد من تعيين هذا العنوان كعنوان افتراضي؟",
+        "set": "تعيين"
     },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",

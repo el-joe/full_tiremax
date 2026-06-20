@@ -7,10 +7,10 @@ import {
   useDialog,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import Dialog from "../ui/Dialog";
 import Input from "../ui/Input";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import {
   createAddressSchema,
   TCreateAddressSchema,
@@ -20,11 +20,12 @@ import { FaPhoneAlt, FaRegUserCircle } from "react-icons/fa";
 import DropSelectList from "../ui/DropSelectList";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
-import { IAddress, IGovernorate } from "@/types";
+import { IAddress, ICity, IGovernorate } from "@/types";
 import Textarea from "../ui/Textarea";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 type Props = {
   trigger: React.ReactNode;
@@ -33,6 +34,8 @@ type Props = {
 export default function CreateAddressDialog({ trigger }: Props) {
   const dialog = useDialog();
   const t = useTranslations("profile");
+  const locale = useLocale();
+  const router = useRouter();
 
   const {
     register,
@@ -61,39 +64,57 @@ export default function CreateAddressDialog({ trigger }: Props) {
     isPending: createAddressIsPending,
     isError: createAddressIsError,
   } = useMutation({
-    mutationKey: ["register"],
-    mutationFn: async (body: Omit<IAddress, "id" | "icon">) => {
-      const { data } = await axiosInstance.post("auth/register", body);
+    mutationKey: ["createAddress"],
+    mutationFn: async (body: TCreateAddressSchema) => {
+      const { data } = await axiosInstance.post<{
+        data: IAddress;
+        message: string;
+      }>("addresses", body);
       return data;
     },
     onSuccess: (res) => {
-      toast.success(`${t("welcome")} ${res.customer.name}`);
+      toast.success(res.message);
+      dialog.setOpen(false);
+      router.refresh();
     },
     onError: (err: AxiosError<{ message?: string }>) => {
-      const apiMessage = err.response?.data?.message;
-      if (apiMessage) {
-        err.message = apiMessage;
-      }
+      const apiMessage =
+        err.response?.data?.message ?? "Oops! something want wrang!";
+      toast.error(apiMessage);
     },
   });
 
   const onSubmit: SubmitHandler<TCreateAddressSchema> = async (data) => {
     console.log("data", data);
-    createAddress({
-      address_line1: data.governorate_id,
-      address_line2: data.city_id,
-      full_address: data.full_address,
-      is_default: false,
-      name: data.name || "",
-      phone: data.phone || "",
-      title: "",
-    });
+    createAddress(data);
   };
 
   const getErrorMessage = React.useCallback(
     (errorMessage?: string) => (errorMessage ? t(errorMessage) : ""),
     [t],
   );
+  // fetch the cities data
+  const {
+    data: citiesData,
+    isPending: citiesIsLoading,
+    mutate: citiesMutate,
+  } = useMutation({
+    mutationKey: ["modelList"],
+    mutationFn: async (id: string) => {
+      const { data } = await axiosInstance<{ data: ICity[] }>(
+        `governorates/${id}/cities`,
+      );
+      return data.data;
+    },
+  });
+
+  const governorateId = useWatch({ control, name: "governorate_id" });
+
+  useEffect(() => {
+    if (!!governorateId) {
+      citiesMutate(governorateId);
+    }
+  }, [citiesMutate, governorateId]);
   return (
     <Dialog value={dialog} trigger={trigger} closeIconButton>
       <Box minW={{ base: "auto", md: "680px" }} w="full">
@@ -107,9 +128,9 @@ export default function CreateAddressDialog({ trigger }: Props) {
                 label={t("fullName")}
                 placeholder={t("enterYourFullName")}
                 startElement={<FaRegUserCircle />}
-                register={register("name")}
-                err={!!errors?.name?.message}
-                errMes={getErrorMessage(errors?.name?.message)}
+                register={register("full_name")}
+                err={!!errors?.full_name?.message}
+                errMes={getErrorMessage(errors?.full_name?.message)}
                 h={"auto"}
                 p={{ base: "8px", md: "16px" }}
                 ps="28px !important"
@@ -156,12 +177,12 @@ export default function CreateAddressDialog({ trigger }: Props) {
               <DropSelectList
                 label={t("city")}
                 placeholder={t("selectCity")}
-                isLoading={governorateIsLoading}
+                isLoading={citiesIsLoading}
                 control={control}
                 contentProps={{ maxH: "340px" }}
                 list={
-                  governorateData?.map((e) => ({
-                    label: e?.name,
+                  citiesData?.map((e) => ({
+                    label: locale === "ar" ? e?.name_ar : e?.name_en,
                     value: String(e?.id),
                   })) || []
                 }
@@ -183,11 +204,11 @@ export default function CreateAddressDialog({ trigger }: Props) {
             >
               {/* address input */}
               <Textarea
-                register={register("full_address")}
+                register={register("address")}
                 label={t("fullAddress")}
                 placeholder={t("fullAddressPlaceholder")}
-                err={!!errors?.full_address?.message}
-                errMes={getErrorMessage(errors?.full_address?.message)}
+                err={!!errors?.address?.message}
+                errMes={getErrorMessage(errors?.address?.message)}
                 containerProps={{
                   w: "calc((100% - 40px) / 2)",
                   minW: "220px",

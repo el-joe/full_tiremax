@@ -8,6 +8,7 @@ import {
   Heading,
   HStack,
   Icon,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -34,6 +35,7 @@ export default function ChooseService() {
       {isServicesListLoading ? (
         <Center>
           <Heading>Loading</Heading>
+          <Spinner size={"xl"} />
         </Center>
       ) : (
         <HStack

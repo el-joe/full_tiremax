@@ -1,3 +1,5 @@
+"use client";
+import SetAsDefaultAddressDialog from "@/components/dialogs/SetDefaultAddressDialog";
 import { IAddress } from "@/types";
 import {
   Badge,
@@ -10,16 +12,19 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { getTranslations } from "next-intl/server";
+import { useLocale } from "next-intl";
 import React from "react";
+import { FaMapLocationDot } from "react-icons/fa6";
 import { FiCheckCircle, FiMapPin } from "react-icons/fi";
+import { useTranslations } from "use-intl";
 
 type Props = {
   data: IAddress[];
 };
 
-export default async function AddressesList({ data }: Props) {
-  const t = await getTranslations("profile");
+export default function AddressesList({ data }: Props) {
+  const t = useTranslations("profile");
+  const locale = useLocale();
   if (!data.length)
     return (
       <Center>
@@ -65,10 +70,10 @@ export default async function AddressesList({ data }: Props) {
                 size={"md"}
                 color={address.is_default ? "primary" : "black"}
               >
-                <address.icon />
+                <FaMapLocationDot />
               </Icon>
             </Center>
-            <Heading>{address.title}</Heading>
+            <Heading>{address.governorate.name}</Heading>
           </HStack>
           <HStack align={"start"}>
             <Icon color={"primary"}>
@@ -76,10 +81,11 @@ export default async function AddressesList({ data }: Props) {
             </Icon>
             <Box>
               <Text fontSize={"14px"} fontWeight={"medium"}>
-                {address.address_line1}
+                {address.governorate.name}
+                {locale === "ar" ? address.city.name_ar : address.city.name_en}
               </Text>
               <Text fontSize={"14px"} color={"gray-2"}>
-                {address.address_line2}
+                {address.address}
               </Text>
               <Text mt="16px" fontSize={"14px"} color={"gray-2"}>
                 {address.phone}
@@ -88,9 +94,14 @@ export default async function AddressesList({ data }: Props) {
           </HStack>
           {/* set default button */}
           {!address.is_default && (
-            <Button variant={"surface"} h="48px" rounded={"14px"}>
-              {t("setAsDefaultAddress")}
-            </Button>
+            <SetAsDefaultAddressDialog
+              addressId={address.id}
+              trigger={
+                <Button variant={"surface"} h="48px" rounded={"14px"}>
+                  {t("setAsDefaultAddress")}
+                </Button>
+              }
+            />
           )}
           {/* default address badge */}
           {address.is_default && (
