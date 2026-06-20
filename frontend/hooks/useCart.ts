@@ -20,9 +20,10 @@ export const useCart = () => {
   const t = useTranslations();
   const [cart, setCart] = useState<ICustomerCart>(EMPTY_CART);
   const { isLogged } = useAuthContext();
+  const [cartIsLoading, setCartIsLoading] = useState(true);
 
   // get Cart
-  const { mutate: getCart, isPending: cartIsLoading } = useMutation({
+  const { mutate: getCart } = useMutation({
     mutationKey: ["cart"],
     mutationFn: async () => {
       const { data } = await axiosInstance<{ data: ICustomerCart }>("cart");
@@ -30,7 +31,9 @@ export const useCart = () => {
     },
     onSuccess: (res) => {
       setCart(res);
+      setCartIsLoading(false);
     },
+    onError: () => setCartIsLoading(false),
   });
 
   useEffect(() => {

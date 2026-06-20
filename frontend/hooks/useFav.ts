@@ -14,6 +14,7 @@ export const useFavorites = () => {
   const t = useTranslations();
   const [favorites, setFavorites] = useState<IProduct[]>([]);
   const { isLogged } = useAuthContext();
+  const [favIsLoading, setFavIsLoading] = useState(true);
   const isFavorite = useCallback(
     (productId: number) => {
       return favorites.some((item) => item.id === productId);
@@ -28,7 +29,7 @@ export const useFavorites = () => {
   };
 
   // get favorites
-  const { mutate: getFav, isPending: favIsLoading } = useMutation({
+  const { mutate: getFav } = useMutation({
     mutationKey: ["cart"],
     mutationFn: async () => {
       const { data } = await axiosInstance<{ data: IProduct[] }>("favorites");
@@ -36,6 +37,10 @@ export const useFavorites = () => {
     },
     onSuccess: (res) => {
       setFavorites(res);
+      setFavIsLoading(false);
+    },
+    onError: () => {
+      setFavIsLoading(false);
     },
   });
 
@@ -66,5 +71,6 @@ export const useFavorites = () => {
     isFavorite,
     toggleFavorite,
     isToggling,
+    favIsLoading,
   };
 };

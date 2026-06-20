@@ -1,9 +1,7 @@
 "use client";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { Box, Heading, Icon, Text } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
-import React from "react";
-import { PiSealCheckFill } from "react-icons/pi";
 
 export default function ProfileHeader() {
   const t = useTranslations("profile");

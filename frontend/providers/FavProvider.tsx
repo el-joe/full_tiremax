@@ -9,6 +9,7 @@ interface IFavContext {
   isFavorite: (productId: number) => boolean;
   toggleFavorite: (product: IProduct) => void;
   isToggling: boolean;
+  favIsLoading: boolean;
 }
 
 const initialState: IFavContext = {
@@ -19,13 +20,20 @@ const initialState: IFavContext = {
   },
   toggleFavorite() {},
   isToggling: false,
+  favIsLoading: true,
 };
 
 const favContext = createContext<IFavContext>(initialState);
 
 export const FavProvider = ({ children }: { children: React.ReactNode }) => {
-  const { favorites, favoritesCount, isFavorite, toggleFavorite, isToggling } =
-    useFavorites();
+  const {
+    favorites,
+    favoritesCount,
+    isFavorite,
+    toggleFavorite,
+    isToggling,
+    favIsLoading,
+  } = useFavorites();
   return (
     <favContext.Provider
       value={{
@@ -34,6 +42,7 @@ export const FavProvider = ({ children }: { children: React.ReactNode }) => {
         isFavorite,
         toggleFavorite,
         isToggling,
+        favIsLoading,
       }}
     >
       {children}

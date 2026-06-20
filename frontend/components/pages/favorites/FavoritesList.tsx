@@ -1,11 +1,15 @@
 "use client";
 import ProductCard from "@/components/shared/ProductCard";
+import ProductCardSkeleton from "@/components/skeletons/ProductCardSkeleton";
 import { useFavContext } from "@/providers/FavProvider";
 import { HStack } from "@chakra-ui/react";
 import React from "react";
 
 export default function FavList() {
-  const { favorites } = useFavContext();
+  const { favorites, favIsLoading } = useFavContext();
+  if (favIsLoading) {
+    return <ProductCardSkeleton />;
+  }
   return (
     <HStack
       flexWrap={"wrap"}
