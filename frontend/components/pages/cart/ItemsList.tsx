@@ -135,7 +135,7 @@ const Item = ({ data }: { data: ICartItem }) => {
             lineClamp={1}
             fontSize={{ base: "9px", md: "10px", lg: "12px", xl: "14px" }}
           >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            {data.product.short_description}
           </Text>
         </Box>
         <Badge
@@ -148,7 +148,7 @@ const Item = ({ data }: { data: ICartItem }) => {
           textTransform={"uppercase"}
           bg={"myGray"}
         >
-          {data?.product?.brand.name}
+          {data?.product?.brand.country}
         </Badge>
         <HStack justify={"space-between"}>
           <NumberInput.Root

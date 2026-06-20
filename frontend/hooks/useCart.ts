@@ -3,10 +3,10 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { ICustomerCart, IProduct } from "@/types";
 import { ICartProduct } from "@/types/customerCart.type";
 import axiosInstance from "@/utils/axiosInstance";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const EMPTY_CART: ICustomerCart = {

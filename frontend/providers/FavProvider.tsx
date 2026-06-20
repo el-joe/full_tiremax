@@ -4,53 +4,36 @@ import { ICustomerFav, IProduct } from "@/types";
 import { createContext, useContext } from "react";
 
 interface IFavContext {
-  addFavorite: (product: IProduct) => void;
-  clearFavorites: () => void;
-  favoriteIds: Set<number>;
   favorites: IProduct[];
   favoritesCount: number;
   isFavorite: (productId: number) => boolean;
-  removeFavorite: (productId: number) => void;
   toggleFavorite: (product: IProduct) => void;
+  isToggling: boolean;
 }
 
 const initialState: IFavContext = {
-  addFavorite() {},
-  clearFavorites() {},
-  favoriteIds: new Set(),
   favorites: [],
   favoritesCount: 0,
   isFavorite() {
     return false;
   },
-  removeFavorite() {},
   toggleFavorite() {},
+  isToggling: false,
 };
 
 const favContext = createContext<IFavContext>(initialState);
 
 export const FavProvider = ({ children }: { children: React.ReactNode }) => {
-  const {
-    addFavorite,
-    clearFavorites,
-    favoriteIds,
-    favorites,
-    favoritesCount,
-    isFavorite,
-    removeFavorite,
-    toggleFavorite,
-  } = useFavorites();
+  const { favorites, favoritesCount, isFavorite, toggleFavorite, isToggling } =
+    useFavorites();
   return (
     <favContext.Provider
       value={{
-        addFavorite,
-        clearFavorites,
-        favoriteIds,
         favorites,
         favoritesCount,
         isFavorite,
-        removeFavorite,
         toggleFavorite,
+        isToggling,
       }}
     >
       {children}

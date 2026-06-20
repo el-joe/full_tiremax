@@ -36,7 +36,7 @@ type Props = {
 const ProductCard = ({ product }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
-  const { isFavorite, toggleFavorite } = useFavContext();
+  const { isFavorite, toggleFavorite, isToggling } = useFavContext();
   const { addOrUpdateItem, isAdding } = useCartContext();
   const { protectedWithAuth } = useAuthContext();
   return (
@@ -83,6 +83,7 @@ const ProductCard = ({ product }: Props) => {
             p={{ base: "4px" }}
             minW={"auto"}
             minH={"auto"}
+            loading={isToggling}
             onClick={(e) => {
               e.preventDefault();
               protectedWithAuth(() => toggleFavorite(product));

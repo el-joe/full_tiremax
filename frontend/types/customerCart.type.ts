@@ -17,16 +17,38 @@ export interface ICartItem {
 export interface ICartProduct {
   id: number;
   sku: string;
+  type: string;
   name: string;
+  short_description: string;
+  description: string;
+  pattern_name: string;
+  usage_notes: string;
   price: number;
-  sale_price: number | null;
+  sale_price: number;
   effective_price: number;
+  has_discount: boolean;
+  is_flash_sale: boolean;
+  flash_sale: number;
+  stock: number;
   in_stock: boolean;
-  primary_image: string | null;
+  manufacture_year: number;
+  manufacturer_warranty_months: number;
+  agency_warranty_months: number;
+  expert_rating: number;
+  sales_count: number;
+  views_count: number;
+  is_featured: boolean;
+  images: string[];
+  primary_image: null;
   brand: Brand;
 }
 
 export interface Brand {
   id: number;
+  slug: string;
   name: string;
+  description: string;
+  logo: string;
+  country: string;
+  is_active: boolean;
 }
