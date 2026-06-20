@@ -61,6 +61,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // Authenticated --------------------------------------------------
+    Route::get('bookings/branch/{branch}/slots', [BookingController::class, 'availableSlots']);
     Route::middleware('auth:api')->group(function () {
         // Cart
         Route::get('cart', [CartController::class, 'show']);
@@ -81,7 +82,6 @@ Route::prefix('v1')->group(function () {
         Route::post('bookings', [BookingController::class, 'store']);
         Route::get('bookings/{booking}', [BookingController::class, 'show']);
         Route::post('bookings/{booking}/cancel', [BookingController::class, 'cancel']);
-        Route::get('bookings/branch/{branch}/slots', [BookingController::class, 'availableSlots']);
 
         // Favorites
         Route::get('favorites', [FavoriteController::class, 'index']);
