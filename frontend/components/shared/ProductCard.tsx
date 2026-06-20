@@ -28,6 +28,7 @@ import { useFavContext } from "@/providers/FavProvider";
 import { useCartContext } from "@/providers/CartProvider";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 type Props = {
   product: IProduct;
@@ -36,7 +37,8 @@ const ProductCard = ({ product }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
   const { isFavorite, toggleFavorite } = useFavContext();
-  const { addOrUpdateItem } = useCartContext();
+  const { addOrUpdateItem, isAdding } = useCartContext();
+  const { protectedWithAuth } = useAuthContext();
   return (
     <Link
       href={`/store/${product?.id}`}
@@ -83,7 +85,7 @@ const ProductCard = ({ product }: Props) => {
             minH={"auto"}
             onClick={(e) => {
               e.preventDefault();
-              toggleFavorite(product);
+              protectedWithAuth(() => toggleFavorite(product));
             }}
             h={"auto"}
           >
@@ -219,9 +221,10 @@ const ProductCard = ({ product }: Props) => {
             minW={"auto"}
             minH={"auto"}
             h={"auto"}
+            disabled={isAdding}
             onClick={(e) => {
               e.preventDefault();
-              addOrUpdateItem(product, 1);
+              protectedWithAuth(() => addOrUpdateItem(product, 1));
             }}
           >
             <CartPlusIcon size={{ base: "xs", md: "sm", xl: "xl" }} />

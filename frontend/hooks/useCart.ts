@@ -1,18 +1,15 @@
 "use client";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { ICustomerCart, IProduct } from "@/types";
 import { ICartProduct } from "@/types/customerCart.type";
 import axiosInstance from "@/utils/axiosInstance";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
-const LOCAL_STORAGE_CART_KEY = "customerCart";
-
 const EMPTY_CART: ICustomerCart = {
-  governorate_id: 0,
-  governorate: "",
   id: 0,
   items: [],
   items_count: 0,
@@ -21,155 +18,114 @@ const EMPTY_CART: ICustomerCart = {
 
 export const useCart = () => {
   const t = useTranslations();
-  const [cart, setCart] = useState<ICustomerCart>(() => {
-    try {
-      return (
-        JSON.parse(localStorage.getItem(LOCAL_STORAGE_CART_KEY) ?? "null") ??
-        EMPTY_CART
-      );
-    } catch {
-      return EMPTY_CART;
-    }
+  const [cart, setCart] = useState<ICustomerCart>(EMPTY_CART);
+  const { isLogged } = useAuthContext();
+
+  // get Cart
+  const { mutate: getCart, isPending: cartIsLoading } = useMutation({
+    mutationKey: ["cart"],
+    mutationFn: async () => {
+      const { data } = await axiosInstance<{ data: ICustomerCart }>("cart");
+      return data.data;
+    },
+    onSuccess: (res) => {
+      setCart(res);
+    },
   });
 
-  //   const recalculate = useCallback(
-  //     (items: ICartItem[]) => {
-  //       const subtotal = items.reduce((a, i) => a + i.unit_price * i.quantity, 0);
-
-  //       return {
-  //         ...EMPTY_CART,
-  //         ...cart,
-  //         items,
-  //         items_count: items.reduce((a, i) => a + i.quantity, 0),
-  //         subtotal,
-  //       };
-  //     },
-  //     [cart],
-  //   );
-
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_CART_KEY, JSON.stringify(cart));
-  }, [cart]);
+    if (isLogged) {
+      getCart();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogged]);
 
+  // handle general error
   const onError = (err: AxiosError) => {
     if (err.status === 401) return;
     toast.error("Something went wrong.");
   };
 
-  const addMutation = useMutation({
-    mutationFn: (body: { product_id: number; quantity: number }) =>
-      axiosInstance.post("cart/items", body),
+  const { mutate: addToCart, isPending: isAdding } = useMutation({
+    mutationFn: async (body: { product_id: number; quantity: number }) => {
+      const { data } = await axiosInstance.post<{ data: ICustomerCart }>(
+        "cart/items",
+        body,
+      );
+      return data.data;
+    },
+    onSuccess: (res) => {
+      setCart(res);
+    },
     onError,
   });
 
-  const removeMutation = useMutation({
-    mutationFn: (id: number) => axiosInstance.delete(`cart/items/${id}`),
+  const { mutate: updateCart, isPending: isUpdating } = useMutation({
+    mutationFn: async (body: { itemId: number; quantity: number }) => {
+      const { data } = await axiosInstance.put<{ data: ICustomerCart }>(
+        `cart/items/${body.itemId}`,
+        { quantity: body.quantity },
+      );
+      return data.data;
+    },
+    onSuccess: (res) => {
+      setCart(res);
+    },
     onError,
   });
 
-  const clearMutation = useMutation({
-    mutationFn: () => axiosInstance.delete("cart"),
+  const { mutate: removeItem, isPending: isRemoving } = useMutation({
+    mutationFn: async (product_id: number) => {
+      const cartItem = cart?.items.find((i) => i.product_id === product_id);
+      const { data } = await axiosInstance.delete<{
+        data: ICustomerCart;
+        message: string;
+      }>(`cart/items/${cartItem?.id}`);
+      return data;
+    },
+    onSuccess: (res) => {
+      setCart(res.data);
+      toast.success(res.message);
+    },
+    onError,
+  });
+
+  const { mutate: clearCart, isPending: isClearing } = useMutation({
+    mutationFn: async () => {
+      const { data } = await axiosInstance.delete<{ data: ICustomerCart }>(
+        `cart`,
+      );
+      return data.data;
+    },
+    onSuccess: () => {
+      setCart(EMPTY_CART);
+    },
     onError,
   });
 
   const addOrUpdateItem = useCallback(
     (product: IProduct | ICartProduct, quantity: number) => {
-      setCart((prev) => {
-        const existing = prev.items.find((i) => i.product_id === product.id);
-
-        const items = existing
-          ? prev.items.map((i) =>
-              i.product_id === product.id
-                ? {
-                    ...i,
-                    quantity,
-                    unit_price: product.effective_price,
-                    total: product.effective_price * quantity,
-                  }
-                : i,
-            )
-          : [
-              ...prev.items,
-              {
-                id: product.id,
-                product_id: product.id,
-                quantity,
-                unit_price: product.effective_price,
-                total: product.effective_price * quantity,
-                product: {
-                  id: product.id,
-                  name: product.name,
-                  brand: product.brand,
-                  sku: product.sku,
-                  price: product.price,
-                  sale_price: product.sale_price,
-                  effective_price: product.effective_price,
-                  in_stock: product.in_stock,
-                  primary_image: product.primary_image,
-                },
-              },
-            ];
-
-        const subtotal = items.reduce(
-          (sum, item) => sum + item.unit_price * item.quantity,
-          0,
-        );
-
-        return {
-          ...prev,
-          items,
-          items_count: items.reduce((sum, item) => sum + item.quantity, 0),
-          subtotal,
-        };
-      });
+      const existing = cart?.items.find((i) => i.product_id === product.id);
+      if (existing) {
+        updateCart({ itemId: existing.id, quantity });
+      } else {
+        addToCart({ product_id: product.id, quantity });
+      }
       toast.success(`"${product.name}". ${t("addedToTheCart")}`);
     },
-    [t],
-  );
-
-  const removeItem = useCallback(
-    (productId: number) => {
-      const removedItem = cart.items.find((i) => i.product_id === productId);
-      setCart((prev) => {
-        const items = prev.items.filter((i) => i.product_id !== productId);
-        const subtotal = items.reduce(
-          (sum, item) => sum + item.unit_price * item.quantity,
-          0,
-        );
-
-        return {
-          ...prev,
-          items,
-          items_count: items.reduce((sum, item) => sum + item.quantity, 0),
-          subtotal,
-        };
-      });
-      toast.success(
-        `"${removedItem?.product.name}". ${t("removedFromTheCart")}`,
-      );
-    },
-    [cart.items, t],
-  );
-
-  const clearCart = useCallback(() => setCart(EMPTY_CART), []);
-
-  const totalQuantity = useMemo(
-    () => cart.items.reduce((sum, i) => sum + i.quantity, 0),
-    [cart.items],
+    [addToCart, cart?.items, t, updateCart],
   );
 
   return {
     cart,
-    totalQuantity,
+    totalQuantity: cart?.items_count,
     addOrUpdateItem,
     removeItem,
     clearCart,
-    // addToCart: addMutation.mutate,
-    // removeFromCart: removeMutation.mutate,
-    // clearCart: clearMutation.mutate,
-    isLoading:
-      addMutation.isPending ||
-      removeMutation.isPending ||
-      clearMutation.isPending,
+    cartIsLoading,
+    isAdding,
+    isUpdating,
+    isRemoving,
+    isClearing,
   };
 };

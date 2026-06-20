@@ -7,20 +7,28 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   Heading,
   HStack,
   IconButton,
   Image,
   NumberInput,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 const ItemsList = () => {
-  const { cart, totalQuantity } = useCartContext();
+  const { cart, cartIsLoading = true, totalQuantity } = useCartContext();
+  if (cartIsLoading) {
+    return (
+      <Center h="full">
+        <Spinner size={"xl"} />
+      </Center>
+    );
+  }
   // if empty cart
   if (!totalQuantity) {
     return (
@@ -51,7 +59,12 @@ const ItemsList = () => {
 export default ItemsList;
 
 const Item = ({ data }: { data: ICartItem }) => {
-  const { removeItem, isLoading, addOrUpdateItem } = useCartContext();
+  const {
+    removeItem,
+    isUpdating: isLoading,
+    isRemoving,
+    addOrUpdateItem,
+  } = useCartContext();
   return (
     <HStack
       align={"stretch"}
@@ -164,6 +177,7 @@ const Item = ({ data }: { data: ICartItem }) => {
                     removeItem(data?.product?.id);
                   }}
                   minW="auto"
+                  loading={isRemoving}
                   h="auto"
                   p={{ base: "1px", md: "3px", lg: "6px", xl: "8px" }}
                 >

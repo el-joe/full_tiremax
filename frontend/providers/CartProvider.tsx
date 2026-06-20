@@ -10,23 +10,29 @@ interface ICartContext {
   removeItem: (productId: number) => void;
   clearCart: () => void;
   totalQuantity: number;
-  isLoading: boolean;
+  cartIsLoading: boolean;
+  isAdding: boolean;
+  isUpdating: boolean;
+  isRemoving: boolean;
+  isClearing: boolean;
 }
 
 const initialState: ICartContext = {
   cart: {
-    governorate_id: 0,
     id: 0,
     items: [],
     items_count: 0,
     subtotal: 0,
-    governorate: "",
   },
   addOrUpdateItem() {},
   removeItem() {},
   clearCart() {},
   totalQuantity: 0,
-  isLoading: false,
+  cartIsLoading: true,
+  isAdding: false,
+  isUpdating: false,
+  isRemoving: false,
+  isClearing: false,
 };
 
 const cartContext = createContext<ICartContext>(initialState);
@@ -34,11 +40,15 @@ const cartContext = createContext<ICartContext>(initialState);
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const {
     cart,
-    addOrUpdateItem,
-    clearCart,
-    isLoading,
-    removeItem,
     totalQuantity,
+    addOrUpdateItem,
+    removeItem,
+    clearCart,
+    cartIsLoading,
+    isAdding,
+    isUpdating,
+    isRemoving,
+    isClearing,
   } = useCart();
   return (
     <cartContext.Provider
@@ -48,7 +58,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         removeItem,
         clearCart,
         totalQuantity,
-        isLoading,
+        cartIsLoading,
+        isAdding,
+        isUpdating,
+        isRemoving,
+        isClearing,
       }}
     >
       {children}

@@ -1,6 +1,7 @@
 "use client";
 import { CartPlusIcon } from "@/components/Icons";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { useCartContext } from "@/providers/CartProvider";
 import { useFavContext } from "@/providers/FavProvider";
 import { IProduct } from "@/types";
@@ -14,8 +15,9 @@ type Props = {
 
 const Actions = ({ product }: Props) => {
   const t = useTranslations("productView");
-  const { addOrUpdateItem } = useCartContext();
+  const { addOrUpdateItem, isAdding: isAddingToCart } = useCartContext();
   const { toggleFavorite } = useFavContext();
+  const { protectedWithAuth } = useAuthContext();
   return (
     <HStack
       justify={"space-between"}
@@ -51,7 +53,8 @@ const Actions = ({ product }: Props) => {
           fontSize={{ base: "11px", md: "16px" }}
           p={{ base: "8px", md: "11px", xl: "16px" }}
           h={"auto"}
-          onClick={() => addOrUpdateItem(product, 1)}
+          loading={isAddingToCart}
+          onClick={() => protectedWithAuth(() => addOrUpdateItem(product, 1))}
         >
           <CartPlusIcon />
           {t("addToCart")}
@@ -62,7 +65,7 @@ const Actions = ({ product }: Props) => {
           fontSize={{ base: "11px", md: "16px" }}
           p={{ base: "8px", md: "11px", xl: "16px" }}
           h={"auto"}
-          onClick={() => toggleFavorite(product)}
+          onClick={() => protectedWithAuth(() => toggleFavorite(product))}
         >
           <CiHeart />
         </IconButton>

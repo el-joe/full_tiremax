@@ -87,7 +87,7 @@ const Header = () => {
               </HeaderButton>
             </Tooltip>
             <Tooltip content={t("notifications")}>
-              <HeaderButton href={"/"}>
+              <HeaderButton href={"#"}>
                 <LuBellDot />
               </HeaderButton>
             </Tooltip>

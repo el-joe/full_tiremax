@@ -99,13 +99,16 @@ export default function CheckoutForm() {
       const body = {
         ...data,
         governorate_id: +data.governorate_id,
+        type: "delivery",
       };
       const { data: res } = await axiosInstance.post("orders", body);
       return res;
     },
-    onError: (err: AxiosError) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       if (err.status === 401) return;
-      toast.error("Oops! something want wrang");
+      const errMes =
+        err?.response?.data?.message ?? "Oops! something want wrang";
+      toast.error(errMes);
     },
   });
 
