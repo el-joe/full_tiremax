@@ -328,7 +328,9 @@
         "arriveEarlyNote": "يرجى الحضور قبل الموعد بـ 10 دقائق",
         "lateArrivalNote": "في حالة التأخير، قد يتم تأجيل الموعد",
         "modifyBookingNote": "يمكنك إلغاء أو تعديل الحجز قبل 24 ساعة",
-        "confirmBookingButton": "تأكيد الحجز"
+        "confirmBookingButton": "تأكيد الحجز",
+        "thisBranchHasNoAvailableDates": "لا توجد مواعيد متاحة لهذا الفرع حالياً",
+        "noTimeAvailable": "لا توجد أوقات متاحة"
     },
     "auth": {
         "emailOrPhoneNumber": "البريد الإلكتروني أو رقم الهاتف",

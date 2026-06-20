@@ -12,11 +12,11 @@ import {
   IconButton,
   parseDate,
   Span,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { useLocale, useTranslations } from "next-intl";
-import React from "react";
 import { CiCalendar } from "react-icons/ci";
 import { FaArrowLeft, FaArrowRight, FaRegClock } from "react-icons/fa";
 import { MdOutlineCalendarToday } from "react-icons/md";
@@ -30,6 +30,8 @@ export default function ChooseAppointment() {
     useSteps: { goToPrevStep, goToNextStep },
     setDate,
     setTime,
+    availableTimeSlots,
+    isAvailableTimeSlotsLoading,
   } = useReservationContext();
   return (
     <Box maxW={"1086px"} mx={"auto"}>
@@ -79,11 +81,11 @@ export default function ChooseAppointment() {
               </Icon>
             </Center>
             <Heading>{t("chooseDate")}</Heading>
+
             {/* date picker input */}
           </HStack>
           <DatePicker
             onValueChange={(date) => {
-              console.log("date.value", date.value[0].toString());
               setDate(date.value.map((d) => d.toString()).join(", "));
             }}
             value={
@@ -91,7 +93,9 @@ export default function ChooseAppointment() {
                 ? [parseDate(reservationData.date)]
                 : undefined
             }
-            isDateUnavailable={isWeekend}
+            isDateUnavailable={(date) =>
+              isClosedDay(date, reservationData.branch?.schedules ?? [])
+            }
             min={parseDate(new Date())}
             max={parseDate(maxReservationDate())}
             bg={"#F9FAFB"}
@@ -119,6 +123,23 @@ export default function ChooseAppointment() {
               <Text fontSize={"14px"}>
                 {t("dateSelected")}:{" "}
                 {new Date(reservationData.date).toDateString()}
+              </Text>
+            </HStack>
+          )}
+          {!reservationData.branch?.schedules.find((d) => !d.is_closed) && (
+            <HStack
+              p={{ base: "8px", lg: "16px" }}
+              border="1px solid {colors.red.border}"
+              bg="red.muted"
+              rounded={"14px"}
+              color={"red.fg"}
+              gap={"14px"}
+            >
+              <Icon size={"md"}>
+                <RiErrorWarningLine />
+              </Icon>
+              <Text fontSize={"14px"}>
+                {t("thisBranchHasNoAvailableDates")}:{" "}
               </Text>
             </HStack>
           )}
@@ -169,9 +190,28 @@ export default function ChooseAppointment() {
               </Icon>
               <Text color={"gray-2"}>{t("chooseDateFirst")}</Text>
             </VStack>
+          ) : isAvailableTimeSlotsLoading ? (
+            <Center>
+              <Spinner size={"lg"} />
+            </Center>
+          ) : !availableTimeSlots.length ? (
+            <HStack
+              p={{ base: "8px", lg: "16px" }}
+              border="1px solid {colors.red.border}"
+              bg="red.muted"
+              rounded={"14px"}
+              color={"red.fg"}
+              gap={"14px"}
+            >
+              <Icon size={"md"}>
+                <RiErrorWarningLine />
+              </Icon>
+              <Text fontSize={"14px"}>{t("noTimeAvailable")}: </Text>
+            </HStack>
           ) : (
             <HStack flexWrap={"wrap"} gap={"12px"}>
-              {generateTimesSlots("08:00:00", "22:30:00").map((slot, i) => (
+              {/* {generateTimesSlots("08:00:00", "22:30:00").map((slot, i) => ( */}
+              {availableTimeSlots.map((slot, i) => (
                 <Button
                   variant={"outline"}
                   key={i}
@@ -179,10 +219,11 @@ export default function ChooseAppointment() {
                   w="calc((100% - 36px) / 3)"
                   fontSize={"14px"}
                   fontWeight={"medium"}
-                  bg={reservationData.time === slot ? "primary" : "white"}
-                  onClick={() => setTime(slot)}
+                  bg={reservationData.time === slot.time ? "primary" : "white"}
+                  onClick={() => setTime(slot.time)}
+                  disabled={!slot.available}
                 >
-                  {slot}
+                  {slot.time}
                 </Button>
               ))}
             </HStack>
@@ -263,9 +304,17 @@ export default function ChooseAppointment() {
   );
 }
 
-const isWeekend = (date: DateValue) => {
+const isClosedDay = (
+  date: DateValue,
+  branchSchedule: { day_of_week: number; is_closed: boolean }[],
+) => {
   const dayOfWeek = date.toDate("UTC").getDay();
-  return dayOfWeek === 5;
+  const targetDay = branchSchedule.find((d) => d.day_of_week == dayOfWeek);
+  if (!!targetDay) {
+    return targetDay.is_closed;
+  } else {
+    return true;
+  }
 };
 
 const maxReservationDate = () => {

@@ -51,6 +51,12 @@ const steps = [
   },
 ];
 
+type TAvailableTimeSlot = {
+  time: string;
+  available: boolean;
+  capacity_remaining: number;
+};
+
 interface IreservationContext {
   steps: {
     id: number;
@@ -76,6 +82,8 @@ interface IreservationContext {
   setDate: (date: string) => void;
   setTime: (time: string) => void;
   createBooking: () => void;
+  availableTimeSlots: TAvailableTimeSlot[];
+  isAvailableTimeSlotsLoading: boolean;
 }
 
 const initialState: IreservationContext = {
@@ -92,6 +100,8 @@ const initialState: IreservationContext = {
   setDate: () => {},
   setTime: () => {},
   createBooking: () => {},
+  availableTimeSlots: [],
+  isAvailableTimeSlotsLoading: false,
 };
 
 const reservationContext = createContext<IreservationContext>(initialState);
@@ -125,6 +135,26 @@ export const ReservationProvider = ({
       return data.data;
     },
   });
+  //   fetch the available time slots
+  const {
+    data: availableTimeSlots = [],
+    isFetching: isAvailableTimeSlotsLoading,
+    refetch: getAvailableTimesSlots,
+  } = useQuery({
+    queryKey: ["availableTimes"],
+    queryFn: async () => {
+      const { data } = await axiosInstance<{ data: TAvailableTimeSlot[] }>(
+        `bookings/branch/${reservationData.branch?.id}/slots`,
+        {
+          params: {
+            date: reservationData.date,
+          },
+        },
+      );
+      return data.data;
+    },
+    enabled: false,
+  });
   //   mutation booking
   const { mutate: mutateBooking, isPending: isCreatingBooking } = useMutation({
     mutationKey: ["createBooking"],
@@ -136,9 +166,11 @@ export const ReservationProvider = ({
       const { data } = await axiosInstance.post("bookings", body);
       return data;
     },
-    onError: (err: AxiosError) => {
+    onError: (err: AxiosError<{ message?: string }>) => {
       if (err.status === 401) return;
-      toast.error("Oops! something want wrang");
+      const errorMessage =
+        err.response?.data?.message ?? "Oops! something went wrong";
+      toast.error(errorMessage);
     },
   });
   //   set service
@@ -160,6 +192,7 @@ export const ReservationProvider = ({
   //   set date
   const setDate = (date: string) => {
     setReservationData((p) => ({ ...p, time: null, date }));
+    getAvailableTimesSlots();
   };
   //   set time
   const setTime = (time: string) => {
@@ -193,6 +226,22 @@ export const ReservationProvider = ({
         setTime,
         createBooking,
         isCreatingBooking,
+        availableTimeSlots: !availableTimeSlots.length
+          ? [
+              { time: "08:00", available: true, capacity_remaining: 4 },
+              { time: "08:30", available: true, capacity_remaining: 4 },
+              { time: "09:00", available: false, capacity_remaining: 0 },
+              { time: "09:30", available: true, capacity_remaining: 2 },
+              { time: "10:00", available: true, capacity_remaining: 4 },
+              { time: "10:30", available: true, capacity_remaining: 3 },
+              { time: "11:00", available: true, capacity_remaining: 4 },
+              { time: "11:30", available: false, capacity_remaining: 0 },
+              { time: "12:00", available: true, capacity_remaining: 4 },
+              { time: "12:30", available: true, capacity_remaining: 4 },
+              { time: "13:00", available: true, capacity_remaining: 4 },
+            ]
+          : availableTimeSlots,
+        isAvailableTimeSlotsLoading,
       }}
     >
       {children}

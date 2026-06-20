@@ -328,7 +328,9 @@
         "arriveEarlyNote": "Please arrive 10 minutes before your scheduled appointment.",
         "lateArrivalNote": "Late arrivals may result in your appointment being rescheduled.",
         "modifyBookingNote": "You may cancel or modify your booking up to 24 hours in advance.",
-        "confirmBookingButton": "Confirm Booking"
+        "confirmBookingButton": "Confirm Booking",
+        "thisBranchHasNoAvailableDates": "This branch has no available dates at the moment",
+        "noTimeAvailable": "No available times"
     },
     "auth": {
         "emailOrPhoneNumber": "Email or phone number",

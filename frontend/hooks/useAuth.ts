@@ -127,14 +127,15 @@ export const useAuth = () => {
     mutationFn: async (body: TUpdateCustomer) => {
       const { data } = await axiosInstance.put<{
         data: ICustomerProfile;
+        message: string;
       }>("auth/me", body);
-      return data.data;
+      return data;
     },
     onSuccess: (res) => {
       saveUser({
-        customerInfo: res,
+        customerInfo: res.data,
       });
-      toast.success(`${t("profileUpdated")}`);
+      toast.success(res.message ?? `${t("profileUpdated")}`);
     },
     onError: (err: AxiosError<{ message?: string }>) => {
       const apiMessage = err.response?.data?.message;
