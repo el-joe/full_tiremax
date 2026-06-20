@@ -91,15 +91,6 @@ export default function ProfileNav() {
         >
           {customer?.name}
         </Text>
-        {/* role */}
-        <Text
-          fontSize={"14px"}
-          fontWeight={"bold"}
-          color={"gray-2"}
-          display={{ base: "none", md: "block" }}
-        >
-          {customer?.name}
-        </Text>
       </VStack>
       {/* nav links */}
       <VStack

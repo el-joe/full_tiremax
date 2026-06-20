@@ -17,15 +17,6 @@ export default function ProfileHeader() {
       >
         {t("welcome")} {customer?.name}
       </Heading>
-      <Text
-        color={"gray-2"}
-        fontSize={{ base: "12px", md: "14px", lg: "16px" }}
-      >
-        <Icon color={"primary"} size={"md"}>
-          <PiSealCheckFill />
-        </Icon>
-        عضوية مميزة نشطة • {t("lastLogin")}: منذ ساعتين
-      </Text>
     </Box>
   );
 }
