@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function () {
         Route::post('login', [AuthController::class, 'login']);
         Route::post('refresh', [AuthController::class, 'refresh']);
 
-        Route::middleware('jwt.auth')->group(function () {
+        Route::middleware('auth:api')->group(function () {
             Route::get('me', [AuthController::class, 'me']);
             Route::post('logout', [AuthController::class, 'logout']);
             Route::put('me', [AuthController::class, 'update']);
@@ -61,7 +61,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // Authenticated --------------------------------------------------
-    Route::middleware('jwt.auth')->group(function () {
+    Route::middleware('auth:api')->group(function () {
         // Cart
         Route::get('cart', [CartController::class, 'show']);
         Route::post('cart/items', [CartController::class, 'addItem']);
