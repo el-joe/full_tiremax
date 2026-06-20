@@ -1,6 +1,7 @@
 "use client";
 import { SearchIcon } from "@/components/Icons";
 import DropSelectList from "@/components/ui/DropSelectList";
+import generateYearsSlots from "@/helpers/generateYearsSlots";
 import useDir from "@/hooks/useDir";
 import { Link } from "@/i18n/navigation";
 import { useProductFilterContext } from "@/providers/ProductFilterProvider";
@@ -184,11 +185,17 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
       />
       <DropFilterList
         list={
-          yearData?.map((m) => ({
-            label: m.year_from.toString(),
-            value: m.year_from.toString(),
-          })) ?? []
+          yearData
+            ?.map((e) =>
+              generateYearsSlots(e?.year_from, e?.year_to).map((m) => ({
+                label: String(m),
+                value: String(m),
+                group: e.trim_name + e.engine,
+              })),
+            )
+            .flat() ?? []
         }
+        grouped
         isLoading={yearIsLoading}
         label={t("year")}
         placeholder={t("selectYear")}
@@ -259,8 +266,9 @@ type TDropFilterProps = {
   label: string;
   placeholder: string;
   name: string;
-  list: { label: string; value: string }[];
+  list: { label: string; value: string; group?: string }[];
   isLoading?: boolean;
+  grouped?: boolean;
 };
 
 const DropFilterList = ({
@@ -269,6 +277,7 @@ const DropFilterList = ({
   name,
   list,
   isLoading,
+  grouped,
 }: TDropFilterProps) => {
   const { setFilter, filters } = useProductFilterContext();
   const v = [filters.find((f) => f.filterBy === name)?.query as string];
@@ -277,6 +286,7 @@ const DropFilterList = ({
     <DropSelectList
       isLoading={isLoading}
       list={list}
+      grouped={grouped}
       label={label}
       placeholder={placeholder}
       name="model"

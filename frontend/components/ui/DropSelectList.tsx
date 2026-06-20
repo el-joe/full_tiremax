@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import { groupBy } from "es-toolkit";
 
 interface IProps<T extends FieldValues> extends Omit<
   Select.RootProps,
@@ -16,7 +17,7 @@ interface IProps<T extends FieldValues> extends Omit<
 > {
   label?: string | React.ReactNode;
   placeholder: string;
-  list: { label: string; value: string }[];
+  list: { label: string; value: string; group?: string }[];
   // onSelect?: (e: MenuSelectionDetails) => void;
   control?: Control<T>;
   name: Path<T>;
@@ -26,6 +27,7 @@ interface IProps<T extends FieldValues> extends Omit<
   containerProps?: Field.RootProps;
   isLoading?: boolean;
   contentProps?: Select.ContentProps;
+  grouped?: boolean;
 }
 
 function DropSelectList<T extends FieldValues>({
@@ -40,6 +42,7 @@ function DropSelectList<T extends FieldValues>({
   containerProps,
   isLoading,
   contentProps,
+  grouped,
   ...rest
 }: IProps<T>) {
   // const collection = createListCollection({ items: list })
@@ -50,6 +53,9 @@ function DropSelectList<T extends FieldValues>({
       itemToValue: (list) => list.value,
     });
   }, [list]);
+  const categories = grouped
+    ? Object.entries(groupBy(collection.items, (item) => item.group ?? ""))
+    : [];
   const dir = useDir();
   return (
     <Field.Root {...containerProps} invalid={err}>
@@ -84,12 +90,30 @@ function DropSelectList<T extends FieldValues>({
               <Portal>
                 <Select.Positioner>
                   <Select.Content {...contentProps}>
-                    {collection.items.map((item) => (
-                      <Select.Item item={item} key={item.value}>
-                        {item.label}
-                        <Select.ItemIndicator />
-                      </Select.Item>
-                    ))}
+                    {grouped
+                      ? categories.map(([category, items]) => (
+                          <Select.ItemGroup key={category} dir={dir}>
+                            <Select.ItemGroupLabel dir={dir}>
+                              {category}
+                            </Select.ItemGroupLabel>
+                            {items.map((item) => (
+                              <Select.Item
+                                item={item}
+                                key={item.value}
+                                dir={dir}
+                              >
+                                {item.label}
+                                <Select.ItemIndicator />
+                              </Select.Item>
+                            ))}
+                          </Select.ItemGroup>
+                        ))
+                      : collection.items.map((item) => (
+                          <Select.Item item={item} key={item.value}>
+                            {item.label}
+                            <Select.ItemIndicator />
+                          </Select.Item>
+                        ))}
                   </Select.Content>
                 </Select.Positioner>
               </Portal>
@@ -114,12 +138,26 @@ function DropSelectList<T extends FieldValues>({
           <Portal>
             <Select.Positioner>
               <Select.Content {...contentProps}>
-                {collection.items.map((item) => (
-                  <Select.Item item={item} key={item.value} dir={dir}>
-                    {item.label}
-                    <Select.ItemIndicator />
-                  </Select.Item>
-                ))}
+                {grouped
+                  ? categories.map(([category, items]) => (
+                      <Select.ItemGroup key={category} dir={dir}>
+                        <Select.ItemGroupLabel dir={dir}>
+                          {category}
+                        </Select.ItemGroupLabel>
+                        {items.map((item) => (
+                          <Select.Item item={item} key={item.value} dir={dir}>
+                            {item.label}
+                            <Select.ItemIndicator />
+                          </Select.Item>
+                        ))}
+                      </Select.ItemGroup>
+                    ))
+                  : collection.items.map((item) => (
+                      <Select.Item item={item} key={item.value} dir={dir}>
+                        {item.label}
+                        <Select.ItemIndicator />
+                      </Select.Item>
+                    ))}
               </Select.Content>
             </Select.Positioner>
           </Portal>
