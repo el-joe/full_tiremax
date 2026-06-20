@@ -30,7 +30,7 @@ export default async function OrdersList({ data }: { data: IOrder[] }) {
       {data.map((order) => (
         <HStack
           key={order.id}
-          p="24px"
+          p={{ base: "10px", md: "24px" }}
           border={"1px solid #E5E7EB"}
           rounded={"16px"}
           shadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0px #0000001A"}
@@ -39,39 +39,58 @@ export default async function OrdersList({ data }: { data: IOrder[] }) {
           <Image
             src={"/images/noImage.jpg"}
             alt="image"
-            w="80px"
+            w={{ base: "28px", md: "42px", lg: "80px" }}
+            h={{ base: "28px", md: "42px", lg: "80px" }}
             aspectRatio={"1/1"}
             rounded={"14px"}
           />
           <VStack flex={1} align={"stretch"} gap="12px">
             <HStack align={"start"} justify={"space-between"}>
               <Box>
-                <Heading fontSize={"18px"} fontWeight={"bold"}>
+                <Heading
+                  fontSize={{ base: "10px", md: "14px", lg: "18px" }}
+                  fontWeight={"bold"}
+                >
                   {order.items[0].product_name} X {order.items[0]?.quantity}
                 </Heading>
-                <Text color={"gray-2"} fontSize={"14px"}>
+                <Text
+                  color={"gray-2"}
+                  fontSize={{ base: "8px", md: "12px", lg: "14px" }}
+                >
                   {t("orderNumber")} {order.reference}
                 </Text>
               </Box>
               <Badge
-                p="6px 12px"
+                p={{ md: "6px 12px" }}
                 rounded={"10px"}
                 color="#1447E6"
                 bg="#DBEAFE"
-                fontSize={"12px"}
+                fontSize={{ base: "7px", md: "14px" }}
               >
                 {order.status}
               </Badge>
             </HStack>
             <HStack justify={"space-between"}>
-              <Text color={"gray-2"} fontSize={"14px"}>
+              <Text
+                color={"gray-2"}
+                fontSize={{ base: "8px", md: "12px", lg: "14px" }}
+              >
                 {new Date(order.placed_at).toDateString()}
               </Text>
-              <Text fontSize={"18px"} fontWeight={"extrabold"} ms={"auto"}>
+              <Text
+                fontSize={{ base: "10px", md: "14px", lg: "18px" }}
+                fontWeight={"extrabold"}
+                ms={"auto"}
+              >
                 {order.total.toLocaleString()} <CurrencySymbol />
               </Text>
               <Link href={`/profile/orders/${order.id}`}>
-                <Button h="40px" rounded="14px" ms="12px">
+                <Button
+                  h={{ base: "32px", md: "40px" }}
+                  rounded="14px"
+                  ms={{ md: "12px" }}
+                  px={{ base: "4px", md: "12px" }}
+                >
                   {t("viewDetails")}
                 </Button>
               </Link>

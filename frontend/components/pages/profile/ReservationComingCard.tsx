@@ -19,7 +19,7 @@ import React from "react";
 import { FaPen, FaRegClock } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 
-// const upcomingRes = {
+// const upcomingReservation = {
 //   id: 1,
 //   reference: "BKG-20260604-0001",
 //   scheduled_at: "2026-06-10T10:00:00+03:00",
@@ -59,24 +59,31 @@ export default function ReservationComingCard() {
   });
   return (
     <Box
-      p="24px"
+      p={{ base: "8PX", lg: "24px" }}
       bg={"gray-4"}
       rounded={"16px"}
       borderStart={"4px solid {colors.primary}"}
     >
-      <HStack justify={"space-between"}>
-        <Heading fontSize={"24px"} fontWeight={"black"} mb={"24px"}>
+      <HStack justify={"space-between"} mb={{ base: "8px", lg: "24px" }}>
+        <Heading
+          fontSize={{ base: "14px", md: "18px", lg: "24px" }}
+          fontWeight={"black"}
+        >
           {t("upcomingBookings")}
         </Heading>
         <Link href={"/profile/reservation"}>
-          <Text fontWeight={"bold"} color="gray-2">
+          <Text
+            fontWeight={"bold"}
+            color="gray-2"
+            fontSize={{ base: "12px", md: "16px" }}
+          >
             {t("viewAll")}
           </Text>
         </Link>
       </HStack>
       <HStack
-        gap={"24px"}
-        p="20px"
+        gap={{ base: "6px", md: "14px", lg: "24px" }}
+        p={{ base: "8px", md: "14px", lg: "20px" }}
         rounded={"16px"}
         bg="white"
         align={"stretch"}
@@ -93,43 +100,56 @@ export default function ReservationComingCard() {
           </>
         ) : (
           <>
-            {" "}
             <VStack
               gap={"0"}
               bg="primary"
               rounded={"8px"}
-              w={"70px"}
-              h="75px"
+              w={{ base: "35px", md: "52px", lg: "70px" }}
+              h={{ base: "38px", md: "60px", lg: "75px" }}
               justify={"center"}
             >
-              <Text fontSize={"20px"} fontWeight={"black"}>
+              <Text
+                fontSize={{ base: "14px", md: "20px" }}
+                fontWeight={"black"}
+              >
                 {new Date(upcomingReservation.scheduled_at).getDay()}
               </Text>
               <Text fontSize={"10px"} fontWeight={"bold"}>
-                {
-                  new Date(upcomingReservation.scheduled_at)
-                    .toUTCString()
-                    .split(" ")[2]
-                }
+                {new Date(upcomingReservation.scheduled_at)
+                  .toUTCString()
+                  .split(" ")
+                  .map((e) => e.split(":").slice(0, 2).join(":"))
+                  .join(" ")}
               </Text>
             </VStack>
             <HStack justify={"space-between"} flex="1">
-              <Text fontWeight={"bold"}>
+              <Text fontWeight={"bold"} fontSize={{ base: "12px", md: "16px" }}>
                 {upcomingReservation?.service?.name}
               </Text>
-              <Text mt={"auto"} fontSize={"12px"} color="gray-2">
+              <Text
+                mt={"auto"}
+                fontSize={{ base: "8px", md: "12px" }}
+                color="gray-2"
+              >
                 <Icon size={"sm"} me={"2px"}>
                   <FaRegClock />
                 </Icon>
-                {new Date(
-                  upcomingReservation?.scheduled_at,
-                ).toLocaleTimeString()}{" "}
+                {new Date(upcomingReservation?.scheduled_at)
+                  .toLocaleTimeString()
+                  .split(":")
+                  .slice(0, 2)
+                  .join(":")}{" "}
                 •{upcomingReservation?.branch.name}{" "}
               </Text>
             </HStack>
             <HStack gap="8px">
-              <Button variant={"ghost"} color={"#514532"}>
-                <Icon>
+              <Button
+                variant={"ghost"}
+                color={"#514532"}
+                px={{ base: "2px", md: "8px", lg: "12px" }}
+                minW={"auto"}
+              >
+                <Icon size={"xs"}>
                   <FaPen />
                 </Icon>
               </Button>
@@ -137,8 +157,10 @@ export default function ReservationComingCard() {
                 variant={"ghost"}
                 color={"myRed"}
                 _hover={{ bg: "red.emphasized" }}
+                px={{ base: "2px", md: "8px", lg: "12px" }}
+                minW={"auto"}
               >
-                <Icon>
+                <Icon size={"xs"}>
                   <IoMdClose />
                 </Icon>
               </Button>

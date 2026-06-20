@@ -10,9 +10,9 @@ type Props = {
 export default function layout({ children }: Props) {
   return (
     <Container>
-      <HStack gap={0} align={"stretch"}>
+      <HStack gap={0} align={"stretch"} flexDir={{ base: "column", md: "row" }}>
         <ProfileNav />
-        <Box px={"60px"} flex={1}>
+        <Box px={{ md: "18px", lg: "40px", "2xl": "60px" }} flex={1}>
           {children}
         </Box>
       </HStack>

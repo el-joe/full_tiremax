@@ -118,7 +118,7 @@ export default function SettingsForm() {
             errMes={getErrorMessage(errors.name?.message?.toString())}
             type="text"
             h="auto"
-            p="16px"
+            p={{ base: "8px", md: "16px" }}
           />
           <Input
             label={t("phoneNumber")}
@@ -128,7 +128,7 @@ export default function SettingsForm() {
             errMes={getErrorMessage(errors.phone?.message?.toString())}
             type="text"
             h="auto"
-            p="16px"
+            p={{ base: "8px", md: "16px" }}
           />
         </HStack>
         <Input
@@ -139,7 +139,7 @@ export default function SettingsForm() {
           errMes={getErrorMessage(errors.email?.message?.toString())}
           type="text"
           h="auto"
-          p="16px"
+          p={{ base: "8px", md: "16px" }}
         />
       </GroupContainer>
       {/* security settings */}
@@ -160,9 +160,9 @@ export default function SettingsForm() {
             register={register("newPassword")}
             err={!!errors.newPassword?.message}
             errMes={getErrorMessage(errors.newPassword?.message?.toString())}
-            type="text"
+            type="password"
             h="auto"
-            p="16px"
+            p={{ base: "8px", md: "16px" }}
           />
           <Input
             label={t("confirmPassword")}
@@ -171,9 +171,9 @@ export default function SettingsForm() {
             errMes={getErrorMessage(
               errors.password_confirmation?.message?.toString(),
             )}
-            type="text"
+            type="password"
             h="auto"
-            p="16px"
+            p={{ base: "8px", md: "16px" }}
           />
         </HStack>
       </GroupContainer>
@@ -192,7 +192,7 @@ export default function SettingsForm() {
           <HStack
             key={e.id}
             p="16px"
-            ps="121px"
+            ps={{ lg: "121px" }}
             bg={"gray-4"}
             rounded="14px"
             justify={"space-between"}
@@ -251,7 +251,7 @@ const GroupContainer = ({ children }: { children: React.ReactNode }) => (
   <VStack
     gap="24px"
     align="stretch"
-    p="32px"
+    p={{ base: "12px", lg: "32px" }}
     border="1px solid #E5E7EB"
     rounded="16px"
     boxShadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0px #0000001A"}

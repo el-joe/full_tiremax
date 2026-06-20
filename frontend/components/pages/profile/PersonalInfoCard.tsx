@@ -12,17 +12,24 @@ export default function PersonalInfoCard() {
   const { customer } = useAuthContext();
   return (
     <Box
-      p="24px"
+      p={{ base: "8PX", lg: "24px" }}
       bg={"gray-4"}
       rounded={"16px"}
       borderStart={"4px solid {colors.primary}"}
     >
-      <HStack justify={"space-between"}>
-        <Heading fontSize={"24px"} fontWeight={"black"} mb={"24px"}>
+      <HStack justify={"space-between"} mb={{ base: "8px", lg: "24px" }}>
+        <Heading
+          fontSize={{ base: "14px", md: "18px", lg: "24px" }}
+          fontWeight={"black"}
+        >
           {t("personalInformation")}
         </Heading>
         <Link href={"/profile/settings"}>
-          <Text fontWeight={"bold"} color="gray-2">
+          <Text
+            fontWeight={"bold"}
+            color="gray-2"
+            fontSize={{ base: "12px", md: "16px" }}
+          >
             <Icon>
               <FaPen />
             </Icon>
@@ -32,7 +39,7 @@ export default function PersonalInfoCard() {
       </HStack>
       <HStack
         gap={"24px"}
-        p="20px"
+        p={{ base: "12px", lg: "20px" }}
         rounded={"16px"}
         bg="white"
         align={"stretch"}
@@ -40,24 +47,50 @@ export default function PersonalInfoCard() {
       >
         {/* name */}
         <Box w={"calc((100% - 24px) / 2)"}>
-          <Text fontSize={"10px"} fontWeight={"bold"} color={"gray-2"}>
+          <Text
+            fontSize={{ base: "8px", md: "10px" }}
+            fontWeight={"bold"}
+            color={"gray-2"}
+          >
             {t("fullName")}
           </Text>
-          <Text fontWeight={"bold"}>{customer?.name}</Text>
+          <Text
+            fontWeight={"bold"}
+            fontSize={{ base: "12px", md: "14px", lg: "16px" }}
+          >
+            {customer?.name}
+          </Text>
         </Box>
         {/* phone */}
         <Box w={"calc((100% - 24px) / 2)"}>
-          <Text fontSize={"10px"} fontWeight={"bold"} color={"gray-2"}>
+          <Text
+            fontSize={{ base: "8px", md: "10px" }}
+            fontWeight={"bold"}
+            color={"gray-2"}
+          >
             {t("phoneNumber")}
           </Text>
-          <Text fontWeight={"bold"}>{customer?.phone}</Text>
+          <Text
+            fontWeight={"bold"}
+            fontSize={{ base: "12px", md: "14px", lg: "16px" }}
+          >
+            {customer?.phone}
+          </Text>
         </Box>
         {/* address */}
         <Box w="full">
-          <Text fontSize={"10px"} fontWeight={"bold"} color={"gray-2"} mb="3px">
+          <Text
+            fontSize={{ base: "8px", md: "10px" }}
+            fontWeight={"bold"}
+            color={"gray-2"}
+            mb="3px"
+          >
             {t("primaryAddress")}
           </Text>
-          <Text fontWeight={"bold"}>
+          <Text
+            fontWeight={"bold"}
+            fontSize={{ base: "12px", md: "14px", lg: "16px" }}
+          >
             <Icon size={"md"} color={"primary"}>
               <LuMapPin />
             </Icon>

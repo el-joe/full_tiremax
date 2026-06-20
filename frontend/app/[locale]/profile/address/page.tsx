@@ -6,30 +6,32 @@ import React from "react";
 import { FiHome } from "react-icons/fi";
 import { MdWork } from "react-icons/md";
 
-// const addresses = [
-//   {
-//     id: 1,
-//     icon: FiHome,
-//     title: "المنزل",
-//     address_line1: "البصرة، البصرة",
-//     address_line2: "حي الجمهورية، شارع الكويت، بناية 12، الطابق الثالث",
-//     full_address:
-//       "البصرة، البصرة حي الجمهورية، شارع الكويت، بناية 12، الطابق الثالث",
-//     phone: "9999999999",
-//     is_default: true,
-//   },
-//   {
-//     id: 2,
-//     icon: MdWork,
-//     title: "العمل",
-//     address_line1: "ميسان، العمارة",
-//     address_line2: "شارع الحبوبي، مجمع الأعمال، الطابق الخامس، مكتب 502",
-//     full_address:
-//       "ميسان، العمارة شارع الحبوبي، مجمع الأعمال، الطابق الخامس، مكتب 502",
-//     phone: "9999999999",
-//     is_default: false,
-//   },
-// ];
+const addresses = [
+  {
+    id: 1,
+    icon: FiHome,
+    title: "المنزل",
+    address_line1: "البصرة، البصرة",
+    address_line2: "حي الجمهورية، شارع الكويت، بناية 12، الطابق الثالث",
+    full_address:
+      "البصرة، البصرة حي الجمهورية، شارع الكويت، بناية 12، الطابق الثالث",
+    phone: "9999999999",
+    is_default: true,
+    name: "",
+  },
+  {
+    id: 2,
+    icon: MdWork,
+    title: "العمل",
+    address_line1: "ميسان، العمارة",
+    address_line2: "شارع الحبوبي، مجمع الأعمال، الطابق الخامس، مكتب 502",
+    full_address:
+      "ميسان، العمارة شارع الحبوبي، مجمع الأعمال، الطابق الخامس، مكتب 502",
+    phone: "9999999999",
+    is_default: false,
+    name: "",
+  },
+];
 
 export default async function page() {
   try {
@@ -50,7 +52,7 @@ export default async function page() {
     if (error instanceof AxiosError) {
       return (
         <AddressesList
-          data={[]}
+          data={addresses}
           //  paginationInfo={data.meta}
         />
       );

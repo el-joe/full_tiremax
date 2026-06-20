@@ -21,7 +21,7 @@ export default function FavProductSection() {
           </Text>
         </Link>
       </HStack>
-      <HStack gap={"12px"}>
+      <HStack gap={"12px"} align={"stretch"} flexWrap={"wrap"}>
         {!favorites.length && (
           <Center w="full">You don&apos;t have favorite protects yet</Center>
         )}

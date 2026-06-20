@@ -27,20 +27,27 @@ export default function OrdersHeader({ ordersCount }: { ordersCount: number }) {
   return (
     <HStack
       justify={"space-between"}
-      p="24px"
+      p={{ base: "10px", md: "16px", lg: "24px" }}
       border={"1px solid #E5E7EB"}
       rounded={"16px"}
       shadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0px #0000001A"}
     >
       <Box>
-        <Heading pb={"8px"} fontSize={"30px"} fontWeight={"bold"}>
+        <Heading
+          pb={"8px"}
+          fontSize={{ base: "16px", md: "18px", lg: "30px" }}
+          fontWeight={"bold"}
+        >
           {t("orders")}
         </Heading>
-        <Text color={"gray-2"}>
+        <Text
+          color={"gray-2"}
+          fontSize={{ base: "8px", md: "12px", lg: "16px" }}
+        >
           {t("youHave")} {ordersCount} {t("order")}
         </Text>
       </Box>
-      <HStack gap={"8px"}>
+      <HStack gap={{ base: "4px", md: "8px" }}>
         <Button
           bg={
             !filters.find((e) => e.filterBy === "status") ? "primary" : "gray-4"
@@ -60,6 +67,9 @@ export default function OrdersHeader({ ordersCount }: { ordersCount: number }) {
               targetEndpoint: "orders",
             })
           }
+          fontSize={{ base: "8px", md: "12px", lg: "16px" }}
+          p={{ base: "4px", md: "8px", lg: "12px" }}
+          h="auto"
         >
           {t("all")}
         </Button>
@@ -82,6 +92,10 @@ export default function OrdersHeader({ ordersCount }: { ordersCount: number }) {
                 targetEndpoint: "orders",
               })
             }
+            fontSize={{ base: "8px", md: "12px", lg: "16px" }}
+            minW={"auto"}
+            p={{ base: "4px", md: "8px", lg: "12px" }}
+            h="auto"
           >
             {t(f.label)}
           </Button>

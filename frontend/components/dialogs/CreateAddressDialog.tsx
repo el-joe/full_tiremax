@@ -96,7 +96,7 @@ export default function CreateAddressDialog({ trigger }: Props) {
   );
   return (
     <Dialog value={dialog} trigger={trigger} closeIconButton>
-      <Box minW="680px" w="full">
+      <Box minW={{ base: "auto", md: "680px" }} w="full">
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack gap="20px" alignItems="stretch">
             <HStack
@@ -111,7 +111,8 @@ export default function CreateAddressDialog({ trigger }: Props) {
                 err={!!errors?.name?.message}
                 errMes={getErrorMessage(errors?.name?.message)}
                 h={"auto"}
-                p="16px"
+                p={{ base: "8px", md: "16px" }}
+                ps="28px !important"
               />
 
               <Input
@@ -122,7 +123,8 @@ export default function CreateAddressDialog({ trigger }: Props) {
                 err={!!errors?.phone?.message}
                 errMes={getErrorMessage(errors.phone?.message)}
                 h="auto"
-                p="16px"
+                p={{ base: "8px", md: "16px" }}
+                ps="28px !important"
               />
             </HStack>
             <HStack
@@ -147,7 +149,7 @@ export default function CreateAddressDialog({ trigger }: Props) {
                 triggerProps={{
                   bg: "#F9FAFB",
                   h: "auto",
-                  p: "16px",
+                  p: { base: "8px", md: "16px" },
                   rounded: "16px",
                 }}
               />
@@ -169,7 +171,7 @@ export default function CreateAddressDialog({ trigger }: Props) {
                 triggerProps={{
                   bg: "#F9FAFB",
                   h: "auto",
-                  p: "16px",
+                  p: { base: "8px", md: "16px" },
                   rounded: "16px",
                 }}
               />

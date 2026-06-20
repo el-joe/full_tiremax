@@ -44,6 +44,7 @@ const Input: React.FC<IInputProps> = ({
       <ChakraInput
         rounded={"16px"}
         bg="#F9FAFB"
+        fontSize={{ base: "12px", md: "16px" }}
         type={type}
         size={size}
         {...register}

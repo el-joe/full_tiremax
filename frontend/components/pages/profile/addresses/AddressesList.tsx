@@ -29,12 +29,19 @@ export default async function AddressesList({ data }: Props) {
       </Center>
     );
   return (
-    <HStack justify={"space-between"} mt={"24px"} align={"stretch"}>
+    <HStack
+      justify={"space-between"}
+      mt={"24px"}
+      align={"stretch"}
+      flexWrap={"wrap"}
+      gap={"16px"}
+    >
       {data.map((address) => (
         <VStack
           key={address.id}
           position={"relative"}
-          minW={"392px"}
+          w={{ base: "full", md: "calc((100% - 16px) / 2)" }}
+          maxW={"420px"}
           rounded="16px"
           p="24px"
           border={"1px solid"}

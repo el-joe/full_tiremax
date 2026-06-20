@@ -10,10 +10,17 @@ export default function ProfileHeader() {
   const { customer } = useAuthContext();
   return (
     <Box>
-      <Heading fontSize={"36px"} fontWeight={"black"} lineHeight={"40px"}>
+      <Heading
+        fontSize={{ base: "18px", md: "22px", lg: "36px" }}
+        fontWeight={"black"}
+        lineHeight={"40px"}
+      >
         {t("welcome")} {customer?.name}
       </Heading>
-      <Text color={"gray-2"}>
+      <Text
+        color={"gray-2"}
+        fontSize={{ base: "12px", md: "14px", lg: "16px" }}
+      >
         <Icon color={"primary"} size={"md"}>
           <PiSealCheckFill />
         </Icon>

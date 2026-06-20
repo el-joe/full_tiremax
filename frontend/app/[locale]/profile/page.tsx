@@ -8,7 +8,7 @@ import React from "react";
 
 export default function page() {
   return (
-    <VStack gap={"40px"} align={"stretch"}>
+    <VStack gap={{ base: "12px", lg: "22px", xl: "40px" }} align={"stretch"}>
       <ProfileHeader />
       <PersonalInfoCard />
       <ReservationComingCard />

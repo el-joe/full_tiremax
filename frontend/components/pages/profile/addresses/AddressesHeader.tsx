@@ -10,20 +10,35 @@ export default function AddressesHeader() {
   return (
     <HStack
       justify={"space-between"}
-      p="24px"
+      p={{ base: "10px", md: "16px", lg: "24px" }}
       border={"1px solid #E5E7EB"}
       rounded={"16px"}
       shadow={"0 1px 2px -1px #0000001A, 0 1px 3px 0px #0000001A"}
     >
       <Box>
-        <Heading pb={"8px"} fontSize={"30px"} fontWeight={"bold"}>
+        <Heading
+          pb={"8px"}
+          fontSize={{ base: "16px", md: "18px", lg: "30px" }}
+          fontWeight={"bold"}
+        >
           {t("savedAddresses")}
         </Heading>
-        <Text color={"gray-2"}>{t("manageAddressesDescription")}</Text>
+        <Text
+          color={"gray-2"}
+          fontSize={{ base: "8px", md: "12px", lg: "16px" }}
+        >
+          {t("manageAddressesDescription")}
+        </Text>
       </Box>
       <CreateAddressDialog
         trigger={
-          <Button color={"black"} rounded={"12px"} h="48px">
+          <Button
+            color={"black"}
+            rounded={"12px"}
+            h={{ base: "auto", md: "48px" }}
+            fontSize={{ base: "12px", lg: "16px" }}
+            p={{ base: "4px", md: "8px", lg: "12px" }}
+          >
             <FaPlus />
             {t("addAddress")}
           </Button>
