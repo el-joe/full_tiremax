@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\FitmentController;
 use App\Http\Controllers\Api\FlashSaleController;
@@ -39,6 +41,7 @@ Route::prefix('v1')->group(function () {
         Route::get('brands', [BrandController::class, 'index']);
         Route::get('branches', [BranchController::class, 'index']);
         Route::get('governorates', [GovernorateController::class, 'index']);
+        Route::get('governorates/{governorate}/cities', [CityController::class, 'byGovernorate']);
         Route::get('services', [ServiceController::class, 'index']);
 
         Route::get('flash-sales', [FlashSaleController::class, 'index']);
@@ -82,6 +85,14 @@ Route::prefix('v1')->group(function () {
         Route::post('bookings', [BookingController::class, 'store']);
         Route::get('bookings/{booking}', [BookingController::class, 'show']);
         Route::post('bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+
+        // Addresses
+        Route::get('addresses', [AddressController::class, 'index']);
+        Route::post('addresses', [AddressController::class, 'store']);
+        Route::get('addresses/{address}', [AddressController::class, 'show']);
+        Route::put('addresses/{address}', [AddressController::class, 'update']);
+        Route::delete('addresses/{address}', [AddressController::class, 'destroy']);
+        Route::post('addresses/{address}/set-default', [AddressController::class, 'setDefault']);
 
         // Favorites
         Route::get('favorites', [FavoriteController::class, 'index']);

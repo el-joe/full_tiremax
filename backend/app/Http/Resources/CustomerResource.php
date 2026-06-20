@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\AddressResource;
 
 class CustomerResource extends JsonResource
 {
@@ -16,6 +17,7 @@ class CustomerResource extends JsonResource
             'phone' => $this->phone,
             'address' => $this->address,
             'locale' => $this->locale,
+            'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
         ];
     }
 }

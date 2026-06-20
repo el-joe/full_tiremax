@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             AdminSeeder::class,
             GovernorateSeeder::class,
+            CitySeeder::class,
             BrandSeeder::class,
             CategorySeeder::class,
             BranchAndServiceSeeder::class,

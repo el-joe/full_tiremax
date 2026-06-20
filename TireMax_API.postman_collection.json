@@ -17,6 +17,12 @@
       "value": "",
       "type": "string",
       "description": "JWT Bearer token received from /auth/login or /auth/register"
+    },
+    {
+      "key": "addressId",
+      "value": "1",
+      "type": "string",
+      "description": "ID of a customer address (used in address endpoints)"
     }
   ],
   "item": [
@@ -842,6 +848,75 @@
               ],
               "cookie": [],
               "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"slug\": \"tire-fitting\",\n      \"name\": \"Tire Fitting\",\n      \"description\": \"Professional mounting and fitting of new tires\",\n      \"icon\": \"wrench\",\n      \"duration_minutes\": 30,\n      \"price\": 5000\n    },\n    {\n      \"id\": 2,\n      \"slug\": \"wheel-balancing\",\n      \"name\": \"Wheel Balancing\",\n      \"description\": \"Dynamic wheel balancing to reduce vibration\",\n      \"icon\": \"balance\",\n      \"duration_minutes\": 20,\n      \"price\": 3000\n    },\n    {\n      \"id\": 3,\n      \"slug\": \"nitrogen-inflation\",\n      \"name\": \"Nitrogen Inflation\",\n      \"description\": \"Fill tires with nitrogen for better pressure stability\",\n      \"icon\": \"gas\",\n      \"duration_minutes\": 15,\n      \"price\": 2000\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Cities by Governorate",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/governorates/1/cities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "governorates",
+                "1",
+                "cities"
+              ]
+            },
+            "description": "Get all active cities for a given governorate.\n\n**Path params:**\n- `governorate` *(required, integer)* — The ID of the governorate (e.g. 1 for Basra, 2 for Baghdad)"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/governorates/1/cities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "governorates",
+                    "1",
+                    "cities"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name_ar\": \"\\u0627\\u0644\\u0628\\u0635\\u0631\\u0629\",\n      \"name_en\": \"Basra\"\n    },\n    {\n      \"id\": 2,\n      \"name_ar\": \"\\u0623\\u0628\\u0648 \\u0627\\u0644\\u062e\\u0635\\u064a\\u0628\",\n      \"name_en\": \"Abu Al-Khasib\"\n    },\n    {\n      \"id\": 3,\n      \"name_ar\": \"\\u0627\\u0644\\u0641\\u0627\\u0648\",\n      \"name_en\": \"Al-Faw\"\n    }\n  ]\n}"
             }
           ]
         }
@@ -2581,6 +2656,393 @@
               ],
               "cookie": [],
               "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"date\": [\"The date field is required.\"]\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Addresses",
+      "item": [
+        {
+          "name": "List My Addresses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/addresses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "addresses"
+              ]
+            },
+            "description": "Returns all saved addresses for the authenticated customer, sorted with the default address first.\n\n**Headers:**\n- `Authorization` *(required)* — `Bearer {token}`"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/addresses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "addresses"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"full_name\": \"Ahmed Hassan\",\n      \"phone\": \"07701234567\",\n      \"governorate\": {\n        \"id\": 1,\n        \"code\": \"BAS\",\n        \"name\": \"Basra\",\n        \"is_basra\": true,\n        \"shipping_fee\": 0\n      },\n      \"city\": {\n        \"id\": 1,\n        \"name_ar\": \"\\u0627\\u0644\\u0628\\u0635\\u0631\\u0629\",\n        \"name_en\": \"Basra\"\n      },\n      \"address\": \"Al-Ashar, Block 5, House 12\",\n      \"is_default\": true\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/addresses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "addresses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Ahmed Hassan\",\n  \"phone\": \"07701234567\",\n  \"governorate_id\": 1,\n  \"city_id\": 1,\n  \"address\": \"Al-Ashar, Block 5, House 12\",\n  \"is_default\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Save a new delivery address for the authenticated customer.\n\n**Headers:**\n- `Authorization` *(required)* — `Bearer {token}`\n\n**Body fields:**\n- `full_name` *(required, string, max 255)* — Recipient's full name\n- `phone` *(required, string, max 20)* — Recipient's phone number\n- `governorate_id` *(required, integer)* — ID of the governorate (from GET /v1/governorates)\n- `city_id` *(required, integer)* — ID of the city (from GET /v1/governorates/{id}/cities)\n- `address` *(required, string, max 500)* — Detailed street/area address\n- `is_default` *(optional, boolean)* — Set this address as the default. If omitted and this is the first address, it will automatically be set as default"
+          },
+          "response": [
+            {
+              "name": "Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/addresses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "addresses"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Created successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"full_name\": \"Ahmed Hassan\",\n    \"phone\": \"07701234567\",\n    \"governorate\": {\n      \"id\": 1,\n      \"code\": \"BAS\",\n      \"name\": \"Basra\",\n      \"is_basra\": true,\n      \"shipping_fee\": 0\n    },\n    \"city\": {\n      \"id\": 1,\n      \"name_ar\": \"\\u0627\\u0644\\u0628\\u0635\\u0631\\u0629\",\n      \"name_en\": \"Basra\"\n    },\n    \"address\": \"Al-Ashar, Block 5, House 12\",\n    \"is_default\": true\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Address",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/addresses/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "addresses",
+                "{{addressId}}"
+              ]
+            },
+            "description": "Retrieve a single address by ID. The address must belong to the authenticated customer.\n\n**Headers:**\n- `Authorization` *(required)* — `Bearer {token}`\n\n**Path params:**\n- `address` *(required, integer)* — Address ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Address",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/addresses/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "addresses",
+                "{{addressId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Ahmed Hassan\",\n  \"phone\": \"07709876543\",\n  \"governorate_id\": 2,\n  \"city_id\": 12,\n  \"address\": \"Al-Mansour, Street 14, Villa 3\",\n  \"is_default\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update an existing address. All fields are optional — only send what you want to change. The address must belong to the authenticated customer.\n\n**Headers:**\n- `Authorization` *(required)* — `Bearer {token}`\n\n**Path params:**\n- `address` *(required, integer)* — Address ID\n\n**Body fields (all optional):**\n- `full_name` *(string, max 255)* — Recipient's full name\n- `phone` *(string, max 20)* — Recipient's phone number\n- `governorate_id` *(integer)* — ID of the governorate\n- `city_id` *(integer)* — ID of the city\n- `address` *(string, max 500)* — Detailed street/area address\n- `is_default` *(boolean)* — Set this address as default (setting to true will unset the previous default)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Address",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/addresses/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "addresses",
+                "{{addressId}}"
+              ]
+            },
+            "description": "Soft-delete an address. The address must belong to the authenticated customer. If the deleted address was the default, the next available address will automatically become the default.\n\n**Headers:**\n- `Authorization` *(required)* — `Bearer {token}`\n\n**Path params:**\n- `address` *(required, integer)* — Address ID"
+          },
+          "response": [
+            {
+              "name": "Deleted",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/addresses/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "addresses",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Deleted successfully\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Set Default Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/addresses/{{addressId}}/set-default",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "addresses",
+                "{{addressId}}",
+                "set-default"
+              ]
+            },
+            "description": "Mark an address as the customer's default delivery address. Any previously default address will be unset. The address must belong to the authenticated customer.\n\n**Headers:**\n- `Authorization` *(required)* — `Bearer {token}`\n\n**Path params:**\n- `address` *(required, integer)* — Address ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/addresses/2/set-default",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "addresses",
+                    "2",
+                    "set-default"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Updated successfully\",\n  \"data\": {\n    \"id\": 2,\n    \"full_name\": \"Sara Ali\",\n    \"phone\": \"07701112233\",\n    \"governorate\": {\n      \"id\": 2,\n      \"code\": \"BGD\",\n      \"name\": \"Baghdad\",\n      \"is_basra\": false,\n      \"shipping_fee\": 25000\n    },\n    \"city\": {\n      \"id\": 12,\n      \"name_ar\": \"\\u0627\\u0644\\u0645\\u0646\\u0635\\u0648\\u0631\",\n      \"name_en\": \"Al-Mansour\"\n    },\n    \"address\": \"Al-Mansour, Street 14, Villa 3\",\n    \"is_default\": true\n  }\n}"
             }
           ]
         }
