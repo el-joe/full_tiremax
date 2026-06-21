@@ -16,3 +16,4 @@ export type { ICustomerProfile } from "./customerProfile.type.ts";
 export type { IReservation } from "./reservation.type.ts";
 export type { IAddress } from "./address.type.ts";
 export type { ICity } from "./city.type.js";
+export type { IVehicle } from "./vehicle.type.js";

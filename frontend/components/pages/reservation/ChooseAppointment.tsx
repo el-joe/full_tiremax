@@ -1,5 +1,4 @@
 import DatePicker from "@/components/ui/DatePicker";
-import generateTimesSlots from "@/helpers/generateTimesSlots";
 import { useReservationContext } from "@/providers/ReservationProvider";
 import {
   Box,

@@ -5,19 +5,23 @@ import generateYearsSlots from "@/helpers/generateYearsSlots";
 import useDir from "@/hooks/useDir";
 import { Link } from "@/i18n/navigation";
 import { useProductFilterContext } from "@/providers/ProductFilterProvider";
-import { IMake, IVehicleModel, IYearVehicleModel } from "@/types";
+import { IMake, IVehicle, IVehicleModel, IYearVehicleModel } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
 import {
   Button,
   HStack,
+  Icon,
   Tabs,
   TabsContentProps,
   TabsListProps,
   TabsRootProps,
+  Text,
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { IoCarSportOutline } from "react-icons/io5";
+import { MdOutlineCalendarToday } from "react-icons/md";
 
 type props = {
   showButton?: boolean;
@@ -105,14 +109,21 @@ export default TabsFilterBy;
 
 const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
   const t = useTranslations("home");
-  const { filters, applyFilter, getFiltersString } = useProductFilterContext();
+
+  const { filters, applyFilter, getFiltersString, setFilter } =
+    useProductFilterContext();
+
+  // make
   const { data: makeData, isLoading: makeIsLoading } = useQuery({
     queryKey: ["makeList"],
     queryFn: async () => {
       const { data } = await axiosInstance<{ data: IMake[] }>("vehicles/makes");
+
       return data.data;
     },
   });
+
+  // model
   const {
     data: modelData,
     isPending: modelIsLoading,
@@ -123,39 +134,132 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
       const { data } = await axiosInstance<{ data: IVehicleModel[] }>(
         `vehicles/makes/${id}/models`,
       );
+
       return data.data;
     },
   });
+
+  // year
   const {
     data: yearData,
     isPending: yearIsLoading,
     mutate: yearMutate,
   } = useMutation({
-    mutationKey: ["modelList"],
+    mutationKey: ["yearList"],
     mutationFn: async (id: string) => {
       const { data } = await axiosInstance<{ data: IYearVehicleModel[] }>(
         `vehicles/models/${id}/years`,
       );
+
       return data.data;
     },
   });
 
+  // vehicle
+  const {
+    data: vehicleData,
+    isPending: vehicleIsLoading,
+    mutate: vehicleMutate,
+    reset,
+  } = useMutation({
+    mutationKey: ["vehicle"],
+    mutationFn: async ({
+      make_id,
+      model_id,
+      year,
+    }: {
+      make_id: string;
+      model_id: string;
+      year: string;
+    }) => {
+      const { data } = await axiosInstance<{ data: IVehicle[] }>("vehicles", {
+        params: {
+          make_id,
+          model_id,
+          year,
+        },
+      });
+
+      return data.data[0];
+    },
+
+    onSuccess: (res) => {
+      const currentVehicleId = filters.find(
+        (f) => f.filterBy === "vehicle_id",
+      )?.query;
+
+      if (currentVehicleId !== String(res.id)) {
+        setFilter({
+          filterBy: "vehicle_id",
+          query: String(res.id),
+          targetEndpoint: "products",
+        });
+      }
+    },
+  });
+
+  const selectedMakeId = filters
+    .find((f) => f.filterBy === "make")
+    ?.query?.trim();
+
+  const selectedModelId = filters
+    .find((f) => f.filterBy === "model")
+    ?.query?.trim();
+
+  const selectedYear = filters
+    .find((f) => f.filterBy === "year")
+    ?.query?.trim();
+
+  /**
+   * Load models when make changes
+   */
   useEffect(() => {
-    const selectMakeId = filters
-      .find((f) => f.filterBy === "make")
-      ?.query?.trim();
-    if (
-      !!selectMakeId &&
-      selectMakeId !== modelData?.[0].vehicle_make_id.toString()
-    ) {
-      modelMutate(selectMakeId as string);
+    if (!selectedMakeId) return;
+
+    const currentMakeId = modelData?.[0]?.vehicle_make_id?.toString();
+
+    if (currentMakeId && selectedMakeId !== currentMakeId) {
+      setFilter({
+        filterBy: "model",
+        query: "",
+        targetEndpoint: "v",
+      });
+
+      setFilter({
+        filterBy: "year",
+        query: "",
+        targetEndpoint: "v",
+      });
+      reset();
     }
-    if (!!filters.find((f) => f.filterBy === "model")?.query.trim()) {
-      yearMutate(
-        filters.find((f) => f.filterBy === "model")?.query.trim() as string,
-      );
+
+    modelMutate(selectedMakeId);
+  }, [selectedMakeId, modelMutate]);
+
+  /**
+   * Load years when model changes
+   */
+  useEffect(() => {
+    if (selectedModelId) {
+      yearMutate(selectedModelId);
     }
-  }, [filters, modelData, modelMutate, yearMutate]);
+  }, [selectedModelId, yearMutate]);
+
+  /**
+   * Load vehicle when all filters are selected
+   */
+  useEffect(() => {
+    if (!selectedMakeId || !selectedModelId || !selectedYear) {
+      reset();
+      return;
+    }
+
+    vehicleMutate({
+      make_id: selectedMakeId,
+      model_id: selectedModelId,
+      year: selectedYear,
+    });
+  }, [selectedMakeId, selectedModelId, selectedYear, vehicleMutate]);
 
   return (
     <HStack
@@ -201,6 +305,26 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
         placeholder={t("selectYear")}
         name="year"
       />
+      {!!vehicleData && (
+        <HStack
+          p={{ base: "8px", lg: "10px" }}
+          border="1px solid #B9F8CF"
+          bg="#F0FDF4"
+          rounded={"14px"}
+          color={"#008236"}
+          gap={"14px"}
+          minW={"200px"}
+          flex="1"
+        >
+          <Icon size={"md"}>
+            <IoCarSportOutline />
+          </Icon>
+          <Text fontSize={"14px"}>
+            {vehicleData?.model?.name} {vehicleData?.trim_name}{" "}
+            {vehicleData?.engine}
+          </Text>
+        </HStack>
+      )}
       {showButton && (
         <Link href={`/store?${getFiltersString()}`}>
           <Button
@@ -289,7 +413,7 @@ const DropFilterList = ({
       grouped={grouped}
       label={label}
       placeholder={placeholder}
-      name="model"
+      name={name}
       containerProps={{ flex: 1 }}
       minW={"200px"}
       value={v}
@@ -298,7 +422,7 @@ const DropFilterList = ({
         setFilter({
           filterBy: name,
           query: d.value[0],
-          targetEndpoint: "products",
+          targetEndpoint: "v",
         })
       }
     />
