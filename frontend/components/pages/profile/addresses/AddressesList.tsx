@@ -1,4 +1,5 @@
 "use client";
+import RemoveAddressDialog from "@/components/dialogs/RemoveAddressDialog";
 import SetAsDefaultAddressDialog from "@/components/dialogs/SetDefaultAddressDialog";
 import { IAddress } from "@/types";
 import {
@@ -9,6 +10,7 @@ import {
   Heading,
   HStack,
   Icon,
+  IconButton,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -16,6 +18,7 @@ import { useLocale } from "next-intl";
 import React from "react";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FiCheckCircle, FiMapPin } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { useTranslations } from "use-intl";
 
 type Props = {
@@ -73,7 +76,27 @@ export default function AddressesList({ data }: Props) {
                 <FaMapLocationDot />
               </Icon>
             </Center>
-            <Heading>{address.governorate.name}</Heading>
+            <Box>
+              <Heading>{address.governorate.name}</Heading>
+              <Text fontSize={"14px"} color="gray-2">
+                {address.full_name}
+              </Text>
+            </Box>
+            <RemoveAddressDialog
+              trigger={
+                <IconButton
+                  variant={"ghost"}
+                  color={"black"}
+                  size={{ base: "xs", lg: "sm", xl: "md" }}
+                  minW={"auto"}
+                  h="auto"
+                  ms={"auto"}
+                >
+                  <RiDeleteBin6Line className="w-3! lg:w-4! xl:w-8!" />
+                </IconButton>
+              }
+              addressId={address.id}
+            />
           </HStack>
           <HStack align={"start"}>
             <Icon color={"primary"}>

@@ -1,3 +1,4 @@
+import ServiceCardsSkeleton from "@/components/skeletons/ServiceCardsSkeleton";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
 import { useReservationContext } from "@/providers/ReservationProvider";
 import { IService } from "@/types";
@@ -33,10 +34,7 @@ export default function ChooseService() {
         {t("chooseRequiredServiceDescription")}
       </Text>
       {isServicesListLoading ? (
-        <Center>
-          <Heading>Loading</Heading>
-          <Spinner size={"xl"} />
-        </Center>
+        <ServiceCardsSkeleton />
       ) : (
         <HStack
           flexWrap={"wrap"}

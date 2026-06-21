@@ -452,7 +452,10 @@
         "nameMaxLength": "Name must not exceed 120 characters",
         "nameMinLength": "Name must be at least 6 characters long",
         "setAsDefaultAddressWarning": "Are you sure you want to set this address as your default address?",
-        "set": "Set"
+        "set": "Set",
+        "removeAddress": "Remove Address",
+        "removeAddressWarning": "Are you sure you want to remove this address? This action cannot be undone.",
+        "remove": "Remove"
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",
