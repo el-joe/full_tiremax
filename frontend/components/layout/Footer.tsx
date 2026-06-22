@@ -119,7 +119,7 @@ const Footer = async () => {
         <Text color={"gray-2"} fontSize={"14px"}>
           {t("allRightsReserved")}
         </Text>
-        <Link href={"/"}>
+        <Link href={"/termsAndConditions"}>
           <Text color={"gray-2"} fontSize={"14px"} _hover={{ color: "white" }}>
             {t("termsAndConditions")}
           </Text>
@@ -130,22 +130,3 @@ const Footer = async () => {
 };
 
 export default Footer;
-
-// "": "We are committed to delivering the highest standards of quality in tire and vehicle maintenance services to our customers across Iraq, offering world-class brands and guaranteed performance.",
-// "": "Quick links",
-// "home": "Home",
-// "": "About us",
-// "": "Store",
-// "": "Offers",
-// "": "Services",
-// "batteries": "Batteries",
-// "": "Tires",
-// "": "Service center",
-// "": "Contact Us",
-// "": "Baghdad, Karrada, Al-Saadoun Street",
-// "": "Service Booking",
-// "": "Book your appointment with ease and choose the time that suits you best—no waiting required.",
-// "": "Book Your Appointment Now",
-// "privacyPolicy": "Privacy policy",
-// "allRightsReserved": "© 2024 TiraMax Iraq. All rights reserved",
-// "": "Terms and conditions"

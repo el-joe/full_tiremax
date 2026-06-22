@@ -86,11 +86,11 @@ const Header = () => {
                 <FiShoppingCart />
               </HeaderButton>
             </Tooltip>
-            <Tooltip content={t("notifications")}>
+            {/* <Tooltip content={t("notifications")}>
               <HeaderButton href={"#"}>
                 <LuBellDot />
               </HeaderButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip content={t("profile")}>
               <HeaderButton href={"/profile"}>
                 <FaRegUserCircle />
