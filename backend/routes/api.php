@@ -57,6 +57,7 @@ Route::prefix('v1')->group(function () {
         Route::get('products/{product}', [ProductController::class, 'show']);
         Route::get('products/{product}/related', [ProductController::class, 'related']);
 
+        Route::get('fitments/sizes', [FitmentController::class, 'sizes']);
         Route::get('fitments/by-vehicle/{vehicle}', [FitmentController::class, 'byVehicle']);
         Route::get('fitments/by-size', [FitmentController::class, 'bySize']);
 

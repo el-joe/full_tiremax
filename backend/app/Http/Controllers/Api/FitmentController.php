@@ -21,6 +21,11 @@ class FitmentController extends Controller
         return ApiResponse::success(ProductResource::collection($products));
     }
 
+    public function sizes()
+    {
+        return ApiResponse::success($this->service->availableSizes());
+    }
+
     public function bySize(Request $request)
     {
         $request->validate([
