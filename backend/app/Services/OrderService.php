@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Events\OrderPlaced;
+use App\Notifications\OrderPlacedNotification;
+use App\Notifications\OrderStatusChangedNotification;
 use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\Governorate;
@@ -120,6 +122,7 @@ class OrderService
             $this->cartService->clear($customer);
 
             OrderPlaced::dispatch($order);
+            $customer->notify(new OrderPlacedNotification($order));
 
             return $order->load('items.product', 'governorate', 'branch');
         });
@@ -157,6 +160,10 @@ class OrderService
                 'actor_type' => $actor ? get_class($actor) : null,
                 'actor_id' => $actor?->getKey(),
             ]);
+
+            if ($order->customer) {
+                $order->customer->notify(new OrderStatusChangedNotification($order, $from));
+            }
 
             return $order->fresh('items.product');
         });
