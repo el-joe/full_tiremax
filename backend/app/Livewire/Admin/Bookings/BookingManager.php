@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Bookings;
 
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Booking;
+use App\Services\BookingService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -18,11 +19,9 @@ class BookingManager extends Component
     #[Url]
     public ?int $branchFilter = null;
 
-    public function changeStatus(int $id, string $status): void
+    public function changeStatus(int $id, string $status, BookingService $service): void
     {
-        $b = Booking::findOrFail($id);
-        $b->status = $status;
-        $b->save();
+        $service->changeStatus(Booking::findOrFail($id), $status);
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
     }
 

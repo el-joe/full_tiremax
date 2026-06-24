@@ -88,4 +88,9 @@ class Order extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function whatsappLogs(): HasMany
+    {
+        return $this->hasMany(WhatsappLog::class);
+    }
 }

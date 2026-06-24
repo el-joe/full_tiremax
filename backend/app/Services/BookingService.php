@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Events\BookingCreated;
+use App\Notifications\BookingCreatedNotification;
+use App\Notifications\BookingStatusChangedNotification;
 use App\Models\Booking;
 use App\Models\Branch;
 use App\Models\Customer;
@@ -48,9 +50,20 @@ class BookingService
             ]);
 
             BookingCreated::dispatch($booking);
+            $customer->notify(new BookingCreatedNotification($booking));
 
             return $booking->load(['branch', 'service']);
         });
+    }
+
+    public function changeStatus(Booking $booking, string $status): Booking
+    {
+        $from = $booking->status;
+        $booking->update(['status' => $status]);
+        if ($booking->customer) {
+            $booking->customer->notify(new BookingStatusChangedNotification($booking, $from));
+        }
+        return $booking->fresh();
     }
 
     public function cancel(Booking $booking): Booking
@@ -58,8 +71,7 @@ class BookingService
         if (in_array($booking->status, [Booking::STATUS_COMPLETED, Booking::STATUS_CANCELLED], true)) {
             throw ApiException::badRequest(__('messages.cannot_cancel'));
         }
-        $booking->update(['status' => Booking::STATUS_CANCELLED]);
-        return $booking->fresh();
+        return $this->changeStatus($booking, Booking::STATUS_CANCELLED);
     }
 
     public function availableSlots(Branch $branch, Carbon $day): array
