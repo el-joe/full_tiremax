@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Fitment;
 use App\Models\Product;
+use App\Models\TireSpec;
 use App\Models\Vehicle;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,16 @@ class FitmentService
         }
 
         return $q->orderBy('sort_order')->get();
+    }
+
+    public function availableSizes(): \Illuminate\Support\Collection
+    {
+        return TireSpec::select('width', 'aspect_ratio', 'rim_diameter')
+            ->distinct()
+            ->orderBy('width')
+            ->orderBy('aspect_ratio')
+            ->orderBy('rim_diameter')
+            ->get();
     }
 
     public function productsBySize(array $size): Collection
