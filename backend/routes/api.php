@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\FlashSaleController;
 use App\Http\Controllers\Api\GovernorateController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ServiceController;
@@ -24,6 +25,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     // Public ------------------------------------------------------------
     Route::get('/home', [HomeController::class, 'index']);
+    Route::get('payment-gateways', [PaymentController::class, 'gateways']);
+    Route::post('payments/paymob/callback', [PaymentController::class, 'paymobCallback']);
 
     Route::prefix('auth')->group(function () {
         Route::post('register', [AuthController::class, 'register']);
@@ -81,6 +84,9 @@ Route::prefix('v1')->group(function () {
         Route::post('orders', [OrderController::class, 'store']); // checkout
         Route::get('orders/{order}', [OrderController::class, 'show']);
         Route::post('orders/{order}/cancel', [OrderController::class, 'cancel']);
+
+        // Payments
+        Route::get('orders/{order}/payment', [PaymentController::class, 'show']);
 
         // Bookings
         Route::get('bookings', [BookingController::class, 'index']);

@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Governorate;
 use App\Models\Order;
 use App\Models\OrderStatusLog;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Support\ApiException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -18,9 +19,11 @@ use Illuminate\Support\Str;
 
 class OrderService
 {
-    public function __construct(protected CartService $cartService)
-    {
-    }
+    public function __construct(
+        protected CartService $cartService,
+        protected PaymentService $paymentService,
+    ) {}
+
 
     public function paginateForCustomer(Customer $customer, array $filters = []): LengthAwarePaginator
     {
@@ -121,10 +124,13 @@ class OrderService
 
             $this->cartService->clear($customer);
 
+            $driver = $data['payment_method'] ?? 'cod';
+            $this->paymentService->initiate($order, $driver);
+
             OrderPlaced::dispatch($order);
             $customer->notify(new OrderPlacedNotification($order));
 
-            return $order->load('items.product', 'governorate', 'branch');
+            return $order->load('items.product', 'governorate', 'branch', 'payments.gateway');
         });
     }
 
