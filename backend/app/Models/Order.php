@@ -93,4 +93,9 @@ class Order extends Model
     {
         return $this->hasMany(WhatsappLog::class);
     }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

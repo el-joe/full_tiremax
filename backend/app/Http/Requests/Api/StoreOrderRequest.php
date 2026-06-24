@@ -17,7 +17,7 @@ class StoreOrderRequest extends FormRequest
             'type' => ['required', 'in:basra,delivery'],
             'branch_id' => ['required_if:type,basra', 'nullable', 'exists:branches,id'],
             'governorate_id' => ['required_if:type,delivery', 'nullable', 'exists:governorates,id'],
-            'payment_method' => ['nullable', 'in:cod,card,transfer'],
+            'payment_method' => ['nullable', 'in:cod,bank_transfer,paymob'],
             'customer_name' => ['nullable', 'string', 'max:120'],
             'customer_phone' => ['nullable', 'string', 'max:20'],
             'customer_email' => ['nullable', 'email', 'max:120'],
