@@ -2,16 +2,10 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Container, HStack } from "@chakra-ui/react";
 import React from "react";
-import {
-  CarIcon,
-  DeviceMaintenanceIcon,
-  SearchIcon,
-  SpannerIcon,
-} from "../Icons";
+import { CarIcon, DeviceMaintenanceIcon, SpannerIcon } from "../Icons";
 import Logo from "../shared/Logo";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import Input from "../ui/Input";
 import useToggleLang from "@/hooks/useToggleLang";
 import { Tooltip } from "../ui/tooltip";
 import { CiHeart } from "react-icons/ci";
@@ -86,11 +80,11 @@ const Header = () => {
                 <FiShoppingCart />
               </HeaderButton>
             </Tooltip>
-            {/* <Tooltip content={t("notifications")}>
-              <HeaderButton href={"#"}>
+            <Tooltip content={t("notifications")}>
+              <HeaderButton href={"/notifications"}>
                 <LuBellDot />
               </HeaderButton>
-            </Tooltip> */}
+            </Tooltip>
             <Tooltip content={t("profile")}>
               <HeaderButton href={"/profile"}>
                 <FaRegUserCircle />

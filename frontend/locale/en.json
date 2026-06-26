@@ -488,6 +488,14 @@
         "lastUpdated": "Last Updated: May 20, 2024",
         "downloadPdf": "Download PDF"
     },
+    "notifications": {
+        "notifications": "Notifications",
+        "notificationsHeadingDescription": "Stay up to date with the latest updates on your orders and bookings",
+        "bestTiresInIraq": "Best Tires in Iraq",
+        "chooseYourPerfectTire": "Choose the Right Tire for Iraq's Summer",
+        "chooseYourPerfectTireDescription": "Carefully selected options that provide a safe and comfortable driving experience throughout the summer.",
+        "youDontHaveNotifications": "You don't have any notifications"
+    },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",
     "addedToYourFavorites": "Added to your favorites",

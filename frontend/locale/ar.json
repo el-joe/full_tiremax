@@ -489,6 +489,14 @@
         "lastUpdated": "تاريخ آخر تحديث: 20 مايو 2024",
         "downloadPdf": "تحميل نسخة PDF"
     },
+    "notifications": {
+        "notifications": "الإشعارات",
+        "notificationsHeadingDescription": "ابقَ على اطلاع بأحدث تحديثات طلباتك وحجوزاتك",
+        "bestTiresInIraq": "أفضل إطارات في العراق",
+        "chooseYourPerfectTire": "اختر إطارك المناسب لصيف العراق",
+        "chooseYourPerfectTireDescription": "اختيارات مدروسة تمنحك قيادة آمنة ومريحة طوال الصيف.",
+        "youDontHaveNotifications": "ليس لديك أي إشعارات"
+    },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",
     "addedToYourFavorites": "تمت الإضافة إلى المفضلة",

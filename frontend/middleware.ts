@@ -2,7 +2,13 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
 
-const PROTECTED_ROUTES = ["/profile", "/cart", "/checkout", "/favorites"];
+const PROTECTED_ROUTES = [
+  "/profile",
+  "/cart",
+  "/checkout",
+  "/favorites",
+  "/notifications",
+];
 
 function isAuthenticated(request: NextRequest): boolean {
   const token = request.cookies.get("tiremax_token");
