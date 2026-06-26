@@ -19,3 +19,4 @@ export type { ICity } from "./city.type.js";
 export type { IVehicle } from "./vehicle.type.js";
 export type { ITyreSize } from "./tyreSize.type.js";
 export type { INotification } from "./notification.type.js";
+export type { IPaymentMethod } from "./paymentMethod.type.js";

@@ -222,6 +222,7 @@
         "paymentViaCreditCard": "الدفع عن طريق بطاقة ائتمانية",
         "confirmOrder": "تأكيد الطلب و التوصيل",
         "selectGovernorateIsRequired": "اختيار المحافظة مطلوب",
+        "selectCityIsRequired": "اختيار المدينة مطلوب",
         "theAddressIsRequired": "العنوان مطلوب",
         "theAddressMustBeMoreThen12Character": "يجب أن يكون العنوان أكثر من 12 حرفًا",
         "theAddressMustBeLessThen12Character": "يجب ألا يزيد العنوان عن 12 حرفًا",
@@ -236,7 +237,9 @@
         "backToHome": "العودة للرئيسية",
         "needHelp": "تحتاج مساعدة؟",
         "supportDescription": "فريق الدعم الفني جاهز للإجابة على استفساراتكم على مدار الساعة.",
-        "chatWithAnExpert": "تحدث مع خبير"
+        "chatWithAnExpert": "تحدث مع خبير",
+        "noPaymentMethodsAvailable": "لا توجد طرق دفع متاحة",
+        "selectPaymentMethodIsRequired": "اختيار طريقة الدفع مطلوب"
     },
     "favorites": {
         "favorites": "قائمة المفضلة",

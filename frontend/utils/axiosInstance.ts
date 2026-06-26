@@ -3,6 +3,8 @@ import { resolveApiFilters } from "@/helpers/resolveApiFilters";
 import { resolveLocale } from "@/helpers/resolveLocale";
 import { resolveApiPagination } from "@/helpers/resolveApiPagination";
 import resolveCookie from "@/helpers/resolveCookie";
+import { getLocale } from "next-intl/server";
+import { redirect } from "next/navigation";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -45,19 +47,21 @@ axiosInstance.interceptors.request.use(async (config) => {
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     if (error?.status === 401) {
       if (typeof window === "undefined") return Promise.reject(error);
-      // 1. Get current parameters from the browser URL
-      const urlParams = new URLSearchParams(window.location.search);
+      // // 1. Get current parameters from the browser URL
+      // const urlParams = new URLSearchParams(window.location.search);
 
-      // 2. Set or update a specific parameter
-      urlParams.set("authDialog", "on");
+      // // 2. Set or update a specific parameter
+      // urlParams.set("authDialog", "on");
 
-      // 3. Update the browser address bar smoothly
-      const newRelativePathQuery =
-        window.location.pathname + "?" + urlParams.toString();
-      history.pushState(null, "", newRelativePathQuery);
+      // // 3. Update the browser address bar smoothly
+      // const newRelativePathQuery =
+      //   window.location.pathname + "?" + urlParams.toString();
+      // history.pushState(null, "", newRelativePathQuery);
+      const locale = await getLocale();
+      redirect(`/${locale}?authDialog=on`);
     }
     return Promise.reject(error);
   },

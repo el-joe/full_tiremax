@@ -222,6 +222,7 @@
         "paymentViaCreditCard": "Payment via credit card",
         "confirmOrder": "Confirm order",
         "selectGovernorateIsRequired": "Select governorate is required",
+        "selectCityIsRequired": "Select city is required",
         "theAddressIsRequired": "The address is required",
         "theAddressMustBeMoreThen12Character": "The address must be more then 12 character",
         "theAddressMustBeLessThen12Character": "The address must be less then 12 character",
@@ -236,7 +237,9 @@
         "backToHome": "Back to Home",
         "needHelp": "Need Help?",
         "supportDescription": "Our support team is available around the clock to answer your questions and assist you.",
-        "chatWithAnExpert": "Talk to an Expert"
+        "chatWithAnExpert": "Talk to an Expert",
+        "noPaymentMethodsAvailable": "No payment methods available",
+        "selectPaymentMethodIsRequired": "Payment method selection is required"
     },
     "favorites": {
         "favorites": "Favorites",

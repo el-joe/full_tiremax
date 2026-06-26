@@ -97,7 +97,7 @@ const OrderSummary = ({ data }: props) => {
         </Text>
       </HStack>
       {/* track button */}
-      <Button
+      {/* <Button
         shadow={"0px 15px 30px 0px #FFB80040"}
         py={{ base: "18px", lg: "20px", "2xl": "24px" }}
         rounded={"16px"}
@@ -107,7 +107,7 @@ const OrderSummary = ({ data }: props) => {
         type="submit"
       >
         <GiRadarSweep /> {t("trackOrder")}
-      </Button>
+      </Button> */}
       {/* home button */}
       <Link href={"/"} className="block w-full">
         <Button

@@ -6,67 +6,39 @@ import {
   HStack,
   Icon,
   RadioCard,
+  Skeleton,
   Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type CreateOrderInput,
   createOrderSchema,
 } from "@/Schemas/createOrderSchemas";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Input from "@/components/ui/Input";
 import { FaPhoneAlt, FaRegUserCircle } from "react-icons/fa";
 import DropSelectList from "@/components/ui/DropSelectList";
 import Textarea from "@/components/ui/Textarea";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
-import { IGovernorate } from "@/types";
+import { ICity, IGovernorate, IOrder, IPaymentMethod } from "@/types";
 import { LuMapPin } from "react-icons/lu";
 import { MdOutlineLocalShipping } from "react-icons/md";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
-import { FaMoneyBills, FaRegCreditCard } from "react-icons/fa6";
-import { RiBankLine } from "react-icons/ri";
+import { FaMoneyBills } from "react-icons/fa6";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useDir from "@/hooks/useDir";
 import { useAuthContext } from "@/providers/AuthProvider";
-const paymentMethods = [
-  {
-    icon: FaMoneyBills,
-    value: "cod",
-    title: "cashOnDelivery",
-    description: "cashOnDeliveryDescription",
-  },
-  //   {
-  //     icon: CiMobile1,
-  //     value: "zainCash",
-  //     title: "zainCash",
-  //     description: "onlinePaymentViaZainCash",
-  //   },
-  {
-    icon: RiBankLine,
-    value: "transfer",
-    title: "bankTransfer",
-    description: "directTransferToOneOfOurAuthorizedBankAccounts",
-  },
-  {
-    icon: FaRegCreditCard,
-    value: "card",
-    title: "card",
-    description: "paymentViaCreditCard",
-  },
-  //   {
-  //     icon: FaRegCalendarAlt,
-  //     value: "installment",
-  //     title: "installmentPayment",
-  //     description: "exclusiveInstallmentPlan",
-  //   },
-];
+import { useRouter } from "@/i18n/navigation";
+import { useEffect } from "react";
 export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
+  const locale = useLocale();
+  const router = useRouter();
   const { protectedWithAuth } = useAuthContext();
   const dir = useDir();
   const {
@@ -78,9 +50,6 @@ export default function CheckoutForm() {
     formState: { errors },
   } = useForm<CreateOrderInput>({
     resolver: zodResolver(createOrderSchema),
-    defaultValues: {
-      customer_email: "example@mail.com",
-    },
   });
   //   fetch governorate data
   const { data: governorateData, isLoading: governorateIsLoading } = useQuery({
@@ -92,6 +61,40 @@ export default function CheckoutForm() {
       return data.data;
     },
   });
+  //   fetch payment methods data
+  const { data: paymentMethods, isLoading: paymentMethodsIsLoading } = useQuery(
+    {
+      queryKey: ["payment-gateways"],
+      queryFn: async () => {
+        const { data } = await axiosInstance<{ data: IPaymentMethod[] }>(
+          "payment-gateways",
+        );
+        return data.data;
+      },
+    },
+  );
+  // fetch the cities data
+  const {
+    data: citiesData,
+    isPending: citiesIsLoading,
+    mutate: citiesMutate,
+  } = useMutation({
+    mutationKey: ["citiesList"],
+    mutationFn: async (id: string) => {
+      const { data } = await axiosInstance<{ data: ICity[] }>(
+        `governorates/${id}/cities`,
+      );
+      return data.data;
+    },
+  });
+
+  const governorateId = useWatch({ control, name: "governorate_id" });
+
+  useEffect(() => {
+    if (!!governorateId) {
+      citiesMutate(governorateId);
+    }
+  }, [citiesMutate, governorateId]);
 
   const { mutate: createOrder, isPending: isCreatingOrder } = useMutation({
     mutationKey: ["createOrder"],
@@ -101,8 +104,16 @@ export default function CheckoutForm() {
         governorate_id: +data.governorate_id,
         type: "delivery",
       };
-      const { data: res } = await axiosInstance.post("orders", body);
+      const { data: res } = await axiosInstance.post<{
+        success: boolean;
+        message: string;
+        data: IOrder;
+      }>("orders", body);
       return res;
+    },
+    onSuccess: (res) => {
+      toast.success(res.message);
+      router.push(`/checkout/confirm/${res.data.id}`);
     },
     onError: (err: AxiosError<{ message: string }>) => {
       if (err.status === 401) return;
@@ -166,6 +177,7 @@ export default function CheckoutForm() {
               gap={{ base: "14px", lg: "26px", xl: "40px" }}
               align={"start"}
             >
+              {/* governorates */}
               <DropSelectList
                 label={t("governorate")}
                 placeholder={t("selectGovernorate")}
@@ -188,6 +200,31 @@ export default function CheckoutForm() {
                   bg: "#F9FAFB",
                   h: "auto",
                   p: "16px",
+                  rounded: "16px",
+                }}
+              />
+              {/* cities */}
+              <DropSelectList
+                label={t("city")}
+                placeholder={t("selectCity")}
+                isLoading={citiesIsLoading}
+                control={control}
+                contentProps={{ maxH: "340px" }}
+                list={
+                  citiesData?.map((e) => ({
+                    label: locale === "ar" ? e?.name_ar : e?.name_en,
+                    value: String(e?.id),
+                  })) || []
+                }
+                name="city_id"
+                err={!!errors?.city_id?.message}
+                errMes={
+                  !!errors.city_id?.message ? t(errors?.city_id?.message) : ""
+                }
+                triggerProps={{
+                  bg: "#F9FAFB",
+                  h: "auto",
+                  p: { base: "8px", md: "16px" },
                   rounded: "16px",
                 }}
               />
@@ -311,10 +348,15 @@ export default function CheckoutForm() {
               }}
               dir={dir}
             >
-              <RadioCard.Label dir={dir}>
+              <RadioCard.Label dir={dir} gap="8px">
                 <Heading mb={"40px"} fontSize={"24px"} fontWeight={"extrabold"}>
                   {t("paymentMethod")}
                 </Heading>
+                {!!errors?.payment_method?.message && (
+                  <Text mt="6px" color="red">
+                    {t(errors?.payment_method?.message ?? "")}
+                  </Text>
+                )}
               </RadioCard.Label>
               <HStack
                 align="stretch"
@@ -322,10 +364,25 @@ export default function CheckoutForm() {
                 gapY={"24px"}
                 flexWrap={"wrap"}
               >
-                {paymentMethods.map((item) => (
+                {paymentMethodsIsLoading &&
+                  Array.from({ length: 4 }).map((e, i) => (
+                    <Skeleton
+                      key={i}
+                      minW={"200px"}
+                      w={"calc((100% - 40px) / 2)"}
+                      h="56px"
+                      rounded="24px"
+                    />
+                  ))}
+                {!paymentMethods?.length && (
+                  <Heading textAlign={"center"}>
+                    {t("noPaymentMethodsAvailable")}
+                  </Heading>
+                )}
+                {paymentMethods?.map((item) => (
                   <RadioCard.Item
-                    key={item.value}
-                    value={item.value}
+                    key={item.id}
+                    value={item.name}
                     minW={"200px"}
                     w={"calc((100% - 40px) / 2)"}
                     // maxW={"calc((100% - 40px) / 2)"}
@@ -345,19 +402,19 @@ export default function CheckoutForm() {
                             color={"white"}
                           >
                             <Icon size={"lg"}>
-                              <item.icon />
+                              <FaMoneyBills />
                             </Icon>
                           </Center>
                           <Box>
                             <RadioCard.ItemText fontWeight={"bold"}>
-                              {t(item.title)}
+                              {item.display_name}
                             </RadioCard.ItemText>
-                            <RadioCard.ItemDescription
+                            {/* <RadioCard.ItemDescription
                               fontSize={"12px"}
                               color={"gray-2"}
                             >
                               {t(item.description)}
-                            </RadioCard.ItemDescription>
+                            </RadioCard.ItemDescription> */}
                           </Box>
                         </HStack>
                       </RadioCard.ItemContent>
@@ -387,18 +444,3 @@ const GroupContainer = ({ children }: { children: React.ReactNode }) => (
     {children}
   </VStack>
 );
-
-//   "deliveryService": "Delivery Service",
-//     "": "Your order will be delivered to your address within the estimated timeframe.",
-//     "estimatedDeliveryTime": "Estimated Delivery Time",
-//     "businessDays": "Business Days",
-//     "": "Delivery Fee",
-//     "": "Payment method",
-//     "cashOnDelivery": "Cash on Delivery",
-//     "cashOnDeliveryDescription": "Pay cash on delivery.",
-//     "zainCash": "Zain cash",
-//     "onlinePaymentViaZainCash": "Online payment via zain cash",
-//     "bankTransfer": "Bank transfer",
-//     "directTransferToOneOfOurAuthorizedBankAccounts": "Direct transfer to on of our authorized bank accounts",
-//     "installmentPayment": "Installment payment",
-//     "exclusiveInstallmentPlan": "An exclusive flexible installment plan."
