@@ -1,7 +1,6 @@
 import Container from "@/components/ui/Container";
 import {
   Box,
-  Button,
   Center,
   Heading,
   HStack,
@@ -10,11 +9,16 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import React from "react";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { GiCheckedShield } from "react-icons/gi";
 import { PiShieldCheck } from "react-icons/pi";
+
+export const metadata: Metadata = {
+  title: "terms and conditions",
+};
 
 export default async function page() {
   const t = await getTranslations("termsAndConditions");

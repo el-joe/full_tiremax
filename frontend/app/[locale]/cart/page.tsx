@@ -2,8 +2,13 @@ import CartSummary from "@/components/pages/cart/CartSummary";
 import ItemsList from "@/components/pages/cart/ItemsList";
 import Container from "@/components/ui/Container";
 import { Heading, HStack } from "@chakra-ui/react";
+import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "cart",
+};
 
 export default async function page() {
   const t = await getTranslations("cartAndPayment");

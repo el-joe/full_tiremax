@@ -7,7 +7,12 @@ import Container from "@/components/ui/Container";
 import { IService } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
 import { Box, Heading, Text, VStack } from "@chakra-ui/react";
+import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+
+export const metadata: Metadata = {
+  title: "services",
+};
 
 export default async function page() {
   const t = await getTranslations("services");

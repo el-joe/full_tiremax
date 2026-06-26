@@ -1,8 +1,13 @@
 import FavList from "@/components/pages/favorites/FavoritesList";
 import Container from "@/components/ui/Container";
 import { Heading, Text } from "@chakra-ui/react";
+import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "favorites",
+};
 
 export default async function page() {
   const t = await getTranslations("favorites");
