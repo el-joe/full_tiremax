@@ -17,3 +17,4 @@ export type { IReservation } from "./reservation.type.ts";
 export type { IAddress } from "./address.type.ts";
 export type { ICity } from "./city.type.js";
 export type { IVehicle } from "./vehicle.type.js";
+export type { ITyreSize } from "./tyreSize.type.js";

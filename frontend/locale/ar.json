@@ -106,7 +106,11 @@
         "message": "الرسالة",
         "howCanWeHelpYouToday": "كيف يمكننا مساعدتك اليوم؟",
         "sendMessage": "إرسال الرسالة",
-        "orContactImmediatelyVia": "أو تواصل فوراً عبر:"
+        "orContactImmediatelyVia": "أو تواصل فوراً عبر:",
+        "aspectRatio": "نسبة الارتفاع",
+        "selectAspectRatio": "اختر نسبة الارتفاع",
+        "rimDiameter": "قطر الجنط",
+        "selectRimDiameter": "اختر قطر الجنط"
     },
     "store": {
         "store": "كتالوج المنتجات",

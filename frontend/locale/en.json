@@ -106,7 +106,11 @@
         "message": "Message",
         "howCanWeHelpYouToday": "How can we help you today",
         "sendMessage": "Send message",
-        "orContactImmediatelyVia": "Or contact us instantly via:"
+        "orContactImmediatelyVia": "Or contact us instantly via:",
+        "aspectRatio": "Aspect Ratio",
+        "selectAspectRatio": "Select Aspect Ratio",
+        "rimDiameter": "Rim Diameter",
+        "selectRimDiameter": "Select Rim Diameter"
     },
     "store": {
         "store": "Product Catalog",
