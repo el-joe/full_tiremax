@@ -463,7 +463,12 @@
         "set": "تعيين",
         "removeAddress": "حذف العنوان",
         "removeAddressWarning": "هل أنت متأكد من حذف هذا العنوان؟ لا يمكن التراجع عن هذا الإجراء.",
-        "remove": "حذف"
+        "remove": "حذف",
+        "orderDetails": "تفاصيل الطلب",
+        "orderDetailsDescription": "استعرض جميع تفاصيل طلبك وحالة التوصيل ومعلومات الدفع.",
+        "paymentMethod": "طرق الدفع",
+        "deliveryAddress": "عنوان التوصيل",
+        "deliveryStatus": "حالة التوصيل"
     },
     "termsAndConditions": {
         "termsAndConditions": "الشروط والأحكام",

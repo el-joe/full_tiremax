@@ -462,7 +462,12 @@
         "set": "Set",
         "removeAddress": "Remove Address",
         "removeAddressWarning": "Are you sure you want to remove this address? This action cannot be undone.",
-        "remove": "Remove"
+        "remove": "Remove",
+        "orderDetails": "Order Details",
+        "orderDetailsDescription": "View all your order details, delivery status, and payment information.",
+        "paymentMethod": "Payment method",
+        "deliveryAddress": "Delivery Address",
+        "deliveryStatus": "Delivery status"
     },
     "termsAndConditions": {
         "termsAndConditions": "Terms & Conditions",
