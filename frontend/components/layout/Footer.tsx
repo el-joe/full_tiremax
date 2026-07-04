@@ -85,10 +85,12 @@ const Footer = async () => {
           <Heading as={"h4"} fontSize={"16px"} fontWeight={"bold"}>
             {t("contactUs")}
           </Heading>
-          <HStack gap={"12px"} color={"#CBCBCB"} my={"16px"}>
-            <PhoneSignalIcon color={"primary"} size={"sm"} />
-            <Text dir="ltr">+964 770 000 0000</Text>
-          </HStack>
+          <Link href={"tel:+964 770 000 0000"}>
+            <HStack gap={"12px"} color={"#CBCBCB"} my={"16px"}>
+              <PhoneSignalIcon color={"primary"} size={"sm"} />
+              <Text dir="ltr">+964 770 000 0000</Text>
+            </HStack>
+          </Link>
           <HStack gap={"12px"} color={"#CBCBCB"}>
             <LocationPinIcon size={"sm"} color={"primary"} />
             <Text>{t("footerAddress")}</Text>
@@ -111,7 +113,7 @@ const Footer = async () => {
       </HStack>
       <Box h={"1px"} bg={"white"} w={"97%"} mx={"auto"} my={"61px"} />
       <HStack justify={"space-around"}>
-        <Link href={"/"}>
+        <Link href={"/privacy-policy"}>
           <Text color={"gray-2"} fontSize={"14px"} _hover={{ color: "white" }}>
             {t("privacyPolicy")}
           </Text>

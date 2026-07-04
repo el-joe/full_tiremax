@@ -12,7 +12,7 @@ import Container from "../ui/Container";
 const ContactUsSection = async () => {
   const t = await getTranslations("home");
   return (
-    <Container>
+    <Container id="contact-area">
       <VStack
         alignItems={"center"}
         gap={{ base: "8px", md: "14px", lg: "20", xl: "24px" }}

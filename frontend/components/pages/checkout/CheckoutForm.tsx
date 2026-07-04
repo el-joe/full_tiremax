@@ -339,7 +339,6 @@ export default function CheckoutForm() {
           {/* payment methods */}
           <GroupContainer>
             <RadioCard.Root
-              defaultValue="cod"
               onValueChange={(e) => {
                 setValue(
                   "payment_method",

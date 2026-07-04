@@ -496,6 +496,26 @@
         "lastUpdated": "Last Updated: May 20, 2024",
         "downloadPdf": "Download PDF"
     },
+    "privacyPolicy": {
+        "privacyPolicy": "Privacy Policy",
+        "privacyPolicyDescription": "At Tire Max Iraq, we are committed to protecting your privacy and ensuring the security of your personal data. This policy explains how we handle your information with transparency and care.",
+        "dataCollection": "Data Collection",
+        "dataCollectionDescription": "We collect information that you provide directly to us when using our services, including:",
+        "personalInformation": "Personal Information: Name, email address, and phone number.",
+        "vehicleData": "Vehicle Data: Vehicle type, tire size, and maintenance history.",
+        "paymentInformation": "Payment Information: Financial transaction details (processed through encrypted channels).",
+        "locationData": "Location Data: To provide roadside assistance services and locate the nearest branch.",
+        "howWeUseInformation": "How We Use Information",
+        "howWeUseInformationDescription": "We use your data to improve your driving experience, personalize technical offers, and ensure tire safety through regular maintenance reminders. We do not sell your data to third parties for marketing purposes.",
+        "dataProtection": "Data Protection",
+        "dataProtectionDescription": "We implement military-grade encryption protocols (AES-256) to protect our databases. Access to personal information is restricted to employees who need it to serve you.",
+        "userRights": "User Rights",
+        "userRightsDescription": "You have the full right to access your data, correct it, or request its permanent deletion from our systems. You may also object to the processing of your data at any time.",
+        "havePrivacyQuestions": "Have Questions About Privacy?",
+        "havePrivacyQuestionsDescription": "Our legal and technical teams are ready to answer all your questions.",
+        "requestData": "Request Data",
+        "contactUs": "Contact Us"
+    },
     "notifications": {
         "notifications": "Notifications",
         "notificationsHeadingDescription": "Stay up to date with the latest updates on your orders and bookings",
