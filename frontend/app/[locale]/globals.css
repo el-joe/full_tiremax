@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #fdb604;
+  --background: #ffffff;
+  --foreground: #18181b;
+  --color-black: #0e0e0e;
+  --color-black-2: #101828;
+  --color-gray: #e8e8e8;
+  --color-gray-2: #71717a;
+  --color-gray-3: #333333;
+  --color-gray-4: #f3f3f3;
+  --color-red: #ae1819;
+  --color-blue: #1976d2;
+  --color-green: #2e7d32;
+  --color-dark-yellow: #6b4c00;
+  scroll-behavior: smooth;
+}
+@theme {
+  --breakpoint-2xl: 90rem;
+}
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-black: var(--color-black);
+  --color-black-2: var(--color-black-2);
+  --color-gray: var(--color-gray);
+  --color-gray-2: var(--color-gray-2);
+  --color-gray-3: var(--color-gray-3);
+  --color-gray-4: var(--color-gray-4);
+  --color-red: var(--color-red);
+  --color-blue: var(--color-blue);
+  --color-green: var(--color-green);
+  --color-dar-yellow: var(--color-dark-yellow);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-black);
+  color: var(--foreground);
+  font-family: Almarai, Arial, Helvetica, sans-serif;
+}
+
+@utility container {
+  max-width: 1440px;
+  padding-inline: 79px;
+  margin-inline: auto;
+}
+
+img {
+  max-height: 100%;
+}
+
+.productSwiperThumbs .swiper-slide {
+  width: fit-content;
+  opacity: 0.4;
+  border-radius: 8px;
+}
+
+.productSwiperThumbs .swiper-slide-thumb-active {
+  opacity: 1;
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}

@@ -1,0 +1,70 @@
+import React, { HTMLInputTypeAttribute } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
+import {
+  Input as ChakraInput,
+  Field,
+  ConditionalValue,
+  InputProps,
+  InputGroup,
+  FieldRootProps,
+} from "@chakra-ui/react";
+import { PasswordInput } from "./password-input";
+
+interface IInputProps extends Omit<
+  InputProps & React.RefAttributes<HTMLInputElement>,
+  "size"
+> {
+  label?: string;
+  register?: UseFormRegisterReturn;
+  err?: boolean;
+  errMes?: string;
+  type?: HTMLInputTypeAttribute;
+  size?: ConditionalValue<"sm" | "md" | "lg" | "xl" | "2xl" | "2xs" | "xs">;
+  startElement?: React.ReactNode;
+  endElement?: React.ReactNode;
+  rootProps?: FieldRootProps;
+}
+
+const Input: React.FC<IInputProps> = ({
+  label,
+  type = "text",
+  register,
+  err,
+  errMes,
+  size,
+  startElement,
+  endElement,
+  rootProps,
+  ...rest
+}) => {
+  const inputElement =
+    type === "password" ? (
+      <PasswordInput rounded={"16px"} bg="#F9FAFB" {...register} {...rest} />
+    ) : (
+      <ChakraInput
+        rounded={"16px"}
+        bg="#F9FAFB"
+        fontSize={{ base: "12px", md: "16px" }}
+        type={type}
+        size={size}
+        {...register}
+        {...rest}
+      />
+    );
+
+  return (
+    <Field.Root invalid={err} {...rootProps}>
+      {label && (
+        <Field.Label fontWeight={"semibold"} fontSize={"14px"}>
+          {label}
+        </Field.Label>
+      )}
+      <InputGroup startElement={startElement} endElement={endElement}>
+        {inputElement}
+      </InputGroup>
+      {errMes && <Field.ErrorText>{errMes}</Field.ErrorText>}
+    </Field.Root>
+  );
+};
+
+export default Input;
