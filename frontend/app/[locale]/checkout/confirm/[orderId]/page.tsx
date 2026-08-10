@@ -15,6 +15,7 @@ import ProductSummary from "@/components/pages/orderConfirm/ProductSummary";
 import { MdOutlineLocalShipping } from "react-icons/md";
 import { RiBankLine } from "react-icons/ri";
 import { FiMapPin } from "react-icons/fi";
+import { FaStoreAlt } from "react-icons/fa";
 import OrderSummary from "@/components/pages/orderConfirm/OrderSummary";
 import NeedHelpCard from "@/components/shared/NeedHelpCard";
 import axiosInstance from "@/utils/axiosInstance";
@@ -81,16 +82,36 @@ export default async function page({ params }: props) {
             >
               <Center minW="48px" h={"48px"} bg="primary" rounded={"8px"}>
                 <Icon size={"xl"} color={"white"}>
-                  <MdOutlineLocalShipping />
+                  {data.type === "basra" ? (
+                    <FaStoreAlt />
+                  ) : (
+                    <MdOutlineLocalShipping />
+                  )}
                 </Icon>
               </Center>
               <Box>
                 <Text fontSize={"18px"} fontWeight={"bold"}>
-                  {t("estimatedDeliveryDate")}
+                  {data.type === "basra"
+                    ? t("branchPickup")
+                    : t("estimatedDeliveryDate")}
                 </Text>
-                <Text fontSize={"14px"} color={"gray-2"}>
-                  (unknown)
-                </Text>
+                {data.type === "basra" ? (
+                  <>
+                    <Text fontSize={"14px"} color={"gray-2"}>
+                      {data.branch?.name}
+                    </Text>
+                    <Text fontSize={"14px"} color={"gray-2"}>
+                      {data.branch?.address}
+                    </Text>
+                    <Text fontSize={"14px"} color={"gray-2"}>
+                      {data.branch?.phone}
+                    </Text>
+                  </>
+                ) : (
+                  <Text fontSize={"14px"} color={"gray-2"}>
+                    (unknown)
+                  </Text>
+                )}
               </Box>
               <Badge
                 ms={"auto"}
@@ -100,7 +121,7 @@ export default async function page({ params }: props) {
                 rounded={"12px"}
                 fontSize={"12px"}
               >
-                {data.status}
+                {data.type === "basra" ? t("readyForPickup") : data.status}
               </Badge>
             </HStack>
             {/*  */}
@@ -128,32 +149,34 @@ export default async function page({ params }: props) {
               </Box>
             </HStack>
             {/*  */}
-            <HStack
-              gap={"16px"}
-              px={"32px"}
-              py={"16px"}
-              borderStart={"4px solid {colors.primary}"}
-              rounded={"8px"}
-              bg="#FAFAFA"
-              align="start"
-            >
-              <Center minW="48px" h={"48px"} bg="primary" rounded={"8px"}>
-                <Icon size={"xl"} color={"white"}>
-                  <FiMapPin />
-                </Icon>
-              </Center>
-              <Box>
-                <Text fontSize={"18px"} fontWeight={"bold"}>
-                  {t("deliveryAddress")}
-                </Text>
-                <Text fontSize={"14px"} color={"gray-2"}>
-                  {data.shipping_address}
-                </Text>
-                <Text fontSize={"14px"} color={"gray-2"}>
-                  {data.customer_phone}
-                </Text>
-              </Box>
-            </HStack>
+            {data.type === "delivery" && (
+              <HStack
+                gap={"16px"}
+                px={"32px"}
+                py={"16px"}
+                borderStart={"4px solid {colors.primary}"}
+                rounded={"8px"}
+                bg="#FAFAFA"
+                align="start"
+              >
+                <Center minW="48px" h={"48px"} bg="primary" rounded={"8px"}>
+                  <Icon size={"xl"} color={"white"}>
+                    <FiMapPin />
+                  </Icon>
+                </Center>
+                <Box>
+                  <Text fontSize={"18px"} fontWeight={"bold"}>
+                    {t("deliveryAddress")}
+                  </Text>
+                  <Text fontSize={"14px"} color={"gray-2"}>
+                    {data.shipping_address}
+                  </Text>
+                  <Text fontSize={"14px"} color={"gray-2"}>
+                    {data.customer_phone}
+                  </Text>
+                </Box>
+              </HStack>
+            )}
           </VStack>
           {/* order summary */}
           <VStack gap={"32px"} maxW={"392px"}>

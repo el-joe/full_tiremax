@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Bookings;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Booking;
 use App\Services\BookingService;
+use App\Traits\LogsAdminActions;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -12,7 +13,7 @@ use Livewire\Component;
 
 class BookingManager extends Component
 {
-    use WithCrudList;
+    use WithCrudList, LogsAdminActions;
 
     #[Url]
     public string $statusFilter = '';
@@ -21,7 +22,10 @@ class BookingManager extends Component
 
     public function changeStatus(int $id, string $status, BookingService $service): void
     {
-        $service->changeStatus(Booking::findOrFail($id), $status);
+        $booking = Booking::findOrFail($id);
+        $oldStatus = $booking->status;
+        $service->changeStatus($booking, $status);
+        $this->logAction('booking.status_changed', $booking, ['status' => $oldStatus], ['status' => $status]);
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
     }
 

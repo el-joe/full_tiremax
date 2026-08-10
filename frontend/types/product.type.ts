@@ -12,18 +12,24 @@ export interface IProduct {
   effective_price: number;
   has_discount: boolean;
   is_flash_sale: boolean;
-  flash_sale: number | null;
+  flash_sale: {
+    id: number;
+    title: string;
+    discount_percent: number;
+    ends_at: string;
+    countdown_seconds: number;
+  } | null;
   stock: number;
   in_stock: boolean;
   manufacture_year: number;
   manufacturer_warranty_months: number;
   agency_warranty_months: number;
-  expert_rating: number;
+  expert_rating: number | null;
   sales_count: number;
   views_count: number;
   is_featured: boolean;
   badges: string[];
-  images: string[];
+  images: { url: string; is_primary: boolean }[];
   primary_image: string | null;
   brand: Brand;
   category: ICategory;

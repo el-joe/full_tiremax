@@ -13,11 +13,13 @@ import toast from "react-hot-toast";
 type props = {
   trigger: React.ReactNode;
   reservationId: number;
+  onSuccess?: () => void;
 };
 
 export default function CancelReservationDialog({
   trigger,
   reservationId,
+  onSuccess,
 }: props) {
   const dir = useDir();
   const dialog = useDialog();
@@ -33,6 +35,7 @@ export default function CancelReservationDialog({
       onSuccess: () => {
         toast.success("booking canceled");
         dialog.setOpen(false);
+        onSuccess?.();
       },
       onError: (err: AxiosError) => {
         if (err.status === 401) return;

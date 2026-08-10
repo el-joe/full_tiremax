@@ -57,10 +57,7 @@ export default async function page() {
       return (
         <>
           <OrdersHeader ordersCount={data.meta?.pagination?.total} />
-          <OrdersList
-            data={data.data}
-            //  paginationInfo={data.meta}
-          />
+          <OrdersList data={data.data} paginationInfo={data.meta} />
         </>
       );
     }
@@ -69,10 +66,7 @@ export default async function page() {
       return (
         <>
           <OrdersHeader ordersCount={0} />
-          <OrdersList
-            data={[]}
-            //  paginationInfo={data.meta}
-          />
+          <OrdersList data={[]} />
         </>
       );
     }

@@ -1,12 +1,13 @@
 "use client";
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, Container, HStack } from "@chakra-ui/react";
+import { Box, Button, Container, HStack } from "@chakra-ui/react";
 import React from "react";
 import { CarIcon, DeviceMaintenanceIcon, SpannerIcon } from "../Icons";
 import Logo from "../shared/Logo";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import useToggleLang from "@/hooks/useToggleLang";
+import { useNotifications } from "@/hooks/useNotifications";
 import { Tooltip } from "../ui/tooltip";
 import { CiHeart } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -18,6 +19,7 @@ const Header = () => {
   const t = useTranslations("header");
   const pathname = usePathname();
   const toggleLang = useToggleLang();
+  const { unreadCount } = useNotifications();
   return (
     <header>
       <Container pt={{ base: "16px", xl: "30px", "2xl": "40px" }}>
@@ -81,8 +83,28 @@ const Header = () => {
               </HeaderButton>
             </Tooltip>
             <Tooltip content={t("notifications")}>
-              <HeaderButton href={"/notifications"}>
+              <HeaderButton href={"/notifications"} position={"relative"}>
                 <LuBellDot />
+                {unreadCount > 0 && (
+                  <Box
+                    position={"absolute"}
+                    top={"0"}
+                    right={"0"}
+                    bg={"red"}
+                    color={"white"}
+                    fontSize={"10px"}
+                    lineHeight={1}
+                    minW={"16px"}
+                    h={"16px"}
+                    px={"3px"}
+                    rounded={"full"}
+                    display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                  >
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </Box>
+                )}
               </HeaderButton>
             </Tooltip>
             <Tooltip content={t("profile")}>

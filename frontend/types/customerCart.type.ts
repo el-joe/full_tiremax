@@ -1,8 +1,22 @@
+import { IGovernorate } from "./governorate.type";
+
 export interface ICustomerCart {
   id: number;
   items: ICartItem[];
   subtotal: number;
   items_count: number;
+  governorate_id: number | null;
+  governorate: IGovernorate | null;
+}
+
+export interface IApplyOfferResult {
+  discount: number;
+  subtotal: number;
+  total: number;
+  offer: {
+    code: string;
+    title: string;
+  };
 }
 
 export interface ICartItem {

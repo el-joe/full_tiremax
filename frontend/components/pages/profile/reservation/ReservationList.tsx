@@ -1,7 +1,9 @@
 "use client";
 import CancelReservationDialog from "@/components/dialogs/CancelReservationDialog";
+import RescheduleReservationDialog from "@/components/dialogs/RescheduleReservationDialog";
+import Pagination from "@/components/ui/Pagination";
 import { Link } from "@/i18n/navigation";
-import { IReservation } from "@/types";
+import { IApiMetaRes, IReservation } from "@/types";
 import {
   Badge,
   Box,
@@ -21,7 +23,13 @@ import { FaClockRotateLeft } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 
-export default function ReservationList({ data }: { data: IReservation[] }) {
+export default function ReservationList({
+  data,
+  paginationInfo,
+}: {
+  data: IReservation[];
+  paginationInfo?: IApiMetaRes;
+}) {
   const t = useTranslations("profile");
   if (!data.length)
     return (
@@ -128,22 +136,27 @@ export default function ReservationList({ data }: { data: IReservation[] }) {
             </HStack>
             {reserve.status !== "complete" && (
               <HStack pt="16px" borderTop={"1px solid #F3F4F6"}>
-                <Button
-                  bg="gray-4"
-                  rounded="12px"
-                  color="gray-2"
-                  minW="auto"
-                  p={{ base: "4px", md: "12px" }}
-                  fontSize={{ base: "9px", md: "12px", lg: "16px" }}
-                  gap={{ base: "3px", md: "8px" }}
-                  h="auto"
-                >
-                  <Icon size={{ base: "xs", md: "md" }}>
-                    <FaClockRotateLeft />
-                  </Icon>
+                <RescheduleReservationDialog
+                  reservation={reserve}
+                  trigger={
+                    <Button
+                      bg="gray-4"
+                      rounded="12px"
+                      color="gray-2"
+                      minW="auto"
+                      p={{ base: "4px", md: "12px" }}
+                      fontSize={{ base: "9px", md: "12px", lg: "16px" }}
+                      gap={{ base: "3px", md: "8px" }}
+                      h="auto"
+                    >
+                      <Icon size={{ base: "xs", md: "md" }}>
+                        <FaClockRotateLeft />
+                      </Icon>
 
-                  {t("reschedule")}
-                </Button>
+                      {t("reschedule")}
+                    </Button>
+                  }
+                />
                 <CancelReservationDialog
                   reservationId={reserve?.id}
                   trigger={
@@ -187,6 +200,13 @@ export default function ReservationList({ data }: { data: IReservation[] }) {
           </VStack>
         </HStack>
       ))}
+      {paginationInfo && (
+        <Pagination
+          currentPage={paginationInfo.pagination.current_page}
+          itemsCount={paginationInfo.pagination.total}
+          pageSize={paginationInfo.pagination.per_page}
+        />
+      )}
     </VStack>
   );
 }

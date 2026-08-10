@@ -172,6 +172,7 @@ const ProductDetails = async ({ product, reviews }: Props) => {
       </Box>
       {/* reviews */}
       <ProductReviews
+        productId={product.id}
         reviews={{ reviews: reviews.data, meta: reviews?.meta }}
       />
     </VStack>

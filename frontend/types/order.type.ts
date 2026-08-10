@@ -1,7 +1,10 @@
+import { IBranch } from "./branch.type";
+import { IGovernorate } from "./governorate.type";
+
 export interface IOrder {
     id: number;
     reference: string;
-    type: string;
+    type: "delivery" | "basra";
     status: string;
     payment_method: string;
     payment_status: string;
@@ -16,17 +19,9 @@ export interface IOrder {
     shipping_address: string;
     tracking_number: string;
     placed_at: Date | string;
-    governorate: Governorate;
-    branch: null;
+    governorate: IGovernorate | null;
+    branch: IBranch | null;
     items: Item[];
-}
-
-export interface Governorate {
-    id: number;
-    code: string;
-    name: string;
-    is_basra: boolean;
-    shipping_fee: number;
 }
 
 export interface Item {

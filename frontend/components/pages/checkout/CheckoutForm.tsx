@@ -17,14 +17,20 @@ import {
   type CreateOrderInput,
   createOrderSchema,
 } from "@/Schemas/createOrderSchemas";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import Input from "@/components/ui/Input";
 import { FaPhoneAlt, FaRegUserCircle } from "react-icons/fa";
 import DropSelectList from "@/components/ui/DropSelectList";
 import Textarea from "@/components/ui/Textarea";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
-import { ICity, IGovernorate, IOrder, IPaymentMethod } from "@/types";
+import {
+  IBranch,
+  IGovernorate,
+  IOrder,
+  IPayment,
+  IPaymentMethod,
+} from "@/types";
 import { LuMapPin } from "react-icons/lu";
 import { MdOutlineLocalShipping } from "react-icons/md";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
@@ -34,13 +40,13 @@ import toast from "react-hot-toast";
 import useDir from "@/hooks/useDir";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "@/i18n/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
-  const locale = useLocale();
   const router = useRouter();
   const { protectedWithAuth } = useAuthContext();
   const dir = useDir();
+  const [isRedirectingToPayment, setIsRedirectingToPayment] = useState(false);
   const {
     register,
     handleSubmit,
@@ -73,36 +79,41 @@ export default function CheckoutForm() {
       },
     },
   );
-  // fetch the cities data
-  const {
-    data: citiesData,
-    isPending: citiesIsLoading,
-    mutate: citiesMutate,
-  } = useMutation({
-    mutationKey: ["citiesList"],
-    mutationFn: async (id: string) => {
-      const { data } = await axiosInstance<{ data: ICity[] }>(
-        `governorates/${id}/cities`,
-      );
+  //   fetch branches data
+  const { data: branchesData, isLoading: branchesIsLoading } = useQuery({
+    queryKey: ["branches"],
+    queryFn: async () => {
+      const { data } = await axiosInstance<{ data: IBranch[] }>("branches");
       return data.data;
     },
   });
 
-  const governorateId = useWatch({ control, name: "governorate_id" });
+  const orderType = useWatch({ control, name: "type" });
 
   useEffect(() => {
-    if (!!governorateId) {
-      citiesMutate(governorateId);
+    if (!orderType) {
+      setValue("type", "delivery");
     }
-  }, [citiesMutate, governorateId]);
+  }, [orderType, setValue]);
 
   const { mutate: createOrder, isPending: isCreatingOrder } = useMutation({
     mutationKey: ["createOrder"],
     mutationFn: async (data: CreateOrderInput) => {
       const body = {
-        ...data,
-        governorate_id: +data.governorate_id,
-        type: "delivery",
+        type: data.type,
+        payment_method: data.payment_method,
+        customer_name: data.customer_name,
+        customer_phone: data.customer_phone,
+        customer_email: data.customer_email,
+        notes: data.notes,
+        ...(data.type === "basra"
+          ? { branch_id: data.branch_id ? +data.branch_id : undefined }
+          : {
+              governorate_id: data.governorate_id
+                ? +data.governorate_id
+                : undefined,
+              shipping_address: data.shipping_address,
+            }),
       };
       const { data: res } = await axiosInstance.post<{
         success: boolean;
@@ -111,9 +122,29 @@ export default function CheckoutForm() {
       }>("orders", body);
       return res;
     },
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       toast.success(res.message);
-      router.push(`/checkout/confirm/${res.data.id}`);
+      const orderId = res.data.id;
+
+      try {
+        setIsRedirectingToPayment(true);
+        const { data: paymentRes } = await axiosInstance.get<{
+          data: IPayment;
+        }>(`orders/${orderId}/payment`);
+        const payment = paymentRes.data;
+
+        if (payment.gateway.driver === "paymob" && payment.redirect_url) {
+          window.location.href = payment.redirect_url;
+          return;
+        }
+
+        router.push(`/checkout/confirm/${orderId}`);
+      } catch {
+        // no payment record yet (e.g. COD) or fetch failed — proceed to confirmation
+        router.push(`/checkout/confirm/${orderId}`);
+      } finally {
+        setIsRedirectingToPayment(false);
+      }
     },
     onError: (err: AxiosError<{ message: string }>) => {
       if (err.status === 401) return;
@@ -135,8 +166,85 @@ export default function CheckoutForm() {
           <Spinner size={"xl"} />
         </Center>
       )}
+      {isRedirectingToPayment && (
+        <Center
+          position={"fixed"}
+          inset={0}
+          zIndex={"10"}
+          bg={"black/20"}
+          flexDirection={"column"}
+          gap={"16px"}
+        >
+          <Spinner size={"xl"} />
+          <Text>Redirecting to payment...</Text>
+        </Center>
+      )}
       <form id="checkoutForm" onSubmit={handleSubmit(onSubmit)}>
         <VStack gap={{ base: "32px", xl: "80px" }} align={"stretch"}>
+          {/* order type */}
+          <GroupContainer>
+            <RadioCard.Root
+              value={orderType}
+              onValueChange={(e) => {
+                setValue("type", e.value as CreateOrderInput["type"]);
+              }}
+              dir={dir}
+            >
+              <RadioCard.Label dir={dir} gap="8px">
+                <Heading fontSize={"24px"} fontWeight={"extrabold"}>
+                  {t("orderType")}
+                </Heading>
+                {!!errors?.type?.message && (
+                  <Text mt="6px" color="red">
+                    {t(errors?.type?.message ?? "")}
+                  </Text>
+                )}
+              </RadioCard.Label>
+              <HStack
+                align="stretch"
+                gapX={"40px"}
+                gapY={"24px"}
+                flexWrap={"wrap"}
+              >
+                <RadioCard.Item
+                  value="delivery"
+                  minW={"200px"}
+                  w={"calc((100% - 40px) / 2)"}
+                  flex={"auto"}
+                  rounded={"24px"}
+                  dir={dir}
+                >
+                  <RadioCard.ItemHiddenInput />
+                  <RadioCard.ItemControl>
+                    <RadioCard.ItemContent>
+                      <RadioCard.ItemText fontWeight={"bold"}>
+                        {t("delivery")}
+                      </RadioCard.ItemText>
+                    </RadioCard.ItemContent>
+                    <RadioCard.ItemIndicator />
+                  </RadioCard.ItemControl>
+                </RadioCard.Item>
+                <RadioCard.Item
+                  value="basra"
+                  minW={"200px"}
+                  w={"calc((100% - 40px) / 2)"}
+                  flex={"auto"}
+                  rounded={"24px"}
+                  dir={dir}
+                >
+                  <RadioCard.ItemHiddenInput />
+                  <RadioCard.ItemControl>
+                    <RadioCard.ItemContent>
+                      <RadioCard.ItemText fontWeight={"bold"}>
+                        {t("branchPickup")}
+                      </RadioCard.ItemText>
+                    </RadioCard.ItemContent>
+                    <RadioCard.ItemIndicator />
+                  </RadioCard.ItemControl>
+                </RadioCard.Item>
+              </HStack>
+            </RadioCard.Root>
+          </GroupContainer>
           {/* personal information */}
           <GroupContainer>
             <Heading>{t("personalInformation")}</Heading>
@@ -177,57 +285,61 @@ export default function CheckoutForm() {
               gap={{ base: "14px", lg: "26px", xl: "40px" }}
               align={"start"}
             >
-              {/* governorates */}
-              <DropSelectList
-                label={t("governorate")}
-                placeholder={t("selectGovernorate")}
-                isLoading={governorateIsLoading}
-                control={control}
-                list={
-                  governorateData?.map((e) => ({
-                    label: e?.name,
-                    value: String(e?.id),
-                  })) || []
-                }
-                name="governorate_id"
-                err={!!errors?.governorate_id?.message}
-                errMes={
-                  !!errors.governorate_id?.message
-                    ? t(errors?.governorate_id?.message)
-                    : ""
-                }
-                triggerProps={{
-                  bg: "#F9FAFB",
-                  h: "auto",
-                  p: "16px",
-                  rounded: "16px",
-                }}
-              />
-              {/* cities */}
-              <DropSelectList
-                label={t("city")}
-                placeholder={t("selectCity")}
-                isLoading={citiesIsLoading}
-                control={control}
-                contentProps={{ maxH: "340px" }}
-                list={
-                  citiesData?.map((e) => ({
-                    label: locale === "ar" ? e?.name_ar : e?.name_en,
-                    value: String(e?.id),
-                  })) || []
-                }
-                name="city_id"
-                err={!!errors?.city_id?.message}
-                errMes={
-                  !!errors.city_id?.message ? t(errors?.city_id?.message) : ""
-                }
-                triggerProps={{
-                  bg: "#F9FAFB",
-                  h: "auto",
-                  p: { base: "8px", md: "16px" },
-                  rounded: "16px",
-                }}
-              />
+              {orderType === "basra" ? (
+                /* branch pickup */
+                <DropSelectList
+                  label={t("branch")}
+                  placeholder={t("selectBranch")}
+                  isLoading={branchesIsLoading}
+                  control={control}
+                  list={
+                    branchesData?.map((e) => ({
+                      label: e?.name,
+                      value: String(e?.id),
+                    })) || []
+                  }
+                  name="branch_id"
+                  err={!!errors?.branch_id?.message}
+                  errMes={
+                    !!errors.branch_id?.message
+                      ? t(errors?.branch_id?.message)
+                      : ""
+                  }
+                  triggerProps={{
+                    bg: "#F9FAFB",
+                    h: "auto",
+                    p: "16px",
+                    rounded: "16px",
+                  }}
+                />
+              ) : (
+                /* governorate */
+                <DropSelectList
+                  label={t("governorate")}
+                  placeholder={t("selectGovernorate")}
+                  isLoading={governorateIsLoading}
+                  control={control}
+                  list={
+                    governorateData?.map((e) => ({
+                      label: e?.name,
+                      value: String(e?.id),
+                    })) || []
+                  }
+                  name="governorate_id"
+                  err={!!errors?.governorate_id?.message}
+                  errMes={
+                    !!errors.governorate_id?.message
+                      ? t(errors?.governorate_id?.message)
+                      : ""
+                  }
+                  triggerProps={{
+                    bg: "#F9FAFB",
+                    h: "auto",
+                    p: "16px",
+                    rounded: "16px",
+                  }}
+                />
+              )}
             </HStack>
             <HStack
               gap={{ base: "14px", lg: "26px", xl: "40px" }}
@@ -235,22 +347,24 @@ export default function CheckoutForm() {
               flexWrap={"wrap"}
             >
               {/* address input */}
-              <Textarea
-                register={register("shipping_address")}
-                label={t("fullAddress")}
-                placeholder={t("fullAddressPlaceholder")}
-                err={!!errors?.shipping_address?.message}
-                errMes={
-                  !!errors?.shipping_address?.message
-                    ? t(errors?.shipping_address?.message)
-                    : ""
-                }
-                containerProps={{
-                  w: "calc((100% - 40px) / 2)",
-                  minW: "220px",
-                  flex: 1,
-                }}
-              />
+              {orderType !== "basra" && (
+                <Textarea
+                  register={register("shipping_address")}
+                  label={t("fullAddress")}
+                  placeholder={t("fullAddressPlaceholder")}
+                  err={!!errors?.shipping_address?.message}
+                  errMes={
+                    !!errors?.shipping_address?.message
+                      ? t(errors?.shipping_address?.message)
+                      : ""
+                  }
+                  containerProps={{
+                    w: "calc((100% - 40px) / 2)",
+                    minW: "220px",
+                    flex: 1,
+                  }}
+                />
+              )}
               <Textarea
                 register={register("notes")}
                 label={t("notes")}
@@ -268,7 +382,8 @@ export default function CheckoutForm() {
             </HStack>
           </GroupContainer>
           {/* shipping details */}
-          <GroupContainer>
+          {orderType !== "basra" && (
+            <GroupContainer>
             {watch("governorate_id") ? (
               // if governorate selected
               <VStack gap={"40px"} align={"stretch"}>
@@ -335,7 +450,8 @@ export default function CheckoutForm() {
                 </Text>
               </VStack>
             )}
-          </GroupContainer>
+            </GroupContainer>
+          )}
           {/* payment methods */}
           <GroupContainer>
             <RadioCard.Root

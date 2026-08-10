@@ -10,7 +10,8 @@ import {
   type UseStepsReturn,
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineTool } from "react-icons/ai";
 import { FaRegCheckCircle } from "react-icons/fa";
@@ -112,6 +113,7 @@ export const ReservationProvider = ({
   children: React.ReactNode;
 }) => {
   const { protectedWithAuth } = useAuthContext();
+  const searchParams = useSearchParams();
   const [reservationData, setReservationData] = useState<
     IreservationContext["reservationData"]
   >({ service: null, branch: null, date: null, time: null });
@@ -192,7 +194,9 @@ export const ReservationProvider = ({
   //   set date
   const setDate = (date: string) => {
     setReservationData((p) => ({ ...p, time: null, date }));
-    getAvailableTimesSlots();
+    if (reservationData.branch) {
+      getAvailableTimesSlots();
+    }
   };
   //   set time
   const setTime = (time: string) => {
@@ -210,6 +214,29 @@ export const ReservationProvider = ({
     protectedWithAuth(() => mutateBooking(body));
   };
 
+  //   pre-fill service/branch from url params (e.g. rescheduling)
+  useEffect(() => {
+    if (isServicesListLoading || isBranchesListLoading) return;
+    const serviceId = searchParams.get("service_id");
+    const branchId = searchParams.get("branch_id");
+    if (!serviceId) return;
+    const service = (servicesList ?? []).find(
+      (s) => s.id === Number(serviceId),
+    );
+    if (!service) return;
+    const branch = branchId
+      ? (branchesList ?? []).find((b) => b.id === Number(branchId))
+      : null;
+    setReservationData({
+      service,
+      branch: branch ?? null,
+      date: null,
+      time: null,
+    });
+    useSteps.setStep(branch ? 2 : 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isServicesListLoading, isBranchesListLoading]);
+
   return (
     <reservationContext.Provider
       value={{
@@ -226,21 +253,7 @@ export const ReservationProvider = ({
         setTime,
         createBooking,
         isCreatingBooking,
-        availableTimeSlots: !availableTimeSlots.length
-          ? [
-              { time: "08:00", available: true, capacity_remaining: 4 },
-              { time: "08:30", available: true, capacity_remaining: 4 },
-              { time: "09:00", available: false, capacity_remaining: 0 },
-              { time: "09:30", available: true, capacity_remaining: 2 },
-              { time: "10:00", available: true, capacity_remaining: 4 },
-              { time: "10:30", available: true, capacity_remaining: 3 },
-              { time: "11:00", available: true, capacity_remaining: 4 },
-              { time: "11:30", available: false, capacity_remaining: 0 },
-              { time: "12:00", available: true, capacity_remaining: 4 },
-              { time: "12:30", available: true, capacity_remaining: 4 },
-              { time: "13:00", available: true, capacity_remaining: 4 },
-            ]
-          : availableTimeSlots,
+        availableTimeSlots,
         isAvailableTimeSlotsLoading,
       }}
     >

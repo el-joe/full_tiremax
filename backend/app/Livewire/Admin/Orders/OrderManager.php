@@ -4,7 +4,10 @@ namespace App\Livewire\Admin\Orders;
 
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Order;
+use App\Services\DaftraOrderSyncService;
 use App\Services\OrderService;
+use App\Traits\LogsAdminActions;
+use Throwable;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -12,7 +15,7 @@ use Livewire\Component;
 
 class OrderManager extends Component
 {
-    use WithCrudList;
+    use WithCrudList, LogsAdminActions;
 
     #[Url]
     public string $statusFilter = '';
@@ -32,8 +35,22 @@ class OrderManager extends Component
     public function changeStatus(int $id, string $status, OrderService $service): void
     {
         $order = Order::findOrFail($id);
+        $oldStatus = $order->status;
         $service->changeStatus($order, $status);
+        $this->logAction('order.status_changed', $order, ['status' => $oldStatus], ['status' => $status]);
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
+    }
+
+    public function syncToDaftra(int $id, DaftraOrderSyncService $service): void
+    {
+        $order = Order::findOrFail($id);
+
+        try {
+            $service->push($order);
+            $this->dispatch('toast', icon: 'success', title: __('messages.success'));
+        } catch (Throwable $e) {
+            $this->dispatch('toast', icon: 'error', title: $e->getMessage());
+        }
     }
 
     public function confirmDelete(int $id): void

@@ -9,21 +9,12 @@ export const settingsSchema = z
       z.string().min(6, "nameMinLength").max(120, "nameMaxLength").optional(),
     ),
 
-    phone: z.preprocess(
-      emptyToUndefined,
-      z
-        .string()
-        .min(9, "phoneNumberMinLength")
-        .max(20, "phoneNumberMaxLength")
-        .optional(),
-    ),
-
     email: z.preprocess(
       emptyToUndefined,
       z.string().email("invalidEmail").max(120, "emailMaxLength").optional(),
     ),
 
-    newPassword: z.preprocess(
+    password: z.preprocess(
       emptyToUndefined,
       z.string().min(6, "passwordMinLength").optional(),
     ),
@@ -35,7 +26,7 @@ export const settingsSchema = z
   })
   .refine(
     (data) =>
-      !data.newPassword || data.newPassword === data.password_confirmation,
+      !data.password || data.password === data.password_confirmation,
     {
       message: "passwordsMustMatch",
       path: ["password_confirmation"],

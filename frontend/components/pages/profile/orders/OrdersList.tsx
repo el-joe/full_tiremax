@@ -1,6 +1,7 @@
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
+import Pagination from "@/components/ui/Pagination";
 import { Link } from "@/i18n/navigation";
-import { IOrder } from "@/types";
+import { IApiMetaRes, IOrder } from "@/types";
 import {
   Badge,
   Box,
@@ -15,7 +16,13 @@ import {
 import { getTranslations } from "next-intl/server";
 import React from "react";
 
-export default async function OrdersList({ data }: { data: IOrder[] }) {
+export default async function OrdersList({
+  data,
+  paginationInfo,
+}: {
+  data: IOrder[];
+  paginationInfo?: IApiMetaRes;
+}) {
   const t = await getTranslations("profile");
   if (!data.length)
     return (
@@ -98,6 +105,13 @@ export default async function OrdersList({ data }: { data: IOrder[] }) {
           </VStack>
         </HStack>
       ))}
+      {paginationInfo && (
+        <Pagination
+          currentPage={paginationInfo.pagination.current_page}
+          itemsCount={paginationInfo.pagination.total}
+          pageSize={paginationInfo.pagination.per_page}
+        />
+      )}
     </VStack>
   );
 }

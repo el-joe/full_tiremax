@@ -5,18 +5,23 @@ use App\Livewire\Admin\Brands\BrandManager;
 use App\Livewire\Admin\Branches\BranchManager;
 use App\Livewire\Admin\Categories\CategoryManager;
 use App\Livewire\Admin\Customers\CustomerManager;
+use App\Livewire\Admin\DaftraLogs\DaftraLogManager;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Fitments\FitmentManager;
 use App\Livewire\Admin\FlashSales\FlashSaleManager;
 use App\Livewire\Admin\Governorates\GovernorateManager;
 use App\Livewire\Admin\Offers\OfferManager;
 use App\Livewire\Admin\Orders\OrderManager;
+use App\Livewire\Admin\PaymentGateways\PaymentGatewayManager;
 use App\Livewire\Admin\Products\ProductForm;
 use App\Livewire\Admin\Products\ProductManager;
+use App\Livewire\Admin\Reviews\ReviewManager;
 use App\Livewire\Admin\Services\ServiceManager;
+use App\Livewire\Admin\Settings\SettingManager;
 use App\Livewire\Admin\Vehicles\VehicleManager;
 use App\Livewire\Admin\Vehicles\VehicleMakeManager;
 use App\Livewire\Admin\Vehicles\VehicleModelManager;
+use App\Livewire\Admin\WhatsappTemplates\WhatsappTemplateManager;
 use App\Livewire\Admin\Bookings\BookingManager;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +57,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('customers', CustomerManager::class)->name('customers.index');
         Route::get('offers', OfferManager::class)->name('offers.index');
         Route::get('flash-sales', FlashSaleManager::class)->name('flash-sales.index');
+        Route::get('reviews', ReviewManager::class)->name('reviews.index');
+        Route::get('daftra-logs', DaftraLogManager::class)->name('daftra-logs.index');
+
+        Route::get('payment-gateways', PaymentGatewayManager::class)->name('payment-gateways.index');
+
+        Route::get('settings', SettingManager::class)->name('settings.index');
+        Route::get('whatsapp-templates', WhatsappTemplateManager::class)->name('whatsapp-templates.index');
 
         Route::post('logout', function () {
             auth('admin')->logout();

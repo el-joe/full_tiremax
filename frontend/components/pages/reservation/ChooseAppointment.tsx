@@ -182,7 +182,7 @@ export default function ChooseAppointment() {
             </Center>
             <Heading>{t("chooseTime")}</Heading>
           </HStack>
-          {!reservationData.date ? (
+          {!reservationData.branch || !reservationData.date ? (
             <VStack py="48px" gap={"16px"}>
               <Icon w={"64px"} h={"64px"} p={"0"} color={"#D1D5DC"}>
                 <CiCalendar />

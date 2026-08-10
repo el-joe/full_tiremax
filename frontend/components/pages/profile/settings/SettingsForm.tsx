@@ -72,7 +72,6 @@ export default function SettingsForm() {
     resolver: zodResolver(settingsSchema) as Resolver<TSettingsSchema>,
     defaultValues: {
       name: customer?.name,
-      phone: customer?.phone,
       email: customer?.email,
     },
   });
@@ -120,16 +119,6 @@ export default function SettingsForm() {
             h="auto"
             p={{ base: "8px", md: "16px" }}
           />
-          <Input
-            label={t("phoneNumber")}
-            placeholder={t("phoneNumberPlaceholder")}
-            register={register("phone")}
-            err={!!errors.phone?.message}
-            errMes={getErrorMessage(errors.phone?.message?.toString())}
-            type="text"
-            h="auto"
-            p={{ base: "8px", md: "16px" }}
-          />
         </HStack>
         <Input
           label={t("email")}
@@ -157,9 +146,9 @@ export default function SettingsForm() {
         <HStack gap={"24px"}>
           <Input
             label={t("newPassword")}
-            register={register("newPassword")}
-            err={!!errors.newPassword?.message}
-            errMes={getErrorMessage(errors.newPassword?.message?.toString())}
+            register={register("password")}
+            err={!!errors.password?.message}
+            errMes={getErrorMessage(errors.password?.message?.toString())}
             type="password"
             h="auto"
             p={{ base: "8px", md: "16px" }}

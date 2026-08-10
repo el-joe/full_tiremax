@@ -6,6 +6,7 @@ use App\Livewire\Concerns\WithCrudList;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Traits\LogsAdminActions;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -13,7 +14,7 @@ use Livewire\Component;
 
 class ProductManager extends Component
 {
-    use WithCrudList;
+    use WithCrudList, LogsAdminActions;
 
     #[Url]
     public string $type = '';
@@ -28,15 +29,19 @@ class ProductManager extends Component
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
-        Product::findOrFail($id)->delete();
+        $product = Product::findOrFail($id);
+        $this->logAction('product.deleted', $product, ['name' => $product->name, 'sku' => $product->sku]);
+        $product->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
 
     public function toggleActive(int $id): void
     {
         $p = Product::findOrFail($id);
+        $wasActive = $p->is_active;
         $p->is_active = !$p->is_active;
         $p->save();
+        $this->logAction('product.toggled', $p, ['is_active' => $wasActive], ['is_active' => $p->is_active]);
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
     }
 

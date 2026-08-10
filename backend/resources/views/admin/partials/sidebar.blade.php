@@ -16,6 +16,11 @@
         ['route' => 'admin.services.index', 'label' => __('messages.admin.services'), 'icon' => 'M11 3.05A9 9 0 1020.95 13M20.95 13H11V3.05'],
         ['route' => 'admin.offers.index', 'label' => __('messages.admin.offers'), 'icon' => 'M7 7h.01M7 3h5l9 9-9 9-9-9V3z'],
         ['route' => 'admin.flash-sales.index', 'label' => __('messages.admin.flash_sales'), 'icon' => 'M13 10V3L4 14h7v7l9-11h-7z'],
+        ['route' => 'admin.reviews.index', 'label' => __('messages.admin.reviews'), 'icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.914c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
+        ['route' => 'admin.daftra-logs.index', 'label' => __('messages.admin.daftra_logs'), 'icon' => 'M4 4v16h16M8 16l3-4 3 3 4-6'],
+        ['route' => 'admin.whatsapp-templates.index', 'label' => __('messages.admin.whatsapp'), 'icon' => 'M20 12a8 8 0 11-15.5-3M4 4l1.5 5L11 8'],
+        ['route' => 'admin.payment-gateways.index', 'label' => __('messages.admin.payment_gateways'), 'icon' => 'M3 10h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2zM7 15h4'],
+        ['route' => 'admin.settings.index', 'label' => __('messages.admin.settings'), 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065zM15 12a3 3 0 11-6 0 3 3 0 016 0z'],
     ];
 @endphp
 <aside

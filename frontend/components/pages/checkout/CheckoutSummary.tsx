@@ -18,7 +18,7 @@ import { MdOutlineHandshake } from "react-icons/md";
 
 const CheckoutSummary = () => {
   const t = useTranslations("cartAndPayment");
-  const { cart } = useCartContext();
+  const { cart, appliedOffer } = useCartContext();
   return (
     <VStack
       py={{ base: "14px", lg: "26px", "2xl": "40px" }}
@@ -72,6 +72,24 @@ const CheckoutSummary = () => {
           </Link>
         ))}
       </VStack>
+      {/* discount */}
+      {appliedOffer && (
+        <HStack justify={"space-between"}>
+          <Heading
+            fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
+            fontWeight={"extrabold"}
+          >
+            {t("discount")}
+          </Heading>
+          <Text
+            fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
+            fontWeight={"bold"}
+            color={"red"}
+          >
+            -{appliedOffer.discount.toLocaleString()} <CurrencySymbol />
+          </Text>
+        </HStack>
+      )}
       {/* total */}
       <HStack justify={"space-between"}>
         <Heading
@@ -86,7 +104,11 @@ const CheckoutSummary = () => {
           color={"primary"}
           ps={"12px"}
         >
-          {cart.subtotal.toLocaleString()} <CurrencySymbol />
+          {(appliedOffer
+            ? cart.subtotal - appliedOffer.discount
+            : cart.subtotal
+          ).toLocaleString()}{" "}
+          <CurrencySymbol />
         </Text>
       </HStack>
       {/* processed button */}

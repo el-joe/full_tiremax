@@ -90,21 +90,11 @@ export default async function page() {
     }>("bookings");
 
     if (data) {
-      return (
-        <ReservationList
-          data={data.data}
-          //  paginationInfo={data.meta}
-        />
-      );
+      return <ReservationList data={data.data} paginationInfo={data.meta} />;
     }
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      return (
-        <ReservationList
-          data={[]}
-          //  paginationInfo={data.meta}
-        />
-      );
+      return <ReservationList data={[]} />;
     }
     return <div>Unexpected error</div>;
   }

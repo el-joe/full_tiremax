@@ -99,7 +99,7 @@ const ProductCard = ({ product }: Props) => {
             <CustomBadge content={product?.badges[0]} />
           )}
           <Image
-            src={product?.images[0] || "/images/product-image.jpg"}
+            src={product?.images[0]?.url || "/images/product-image.jpg"}
             alt={product?.name}
             w={"full"}
             objectFit={"cover"}
@@ -168,7 +168,7 @@ const ProductCard = ({ product }: Props) => {
               readOnly
               allowHalf
               count={5}
-              defaultValue={product?.expert_rating}
+              defaultValue={product?.expert_rating ?? 0}
               size={{ base: "xs", md: "sm" }}
               colorPalette={"yellow"}
             >

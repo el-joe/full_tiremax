@@ -1,7 +1,7 @@
 "use client";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { ICustomerCart, IProduct } from "@/types";
-import { ICartProduct } from "@/types/customerCart.type";
+import { IApplyOfferResult, ICartProduct } from "@/types/customerCart.type";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -14,6 +14,8 @@ const EMPTY_CART: ICustomerCart = {
   items: [],
   items_count: 0,
   subtotal: 0,
+  governorate_id: null,
+  governorate: null,
 };
 
 export const useCart = () => {
@@ -21,6 +23,10 @@ export const useCart = () => {
   const [cart, setCart] = useState<ICustomerCart>(EMPTY_CART);
   const { isLogged } = useAuthContext();
   const [cartIsLoading, setCartIsLoading] = useState(true);
+  const [appliedOffer, setAppliedOffer] = useState<{
+    discount: number;
+    offer: { code: string; title: string };
+  } | null>(null);
 
   // get Cart
   const { mutate: getCart } = useMutation({
@@ -59,6 +65,7 @@ export const useCart = () => {
     },
     onSuccess: (res) => {
       setCart(res);
+      setAppliedOffer(null);
     },
     onError,
   });
@@ -73,6 +80,7 @@ export const useCart = () => {
     },
     onSuccess: (res) => {
       setCart(res);
+      setAppliedOffer(null);
     },
     onError,
   });
@@ -88,9 +96,37 @@ export const useCart = () => {
     },
     onSuccess: (res) => {
       setCart(res.data);
+      setAppliedOffer(null);
       toast.success(res.message);
     },
     onError,
+  });
+
+  const [applyOfferError, setApplyOfferError] = useState<string | null>(null);
+
+  const { mutate: applyOffer, isPending: isApplyingOffer } = useMutation({
+    mutationFn: async (code: string) => {
+      const { data } = await axiosInstance.post<{ data: IApplyOfferResult }>(
+        "cart/apply-offer",
+        { code },
+      );
+      return data.data;
+    },
+    onSuccess: (res) => {
+      setCart((prev) => ({
+        ...prev,
+        subtotal: res.subtotal,
+      }));
+      setAppliedOffer({ discount: res.discount, offer: res.offer });
+      setApplyOfferError(null);
+      toast.success(res.offer.title);
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      if (err.status === 401) return;
+      setApplyOfferError(
+        err?.response?.data?.message ?? "Something went wrong.",
+      );
+    },
   });
 
   const { mutate: clearCart, isPending: isClearing } = useMutation({
@@ -102,6 +138,7 @@ export const useCart = () => {
     },
     onSuccess: () => {
       setCart(EMPTY_CART);
+      setAppliedOffer(null);
     },
     onError,
   });
@@ -125,10 +162,14 @@ export const useCart = () => {
     addOrUpdateItem,
     removeItem,
     clearCart,
+    applyOffer,
+    appliedOffer,
+    applyOfferError,
     cartIsLoading,
     isAdding,
     isUpdating,
     isRemoving,
     isClearing,
+    isApplyingOffer,
   };
 };

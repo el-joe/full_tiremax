@@ -48,7 +48,10 @@ export default function ProductImagesPreview({ product }: Props) {
           swiper: thumbsSwiper,
         }}
       >
-        {(product?.images.length ? product.images : images).map((image) => (
+        {(product?.images.length
+          ? product.images.map((image) => image.url)
+          : images
+        ).map((image) => (
           <SwiperSlide key={image}>
             <Image
               src={image}
@@ -72,7 +75,10 @@ export default function ProductImagesPreview({ product }: Props) {
           loop
           modules={[FreeMode, Thumbs]}
         >
-          {(product?.images.length ? product.images : images).map((image) => (
+          {(product?.images.length
+            ? product.images.map((image) => image.url)
+            : images
+          ).map((image) => (
             <SwiperSlide key={image}>
               <Image
                 src={image}

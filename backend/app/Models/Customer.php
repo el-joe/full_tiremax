@@ -21,6 +21,7 @@ class Customer extends Authenticatable implements JWTSubject
         'locale',
         'address',
         'is_active',
+        'is_banned',
         'phone_verified_at',
         'email_verified_at',
         'daftra_id',
@@ -33,6 +34,7 @@ class Customer extends Authenticatable implements JWTSubject
         return [
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'is_banned' => 'boolean',
             'phone_verified_at' => 'datetime',
             'email_verified_at' => 'datetime',
         ];
