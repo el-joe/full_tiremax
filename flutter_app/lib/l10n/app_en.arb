@@ -1,0 +1,95 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "TireMax",
+
+  "navHome": "Home",
+  "navStore": "Store",
+  "navServices": "Services",
+  "navReservation": "Reservation",
+
+  "authSignIn": "Sign in",
+  "authCreateAccount": "Create account",
+  "authEmailOrPhone": "Email or phone number",
+  "authEmailOrPhoneRequired": "Email or phone number is required",
+  "authPassword": "Password",
+  "authPasswordMinLength": "Password must be at least 6 characters",
+  "authFullName": "Full name",
+  "authFullNameRequired": "Full name is required",
+  "authNameTooLong": "Name is too long",
+  "authPhoneNumber": "Phone number",
+  "authPhoneNumberRequired": "Phone number is required",
+  "authPhoneTooLong": "Phone number is too long",
+  "authEmailOptional": "Email (optional)",
+  "authEmailTooLong": "Email is too long",
+  "authInvalidEmail": "Invalid email address",
+  "authConfirmPassword": "Confirm password",
+  "authConfirmPasswordRequired": "Please confirm your password",
+  "authPasswordsMustMatch": "Passwords must match",
+  "authAddressOptional": "Address (optional)",
+  "authAddressTooLong": "Address is too long",
+
+  "profileTitle": "Profile",
+  "profileWelcome": "Welcome, {name}",
+  "@profileWelcome": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "profileSettings": "Settings",
+  "profileAddresses": "Addresses",
+  "profileMyOrders": "My Orders",
+  "profileMyBookings": "My Bookings",
+  "profileLanguage": "Language",
+  "profileLanguageEnglish": "English",
+  "profileLanguageArabic": "العربية",
+  "profilePrivacyPolicy": "Privacy Policy",
+  "profileTerms": "Terms & Conditions",
+  "profileLogOut": "Log Out",
+  "profileLogOutConfirm": "Are you sure you want to log out?",
+  "commonCancel": "Cancel",
+
+  "commonOk": "OK",
+  "commonSave": "Save",
+  "commonRetry": "Retry",
+  "commonLoading": "Loading...",
+  "commonError": "Something went wrong",
+  "commonEmpty": "Nothing to show here yet",
+  "commonSeeAll": "See all",
+  "commonAddToCart": "Add to cart",
+  "commonBuyNow": "Buy now",
+  "commonContinue": "Continue",
+  "commonBack": "Back",
+  "commonDone": "Done",
+  "commonSubmit": "Submit",
+  "commonRemove": "Remove",
+  "commonEdit": "Edit",
+  "commonDelete": "Delete",
+  "commonConfirm": "Confirm",
+  "commonSearch": "Search",
+
+  "cartTitle": "Cart",
+  "cartEmpty": "Your cart is empty",
+  "cartCheckout": "Checkout",
+  "cartSubtotal": "Subtotal",
+  "cartTotal": "Total",
+  "cartQuantity": "Quantity",
+
+  "checkoutTitle": "Checkout",
+  "checkoutShippingAddress": "Shipping address",
+  "checkoutPaymentMethod": "Payment method",
+  "checkoutPlaceOrder": "Place order",
+  "checkoutOrderConfirmed": "Order confirmed",
+
+  "favoritesTitle": "Favorites",
+  "favoritesEmpty": "You haven't added any favorites yet",
+
+  "notificationsTitle": "Notifications",
+  "notificationsEmpty": "You have no notifications",
+
+  "homeGreeting": "Find the right tires for your car",
+
+  "storeTitle": "Store",
+
+  "servicesTitle": "Services",
+
+  "reservationTitle": "Reservation"
+}
