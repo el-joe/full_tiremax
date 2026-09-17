@@ -118,6 +118,9 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::get('/daftra-test', function () {
+    if (!Daftra::isEnabled()) {
+        return response()->json(['error' => 'Daftra integration is disabled.'], 503);
+    }
     $daftra = new Daftra();
     return response()->json(['data' => $daftra->listProducts()]);
 });

@@ -41,12 +41,12 @@ class OrderManager extends Component
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
     }
 
-    public function syncToDaftra(int $id, DaftraOrderSyncService $service): void
+    public function syncToDaftra(int $id): void
     {
         $order = Order::findOrFail($id);
 
         try {
-            $service->push($order);
+            app(DaftraOrderSyncService::class)->push($order);
             $this->dispatch('toast', icon: 'success', title: __('messages.success'));
         } catch (Throwable $e) {
             $this->dispatch('toast', icon: 'error', title: $e->getMessage());

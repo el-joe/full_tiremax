@@ -29,4 +29,11 @@ class Setting extends Model implements TranslatableContract
             default => $raw,
         };
     }
+
+    public static function getValue(string $group, string $key, mixed $default = null): mixed
+    {
+        $setting = static::where('group', $group)->where('key', $key)->first();
+
+        return $setting?->getTypedValue() ?? $default;
+    }
 }

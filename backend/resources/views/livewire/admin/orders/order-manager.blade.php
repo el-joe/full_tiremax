@@ -47,7 +47,7 @@
                         </td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="view({{ $o->id }})" class="text-yellow-500 text-xs me-3">View</button>
-                            @if (!$o->daftra_invoice_id)
+                            @if (!$o->daftra_invoice_id && \App\Integrations\Daftra::isEnabled())
                                 <button wire:click="syncToDaftra({{ $o->id }})" wire:loading.attr="disabled"
                                     wire:target="syncToDaftra({{ $o->id }})"
                                     class="bg-blue-500 text-white text-xs px-2 py-1 rounded-md me-3 disabled:opacity-50">Sync

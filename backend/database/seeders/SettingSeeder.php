@@ -75,7 +75,7 @@ class SettingSeeder extends Seeder
             [
                 'group' => 'general',
                 'key' => 'logo',
-                'cast' => 'string',
+                'cast' => 'image',
                 'translatable' => false,
                 'value' => null
             ],
@@ -83,7 +83,7 @@ class SettingSeeder extends Seeder
             [
                 'group' => 'general',
                 'key' => 'favicon',
-                'cast' => 'string',
+                'cast' => 'image',
                 'translatable' => false,
                 'value' => null
             ],
@@ -184,7 +184,7 @@ class SettingSeeder extends Seeder
             [
                 'group' => 'seo',
                 'key' => 'og_image',
-                'cast' => 'string',
+                'cast' => 'image',
                 'translatable' => false,
                 'value' => null
             ],

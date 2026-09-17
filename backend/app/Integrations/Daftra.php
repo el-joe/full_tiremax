@@ -26,12 +26,21 @@ class Daftra
 
     public function __construct(?string $baseUrl = null, ?string $apiKey = null)
     {
+        if (! static::isEnabled()) {
+            throw new RuntimeException('Daftra integration is disabled.');
+        }
+
         $this->baseUrl = rtrim($baseUrl ?? Setting::where('group', 'daftra')->where('key', 'api_url')->value('value') ?? '', '/');
         $this->apiKey = $apiKey ?? Setting::where('group', 'daftra')->where('key', 'api_key')->value('value') ?? '';
 
         if (empty($this->baseUrl) || empty($this->apiKey)) {
             throw new RuntimeException('Daftra integration is not configured (missing api_url or api_key).');
         }
+    }
+
+    public static function isEnabled(): bool
+    {
+        return (bool) Setting::getValue('daftra', 'enabled', false);
     }
 
     // ──────────────────────────────────────────────────────────────────────────
