@@ -86,13 +86,15 @@ class _ServiceCard extends StatelessWidget {
               children: [
                 Text(service.name, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 4),
-                Text(
-                  service.description,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: AppColors.gray2, fontSize: 12),
-                ),
-                const SizedBox(height: 8),
+                if (service.description != null && service.description!.isNotEmpty) ...[
+                  Text(
+                    service.description!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: AppColors.gray2, fontSize: 12),
+                  ),
+                  const SizedBox(height: 8),
+                ],
                 Row(
                   children: [
                     Text('${service.price} EGP', style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700)),

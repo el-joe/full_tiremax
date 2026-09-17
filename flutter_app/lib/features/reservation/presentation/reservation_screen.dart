@@ -533,7 +533,7 @@ class _OptionCard extends StatelessWidget {
   const _OptionCard({required this.title, required this.subtitle, this.trailing, required this.onTap});
 
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final String? trailing;
   final VoidCallback onTap;
 
@@ -552,8 +552,10 @@ class _OptionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
-                  const SizedBox(height: 4),
-                  Text(subtitle, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
+                  if (subtitle != null && subtitle!.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(subtitle!, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
+                  ],
                   if (trailing != null) ...[
                     const SizedBox(height: 8),
                     Text(trailing!, style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 12)),

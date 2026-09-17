@@ -40,7 +40,7 @@ class ProductCard extends ConsumerWidget {
               Stack(
                 children: [
                   AspectRatio(
-                    aspectRatio: 1,
+                    aspectRatio: 1.25,
                     child: AppNetworkImage(url: image, width: double.infinity, height: double.infinity),
                   ),
                   if (product.has_discount)
@@ -89,6 +89,8 @@ class ProductCard extends ConsumerWidget {
                   children: [
                     Text(
                       product.brand.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(color: AppColors.gray2, fontSize: 11),
                     ),
                     const SizedBox(height: 2),
@@ -113,18 +115,26 @@ class ProductCard extends ConsumerWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Text(
-                          '${product.effective_price.toStringAsFixed(0)} EGP',
-                          style: const TextStyle(color: AppColors.primary, fontSize: 14, fontWeight: FontWeight.w700),
+                        Flexible(
+                          child: Text(
+                            '${product.effective_price.toStringAsFixed(0)} EGP',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(color: AppColors.primary, fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
                         ),
                         if (product.has_discount) ...[
                           const SizedBox(width: 6),
-                          Text(
-                            product.price.toStringAsFixed(0),
-                            style: const TextStyle(
-                              color: AppColors.gray2,
-                              fontSize: 11,
-                              decoration: TextDecoration.lineThrough,
+                          Flexible(
+                            child: Text(
+                              product.price.toStringAsFixed(0),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: AppColors.gray2,
+                                fontSize: 11,
+                                decoration: TextDecoration.lineThrough,
+                              ),
                             ),
                           ),
                         ],

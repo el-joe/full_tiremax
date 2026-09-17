@@ -28,15 +28,28 @@ class ApiPagination {
       };
 }
 
+/// The real API nests pagination (and review rating aggregates) under a
+/// top-level `meta` key (`{ data: [...], meta: { pagination: {...} } }`),
+/// not at the top level as `apiMetaRes.type.ts` implies. Some endpoints may
+/// still put it at the top level, so check both.
+Map<String, dynamic>? _metaBlock(Map<String, dynamic> json) {
+  final meta = json['meta'];
+  if (meta is Map<String, dynamic>) return meta;
+  return json;
+}
+
 /// Mirrors `IApiMetaRes`: `{ pagination: {...} }`.
 class ApiMetaRes {
   const ApiMetaRes({required this.pagination});
 
-  factory ApiMetaRes.fromJson(Map<String, dynamic> json) => ApiMetaRes(
-        pagination: ApiPagination.fromJson(
-          json['pagination'] as Map<String, dynamic>,
-        ),
-      );
+  factory ApiMetaRes.fromJson(Map<String, dynamic> json) {
+    final meta = _metaBlock(json) ?? const {};
+    return ApiMetaRes(
+      pagination: ApiPagination.fromJson(
+        meta['pagination'] as Map<String, dynamic>? ?? const {},
+      ),
+    );
+  }
 
   final ApiPagination pagination;
 }
@@ -50,21 +63,23 @@ class ProductReviewMeta extends ApiMetaRes {
     required this.ratingCount,
   });
 
-  factory ProductReviewMeta.fromJson(Map<String, dynamic> json) =>
-      ProductReviewMeta(
-        pagination: ApiPagination.fromJson(
-          json['pagination'] as Map<String, dynamic>,
-        ),
-        ratingAvg: (json['rating_avg'] as num).toDouble(),
-        ratingCount: json['rating_count'] as int,
-      );
+  factory ProductReviewMeta.fromJson(Map<String, dynamic> json) {
+    final meta = _metaBlock(json) ?? const {};
+    return ProductReviewMeta(
+      pagination: ApiPagination.fromJson(
+        meta['pagination'] as Map<String, dynamic>? ?? const {},
+      ),
+      ratingAvg: (meta['rating_avg'] as num?)?.toDouble() ?? 0,
+      ratingCount: meta['rating_count'] as int? ?? 0,
+    );
+  }
 
   final double ratingAvg;
   final int ratingCount;
 }
 
 /// Generic wrapper for a Laravel-paginated list response:
-/// `{ data: T[], pagination: {...} }`.
+/// `{ data: T[], meta: { pagination: {...} } }`.
 class PaginatedResponse<T> {
   const PaginatedResponse({required this.data, required this.pagination});
 
@@ -73,13 +88,20 @@ class PaginatedResponse<T> {
     T Function(Map<String, dynamic>) fromJsonT,
   ) {
     final rawData = json['data'] as List<dynamic>? ?? const [];
+    final meta = _metaBlock(json) ?? const {};
+    final rawPagination = meta['pagination'] as Map<String, dynamic>?;
     return PaginatedResponse<T>(
       data: rawData
           .map((e) => fromJsonT(e as Map<String, dynamic>))
           .toList(growable: false),
-      pagination: ApiPagination.fromJson(
-        json['pagination'] as Map<String, dynamic>,
-      ),
+      pagination: rawPagination != null
+          ? ApiPagination.fromJson(rawPagination)
+          : ApiPagination(
+              total: rawData.length,
+              perPage: rawData.length,
+              currentPage: 1,
+              lastPage: 1,
+            ),
     );
   }
 

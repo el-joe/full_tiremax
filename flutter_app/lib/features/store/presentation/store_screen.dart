@@ -95,7 +95,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                         crossAxisCount: 2,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
-                        childAspectRatio: 0.62,
+                        childAspectRatio: 0.58,
                       ),
                       itemCount: state.products.length + (state.hasMore ? 2 : 0),
                       itemBuilder: (context, index) {
@@ -113,7 +113,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
-                    childAspectRatio: 0.62,
+                    childAspectRatio: 0.58,
                   ),
                   itemCount: 6,
                   itemBuilder: (context, index) => const ShimmerBox(width: double.infinity, height: double.infinity),

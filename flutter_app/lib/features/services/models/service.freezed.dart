@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Service {
 
- int get id; String get slug; String get name; String get description; String? get icon; String? get image_url; int get duration_minutes; num get price;
+ int get id; String get slug; String get name; String? get description; String? get icon; String? get image_url; int get duration_minutes; num get price;
 /// Create a copy of Service
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $ServiceCopyWith<$Res>  {
   factory $ServiceCopyWith(Service value, $Res Function(Service) _then) = _$ServiceCopyWithImpl;
 @useResult
 $Res call({
- int id, String slug, String name, String description, String? icon, String? image_url, int duration_minutes, num price
+ int id, String slug, String name, String? description, String? icon, String? image_url, int duration_minutes, num price
 });
 
 
@@ -71,13 +71,13 @@ class _$ServiceCopyWithImpl<$Res>
 
 /// Create a copy of Service
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = null,Object? icon = freezed,Object? image_url = freezed,Object? duration_minutes = null,Object? price = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = freezed,Object? icon = freezed,Object? image_url = freezed,Object? duration_minutes = null,Object? price = null,}) {
   return _then(Service(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as String?,image_url: freezed == image_url ? _self.image_url : image_url // ignore: cast_nullable_to_non_nullable
 as String?,duration_minutes: null == duration_minutes ? _self.duration_minutes : duration_minutes // ignore: cast_nullable_to_non_nullable
 as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
@@ -166,7 +166,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String description,  String? icon,  String? image_url,  int duration_minutes,  num price)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String? description,  String? icon,  String? image_url,  int duration_minutes,  num price)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Service() when $default != null:
 return $default(_that.id,_that.slug,_that.name,_that.description,_that.icon,_that.image_url,_that.duration_minutes,_that.price);case _:
@@ -187,7 +187,7 @@ return $default(_that.id,_that.slug,_that.name,_that.description,_that.icon,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String description,  String? icon,  String? image_url,  int duration_minutes,  num price)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String? description,  String? icon,  String? image_url,  int duration_minutes,  num price)  $default,) {final _that = this;
 switch (_that) {
 case _Service():
 return $default(_that.id,_that.slug,_that.name,_that.description,_that.icon,_that.image_url,_that.duration_minutes,_that.price);case _:
@@ -207,7 +207,7 @@ return $default(_that.id,_that.slug,_that.name,_that.description,_that.icon,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slug,  String name,  String description,  String? icon,  String? image_url,  int duration_minutes,  num price)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slug,  String name,  String? description,  String? icon,  String? image_url,  int duration_minutes,  num price)?  $default,) {final _that = this;
 switch (_that) {
 case _Service() when $default != null:
 return $default(_that.id,_that.slug,_that.name,_that.description,_that.icon,_that.image_url,_that.duration_minutes,_that.price);case _:
@@ -222,13 +222,13 @@ return $default(_that.id,_that.slug,_that.name,_that.description,_that.icon,_tha
 @JsonSerializable()
 
 class _Service implements Service {
-  const _Service({required this.id, required this.slug, required this.name, required this.description, this.icon, this.image_url, required this.duration_minutes, required this.price});
+  const _Service({required this.id, required this.slug, required this.name, this.description, this.icon, this.image_url, required this.duration_minutes, required this.price});
   factory _Service.fromJson(Map<String, dynamic> json) => _$ServiceFromJson(json);
 
 @override final  int id;
 @override final  String slug;
 @override final  String name;
-@override final  String description;
+@override final  String? description;
 @override final  String? icon;
 @override final  String? image_url;
 @override final  int duration_minutes;
@@ -269,7 +269,7 @@ abstract mixin class _$ServiceCopyWith<$Res> implements $ServiceCopyWith<$Res> {
   factory _$ServiceCopyWith(_Service value, $Res Function(_Service) _then) = __$ServiceCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String slug, String name, String description, String? icon, String? image_url, int duration_minutes, num price
+ int id, String slug, String name, String? description, String? icon, String? image_url, int duration_minutes, num price
 });
 
 
@@ -286,13 +286,13 @@ class __$ServiceCopyWithImpl<$Res>
 
 /// Create a copy of Service
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = null,Object? icon = freezed,Object? image_url = freezed,Object? duration_minutes = null,Object? price = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = freezed,Object? icon = freezed,Object? image_url = freezed,Object? duration_minutes = null,Object? price = null,}) {
   return _then(_Service(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as String?,image_url: freezed == image_url ? _self.image_url : image_url // ignore: cast_nullable_to_non_nullable
 as String?,duration_minutes: null == duration_minutes ? _self.duration_minutes : duration_minutes // ignore: cast_nullable_to_non_nullable
 as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable

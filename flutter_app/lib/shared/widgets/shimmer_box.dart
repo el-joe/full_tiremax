@@ -34,8 +34,10 @@ class ShimmerBox extends StatelessWidget {
   }
 }
 
-/// A remote image with a [ShimmerBox] placeholder and a graceful fallback
-/// icon on error.
+/// A remote image with a [ShimmerBox] placeholder and a fallback to the
+/// bundled default product image on error — mirrors the web app's fallback
+/// to `/images/product-image.jpg` (see `ItemsList.tsx`:
+/// `data.product.primary_image ?? "/images/product-image.jpg"`).
 class AppNetworkImage extends StatelessWidget {
   const AppNetworkImage({
     super.key,
@@ -45,6 +47,8 @@ class AppNetworkImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.borderRadius = BorderRadius.zero,
   });
+
+  static const String placeholderAsset = 'assets/images/product-placeholder.jpg';
 
   final String? url;
   final double? width;
@@ -77,15 +81,14 @@ class AppNetworkImage extends StatelessWidget {
   }
 
   Widget _fallback() {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: AppColors.gray3,
-        borderRadius: borderRadius,
+    return ClipRRect(
+      borderRadius: borderRadius,
+      child: Image.asset(
+        placeholderAsset,
+        width: width,
+        height: height,
+        fit: fit,
       ),
-      alignment: Alignment.center,
-      child: const Icon(Icons.image_not_supported_outlined, color: AppColors.gray2),
     );
   }
 }

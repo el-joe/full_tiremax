@@ -10,7 +10,7 @@ abstract class Service with _$Service {
     required int id,
     required String slug,
     required String name,
-    required String description,
+    String? description,
     String? icon,
     String? image_url,
     required int duration_minutes,

@@ -511,7 +511,7 @@ class _RelatedSection extends ConsumerWidget {
                 );
               }
               return SizedBox(
-                height: 250,
+                height: 272,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 16),

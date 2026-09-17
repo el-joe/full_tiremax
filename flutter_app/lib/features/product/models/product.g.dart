@@ -13,7 +13,7 @@ _Product _$ProductFromJson(Map<String, dynamic> json) => _Product(
   name: json['name'] as String,
   short_description: json['short_description'] as String,
   description: json['description'] as String?,
-  pattern_name: json['pattern_name'] as String,
+  pattern_name: json['pattern_name'] as String?,
   usage_notes: json['usage_notes'] as String?,
   price: json['price'] as num,
   sale_price: json['sale_price'] as num?,
@@ -43,7 +43,9 @@ _Product _$ProductFromJson(Map<String, dynamic> json) => _Product(
       const <ProductImage>[],
   primary_image: json['primary_image'] as String?,
   brand: Brand.fromJson(json['brand'] as Map<String, dynamic>),
-  category: Category.fromJson(json['category'] as Map<String, dynamic>),
+  category: json['category'] == null
+      ? null
+      : Category.fromJson(json['category'] as Map<String, dynamic>),
   tire_spec: json['tire_spec'] == null
       ? null
       : TireSpec.fromJson(json['tire_spec'] as Map<String, dynamic>),

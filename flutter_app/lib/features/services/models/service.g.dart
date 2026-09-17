@@ -10,7 +10,7 @@ _Service _$ServiceFromJson(Map<String, dynamic> json) => _Service(
   id: (json['id'] as num).toInt(),
   slug: json['slug'] as String,
   name: json['name'] as String,
-  description: json['description'] as String,
+  description: json['description'] as String?,
   icon: json['icon'] as String?,
   image_url: json['image_url'] as String?,
   duration_minutes: (json['duration_minutes'] as num).toInt(),

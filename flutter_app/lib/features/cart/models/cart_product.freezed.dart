@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CartProduct {
 
- int get id; String get sku; String get type; String get name; String get short_description; String get description; String get pattern_name; String get usage_notes; num get price; num get sale_price; num get effective_price; bool get has_discount; bool get is_flash_sale; num get flash_sale; int get stock; bool get in_stock; int get manufacture_year; int get manufacturer_warranty_months; int get agency_warranty_months; num get expert_rating; int get sales_count; int get views_count; bool get is_featured; List<String> get images; String? get primary_image; Brand get brand;
+ int get id; String get sku; String get type; String get name; String get short_description; String? get description; String? get pattern_name; String? get usage_notes; num get price; num? get sale_price; num get effective_price; bool get has_discount; bool get is_flash_sale; num? get flash_sale; int get stock; bool get in_stock; int get manufacture_year; int get manufacturer_warranty_months; int get agency_warranty_months; num? get expert_rating; int get sales_count; int get views_count; bool get is_featured; List<String> get images; String? get primary_image; Brand get brand;
 /// Create a copy of CartProduct
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $CartProductCopyWith<$Res>  {
   factory $CartProductCopyWith(CartProduct value, $Res Function(CartProduct) _then) = _$CartProductCopyWithImpl;
 @useResult
 $Res call({
- int id, String sku, String type, String name, String short_description, String description, String pattern_name, String usage_notes, num price, num sale_price, num effective_price, bool has_discount, bool is_flash_sale, num flash_sale, int stock, bool in_stock, int manufacture_year, int manufacturer_warranty_months, int agency_warranty_months, num expert_rating, int sales_count, int views_count, bool is_featured, List<String> images, String? primary_image, Brand brand
+ int id, String sku, String type, String name, String short_description, String? description, String? pattern_name, String? usage_notes, num price, num? sale_price, num effective_price, bool has_discount, bool is_flash_sale, num? flash_sale, int stock, bool in_stock, int manufacture_year, int manufacturer_warranty_months, int agency_warranty_months, num? expert_rating, int sales_count, int views_count, bool is_featured, List<String> images, String? primary_image, Brand brand
 });
 
 
@@ -71,29 +71,29 @@ class _$CartProductCopyWithImpl<$Res>
 
 /// Create a copy of CartProduct
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sku = null,Object? type = null,Object? name = null,Object? short_description = null,Object? description = null,Object? pattern_name = null,Object? usage_notes = null,Object? price = null,Object? sale_price = null,Object? effective_price = null,Object? has_discount = null,Object? is_flash_sale = null,Object? flash_sale = null,Object? stock = null,Object? in_stock = null,Object? manufacture_year = null,Object? manufacturer_warranty_months = null,Object? agency_warranty_months = null,Object? expert_rating = null,Object? sales_count = null,Object? views_count = null,Object? is_featured = null,Object? images = null,Object? primary_image = freezed,Object? brand = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sku = null,Object? type = null,Object? name = null,Object? short_description = null,Object? description = freezed,Object? pattern_name = freezed,Object? usage_notes = freezed,Object? price = null,Object? sale_price = freezed,Object? effective_price = null,Object? has_discount = null,Object? is_flash_sale = null,Object? flash_sale = freezed,Object? stock = null,Object? in_stock = null,Object? manufacture_year = null,Object? manufacturer_warranty_months = null,Object? agency_warranty_months = null,Object? expert_rating = freezed,Object? sales_count = null,Object? views_count = null,Object? is_featured = null,Object? images = null,Object? primary_image = freezed,Object? brand = null,}) {
   return _then(CartProduct(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,sku: null == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,short_description: null == short_description ? _self.short_description : short_description // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,pattern_name: null == pattern_name ? _self.pattern_name : pattern_name // ignore: cast_nullable_to_non_nullable
-as String,usage_notes: null == usage_notes ? _self.usage_notes : usage_notes // ignore: cast_nullable_to_non_nullable
-as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as num,sale_price: null == sale_price ? _self.sale_price : sale_price // ignore: cast_nullable_to_non_nullable
-as num,effective_price: null == effective_price ? _self.effective_price : effective_price // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,pattern_name: freezed == pattern_name ? _self.pattern_name : pattern_name // ignore: cast_nullable_to_non_nullable
+as String?,usage_notes: freezed == usage_notes ? _self.usage_notes : usage_notes // ignore: cast_nullable_to_non_nullable
+as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as num,sale_price: freezed == sale_price ? _self.sale_price : sale_price // ignore: cast_nullable_to_non_nullable
+as num?,effective_price: null == effective_price ? _self.effective_price : effective_price // ignore: cast_nullable_to_non_nullable
 as num,has_discount: null == has_discount ? _self.has_discount : has_discount // ignore: cast_nullable_to_non_nullable
 as bool,is_flash_sale: null == is_flash_sale ? _self.is_flash_sale : is_flash_sale // ignore: cast_nullable_to_non_nullable
-as bool,flash_sale: null == flash_sale ? _self.flash_sale : flash_sale // ignore: cast_nullable_to_non_nullable
-as num,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as bool,flash_sale: freezed == flash_sale ? _self.flash_sale : flash_sale // ignore: cast_nullable_to_non_nullable
+as num?,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
 as int,in_stock: null == in_stock ? _self.in_stock : in_stock // ignore: cast_nullable_to_non_nullable
 as bool,manufacture_year: null == manufacture_year ? _self.manufacture_year : manufacture_year // ignore: cast_nullable_to_non_nullable
 as int,manufacturer_warranty_months: null == manufacturer_warranty_months ? _self.manufacturer_warranty_months : manufacturer_warranty_months // ignore: cast_nullable_to_non_nullable
 as int,agency_warranty_months: null == agency_warranty_months ? _self.agency_warranty_months : agency_warranty_months // ignore: cast_nullable_to_non_nullable
-as int,expert_rating: null == expert_rating ? _self.expert_rating : expert_rating // ignore: cast_nullable_to_non_nullable
-as num,sales_count: null == sales_count ? _self.sales_count : sales_count // ignore: cast_nullable_to_non_nullable
+as int,expert_rating: freezed == expert_rating ? _self.expert_rating : expert_rating // ignore: cast_nullable_to_non_nullable
+as num?,sales_count: null == sales_count ? _self.sales_count : sales_count // ignore: cast_nullable_to_non_nullable
 as int,views_count: null == views_count ? _self.views_count : views_count // ignore: cast_nullable_to_non_nullable
 as int,is_featured: null == is_featured ? _self.is_featured : is_featured // ignore: cast_nullable_to_non_nullable
 as bool,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
@@ -193,7 +193,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String sku,  String type,  String name,  String short_description,  String description,  String pattern_name,  String usage_notes,  num price,  num sale_price,  num effective_price,  bool has_discount,  bool is_flash_sale,  num flash_sale,  int stock,  bool in_stock,  int manufacture_year,  int manufacturer_warranty_months,  int agency_warranty_months,  num expert_rating,  int sales_count,  int views_count,  bool is_featured,  List<String> images,  String? primary_image,  Brand brand)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String sku,  String type,  String name,  String short_description,  String? description,  String? pattern_name,  String? usage_notes,  num price,  num? sale_price,  num effective_price,  bool has_discount,  bool is_flash_sale,  num? flash_sale,  int stock,  bool in_stock,  int manufacture_year,  int manufacturer_warranty_months,  int agency_warranty_months,  num? expert_rating,  int sales_count,  int views_count,  bool is_featured,  List<String> images,  String? primary_image,  Brand brand)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CartProduct() when $default != null:
 return $default(_that.id,_that.sku,_that.type,_that.name,_that.short_description,_that.description,_that.pattern_name,_that.usage_notes,_that.price,_that.sale_price,_that.effective_price,_that.has_discount,_that.is_flash_sale,_that.flash_sale,_that.stock,_that.in_stock,_that.manufacture_year,_that.manufacturer_warranty_months,_that.agency_warranty_months,_that.expert_rating,_that.sales_count,_that.views_count,_that.is_featured,_that.images,_that.primary_image,_that.brand);case _:
@@ -214,7 +214,7 @@ return $default(_that.id,_that.sku,_that.type,_that.name,_that.short_description
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String sku,  String type,  String name,  String short_description,  String description,  String pattern_name,  String usage_notes,  num price,  num sale_price,  num effective_price,  bool has_discount,  bool is_flash_sale,  num flash_sale,  int stock,  bool in_stock,  int manufacture_year,  int manufacturer_warranty_months,  int agency_warranty_months,  num expert_rating,  int sales_count,  int views_count,  bool is_featured,  List<String> images,  String? primary_image,  Brand brand)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String sku,  String type,  String name,  String short_description,  String? description,  String? pattern_name,  String? usage_notes,  num price,  num? sale_price,  num effective_price,  bool has_discount,  bool is_flash_sale,  num? flash_sale,  int stock,  bool in_stock,  int manufacture_year,  int manufacturer_warranty_months,  int agency_warranty_months,  num? expert_rating,  int sales_count,  int views_count,  bool is_featured,  List<String> images,  String? primary_image,  Brand brand)  $default,) {final _that = this;
 switch (_that) {
 case _CartProduct():
 return $default(_that.id,_that.sku,_that.type,_that.name,_that.short_description,_that.description,_that.pattern_name,_that.usage_notes,_that.price,_that.sale_price,_that.effective_price,_that.has_discount,_that.is_flash_sale,_that.flash_sale,_that.stock,_that.in_stock,_that.manufacture_year,_that.manufacturer_warranty_months,_that.agency_warranty_months,_that.expert_rating,_that.sales_count,_that.views_count,_that.is_featured,_that.images,_that.primary_image,_that.brand);case _:
@@ -234,7 +234,7 @@ return $default(_that.id,_that.sku,_that.type,_that.name,_that.short_description
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String sku,  String type,  String name,  String short_description,  String description,  String pattern_name,  String usage_notes,  num price,  num sale_price,  num effective_price,  bool has_discount,  bool is_flash_sale,  num flash_sale,  int stock,  bool in_stock,  int manufacture_year,  int manufacturer_warranty_months,  int agency_warranty_months,  num expert_rating,  int sales_count,  int views_count,  bool is_featured,  List<String> images,  String? primary_image,  Brand brand)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String sku,  String type,  String name,  String short_description,  String? description,  String? pattern_name,  String? usage_notes,  num price,  num? sale_price,  num effective_price,  bool has_discount,  bool is_flash_sale,  num? flash_sale,  int stock,  bool in_stock,  int manufacture_year,  int manufacturer_warranty_months,  int agency_warranty_months,  num? expert_rating,  int sales_count,  int views_count,  bool is_featured,  List<String> images,  String? primary_image,  Brand brand)?  $default,) {final _that = this;
 switch (_that) {
 case _CartProduct() when $default != null:
 return $default(_that.id,_that.sku,_that.type,_that.name,_that.short_description,_that.description,_that.pattern_name,_that.usage_notes,_that.price,_that.sale_price,_that.effective_price,_that.has_discount,_that.is_flash_sale,_that.flash_sale,_that.stock,_that.in_stock,_that.manufacture_year,_that.manufacturer_warranty_months,_that.agency_warranty_months,_that.expert_rating,_that.sales_count,_that.views_count,_that.is_featured,_that.images,_that.primary_image,_that.brand);case _:
@@ -249,7 +249,7 @@ return $default(_that.id,_that.sku,_that.type,_that.name,_that.short_description
 @JsonSerializable()
 
 class _CartProduct implements CartProduct {
-  const _CartProduct({required this.id, required this.sku, required this.type, required this.name, required this.short_description, required this.description, required this.pattern_name, required this.usage_notes, required this.price, required this.sale_price, required this.effective_price, required this.has_discount, required this.is_flash_sale, required this.flash_sale, required this.stock, required this.in_stock, required this.manufacture_year, required this.manufacturer_warranty_months, required this.agency_warranty_months, required this.expert_rating, required this.sales_count, required this.views_count, required this.is_featured,  List<String> images = const <String>[], this.primary_image, required this.brand}): _images = images;
+  const _CartProduct({required this.id, required this.sku, required this.type, required this.name, required this.short_description, this.description, this.pattern_name, this.usage_notes, required this.price, this.sale_price, required this.effective_price, required this.has_discount, required this.is_flash_sale, this.flash_sale, required this.stock, required this.in_stock, required this.manufacture_year, required this.manufacturer_warranty_months, required this.agency_warranty_months, this.expert_rating, required this.sales_count, required this.views_count, required this.is_featured,  List<String> images = const <String>[], this.primary_image, required this.brand}): _images = images;
   factory _CartProduct.fromJson(Map<String, dynamic> json) => _$CartProductFromJson(json);
 
 @override final  int id;
@@ -257,21 +257,21 @@ class _CartProduct implements CartProduct {
 @override final  String type;
 @override final  String name;
 @override final  String short_description;
-@override final  String description;
-@override final  String pattern_name;
-@override final  String usage_notes;
+@override final  String? description;
+@override final  String? pattern_name;
+@override final  String? usage_notes;
 @override final  num price;
-@override final  num sale_price;
+@override final  num? sale_price;
 @override final  num effective_price;
 @override final  bool has_discount;
 @override final  bool is_flash_sale;
-@override final  num flash_sale;
+@override final  num? flash_sale;
 @override final  int stock;
 @override final  bool in_stock;
 @override final  int manufacture_year;
 @override final  int manufacturer_warranty_months;
 @override final  int agency_warranty_months;
-@override final  num expert_rating;
+@override final  num? expert_rating;
 @override final  int sales_count;
 @override final  int views_count;
 @override final  bool is_featured;
@@ -320,7 +320,7 @@ abstract mixin class _$CartProductCopyWith<$Res> implements $CartProductCopyWith
   factory _$CartProductCopyWith(_CartProduct value, $Res Function(_CartProduct) _then) = __$CartProductCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String sku, String type, String name, String short_description, String description, String pattern_name, String usage_notes, num price, num sale_price, num effective_price, bool has_discount, bool is_flash_sale, num flash_sale, int stock, bool in_stock, int manufacture_year, int manufacturer_warranty_months, int agency_warranty_months, num expert_rating, int sales_count, int views_count, bool is_featured, List<String> images, String? primary_image, Brand brand
+ int id, String sku, String type, String name, String short_description, String? description, String? pattern_name, String? usage_notes, num price, num? sale_price, num effective_price, bool has_discount, bool is_flash_sale, num? flash_sale, int stock, bool in_stock, int manufacture_year, int manufacturer_warranty_months, int agency_warranty_months, num? expert_rating, int sales_count, int views_count, bool is_featured, List<String> images, String? primary_image, Brand brand
 });
 
 
@@ -337,29 +337,29 @@ class __$CartProductCopyWithImpl<$Res>
 
 /// Create a copy of CartProduct
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sku = null,Object? type = null,Object? name = null,Object? short_description = null,Object? description = null,Object? pattern_name = null,Object? usage_notes = null,Object? price = null,Object? sale_price = null,Object? effective_price = null,Object? has_discount = null,Object? is_flash_sale = null,Object? flash_sale = null,Object? stock = null,Object? in_stock = null,Object? manufacture_year = null,Object? manufacturer_warranty_months = null,Object? agency_warranty_months = null,Object? expert_rating = null,Object? sales_count = null,Object? views_count = null,Object? is_featured = null,Object? images = null,Object? primary_image = freezed,Object? brand = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sku = null,Object? type = null,Object? name = null,Object? short_description = null,Object? description = freezed,Object? pattern_name = freezed,Object? usage_notes = freezed,Object? price = null,Object? sale_price = freezed,Object? effective_price = null,Object? has_discount = null,Object? is_flash_sale = null,Object? flash_sale = freezed,Object? stock = null,Object? in_stock = null,Object? manufacture_year = null,Object? manufacturer_warranty_months = null,Object? agency_warranty_months = null,Object? expert_rating = freezed,Object? sales_count = null,Object? views_count = null,Object? is_featured = null,Object? images = null,Object? primary_image = freezed,Object? brand = null,}) {
   return _then(_CartProduct(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,sku: null == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,short_description: null == short_description ? _self.short_description : short_description // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,pattern_name: null == pattern_name ? _self.pattern_name : pattern_name // ignore: cast_nullable_to_non_nullable
-as String,usage_notes: null == usage_notes ? _self.usage_notes : usage_notes // ignore: cast_nullable_to_non_nullable
-as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as num,sale_price: null == sale_price ? _self.sale_price : sale_price // ignore: cast_nullable_to_non_nullable
-as num,effective_price: null == effective_price ? _self.effective_price : effective_price // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,pattern_name: freezed == pattern_name ? _self.pattern_name : pattern_name // ignore: cast_nullable_to_non_nullable
+as String?,usage_notes: freezed == usage_notes ? _self.usage_notes : usage_notes // ignore: cast_nullable_to_non_nullable
+as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as num,sale_price: freezed == sale_price ? _self.sale_price : sale_price // ignore: cast_nullable_to_non_nullable
+as num?,effective_price: null == effective_price ? _self.effective_price : effective_price // ignore: cast_nullable_to_non_nullable
 as num,has_discount: null == has_discount ? _self.has_discount : has_discount // ignore: cast_nullable_to_non_nullable
 as bool,is_flash_sale: null == is_flash_sale ? _self.is_flash_sale : is_flash_sale // ignore: cast_nullable_to_non_nullable
-as bool,flash_sale: null == flash_sale ? _self.flash_sale : flash_sale // ignore: cast_nullable_to_non_nullable
-as num,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as bool,flash_sale: freezed == flash_sale ? _self.flash_sale : flash_sale // ignore: cast_nullable_to_non_nullable
+as num?,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
 as int,in_stock: null == in_stock ? _self.in_stock : in_stock // ignore: cast_nullable_to_non_nullable
 as bool,manufacture_year: null == manufacture_year ? _self.manufacture_year : manufacture_year // ignore: cast_nullable_to_non_nullable
 as int,manufacturer_warranty_months: null == manufacturer_warranty_months ? _self.manufacturer_warranty_months : manufacturer_warranty_months // ignore: cast_nullable_to_non_nullable
 as int,agency_warranty_months: null == agency_warranty_months ? _self.agency_warranty_months : agency_warranty_months // ignore: cast_nullable_to_non_nullable
-as int,expert_rating: null == expert_rating ? _self.expert_rating : expert_rating // ignore: cast_nullable_to_non_nullable
-as num,sales_count: null == sales_count ? _self.sales_count : sales_count // ignore: cast_nullable_to_non_nullable
+as int,expert_rating: freezed == expert_rating ? _self.expert_rating : expert_rating // ignore: cast_nullable_to_non_nullable
+as num?,sales_count: null == sales_count ? _self.sales_count : sales_count // ignore: cast_nullable_to_non_nullable
 as int,views_count: null == views_count ? _self.views_count : views_count // ignore: cast_nullable_to_non_nullable
 as int,is_featured: null == is_featured ? _self.is_featured : is_featured // ignore: cast_nullable_to_non_nullable
 as bool,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable

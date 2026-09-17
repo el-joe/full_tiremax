@@ -20,7 +20,7 @@ abstract class Product with _$Product {
     required String name,
     required String short_description,
     String? description,
-    required String pattern_name,
+    String? pattern_name,
     String? usage_notes,
     required num price,
     num? sale_price,
@@ -41,7 +41,7 @@ abstract class Product with _$Product {
     @Default(<ProductImage>[]) List<ProductImage> images,
     String? primary_image,
     required Brand brand,
-    required Category category,
+    Category? category,
     TireSpec? tire_spec,
     BatterySpec? battery_spec,
   }) = _Product;

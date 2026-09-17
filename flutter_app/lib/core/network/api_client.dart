@@ -7,10 +7,21 @@ import 'api_exception.dart';
 
 /// Base URL for the API. Overridable at build time with
 /// `--dart-define=API_BASE_URL=https://api.tiremaxiq.com/api/v1`.
-const String apiBaseUrl = String.fromEnvironment(
+///
+/// Must end with a trailing slash: Dio resolves relative request paths
+/// (e.g. `'home'`, `'products'`) against [apiBaseUrl] using standard URI
+/// resolution, which replaces the last path segment when there's no
+/// trailing slash (`.../api/v1` + `home` -> `.../api/home`, silently
+/// dropping `v1` and 404ing on every endpoint). Normalizing here makes this
+/// safe regardless of how `API_BASE_URL` is passed at build time.
+const String _rawApiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
   defaultValue: 'https://api.tiremaxiq.com/api/v1',
 );
+
+final String apiBaseUrl = _rawApiBaseUrl.endsWith('/')
+    ? _rawApiBaseUrl
+    : '$_rawApiBaseUrl/';
 
 final tokenStorageProvider = Provider<TokenStorage>((ref) => TokenStorage());
 
