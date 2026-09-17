@@ -422,14 +422,14 @@ export default function CheckoutForm() {
                     <Text fontWeight={"bold"} color={"primary"}>
                       {(governorateData?.find(
                         // eslint-disable-next-line react-hooks/incompatible-library
-                        (e) => e.id === +watch("governorate_id"),
-                      )?.shipping_fee as number) < 1 ? (
+                        (e) => e.id === +(watch("governorate_id") ?? 0),
+                      )?.shipping_fee ?? 0) < 1 ? (
                         t("freeDelivery")
                       ) : (
                         <>
                           {
                             governorateData?.find(
-                              (e) => e.id === +watch("governorate_id"),
+                              (e) => e.id === +(watch("governorate_id") ?? 0),
                             )?.shipping_fee
                           }
                           <CurrencySymbol />
