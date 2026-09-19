@@ -19,7 +19,7 @@ interface IAuthContext {
   logout: () => void;
   authDialog: UseDialogReturn;
   isRegistering: boolean;
-  register: (credential: TRegisterCredential) => void;
+  register: (credential: TRegisterCredential, options?: { onError?: (err: unknown) => void }) => void;
   registerError: Error | null;
   registerIsError: boolean;
   protectedWithAuth: (fn: () => void) => void;

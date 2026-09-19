@@ -272,6 +272,7 @@
         "haveAnAccount": "لديك حساب؟",
         "logIn": "تسجيل الدخول",
         "createAccountWithOrder": "إنشاء حساب مع هذا الطلب",
+        "accountNotCreated": "تم تسجيل طلبك، لكن تعذّر إنشاء الحساب.",
         "password": "كلمة المرور",
         "passwordPlaceholder": "اختر كلمة مرور (6 أحرف على الأقل)",
         "fullNameRequired": "الاسم الكامل مطلوب",

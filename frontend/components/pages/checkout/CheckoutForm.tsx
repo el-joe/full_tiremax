@@ -52,7 +52,7 @@ export default function CheckoutForm() {
   const locale = useLocale();
   const { customer, isLogged, register: registerUser, authDialog } =
     useAuthContext();
-  const { appliedOffer } = useCartContext();
+  const { appliedOffer, refetchCart } = useCartContext();
   const dir = useDir();
   const [isRedirectingToPayment, setIsRedirectingToPayment] = useState(false);
   const {
@@ -144,6 +144,7 @@ export default function CheckoutForm() {
     },
     onSuccess: async (res) => {
       toast.success(res.message);
+      refetchCart(); // server cart is emptied by the order; reset the local count
       const orderId = res.data.id;
       const form = getValues();
       // optional: create an account with this order (server links the guest order via X-Guest-Token)
@@ -155,6 +156,11 @@ export default function CheckoutForm() {
           password: form.password,
           password_confirmation: form.password,
           locale,
+        }, {
+          onError: (err: unknown) => {
+            const msg = (err as AxiosError<{ message?: string }>)?.response?.data?.message;
+            toast(msg ? `${t("accountNotCreated")} ${msg}` : t("accountNotCreated"), { icon: "ℹ️" });
+          },
         });
       }
 

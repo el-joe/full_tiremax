@@ -157,6 +157,7 @@ export const useCart = () => {
 
   return {
     cart,
+    refetchCart: getCart,
     totalQuantity: cart?.items_count,
     addOrUpdateItem,
     removeItem,

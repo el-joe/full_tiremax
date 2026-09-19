@@ -272,6 +272,7 @@
         "haveAnAccount": "Have an account?",
         "logIn": "Log in",
         "createAccountWithOrder": "Create an account with this order",
+        "accountNotCreated": "Your order was placed, but we couldn't create the account.",
         "password": "Password",
         "passwordPlaceholder": "Choose a password (min 6 characters)",
         "fullNameRequired": "Full name is required",

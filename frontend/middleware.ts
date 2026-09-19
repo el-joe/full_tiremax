@@ -34,7 +34,8 @@ export function middleware(request: NextRequest) {
     const m = pathname.match(
       /^\/([a-z]{2})\/profile\/(orders|bookings|reservation)(?:\/([A-Za-z0-9-]+))?\/?$/,
     );
-    if (m && (m[3] || m[2] === "bookings")) {
+    if (m && (m[3] || m[2] === "bookings" || m[2] === "reservation")) {
+      // (guests only; logged-in users keep the real /profile/* routes)
       const url = new URL(`/${m[1]}/track-order`, request.url);
       const type = m[2] === "orders" ? "order" : "booking";
       url.searchParams.set("type", type);
