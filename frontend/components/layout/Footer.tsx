@@ -71,6 +71,9 @@ const Footer = async ({ settings }: { settings?: PublicSettings | null }) => {
             <Link href={"/offers"}>
               <Text _hover={{ color: "white" }}> {t("offers")}</Text>
             </Link>
+            <Link href={"/track-order"}>
+              <Text _hover={{ color: "white" }}> {t("trackOrder")}</Text>
+            </Link>
           </VStack>
         </Box>
         <Box>

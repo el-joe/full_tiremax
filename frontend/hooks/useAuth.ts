@@ -1,12 +1,13 @@
 import { ICustomerProfile } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, useCallback } from "react";
 import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import { AxiosError } from "axios";
 import { useQueryState } from "nuqs";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
+import { clearGuestToken } from "@/helpers/guestToken";
 import { useDialog } from "@chakra-ui/react";
 
 export type TLoginCredential = { login: string; password: string };
@@ -27,8 +28,11 @@ export type TUpdateCustomer = {
   locale?: string;
 };
 
+type TLinkMeta = { linked_orders?: number; linked_bookings?: number };
+
 export const useAuth = () => {
   const t = useTranslations("auth");
+  const queryClient = useQueryClient();
   const authDialog = useDialog();
   const [authDialogParam, setAuthDialogParam] = useQueryState("authDialog");
 
@@ -61,8 +65,9 @@ export const useAuth = () => {
           access_token: string;
           expires_in: number;
         };
+        meta?: TLinkMeta;
       }>("auth/login", body);
-      return data.data;
+      return { ...data.data, meta: data.meta };
     },
     onSuccess: (res) => {
       saveUser({
@@ -71,6 +76,7 @@ export const useAuth = () => {
         expiresIn: res.expires_in,
       });
       toast.success(`${t("welcome")} ${res.customer.name}`);
+      afterAuth(res.meta);
     },
     onError: (err: AxiosError<{ message?: string }>) => {
       const apiMessage = err.response?.data?.message;
@@ -96,8 +102,9 @@ export const useAuth = () => {
           access_token: string;
           expires_in: number;
         };
+        meta?: TLinkMeta;
       }>("auth/register", body);
-      return data.data;
+      return { ...data.data, meta: data.meta };
     },
     onSuccess: (res) => {
       saveUser({
@@ -106,6 +113,7 @@ export const useAuth = () => {
         expiresIn: res.expires_in,
       });
       toast.success(`${t("welcome")} ${res.customer.name}`);
+      afterAuth(res.meta);
     },
     onError: (err: AxiosError<{ message?: string }>) => {
       const apiMessage = err.response?.data?.message;
@@ -143,6 +151,19 @@ export const useAuth = () => {
       }
     },
   });
+
+  // after login/register the server links guest data to the account
+  const afterAuth = (meta?: TLinkMeta) => {
+    const orders = meta?.linked_orders ?? 0;
+    const bookings = meta?.linked_bookings ?? 0;
+    if (orders + bookings > 0) {
+      toast.success(t("linkedItems", { orders, bookings }));
+    }
+    clearGuestToken();
+    ["orders", "bookings", "cart"].forEach((key) =>
+      queryClient.invalidateQueries({ queryKey: [key] }),
+    );
+  };
 
   const saveUser = useCallback(
     ({

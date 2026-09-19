@@ -17,7 +17,12 @@ import {
   type CreateOrderInput,
   createOrderSchema,
 } from "@/Schemas/createOrderSchemas";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useCartContext } from "@/providers/CartProvider";
+import { Checkbox } from "@chakra-ui/react";
+import { Link } from "@/i18n/navigation";
+import { MdOutlineMail } from "react-icons/md";
+import { FaLock } from "react-icons/fa";
 import Input from "@/components/ui/Input";
 import { FaPhoneAlt, FaRegUserCircle } from "react-icons/fa";
 import DropSelectList from "@/components/ui/DropSelectList";
@@ -44,7 +49,10 @@ import { useEffect, useState } from "react";
 export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
   const router = useRouter();
-  const { protectedWithAuth } = useAuthContext();
+  const locale = useLocale();
+  const { customer, isLogged, register: registerUser, authDialog } =
+    useAuthContext();
+  const { appliedOffer } = useCartContext();
   const dir = useDir();
   const [isRedirectingToPayment, setIsRedirectingToPayment] = useState(false);
   const {
@@ -53,6 +61,7 @@ export default function CheckoutForm() {
     control,
     setValue,
     watch,
+    getValues,
     formState: { errors },
   } = useForm<CreateOrderInput>({
     resolver: zodResolver(createOrderSchema),
@@ -89,6 +98,15 @@ export default function CheckoutForm() {
   });
 
   const orderType = useWatch({ control, name: "type" });
+  const createAccount = useWatch({ control, name: "create_account" });
+
+  // prefill contact details for logged-in customers
+  useEffect(() => {
+    if (!customer) return;
+    setValue("customer_name", customer.name ?? "");
+    setValue("customer_phone", customer.phone ?? "");
+    setValue("customer_email", customer.email ?? "");
+  }, [customer, setValue]);
 
   useEffect(() => {
     if (!orderType) {
@@ -104,8 +122,10 @@ export default function CheckoutForm() {
         payment_method: data.payment_method,
         customer_name: data.customer_name,
         customer_phone: data.customer_phone,
-        customer_email: data.customer_email,
+        customer_email: data.customer_email || undefined,
         notes: data.notes,
+        locale,
+        offer_code: appliedOffer?.offer.code,
         ...(data.type === "basra"
           ? { branch_id: data.branch_id ? +data.branch_id : undefined }
           : {
@@ -125,6 +145,18 @@ export default function CheckoutForm() {
     onSuccess: async (res) => {
       toast.success(res.message);
       const orderId = res.data.id;
+      const form = getValues();
+      // optional: create an account with this order (server links the guest order via X-Guest-Token)
+      if (!isLogged && form.create_account && form.password) {
+        registerUser({
+          name: form.customer_name,
+          phone: form.customer_phone,
+          email: form.customer_email || undefined,
+          password: form.password,
+          password_confirmation: form.password,
+          locale,
+        });
+      }
 
       try {
         setIsRedirectingToPayment(true);
@@ -155,8 +187,7 @@ export default function CheckoutForm() {
   });
 
   const onSubmit: SubmitHandler<CreateOrderInput> = async (data) => {
-    // wrap mutate call so it matches protectedWithAuth signature
-    protectedWithAuth(() => createOrder(data));
+    createOrder(data);
   };
 
   return (
@@ -248,6 +279,21 @@ export default function CheckoutForm() {
           {/* personal information */}
           <GroupContainer>
             <Heading>{t("personalInformation")}</Heading>
+            {!isLogged && (
+              <Text fontSize={"14px"} color={"gray-2"}>
+                {t("haveAnAccount")}{" "}
+                <Link
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    authDialog.setOpen(true);
+                  }}
+                  style={{ color: "var(--chakra-colors-primary)", fontWeight: 700 }}
+                >
+                  {t("logIn")}
+                </Link>
+              </Text>
+            )}
             <HStack
               gap={{ base: "14px", lg: "26px", xl: "40px" }}
               align={"start"}
@@ -281,6 +327,56 @@ export default function CheckoutForm() {
                 p="16px"
               />
             </HStack>
+            <HStack
+              gap={{ base: "14px", lg: "26px", xl: "40px" }}
+              align={"start"}
+            >
+              <Input
+                label={t("emailOptional")}
+                placeholder={t("emailPlaceholder")}
+                startElement={<MdOutlineMail />}
+                register={register("customer_email")}
+                err={!!errors?.customer_email?.message}
+                errMes={
+                  !!errors.customer_email?.message
+                    ? t(errors?.customer_email?.message)
+                    : ""
+                }
+                h="auto"
+                p="16px"
+              />
+            </HStack>
+            {!isLogged && (
+              <VStack align={"stretch"} gap={"12px"}>
+                <Checkbox.Root
+                  checked={!!createAccount}
+                  onCheckedChange={(e) =>
+                    setValue("create_account", !!e.checked)
+                  }
+                >
+                  <Checkbox.HiddenInput />
+                  <Checkbox.Control />
+                  <Checkbox.Label>{t("createAccountWithOrder")}</Checkbox.Label>
+                </Checkbox.Root>
+                {createAccount && (
+                  <Input
+                    label={t("password")}
+                    placeholder={t("passwordPlaceholder")}
+                    startElement={<FaLock />}
+                    type="password"
+                    register={register("password")}
+                    err={!!errors?.password?.message}
+                    errMes={
+                      !!errors.password?.message
+                        ? t(errors?.password?.message)
+                        : ""
+                    }
+                    h="auto"
+                    p="16px"
+                  />
+                )}
+              </VStack>
+            )}
             <HStack
               gap={{ base: "14px", lg: "26px", xl: "40px" }}
               align={"start"}

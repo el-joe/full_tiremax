@@ -15,6 +15,9 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import Input from "@/components/ui/Input";
+import { useAuthContext } from "@/providers/AuthProvider";
 import React from "react";
 import { AiOutlineTool } from "react-icons/ai";
 import { CiCalendar } from "react-icons/ci";
@@ -36,7 +39,49 @@ export default function ConfirmBooking() {
     useSteps: { goToPrevStep },
     createBooking,
     isCreatingBooking,
+    bookingResult,
   } = useReservationContext();
+  const { isLogged } = useAuthContext();
+  if (bookingResult) {
+    return (
+      <VStack gap={"16px"} py={"32px"} textAlign={"center"}>
+        <Center w={"96px"} py={"24px"} bg={"primary"} rounded={"12px"}>
+          <Icon size={"xl"} color={"white"}>
+            <LuCircleCheckBig />
+          </Icon>
+        </Center>
+        <Heading fontSize={"32px"} fontWeight={"extrabold"}>
+          {t("bookingSuccess")}
+        </Heading>
+        <Text color={"gray-2"}>
+          {t("bookingReference")}:{" "}
+          <Span fontWeight={"bold"} color={"black"}>
+            {bookingResult.reference}
+          </Span>
+        </Text>
+        {isLogged ? (
+          <Link
+            href={`/profile/reservation/${bookingResult.reference}`}
+            style={{ color: "var(--chakra-colors-primary)", fontWeight: 700 }}
+          >
+            {t("viewBooking")}
+          </Link>
+        ) : (
+          <>
+            <Text color={"gray-2"} maxW={"420px"}>
+              {t("createAccountToTrackBookings")}
+            </Text>
+            <Link
+              href={`/services/reservation?authDialog=on&phone=${encodeURIComponent(bookingResult.customer_phone ?? "")}`}
+              style={{ color: "var(--chakra-colors-primary)", fontWeight: 700 }}
+            >
+              {t("createAccountCta")}
+            </Link>
+          </>
+        )}
+      </VStack>
+    );
+  }
   return (
     <>
       <HStack gap={"16px"} mb={"32px"}>
@@ -70,6 +115,7 @@ export default function ConfirmBooking() {
           maxW={"346px"}
           mx={"auto"}
         >
+          {!isLogged && <GuestContactCard />}
           <BranchInfoCard />
           <NotesCard />
           <Button
@@ -303,3 +349,53 @@ const NotesCard = () => {
 //     "": "Late arrivals may result in your appointment being rescheduled.",
 //     "": "You may cancel or modify your booking up to 24 hours in advance.",
 //     "": "Confirm Booking"
+
+const GuestContactCard = () => {
+  const t = useTranslations("reservation");
+  const { contact, setContact, contactErrors } = useReservationContext();
+  const err = (k: "name" | "phone" | "email") =>
+    contactErrors[k] ? t(contactErrors[k] as string) : "";
+  return (
+    <VStack
+      p="24px"
+      border={"1px solid #E5E7EB"}
+      rounded={"16px"}
+      align={"stretch"}
+      gap={"12px"}
+    >
+      <Heading pb={"4px"}>{t("contactInformation")}</Heading>
+      <Input
+        label={t("fullName")}
+        placeholder={t("fullName")}
+        value={contact.name}
+        onChange={(e) => setContact({ name: e.target.value })}
+        err={!!contactErrors.name}
+        errMes={err("name")}
+        h="auto"
+        p="12px"
+      />
+      <Input
+        label={t("phoneNumber")}
+        placeholder="07XXXXXXXXX"
+        type="tel"
+        value={contact.phone}
+        onChange={(e) => setContact({ phone: e.target.value })}
+        err={!!contactErrors.phone}
+        errMes={err("phone")}
+        h="auto"
+        p="12px"
+      />
+      <Input
+        label={t("emailOptional")}
+        placeholder="name@example.com"
+        type="email"
+        value={contact.email}
+        onChange={(e) => setContact({ email: e.target.value })}
+        err={!!contactErrors.email}
+        errMes={err("email")}
+        h="auto"
+        p="12px"
+      />
+    </VStack>
+  );
+};

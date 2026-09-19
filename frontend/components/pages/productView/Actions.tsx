@@ -54,7 +54,7 @@ const Actions = ({ product }: Props) => {
           p={{ base: "8px", md: "11px", xl: "16px" }}
           h={"auto"}
           loading={isAddingToCart}
-          onClick={() => protectedWithAuth(() => addOrUpdateItem(product, 1))}
+          onClick={() => addOrUpdateItem(product, 1)}
         >
           <CartPlusIcon />
           {t("addToCart")}

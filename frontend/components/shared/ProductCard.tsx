@@ -225,7 +225,7 @@ const ProductCard = ({ product }: Props) => {
             disabled={isAdding}
             onClick={(e) => {
               e.preventDefault();
-              protectedWithAuth(() => addOrUpdateItem(product, 1));
+              addOrUpdateItem(product, 1);
             }}
           >
             <CartPlusIcon size={{ base: "xs", md: "sm", xl: "xl" }} />

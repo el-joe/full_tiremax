@@ -43,9 +43,8 @@ export const useCart = () => {
   });
 
   useEffect(() => {
-    if (isLogged) {
-      getCart();
-    }
+    // guests have a server-side cart keyed by X-Guest-Token; refetch on login/logout (merge)
+    getCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogged]);
 

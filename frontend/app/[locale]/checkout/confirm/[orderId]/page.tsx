@@ -21,6 +21,7 @@ import NeedHelpCard from "@/components/shared/NeedHelpCard";
 import axiosInstance from "@/utils/axiosInstance";
 import { IOrder } from "@/types";
 import { redirect } from "next/navigation";
+import { Link } from "@/i18n/navigation";
 
 type props = {
   params: Promise<{ orderId: string }>;
@@ -61,6 +62,32 @@ export default async function page({ params }: props) {
             {t("orderConfirmationMessage")}
           </Text>
         </VStack>
+        {data.is_guest && (
+          <VStack
+            maxW={"528px"}
+            mx={"auto"}
+            mb={"32px"}
+            p={"20px"}
+            rounded={"12px"}
+            bg={"#FAFAFA"}
+            borderStart={"4px solid {colors.primary}"}
+            gap={"8px"}
+            align={"start"}
+          >
+            <Text fontWeight={"bold"}>
+              {t("orderReference")}: {data.reference}
+            </Text>
+            <Text fontSize={"14px"} color={"gray-2"}>
+              {t("createAccountToTrack")}
+            </Text>
+            <Link
+              href={`/?authDialog=on&phone=${encodeURIComponent(data.customer_phone ?? "")}`}
+              style={{ color: "var(--chakra-colors-primary)", fontWeight: 700 }}
+            >
+              {t("createAccountCta")}
+            </Link>
+          </VStack>
+        )}
         <HStack align={"start"} justify={"center"} gap="40px" flexWrap={"wrap"}>
           {/* products summary */}
           <VStack

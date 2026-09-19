@@ -8,11 +8,13 @@ import useDir from "@/hooks/useDir";
 import { useTranslations } from "next-intl";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useQueryState } from "nuqs";
+import { useSearchParams } from "next/navigation";
 
 export default function AuthDialog() {
   const dir = useDir();
   const t = useTranslations("auth");
   const { authDialog } = useAuthContext();
+  const hasPhone = !!useSearchParams().get("phone");
   const [, setAuthDialogPram] = useQueryState("authDialog");
   return (
     <Dialog
@@ -20,7 +22,7 @@ export default function AuthDialog() {
       closeIconButton
       onExitComplete={() => setAuthDialogPram(null)}
     >
-      <Tabs.Root defaultValue="login">
+      <Tabs.Root defaultValue={hasPhone ? "register" : "login"}>
         <Tabs.List dir={dir}>
           <Tabs.Trigger value="login">
             <LuLogIn />

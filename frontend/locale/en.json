@@ -34,7 +34,8 @@
         "bookYourAppointmentNow": "Book Your Appointment Now",
         "privacyPolicy": "Privacy policy",
         "allRightsReserved": "© 2024 TiraMax Iraq. All rights reserved",
-        "termsAndConditions": "Terms and conditions"
+        "termsAndConditions": "Terms and conditions",
+        "trackOrder": "Track your order"
     },
     "home": {
         "controlStartsWith": "Control starts with",
@@ -256,7 +257,6 @@
         "productSummary": "Product Summary",
         "estimatedDeliveryDate": "Estimated Delivery Date",
         "readyForPickup": "Ready for pickup",
-        "branchPickup": "Branch Pickup",
         "endingWith": "Ending in **** 4242",
         "deliveryAddress": "Delivery Address",
         "pickupBranch": "Pickup Branch",
@@ -266,7 +266,25 @@
         "supportDescription": "Our support team is available around the clock to answer your questions and assist you.",
         "chatWithAnExpert": "Talk to an Expert",
         "noPaymentMethodsAvailable": "No payment methods available",
-        "selectPaymentMethodIsRequired": "Payment method selection is required"
+        "selectPaymentMethodIsRequired": "Payment method selection is required",
+        "emailOptional": "Email (optional)",
+        "emailPlaceholder": "name@example.com",
+        "haveAnAccount": "Have an account?",
+        "logIn": "Log in",
+        "createAccountWithOrder": "Create an account with this order",
+        "password": "Password",
+        "passwordPlaceholder": "Choose a password (min 6 characters)",
+        "fullNameRequired": "Full name is required",
+        "nameMaxLength": "Name must be less than 120 characters",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Enter a valid Iraqi phone number (e.g. 07701234567)",
+        "phoneNumberMaxLength": "Phone number must be less than 20 characters",
+        "invalidEmail": "Invalid email address",
+        "emailMaxLength": "Email must be less than 120 characters",
+        "passwordMinLength": "Password must be at least 6 characters",
+        "orderReference": "Order reference",
+        "createAccountToTrack": "Create an account to track your orders and get faster checkout next time.",
+        "createAccountCta": "Create an account"
     },
     "favorites": {
         "favorites": "Favorites",
@@ -364,7 +382,21 @@
         "modifyBookingNote": "You may cancel or modify your booking up to 24 hours in advance.",
         "confirmBookingButton": "Confirm Booking",
         "thisBranchHasNoAvailableDates": "This branch has no available dates at the moment",
-        "noTimeAvailable": "No available slots for this date. Please choose another date."
+        "noTimeAvailable": "No available slots for this date. Please choose another date.",
+        "contactInformation": "Contact information",
+        "fullName": "Full name",
+        "phoneNumber": "Phone number",
+        "emailOptional": "Email (optional)",
+        "fullNameRequired": "Full name is required",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Enter a valid Iraqi phone number (e.g. 07701234567)",
+        "invalidEmail": "Invalid email address",
+        "bookingDateInPast": "Please choose a date and time in the future",
+        "bookingSuccess": "Booking confirmed!",
+        "bookingReference": "Booking reference",
+        "viewBooking": "View booking",
+        "createAccountToTrackBookings": "Create an account to track and manage your bookings.",
+        "createAccountCta": "Create an account"
     },
     "auth": {
         "emailOrPhoneNumber": "Email or phone number",
@@ -402,7 +434,8 @@
         "logoutTitle": "Log out",
         "logoutWarning": "Are you sure you want to log out? You'll be redirected to the home page.",
         "logoutConfirm": "Log out",
-        "logoutCancel": "Cancel"
+        "logoutCancel": "Cancel",
+        "linkedItems": "{orders} previous orders and {bookings} bookings were linked to your account"
     },
     "profile": {
         "profile": "Profile",
@@ -572,5 +605,16 @@
     "addedToYourFavorites": "Added to your favorites",
     "removedFromYourFavorites": "Removed from your favorites",
     "addedToTheCart": "Added to the cart",
-    "removedFromTheCart": "Removed from the cart"
+    "removedFromTheCart": "Removed from the cart",
+    "trackOrder": {
+        "title": "Track your order or booking",
+        "description": "Enter your reference number and the phone number used when ordering.",
+        "reference": "Reference",
+        "phone": "Phone number",
+        "track": "Track",
+        "required": "Reference and phone number are required",
+        "notFound": "No order or booking found for these details",
+        "error": "Something went wrong, please try again",
+        "total": "Total"
+    }
 }

@@ -34,7 +34,8 @@
         "bookYourAppointmentNow": "احجز موعدك الآن",
         "privacyPolicy": "سياسة الخصوصية",
         "allRightsReserved": "© ٢٠٢٤ تایير ماكس العراق. جميع الحقوق محفوظة",
-        "termsAndConditions": "الشروط والأحكام"
+        "termsAndConditions": "الشروط والأحكام",
+        "trackOrder": "تتبع طلبك"
     },
     "home": {
         "controlStartsWith": "التحكم يبدأ من",
@@ -256,7 +257,6 @@
         "productSummary": "ملخص المنتجات",
         "estimatedDeliveryDate": "موعد التوصيل المتوقع",
         "readyForPickup": "جاهز للاستلام",
-        "branchPickup": "استلام من الفرع",
         "endingWith": "ينتهي بـ **** ٤٢٤٢",
         "deliveryAddress": "عنوان التوصيل",
         "pickupBranch": "فرع الاستلام",
@@ -266,7 +266,25 @@
         "supportDescription": "فريق الدعم الفني جاهز للإجابة على استفساراتكم على مدار الساعة.",
         "chatWithAnExpert": "تحدث مع خبير",
         "noPaymentMethodsAvailable": "لا توجد طرق دفع متاحة",
-        "selectPaymentMethodIsRequired": "اختيار طريقة الدفع مطلوب"
+        "selectPaymentMethodIsRequired": "اختيار طريقة الدفع مطلوب",
+        "emailOptional": "البريد الإلكتروني (اختياري)",
+        "emailPlaceholder": "name@example.com",
+        "haveAnAccount": "لديك حساب؟",
+        "logIn": "تسجيل الدخول",
+        "createAccountWithOrder": "إنشاء حساب مع هذا الطلب",
+        "password": "كلمة المرور",
+        "passwordPlaceholder": "اختر كلمة مرور (6 أحرف على الأقل)",
+        "fullNameRequired": "الاسم الكامل مطلوب",
+        "nameMaxLength": "يجب أن يكون الاسم أقل من 120 حرفاً",
+        "phoneRequired": "رقم الهاتف مطلوب",
+        "phoneInvalid": "أدخل رقم هاتف عراقي صحيح (مثال 07701234567)",
+        "phoneNumberMaxLength": "يجب أن يكون رقم الهاتف أقل من 20 رقماً",
+        "invalidEmail": "بريد إلكتروني غير صالح",
+        "emailMaxLength": "يجب أن يكون البريد أقل من 120 حرفاً",
+        "passwordMinLength": "يجب ألا تقل كلمة المرور عن 6 أحرف",
+        "orderReference": "رقم الطلب",
+        "createAccountToTrack": "أنشئ حساباً لتتبع طلباتك وإتمام الشراء بسرعة في المرة القادمة.",
+        "createAccountCta": "إنشاء حساب"
     },
     "favorites": {
         "favorites": "قائمة المفضلة",
@@ -364,7 +382,21 @@
         "modifyBookingNote": "يمكنك إلغاء أو تعديل الحجز قبل 24 ساعة",
         "confirmBookingButton": "تأكيد الحجز",
         "thisBranchHasNoAvailableDates": "لا توجد مواعيد متاحة لهذا الفرع حالياً",
-        "noTimeAvailable": "لا توجد أوقات متاحة لهذا التاريخ. يرجى اختيار تاريخ آخر."
+        "noTimeAvailable": "لا توجد أوقات متاحة لهذا التاريخ. يرجى اختيار تاريخ آخر.",
+        "contactInformation": "معلومات التواصل",
+        "fullName": "الاسم الكامل",
+        "phoneNumber": "رقم الهاتف",
+        "emailOptional": "البريد الإلكتروني (اختياري)",
+        "fullNameRequired": "الاسم الكامل مطلوب",
+        "phoneRequired": "رقم الهاتف مطلوب",
+        "phoneInvalid": "أدخل رقم هاتف عراقي صحيح (مثال 07701234567)",
+        "invalidEmail": "بريد إلكتروني غير صالح",
+        "bookingDateInPast": "يرجى اختيار تاريخ ووقت في المستقبل",
+        "bookingSuccess": "تم تأكيد الحجز!",
+        "bookingReference": "رقم الحجز",
+        "viewBooking": "عرض الحجز",
+        "createAccountToTrackBookings": "أنشئ حساباً لتتبع حجوزاتك وإدارتها.",
+        "createAccountCta": "إنشاء حساب"
     },
     "auth": {
         "emailOrPhoneNumber": "البريد الإلكتروني أو رقم الهاتف",
@@ -402,7 +434,8 @@
         "logoutTitle": "تسجيل الخروج",
         "logoutWarning": "هل أنت متأكد أنك تريد تسجيل الخروج؟ ستتم إعادة توجيهك إلى الصفحة الرئيسية.",
         "logoutConfirm": "تسجيل الخروج",
-        "logoutCancel": "إلغاء"
+        "logoutCancel": "إلغاء",
+        "linkedItems": "تم ربط {orders} طلبات سابقة و{bookings} حجوزات بحسابك"
     },
     "profile": {
         "profile": "الملف الشخصي",
@@ -573,5 +606,16 @@
     "addedToYourFavorites": "تمت الإضافة إلى المفضلة",
     "removedFromYourFavorites": "تمت الإزالة من المفضلة",
     "addedToTheCart": "تمت الإضافة إلى سلة التسوق",
-    "removedFromTheCart": "تمت الإزالة من سلة التسوق"
+    "removedFromTheCart": "تمت الإزالة من سلة التسوق",
+    "trackOrder": {
+        "title": "تتبع طلبك أو حجزك",
+        "description": "أدخل الرقم المرجعي ورقم الهاتف المستخدم عند الطلب.",
+        "reference": "الرقم المرجعي",
+        "phone": "رقم الهاتف",
+        "track": "تتبع",
+        "required": "الرقم المرجعي ورقم الهاتف مطلوبان",
+        "notFound": "لا يوجد طلب أو حجز بهذه البيانات",
+        "error": "حدث خطأ، يرجى المحاولة مرة أخرى",
+        "total": "الإجمالي"
+    }
 }

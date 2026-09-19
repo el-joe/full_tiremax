@@ -4,6 +4,8 @@ import { IGovernorate } from "./governorate.type";
 export interface IOrder {
     id: number;
     reference: string;
+    is_guest?: boolean;
+    customer_id?: number | null;
     type: "delivery" | "basra";
     status: string;
     payment_method: string;

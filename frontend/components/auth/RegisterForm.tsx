@@ -6,12 +6,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../ui/Input";
 import { RegisterFormValues, registerSchema } from "@/Schemas/authSchemas";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useAuthContext } from "@/providers/AuthProvider";
 
 export default function RegisterForm() {
   const t = useTranslations("auth");
   const locale = useLocale();
+  const searchParams = useSearchParams();
 
   const {
     register: registerUser,
@@ -28,8 +30,8 @@ export default function RegisterForm() {
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
-      phone: "",
-      email: "",
+      phone: searchParams.get("phone") ?? "",
+      email: searchParams.get("email") ?? "",
       password: "",
       password_confirmation: "",
       address: "",

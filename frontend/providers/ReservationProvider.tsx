@@ -11,7 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { isValidIraqiPhone } from "@/helpers/phone";
+import { useLocale, useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import { AiOutlineTool } from "react-icons/ai";
 import { FaRegCheckCircle } from "react-icons/fa";
@@ -58,6 +60,18 @@ type TAvailableTimeSlot = {
   capacity_remaining: number;
 };
 
+export interface IBookingContact {
+  name: string;
+  phone: string;
+  email: string;
+}
+export interface IBookingResult {
+  id: number;
+  reference: string;
+  is_guest?: boolean;
+  customer_phone?: string;
+}
+
 interface IreservationContext {
   steps: {
     id: number;
@@ -83,6 +97,10 @@ interface IreservationContext {
   setDate: (date: string) => void;
   setTime: (time: string) => void;
   createBooking: () => void;
+  contact: IBookingContact;
+  setContact: (c: Partial<IBookingContact>) => void;
+  contactErrors: Partial<Record<keyof IBookingContact | "date", string>>;
+  bookingResult: IBookingResult | null;
   availableTimeSlots: TAvailableTimeSlot[];
   isAvailableTimeSlotsLoading: boolean;
 }
@@ -101,6 +119,10 @@ const initialState: IreservationContext = {
   setDate: () => {},
   setTime: () => {},
   createBooking: () => {},
+  contact: { name: "", phone: "", email: "" },
+  setContact: () => {},
+  contactErrors: {},
+  bookingResult: null,
   availableTimeSlots: [],
   isAvailableTimeSlotsLoading: false,
 };
@@ -112,13 +134,41 @@ export const ReservationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { protectedWithAuth } = useAuthContext();
+  const { customer, isLogged } = useAuthContext();
+  const locale = useLocale();
+  const t = useTranslations("reservation");
   const searchParams = useSearchParams();
-  const [reservationData, setReservationData] = useState<
-    IreservationContext["reservationData"]
-  >({ service: null, branch: null, date: null, time: null });
+  // selection kept as ids/values; full objects are derived from the loaded lists
+  const [selection, setSelection] = useState<{
+    serviceId: number | null;
+    branchId: number | null;
+    date: string | null;
+    time: string | null;
+  }>(() => {
+    const serviceId = Number(searchParams.get("service_id")) || null;
+    const branchId = serviceId
+      ? Number(searchParams.get("branch_id")) || null
+      : null;
+    return { serviceId, branchId, date: null, time: null };
+  });
+  const [contactInput, setContactInput] = useState<Partial<IBookingContact>>(
+    {},
+  );
+  const [contactErrors, setContactErrors] = useState<
+    IreservationContext["contactErrors"]
+  >({});
+  const [bookingResult, setBookingResult] = useState<IBookingResult | null>(
+    null,
+  );
+  const contact: IBookingContact = {
+    name: contactInput.name ?? customer?.name ?? "",
+    phone: contactInput.phone ?? customer?.phone ?? "",
+    email: contactInput.email ?? customer?.email ?? "",
+  };
+  const setContact = (c: Partial<IBookingContact>) =>
+    setContactInput((p) => ({ ...p, ...c }));
   const useSteps = useChakraSteps({
-    defaultStep: 0,
+    defaultStep: selection.serviceId ? (selection.branchId ? 2 : 1) : 0,
     count: steps.length,
   });
   //   fetch the services data
@@ -137,6 +187,18 @@ export const ReservationProvider = ({
       return data.data;
     },
   });
+  const reservationData = useMemo<IreservationContext["reservationData"]>(
+    () => ({
+      service:
+        (servicesList ?? []).find((x) => x.id === selection.serviceId) ??
+        null,
+      branch:
+        (branchesList ?? []).find((x) => x.id === selection.branchId) ?? null,
+      date: selection.date,
+      time: selection.time,
+    }),
+    [servicesList, branchesList, selection],
+  );
   //   fetch the available time slots
   const {
     data: availableTimeSlots = [],
@@ -164,10 +226,18 @@ export const ReservationProvider = ({
       branch_id: number;
       service_id: number;
       scheduled_at: string;
+      customer_name?: string;
+      customer_phone?: string;
+      customer_email?: string;
+      locale?: string;
     }) => {
-      const { data } = await axiosInstance.post("bookings", body);
-      return data;
+      const { data } = await axiosInstance.post<{ data: IBookingResult }>(
+        "bookings",
+        body,
+      );
+      return data.data;
     },
+    onSuccess: (res) => setBookingResult(res),
     onError: (err: AxiosError<{ message?: string }>) => {
       if (err.status === 401) return;
       const errorMessage =
@@ -176,66 +246,59 @@ export const ReservationProvider = ({
     },
   });
   //   set service
-  const setService = (serviceId: number) => {
-    const service =
-      (servicesList ?? []).find((s) => s.id === serviceId) ?? null;
-    setReservationData({
-      branch: null,
-      date: null,
-      time: null,
-      service,
-    });
-  };
+  const setService = (serviceId: number) =>
+    setSelection({ serviceId, branchId: null, date: null, time: null });
   //   set branch
-  const setBrach = (serviceId: number) => {
-    const branch = (branchesList ?? []).find((s) => s.id === serviceId) ?? null;
-    setReservationData((p) => ({ ...p, date: null, time: null, branch }));
-  };
+  const setBrach = (branchId: number) =>
+    setSelection((p) => ({ ...p, date: null, time: null, branchId }));
   //   set date
   const setDate = (date: string) => {
-    setReservationData((p) => ({ ...p, time: null, date }));
+    setSelection((p) => ({ ...p, time: null, date }));
     if (reservationData.branch) {
       getAvailableTimesSlots();
     }
   };
   //   set time
-  const setTime = (time: string) => {
-    setReservationData((p) => ({ ...p, time }));
-  };
+  const setTime = (time: string) => setSelection((p) => ({ ...p, time }));
   // create booking
   const createBooking = () => {
     const { service, branch, date, time } = reservationData;
     if (!service || !branch || !date || !time) return;
-    const body = {
+    const errs: IreservationContext["contactErrors"] = {};
+    const scheduled = new Date(`${date}T${time}`);
+    if (Number.isNaN(scheduled.getTime()) || scheduled.getTime() <= Date.now()) {
+      errs.date = "bookingDateInPast";
+    }
+    if (!isLogged) {
+      if (!contact.name.trim()) errs.name = "fullNameRequired";
+      if (!contact.phone.trim()) errs.phone = "phoneRequired";
+      else if (!isValidIraqiPhone(contact.phone)) errs.phone = "phoneInvalid";
+      if (
+        contact.email.trim() &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.trim())
+      ) {
+        errs.email = "invalidEmail";
+      }
+    }
+    setContactErrors(errs);
+    if (Object.keys(errs).length) {
+      if (errs.date) toast.error(t("bookingDateInPast"));
+      return;
+    }
+    mutateBooking({
       service_id: service.id,
       branch_id: branch.id,
-      scheduled_at: `${reservationData.date}T${reservationData.time}`,
-    };
-    protectedWithAuth(() => mutateBooking(body));
-  };
-
-  //   pre-fill service/branch from url params (e.g. rescheduling)
-  useEffect(() => {
-    if (isServicesListLoading || isBranchesListLoading) return;
-    const serviceId = searchParams.get("service_id");
-    const branchId = searchParams.get("branch_id");
-    if (!serviceId) return;
-    const service = (servicesList ?? []).find(
-      (s) => s.id === Number(serviceId),
-    );
-    if (!service) return;
-    const branch = branchId
-      ? (branchesList ?? []).find((b) => b.id === Number(branchId))
-      : null;
-    setReservationData({
-      service,
-      branch: branch ?? null,
-      date: null,
-      time: null,
+      scheduled_at: `${date}T${time}`,
+      locale,
+      ...(isLogged
+        ? {}
+        : {
+            customer_name: contact.name.trim(),
+            customer_phone: contact.phone.trim(),
+            customer_email: contact.email.trim() || undefined,
+          }),
     });
-    useSteps.setStep(branch ? 2 : 1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isServicesListLoading, isBranchesListLoading]);
+  };
 
   return (
     <reservationContext.Provider
@@ -252,6 +315,10 @@ export const ReservationProvider = ({
         setDate,
         setTime,
         createBooking,
+        contact,
+        setContact,
+        contactErrors,
+        bookingResult,
         isCreatingBooking,
         availableTimeSlots,
         isAvailableTimeSlotsLoading,
