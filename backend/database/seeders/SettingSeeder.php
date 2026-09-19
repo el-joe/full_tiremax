@@ -56,6 +56,23 @@ class SettingSeeder extends Seeder
 
             [
                 'group' => 'general',
+                'key' => 'whatsapp_default_message',
+                'cast' => 'string',
+                'translatable' => true,
+                'en' => 'Hello Iraq Max Tire, I would like to ask about your products and services.',
+                'ar' => 'مرحباً إيراق ماكس تاير، أود الاستفسار عن منتجاتكم وخدماتكم.'
+            ],
+
+            [
+                'group' => 'general',
+                'key' => 'whatsapp_button_enabled',
+                'cast' => 'bool',
+                'translatable' => false,
+                'value' => '1'
+            ],
+
+            [
+                'group' => 'general',
                 'key' => 'address',
                 'cast' => 'string',
                 'translatable' => true,

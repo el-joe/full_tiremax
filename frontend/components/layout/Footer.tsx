@@ -19,8 +19,9 @@ import {
   WhatsappLogoIcon,
 } from "../Icons";
 import { Link } from "@/i18n/navigation";
+import type { PublicSettings } from "@/helpers/getPublicSettings";
 
-const Footer = async () => {
+const Footer = async ({ settings }: { settings?: PublicSettings | null }) => {
   const t = await getTranslations("footer");
   return (
     <Container px={"46px"} pt="80px" pb={"32px"} color={"white"}>
@@ -31,9 +32,21 @@ const Footer = async () => {
             {t("footerCompanyDescription")}
           </Text>
           <HStack px="24px" gap="24px" py={"10px"}>
-            <WhatsappLogoIcon size={"xl"} />
-            <FacebookLogoIcon size={"xl"} />
-            <InstagramLogoIcon size={"xl"} />
+            {(settings?.whatsapp_url ?? true) && (
+              <a href={settings?.whatsapp_url ?? "#"} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                <WhatsappLogoIcon size={"xl"} />
+              </a>
+            )}
+            {(!settings || settings.social?.facebook) && (
+              <a href={settings?.social?.facebook ?? "#"} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <FacebookLogoIcon size={"xl"} />
+              </a>
+            )}
+            {(!settings || settings.social?.instagram) && (
+              <a href={settings?.social?.instagram ?? "#"} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <InstagramLogoIcon size={"xl"} />
+              </a>
+            )}
           </HStack>
         </Box>
         <Box>
@@ -85,15 +98,15 @@ const Footer = async () => {
           <Heading as={"h4"} fontSize={"16px"} fontWeight={"bold"}>
             {t("contactUs")}
           </Heading>
-          <Link href={"tel:+964 770 000 0000"}>
+          <Link href={`tel:${settings?.site_phone ?? "+964 770 000 0000"}`}>
             <HStack gap={"12px"} color={"#CBCBCB"} my={"16px"}>
               <PhoneSignalIcon color={"primary"} size={"sm"} />
-              <Text dir="ltr">+964 770 000 0000</Text>
+              <Text dir="ltr">{settings?.site_phone ?? "+964 770 000 0000"}</Text>
             </HStack>
           </Link>
           <HStack gap={"12px"} color={"#CBCBCB"}>
             <LocationPinIcon size={"sm"} color={"primary"} />
-            <Text>{t("footerAddress")}</Text>
+            <Text>{settings?.address || t("footerAddress")}</Text>
           </HStack>
         </Box>
         <Box fontSize={"14px"} maxW={"337px"}>

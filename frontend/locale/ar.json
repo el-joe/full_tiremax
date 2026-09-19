@@ -1,4 +1,7 @@
 {
+    "whatsapp": {
+        "ariaLabel": "محادثة واتساب"
+    },
     "header": {
         "home": "الرئيسية",
         "store": "المتجر",

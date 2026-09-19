@@ -20,6 +20,8 @@ import { FavProvider } from "@/providers/FavProvider";
 import { ProductFilterProvider } from "@/providers/ProductFilterProvider";
 import AuthDialog from "@/components/dialogs/AuthDialog";
 import getDir from "@/helpers/getDir";
+import { getPublicSettings } from "@/helpers/getPublicSettings";
+import WhatsappFloatingButton from "@/components/shared/WhatsappFloatingButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,6 +59,7 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   const dir = await getDir();
+  const settings = await getPublicSettings(locale);
   return (
     <html
       lang={locale}
@@ -79,7 +82,8 @@ export default async function RootLayout({
                         />
                         <Header />
                         <main className="md:pt-26">{children}</main>
-                        <Footer />
+                        <Footer settings={settings} />
+                        <WhatsappFloatingButton settings={settings} />
                         {/* dialogs */}
                         <AuthDialog />
                       </ProductFilterProvider>

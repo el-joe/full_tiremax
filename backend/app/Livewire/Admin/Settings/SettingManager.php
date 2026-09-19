@@ -72,6 +72,7 @@ class SettingManager extends Component
             $setting->update(['value' => $value]);
         }
 
+        \App\Services\PublicSettings::flush();
         $this->loadForm();
 
         $this->dispatch('toast', icon: 'success', title: __('messages.admin.save'));

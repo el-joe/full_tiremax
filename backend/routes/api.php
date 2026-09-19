@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     // Public ------------------------------------------------------------
     Route::get('/home', [HomeController::class, 'index']);
+    Route::get('settings/public', [\App\Http\Controllers\Api\PublicSettingsController::class, 'show']);
     Route::get('payment-gateways', [PaymentController::class, 'gateways']);
     Route::post('payments/paymob/callback', [PaymentController::class, 'paymobCallback']);
 

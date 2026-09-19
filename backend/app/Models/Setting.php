@@ -15,6 +15,12 @@ class Setting extends Model implements TranslatableContract
 
     public array $translatedAttributes = ['value'];
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => \App\Services\PublicSettings::flush());
+        static::deleted(fn () => \App\Services\PublicSettings::flush());
+    }
+
     public function getTypedValue(?string $locale = null): mixed
     {
         $raw = $this->is_translatable

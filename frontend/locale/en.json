@@ -1,4 +1,7 @@
 {
+    "whatsapp": {
+        "ariaLabel": "WhatsApp chat"
+    },
     "header": {
         "home": "Home",
         "store": "Store",
