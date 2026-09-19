@@ -6,6 +6,7 @@ import '../../../core/models/branch.dart';
 import '../../../core/models/governorate.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../../orders/presentation/order_confirmation_screen.dart';
 import '../data/checkout_repository.dart';
@@ -38,6 +39,22 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   final _addressController = TextEditingController();
   final _notesController = TextEditingController();
   bool _isRedirecting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final customer = ref.read(customerProvider);
+    if (customer != null) {
+      _nameController.text = customer.name;
+      _phoneController.text = customer.phone;
+      _emailController.text = customer.email;
+      final notifier = ref.read(checkoutFlowProvider.notifier);
+      Future.microtask(() => notifier
+        ..setCustomerName(customer.name)
+        ..setCustomerPhone(customer.phone)
+        ..setCustomerEmail(customer.email));
+    }
+  }
 
   @override
   void dispose() {
@@ -129,9 +146,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   const SizedBox(height: 20),
                   _SectionTitle('Personal information'),
-                  _TextField(controller: _nameController, hint: 'Full name'),
+                  _TextField(controller: _nameController, hint: 'Full name', onChanged: ref.read(checkoutFlowProvider.notifier).setCustomerName),
                   const SizedBox(height: 10),
-                  _TextField(controller: _phoneController, hint: 'Phone number', keyboardType: TextInputType.phone),
+                  _TextField(controller: _phoneController, hint: 'Phone number', keyboardType: TextInputType.phone, onChanged: ref.read(checkoutFlowProvider.notifier).setCustomerPhone),
                   const SizedBox(height: 10),
                   _TextField(controller: _emailController, hint: 'Email (optional)', keyboardType: TextInputType.emailAddress),
                   const SizedBox(height: 20),
@@ -158,7 +175,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    _TextField(controller: _addressController, hint: 'Full address', maxLines: 3),
+                    _TextField(controller: _addressController, hint: 'Full address', maxLines: 3, onChanged: ref.read(checkoutFlowProvider.notifier).setShippingAddress),
                   ],
                   const SizedBox(height: 10),
                   _TextField(controller: _notesController, hint: 'Notes (optional)', maxLines: 2),
@@ -255,17 +272,19 @@ class _OrderTypeCard extends StatelessWidget {
 }
 
 class _TextField extends StatelessWidget {
-  const _TextField({required this.controller, required this.hint, this.keyboardType, this.maxLines = 1});
+  const _TextField({required this.controller, required this.hint, this.keyboardType, this.maxLines = 1, this.onChanged});
 
   final TextEditingController controller;
   final String hint;
   final TextInputType? keyboardType;
   final int maxLines;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      onChanged: onChanged,
       keyboardType: keyboardType,
       maxLines: maxLines,
       style: const TextStyle(color: Colors.white),

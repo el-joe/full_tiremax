@@ -553,6 +553,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reservation'**
   String get reservationTitle;
+
+  /// No description provided for @whatsappChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat on WhatsApp'**
+  String get whatsappChat;
+
+  /// No description provided for @guestLinkedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We linked {orders} previous order(s) and {bookings} booking(s) to your account.'**
+  String guestLinkedMessage(int orders, int bookings);
 }
 
 class _AppLocalizationsDelegate

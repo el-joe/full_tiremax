@@ -240,4 +240,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reservationTitle => 'الحجز';
+
+  @override
+  String get whatsappChat => 'تواصل عبر واتساب';
+
+  @override
+  String guestLinkedMessage(int orders, int bookings) {
+    return 'تم ربط $orders طلب و$bookings حجز سابق بحسابك.';
+  }
 }

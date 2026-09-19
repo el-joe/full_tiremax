@@ -6,6 +6,10 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../cart/providers/cart_provider.dart';
+import '../../orders/providers/orders_provider.dart';
+import '../../reservation/data/reservation_repository.dart';
+import '../data/auth_repository.dart';
 import '../providers/auth_provider.dart';
 
 /// Opens the login/register modal bottom sheet, mirroring the web's
@@ -17,6 +21,28 @@ Future<void> showAuthSheet(BuildContext context) {
     backgroundColor: Colors.transparent,
     builder: (context) => const AuthSheet(),
   );
+}
+
+/// After login/register: refresh guest-linked data and tell the user how many
+/// guest orders/bookings were attached to their account.
+void _afterAuth(
+  WidgetRef ref,
+  AuthResult result,
+  ScaffoldMessengerState messenger,
+  AppLocalizations l10n,
+) {
+  ref.invalidate(cartProvider);
+  ref.invalidate(ordersListProvider);
+  ref.invalidate(bookingsListProvider);
+  if (result.hasLinked) {
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          l10n.guestLinkedMessage(result.linkedOrders, result.linkedBookings),
+        ),
+      ),
+    );
+  }
 }
 
 class AuthSheet extends ConsumerStatefulWidget {
@@ -161,10 +187,13 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _submitting = true);
     try {
-      await ref.read(authProvider.notifier).login(
+      final messenger = ScaffoldMessenger.of(context);
+      final l10n = AppLocalizations.of(context);
+      final result = await ref.read(authProvider.notifier).login(
             login: _identifierController.text.trim(),
             password: _passwordController.text,
           );
+      _afterAuth(ref, result, messenger, l10n);
       if (mounted) Navigator.of(context).pop();
     } on ApiException catch (e) {
       setState(() => _apiError = e.message);
@@ -261,7 +290,9 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _submitting = true);
     try {
-      await ref.read(authProvider.notifier).register(
+      final messenger = ScaffoldMessenger.of(context);
+      final l10n = AppLocalizations.of(context);
+      final result = await ref.read(authProvider.notifier).register(
             name: _nameController.text.trim(),
             phone: _phoneController.text.trim(),
             email: _emailController.text.trim().isEmpty
@@ -274,6 +305,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
                 : _addressController.text.trim(),
             locale: ref.read(localeProvider).languageCode,
           );
+      _afterAuth(ref, result, messenger, l10n);
       if (mounted) Navigator.of(context).pop();
     } on ApiException catch (e) {
       setState(() => _apiError = e.message);

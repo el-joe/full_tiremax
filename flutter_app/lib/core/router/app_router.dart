@@ -23,14 +23,13 @@ import '../../features/reservation/presentation/profile_reservations_screen.dart
 import '../../features/reservation/presentation/reservation_screen.dart';
 import '../../features/services/presentation/services_screen.dart';
 import '../../features/store/presentation/store_screen.dart';
+import '../../features/settings/presentation/whatsapp_fab.dart';
 import '../../shared/widgets/bottom_nav_bar.dart';
 
 /// Base paths considered auth-gated, mirroring `middleware.ts`'s
 /// `PROTECTED_ROUTES`.
 const List<String> protectedRoutes = [
   '/profile',
-  '/cart',
-  '/checkout',
   '/favorites',
   '/notifications',
 ];
@@ -208,7 +207,17 @@ class AppShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: child,
+      body: Stack(
+        children: [
+          child,
+          // Above the floating bottom nav (pill + tabs bar), bottom-end.
+          const PositionedDirectional(
+            end: 16,
+            bottom: 12,
+            child: WhatsappFab(),
+          ),
+        ],
+      ),
       bottomNavigationBar: const BottomNavBar(),
     );
   }

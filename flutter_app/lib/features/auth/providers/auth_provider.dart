@@ -52,20 +52,21 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     }
   }
 
-  Future<void> login({required String login, required String password}) async {
+  Future<AuthResult> login({required String login, required String password}) async {
     final previous = state.value ?? const AuthState();
     state = const AsyncLoading();
     final repository = ref.read(authRepositoryProvider);
     try {
       final result = await repository.login(login: login, password: password);
       state = AsyncData(AuthState(customer: result.customer));
+      return result;
     } on ApiException {
       state = AsyncData(previous);
       rethrow;
     }
   }
 
-  Future<void> register({
+  Future<AuthResult> register({
     required String name,
     required String phone,
     String? email,
@@ -88,6 +89,7 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
         locale: locale,
       );
       state = AsyncData(AuthState(customer: result.customer));
+      return result;
     } on ApiException {
       state = AsyncData(previous);
       rethrow;

@@ -12,11 +12,17 @@ class AuthResult {
     required this.customer,
     required this.accessToken,
     required this.expiresIn,
+    this.linkedOrders = 0,
+    this.linkedBookings = 0,
   });
 
   final CustomerProfile customer;
   final String accessToken;
   final int? expiresIn;
+  final int linkedOrders;
+  final int linkedBookings;
+
+  bool get hasLinked => linkedOrders > 0 || linkedBookings > 0;
 }
 
 /// Mirrors `frontend/hooks/useAuth.ts`'s mutation functions.
@@ -104,14 +110,23 @@ class AuthRepository {
         CustomerProfile.fromJson(data['customer'] as Map<String, dynamic>);
     final accessToken = data['access_token'] as String;
     final expiresIn = data['expires_in'] as int?;
+    final meta = response.data?['meta'];
+    int metaInt(String key) {
+      final v = meta is Map ? meta[key] : null;
+      return v is num ? v.toInt() : int.tryParse('$v') ?? 0;
+    }
 
     await _tokenStorage.saveToken(accessToken);
     await _tokenStorage.saveCustomerInfo(customer.toJson());
+    // Guest data is now linked to the account; start fresh as a guest later.
+    await _tokenStorage.clearGuestToken();
 
     return AuthResult(
       customer: customer,
       accessToken: accessToken,
       expiresIn: expiresIn,
+      linkedOrders: metaInt('linked_orders'),
+      linkedBookings: metaInt('linked_bookings'),
     );
   }
 }

@@ -60,6 +60,9 @@ final apiClientProvider = Provider<Dio>((ref) {
           options.headers['Authorization'] = 'Bearer $token';
         }
 
+        options.headers['X-Guest-Token'] =
+            await tokenStorage.getOrCreateGuestToken();
+
         final locale = ref.read(localeProvider);
         options.headers['x-locale'] = locale.languageCode;
 

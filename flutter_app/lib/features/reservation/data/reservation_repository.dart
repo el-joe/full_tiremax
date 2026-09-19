@@ -87,10 +87,21 @@ class ReservationRepository {
     required int branchId,
     required String scheduledAt,
     String? customerNotes,
+    String? customerName,
+    String? customerPhone,
+    String? customerEmail,
+    String? locale,
   }) async {
     final response = await _dio.post(
       'bookings',
       data: {
+        if (customerName != null && customerName.trim().isNotEmpty)
+          'customer_name': customerName.trim(),
+        if (customerPhone != null && customerPhone.trim().isNotEmpty)
+          'customer_phone': customerPhone.trim(),
+        if (customerEmail != null && customerEmail.trim().isNotEmpty)
+          'customer_email': customerEmail.trim(),
+        'locale': ?locale,
         'service_id': serviceId,
         'branch_id': branchId,
         'scheduled_at': scheduledAt,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/models/branch.dart';
 import '../../../core/network/api_exception.dart';
+import '../../../core/providers/locale_provider.dart';
 import '../../services/models/service.dart';
 import '../data/reservation_repository.dart';
 
@@ -150,7 +151,11 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
   /// Submits the booking. Returns the created [BookingResult] on success, or
   /// null if a required field is missing or the request failed (in which
   /// case [ReservationFlowState.submitError] is set).
-  Future<BookingResult?> createBooking() async {
+  Future<BookingResult?> createBooking({
+    String? customerName,
+    String? customerPhone,
+    String? customerEmail,
+  }) async {
     final service = state.service;
     final branch = state.branch;
     final date = state.date;
@@ -165,6 +170,10 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
         branchId: branch.id,
         scheduledAt: '${date}T$time:00',
         customerNotes: state.notes,
+        customerName: customerName,
+        customerPhone: customerPhone,
+        customerEmail: customerEmail,
+        locale: ref.read(localeProvider).languageCode,
       );
       state = state.copyWith(isSubmitting: false, result: result);
       return result;

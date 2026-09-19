@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
-import '../../../core/utils/protected_action.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../../../core/models/branch.dart';
 import '../../services/models/service.dart';
 import '../data/reservation_repository.dart';
@@ -380,9 +380,63 @@ class _ConfirmBookingStep extends ConsumerStatefulWidget {
 
 class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
   final _notesController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  String? _contactError;
+
+  @override
+  void initState() {
+    super.initState();
+    final customer = ref.read(customerProvider);
+    if (customer != null) {
+      _nameController.text = customer.name;
+      _phoneController.text = customer.phone;
+      _emailController.text = customer.email;
+    }
+  }
+
+  Future<void> _confirm() async {
+    if (_nameController.text.trim().length < 2 || _phoneController.text.trim().isEmpty) {
+      setState(() => _contactError = 'Please enter your name and phone number.');
+      return;
+    }
+    setState(() => _contactError = null);
+    final result = await ref.read(reservationFlowProvider.notifier).createBooking(
+          customerName: _nameController.text,
+          customerPhone: _phoneController.text,
+          customerEmail: _emailController.text,
+        );
+    if (result != null && mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => BookingConfirmationScreen(booking: result)),
+      );
+    }
+  }
+
+  Widget _contactField(TextEditingController c, String hint, [TextInputType? type]) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: TextField(
+        controller: c,
+        keyboardType: type,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: const TextStyle(color: AppColors.gray2),
+          filled: true,
+          fillColor: AppColors.gray3,
+          border: OutlineInputBorder(borderRadius: AppRadii.radiusLg, borderSide: BorderSide.none),
+        ),
+      ),
+    );
+  }
 
   @override
   void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
     _notesController.dispose();
     super.dispose();
   }
@@ -430,6 +484,17 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                const Text('Contact details', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                _contactField(_nameController, 'Full name'),
+                _contactField(_phoneController, 'Phone number', TextInputType.phone),
+                _contactField(_emailController, 'Email (optional)', TextInputType.emailAddress),
+                if (_contactError != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(_contactError!, style: const TextStyle(color: AppColors.error)),
+                  ),
+                const SizedBox(height: 10),
                 const Text('Notes (optional)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 8),
                 TextField(
@@ -461,14 +526,7 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
                     ),
                     onPressed: flow.isSubmitting
                         ? null
-                        : () => requireAuth(context, ref, () async {
-                              final result = await notifier.createBooking();
-                              if (result != null && context.mounted) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => BookingConfirmationScreen(booking: result)),
-                                );
-                              }
-                            }),
+                        : _confirm,
                     child: flow.isSubmitting
                         ? const SizedBox(
                             height: 20,

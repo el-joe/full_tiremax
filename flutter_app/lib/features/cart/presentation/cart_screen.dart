@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
-import '../../../core/utils/protected_action.dart';
 import '../../../shared/widgets/shimmer_box.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_provider.dart';
@@ -130,7 +129,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     subtotal: cart.subtotal,
                     discount: appliedOffer?.discount,
                     total: appliedOffer?.total ?? cart.subtotal,
-                    onCheckout: () => requireAuth(context, ref, () => context.push('/checkout')),
+                    onCheckout: () => context.push('/checkout'),
                   ),
                 ],
               );

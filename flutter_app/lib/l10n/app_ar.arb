@@ -88,5 +88,14 @@
 
   "servicesTitle": "الخدمات",
 
-  "reservationTitle": "الحجز"
+  "reservationTitle": "الحجز",
+
+  "whatsappChat": "تواصل عبر واتساب",
+  "guestLinkedMessage": "تم ربط {orders} طلب و{bookings} حجز سابق بحسابك.",
+  "@guestLinkedMessage": {
+    "placeholders": {
+      "orders": {"type": "int"},
+      "bookings": {"type": "int"}
+    }
+  }
 }

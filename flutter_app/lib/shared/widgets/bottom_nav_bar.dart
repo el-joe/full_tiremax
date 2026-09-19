@@ -146,7 +146,7 @@ class _ActionPill extends ConsumerWidget {
         children: [
           _PillIcon(
             icon: Icons.shopping_cart_outlined,
-            onTap: () => requireAuth(context, ref, () => context.push('/cart')),
+            onTap: () => context.push('/cart'),
           ),
           _PillIcon(
             icon: Icons.favorite_border,

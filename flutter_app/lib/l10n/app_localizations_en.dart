@@ -238,4 +238,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reservationTitle => 'Reservation';
+
+  @override
+  String get whatsappChat => 'Chat on WhatsApp';
+
+  @override
+  String guestLinkedMessage(int orders, int bookings) {
+    return 'We linked $orders previous order(s) and $bookings booking(s) to your account.';
+  }
 }

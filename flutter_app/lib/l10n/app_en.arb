@@ -91,5 +91,14 @@
 
   "servicesTitle": "Services",
 
-  "reservationTitle": "Reservation"
+  "reservationTitle": "Reservation",
+
+  "whatsappChat": "Chat on WhatsApp",
+  "guestLinkedMessage": "We linked {orders} previous order(s) and {bookings} booking(s) to your account.",
+  "@guestLinkedMessage": {
+    "placeholders": {
+      "orders": {"type": "int"},
+      "bookings": {"type": "int"}
+    }
+  }
 }

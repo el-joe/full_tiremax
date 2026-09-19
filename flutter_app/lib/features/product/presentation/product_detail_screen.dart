@@ -155,7 +155,7 @@ class _ProductDetailBodyState extends ConsumerState<_ProductDetailBody> {
                       ),
                       onPressed: (!product.in_stock || _addingToCart)
                           ? null
-                          : () => requireAuth(context, ref, _addToCart),
+                          : _addToCart,
                       child: _addingToCart
                           ? const SizedBox(
                               width: 18,

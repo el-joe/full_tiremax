@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/providers/locale_provider.dart';
+
 import '../../../core/network/api_exception.dart';
+import '../../cart/providers/cart_provider.dart';
 import '../../orders/models/order.dart';
 import '../data/checkout_repository.dart';
 
@@ -44,6 +47,7 @@ class CheckoutFormState {
 
   bool get isValid {
     if (paymentMethod == null || paymentMethod!.isEmpty) return false;
+    if (customerName.trim().length < 2 || customerPhone.trim().isEmpty) return false;
     if (type == OrderType.basra) return branchId != null;
     return governorateId != null && shippingAddress.trim().length >= 12;
   }
@@ -114,6 +118,8 @@ class CheckoutFlowNotifier extends Notifier<CheckoutFormState> {
         customerName: state.customerName,
         customerPhone: state.customerPhone,
         customerEmail: state.customerEmail,
+        locale: ref.read(localeProvider).languageCode,
+        offerCode: ref.read(cartProvider.notifier).appliedOffer?.offer.code,
         notes: state.notes,
         governorateId: state.governorateId,
         shippingAddress: state.shippingAddress,
