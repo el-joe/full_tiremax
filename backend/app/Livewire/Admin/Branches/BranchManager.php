@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class BranchManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     public bool $showForm = false;
@@ -37,6 +39,7 @@ class BranchManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('branches.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['name' => '', 'address' => '', 'description' => ''], 'en' => ['name' => '', 'address' => '', 'description' => '']];
         $this->form['is_active'] = true;
@@ -46,6 +49,7 @@ class BranchManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('branches.update');
         $b = Branch::findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -68,6 +72,7 @@ class BranchManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'branches.update' : 'branches.create');
         $this->validate();
         $b = $this->editingId ? Branch::findOrFail($this->editingId) : new Branch();
         $b->fill([
@@ -92,11 +97,13 @@ class BranchManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('branches.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('branches.delete');
         Branch::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -104,6 +111,7 @@ class BranchManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Branches'])]
     public function render()
     {
+        $this->authorizePermission('branches.view');
         $items = Branch::query()
             ->when($this->search, fn($q) => $q->where('code', 'like', "%{$this->search}%"))
             ->orderBy($this->sortBy, $this->sortDir)

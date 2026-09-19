@@ -15,6 +15,8 @@ use Livewire\Component;
 
 class FitmentManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     #[Url]
@@ -49,6 +51,7 @@ class FitmentManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('fitments.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['notes' => ''], 'en' => ['notes' => '']];
         $this->form['vehicle_id'] = $this->vehicleId;
@@ -57,6 +60,7 @@ class FitmentManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('fitments.update');
         $f = Fitment::findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -78,6 +82,7 @@ class FitmentManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'fitments.update' : 'fitments.create');
         $this->validate();
         $f = $this->editingId ? Fitment::findOrFail($this->editingId) : new Fitment();
         $f->fill([
@@ -101,11 +106,13 @@ class FitmentManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('fitments.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('fitments.delete');
         Fitment::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -113,6 +120,7 @@ class FitmentManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Fitments'])]
     public function render()
     {
+        $this->authorizePermission('fitments.view');
         $items = Fitment::query()
             ->with(['vehicle.make', 'vehicle.model', 'product.brand'])
             ->when($this->vehicleId, fn($q) => $q->where('vehicle_id', $this->vehicleId))

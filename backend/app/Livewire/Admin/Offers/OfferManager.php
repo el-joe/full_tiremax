@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class OfferManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     public bool $showForm = false;
@@ -38,6 +40,7 @@ class OfferManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('offers.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['title' => '', 'description' => ''], 'en' => ['title' => '', 'description' => '']];
         $this->form['is_active'] = true;
@@ -47,6 +50,7 @@ class OfferManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('offers.update');
         $o = Offer::findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -68,6 +72,7 @@ class OfferManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'offers.update' : 'offers.create');
         $this->validate();
         $o = $this->editingId ? Offer::findOrFail($this->editingId) : new Offer();
         $o->fill([
@@ -91,11 +96,13 @@ class OfferManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('offers.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('offers.delete');
         Offer::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -103,6 +110,7 @@ class OfferManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Offers'])]
     public function render()
     {
+        $this->authorizePermission('offers.view');
         $items = Offer::query()
             ->when($this->search, fn($q) => $q->where('code', 'like', "%{$this->search}%"))
             ->orderBy($this->sortBy, $this->sortDir)

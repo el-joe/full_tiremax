@@ -26,8 +26,10 @@
                         <td class="px-4 py-3">{{ $c->phone }}</td>
                         <td class="px-4 py-3 text-stone-400">{{ $c->email }}</td>
                         <td class="px-4 py-3">{{ $c->orders_count }}</td>
-                        <td class="px-4 py-3"><button wire:click="toggleActive({{ $c->id }})"
+                        <td class="px-4 py-3">@can('customers.update')
+<button wire:click="toggleActive({{ $c->id }})"
                                 class="px-2 py-0.5 rounded-full text-xs {{ $c->is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-stone-700' }}">{{ $c->is_active ? 'Active' : 'Inactive' }}</button>
+@endcan
                         </td>
                         <td class="px-4 py-3">
                             @if ($c->daftra_id)
@@ -38,8 +40,10 @@
                         </td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="view({{ $c->id }})" class="text-yellow-500 text-xs me-3">View</button>
-                            <button wire:click="confirmDelete({{ $c->id }})"
+                            @can('customers.delete')
+<button wire:click="confirmDelete({{ $c->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty
@@ -147,14 +151,18 @@
                 </div>
 
                 <div class="border-t border-stone-800 pt-3 flex items-center gap-3">
-                    <button wire:click="toggleActive({{ $viewing->id }})"
+                    @can('customers.update')
+<button wire:click="toggleActive({{ $viewing->id }})"
                         class="px-3 py-1 rounded-full text-xs {{ $viewing->is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-stone-700' }}">
                         {{ $viewing->is_active ? 'Active' : 'Inactive' }}
                     </button>
-                    <button wire:click="toggleBanned({{ $viewing->id }})"
+@endcan
+                    @can('customers.ban')
+<button wire:click="toggleBanned({{ $viewing->id }})"
                         class="px-3 py-1 rounded-full text-xs {{ $viewing->is_banned ? 'bg-red-500/20 text-red-400' : 'bg-stone-700' }}">
                         {{ $viewing->is_banned ? 'Unban' : 'Ban' }}
                     </button>
+@endcan
                 </div>
             </div>
         </div>

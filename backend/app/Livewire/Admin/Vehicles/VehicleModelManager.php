@@ -13,6 +13,8 @@ use Livewire\Component;
 
 class VehicleModelManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     #[Url]
@@ -38,6 +40,7 @@ class VehicleModelManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('vehicles.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['name' => ''], 'en' => ['name' => '']];
         $this->form['vehicle_make_id'] = $this->makeId;
@@ -47,6 +50,7 @@ class VehicleModelManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('vehicles.update');
         $m = VehicleModel::findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -64,6 +68,7 @@ class VehicleModelManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'vehicles.update' : 'vehicles.create');
         $this->validate();
         $m = $this->editingId ? VehicleModel::findOrFail($this->editingId) : new VehicleModel();
         $m->fill([
@@ -83,11 +88,13 @@ class VehicleModelManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('vehicles.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('vehicles.delete');
         VehicleModel::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -95,6 +102,7 @@ class VehicleModelManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Vehicle Models'])]
     public function render()
     {
+        $this->authorizePermission('vehicles.view');
         $items = VehicleModel::query()
             ->with('make')
             ->when($this->makeId, fn($q) => $q->where('vehicle_make_id', $this->makeId))

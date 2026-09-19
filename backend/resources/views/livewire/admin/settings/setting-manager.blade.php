@@ -44,8 +44,10 @@
                                         <div class="relative">
                                             <img src="{{ asset('storage/' . $form[$setting->id]['value']) }}"
                                                 class="w-16 h-16 rounded-lg object-cover border border-stone-700">
-                                            <button type="button" wire:click="removeImage({{ $setting->id }})"
+                                            @can('settings.update')
+<button type="button" wire:click="removeImage({{ $setting->id }})"
                                                 class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none">×</button>
+@endcan
                                         </div>
                                     @else
                                         <div
@@ -70,10 +72,12 @@
                         </div>
 
                         <div class="lg:pt-1">
-                            <button wire:click="save({{ $setting->id }})"
+                            @can('settings.update')
+<button wire:click="save({{ $setting->id }})"
                                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-xs whitespace-nowrap">
                                 {{ __('messages.admin.save') }}
                             </button>
+@endcan
                         </div>
                     </div>
                 @endforeach

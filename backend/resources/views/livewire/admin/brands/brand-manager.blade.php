@@ -4,10 +4,12 @@
         <div class="flex gap-2 flex-wrap">
             <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-            <button wire:click="openCreate"
+            @can('brands.create')
+<button wire:click="openCreate"
                 class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">
                 + {{ __('messages.admin.add_new') }}
             </button>
+@endcan
         </div>
     </div>
 
@@ -43,10 +45,14 @@
                             @endif
                         </td>
                         <td class="px-4 py-3 text-end">
-                            <button wire:click="edit({{ $b->id }})"
+                            @can('brands.update')
+<button wire:click="edit({{ $b->id }})"
                                 class="text-yellow-500 hover:underline text-xs me-3">{{ __('messages.admin.edit') }}</button>
-                            <button wire:click="confirmDelete({{ $b->id }})"
+@endcan
+                            @can('brands.delete')
+<button wire:click="confirmDelete({{ $b->id }})"
                                 class="text-red-400 hover:underline text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty
@@ -109,8 +115,10 @@
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"
                         class="px-4 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-sm">{{ __('messages.admin.cancel') }}</button>
-                    <button wire:click="save"
+                    @canany(['brands.create', 'brands.update'])
+<button wire:click="save"
                         class="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-bold text-sm">{{ __('messages.admin.save') }}</button>
+@endcanany
                 </div>
             </div>
         </div>

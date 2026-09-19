@@ -11,6 +11,8 @@ use Livewire\Component;
 
 class BrandManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     public bool $showForm = false;
@@ -37,6 +39,7 @@ class BrandManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('brands.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['name' => '', 'description' => ''], 'en' => ['name' => '', 'description' => '']];
         $this->form['is_active'] = true;
@@ -45,6 +48,7 @@ class BrandManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('brands.update');
         $brand = Brand::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -63,6 +67,7 @@ class BrandManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'brands.update' : 'brands.create');
         $this->validate();
         $slug = $this->form['slug'] ?: Str::slug($this->form['translations']['en']['name']);
 
@@ -90,12 +95,14 @@ class BrandManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('brands.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
 
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('brands.delete');
         Brand::findOrFail($id)->delete();
         $this->toast(__('messages.deleted'));
     }
@@ -103,6 +110,7 @@ class BrandManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Brands'])]
     public function render()
     {
+        $this->authorizePermission('brands.view');
         $brands = Brand::query()
             ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
             ->orderBy($this->sortBy, $this->sortDir)

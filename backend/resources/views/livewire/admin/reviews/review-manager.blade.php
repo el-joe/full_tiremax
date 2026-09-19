@@ -52,15 +52,21 @@
                         <td class="px-4 py-3 text-stone-400">{{ $r->created_at->format('Y-m-d') }}</td>
                         <td class="px-4 py-3 text-end whitespace-nowrap">
                             @if ($r->is_approved !== true)
-                                <button wire:click="approve({{ $r->id }})"
+                                @can('reviews.moderate')
+<button wire:click="approve({{ $r->id }})"
                                     class="text-emerald-400 hover:underline text-xs me-3">{{ __('messages.admin.approve') }}</button>
+@endcan
                             @endif
                             @if ($r->is_approved !== false)
-                                <button wire:click="reject({{ $r->id }})"
+                                @can('reviews.moderate')
+<button wire:click="reject({{ $r->id }})"
                                     class="text-red-400 hover:underline text-xs me-3">{{ __('messages.admin.reject') }}</button>
+@endcan
                             @endif
-                            <button wire:click="confirmDelete({{ $r->id }})"
+                            @can('reviews.delete')
+<button wire:click="confirmDelete({{ $r->id }})"
                                 class="text-stone-400 hover:underline text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty

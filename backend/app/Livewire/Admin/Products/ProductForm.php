@@ -12,6 +12,8 @@ use Livewire\Component;
 
 class ProductForm extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     public ?int $productId = null;
 
     public array $form = [
@@ -45,6 +47,7 @@ class ProductForm extends Component
 
     public function mount(?int $productId = null): void
     {
+        $this->authorizePermission($productId ? 'products.update' : 'products.create');
         $this->productId = $productId;
         if ($productId) {
             $p = Product::with(['translations', 'tireSpec', 'batterySpec', 'badges'])->findOrFail($productId);
@@ -102,6 +105,7 @@ class ProductForm extends Component
 
     public function save(): mixed
     {
+        $this->authorizePermission($this->productId ? 'products.update' : 'products.create');
         $this->validate();
         return DB::transaction(function () {
             $p = $this->productId ? Product::findOrFail($this->productId) : new Product();

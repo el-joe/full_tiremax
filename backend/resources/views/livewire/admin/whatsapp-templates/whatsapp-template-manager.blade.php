@@ -32,10 +32,12 @@
                     </div>
                 </div>
                 <div class="flex justify-end pt-2 border-t border-stone-800">
-                    <button wire:click="save({{ $template->id }})"
+                    @can('whatsapp.update')
+<button wire:click="save({{ $template->id }})"
                         class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-xs">
                         {{ __('messages.admin.save') }}
                     </button>
+@endcan
                 </div>
             </div>
         @empty

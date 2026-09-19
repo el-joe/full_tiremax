@@ -4,9 +4,11 @@
         <div class="flex gap-2 flex-wrap">
             <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="All makes" class="w-48" />
             <x-admin.select wire:model.live="modelId" :options="$models->map(fn($md) => ['value' => $md->id, 'label' => $md->name])->all()" placeholder="All models" class="w-48" />
-            <button wire:click="openCreate"
+            @can('fitments.create')
+<button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+
                 {{ __('messages.admin.add_new') }}</button>
+@endcan
         </div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
@@ -42,10 +44,14 @@
                             class="px-2 py-0.5 bg-red-500/20 text-red-400 rounded-full">EXCL</span> @endif
                         </td>
                         <td class="px-4 py-3 text-end">
-                            <button wire:click="edit({{ $f->id }})"
+                            @can('fitments.update')
+<button wire:click="edit({{ $f->id }})"
                                 class="text-yellow-500 text-xs me-3">{{ __('messages.admin.edit') }}</button>
-                            <button wire:click="confirmDelete({{ $f->id }})"
+@endcan
+                            @can('fitments.delete')
+<button wire:click="confirmDelete({{ $f->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty
@@ -100,8 +106,10 @@
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"
                         class="px-4 py-2 rounded-lg bg-stone-800 text-sm">{{ __('messages.admin.cancel') }}</button>
-                    <button wire:click="save"
+                    @canany(['fitments.create', 'fitments.update'])
+<button wire:click="save"
                         class="px-4 py-2 rounded-lg bg-yellow-500 text-stone-950 font-bold text-sm">{{ __('messages.admin.save') }}</button>
+@endcanany
                 </div>
             </div>
         </div>

@@ -14,6 +14,8 @@ use Livewire\Component;
 
 class ProductManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList, LogsAdminActions;
 
     #[Url]
@@ -23,12 +25,14 @@ class ProductManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('products.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
 
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('products.delete');
         $product = Product::findOrFail($id);
         $this->logAction('product.deleted', $product, ['name' => $product->name, 'sku' => $product->sku]);
         $product->delete();
@@ -37,6 +41,7 @@ class ProductManager extends Component
 
     public function toggleActive(int $id): void
     {
+        $this->authorizePermission('products.update');
         $p = Product::findOrFail($id);
         $wasActive = $p->is_active;
         $p->is_active = !$p->is_active;
@@ -48,6 +53,7 @@ class ProductManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Products'])]
     public function render()
     {
+        $this->authorizePermission('products.view');
         $items = Product::query()
             ->with(['brand', 'category', 'tireSpec'])
             ->when($this->type, fn($q) => $q->where('type', $this->type))

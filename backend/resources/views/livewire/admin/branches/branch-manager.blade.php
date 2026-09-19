@@ -4,9 +4,11 @@
         <div class="flex gap-2">
             <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-            <button wire:click="openCreate"
+            @can('branches.create')
+<button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+
                 {{ __('messages.admin.add_new') }}</button>
+@endcan
         </div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
@@ -32,10 +34,14 @@
                                 class="px-2 py-0.5 rounded-full text-xs {{ $b->is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-stone-700' }}">{{ $b->is_active ? 'Active' : 'Inactive' }}</span>
                         </td>
                         <td class="px-4 py-3 text-end">
-                            <button wire:click="edit({{ $b->id }})"
+                            @can('branches.update')
+<button wire:click="edit({{ $b->id }})"
                                 class="text-yellow-500 text-xs me-3">{{ __('messages.admin.edit') }}</button>
-                            <button wire:click="confirmDelete({{ $b->id }})"
+@endcan
+                            @can('branches.delete')
+<button wire:click="confirmDelete({{ $b->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty
@@ -93,8 +99,10 @@
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"
                         class="px-4 py-2 rounded-lg bg-stone-800 text-sm">{{ __('messages.admin.cancel') }}</button>
-                    <button wire:click="save"
+                    @canany(['branches.create', 'branches.update'])
+<button wire:click="save"
                         class="px-4 py-2 rounded-lg bg-yellow-500 text-stone-950 font-bold text-sm">{{ __('messages.admin.save') }}</button>
+@endcanany
                 </div>
             </div>
         </div>

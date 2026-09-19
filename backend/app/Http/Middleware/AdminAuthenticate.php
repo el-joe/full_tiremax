@@ -13,6 +13,13 @@ class AdminAuthenticate
         if (!Auth::guard('admin')->check()) {
             return redirect()->route('admin.login');
         }
+        $admin = Auth::guard('admin')->user();
+        if (!$admin || !$admin->is_active || (method_exists($admin, 'trashed') && $admin->trashed())) {
+            Auth::guard('admin')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->route('admin.login')->withErrors(['email' => __('messages.admin.account_inactive')]);
+        }
         return $next($request);
     }
 }

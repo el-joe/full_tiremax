@@ -43,6 +43,7 @@
                         <td class="px-4 py-3 text-stone-400">{{ optional($b->branch)->name }}</td>
                         <td class="px-4 py-3">{{ optional($b->scheduled_at)->format('Y-m-d H:i') }}</td>
                         <td class="px-4 py-3">
+                            @can('bookings.change_status')
                             <x-admin.select
                                 :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()"
                                 :value="$b->status"
@@ -51,6 +52,9 @@
                                 class="w-36 text-xs"
                                 x-on:select-change="$wire.changeStatus({{ $b->id }}, $event.detail.value)"
                             />
+                            @else
+                            <span class="text-xs">{{ $b->status }}</span>
+                            @endcan
                         </td>
                         <td class="px-4 py-3">
                             @if ($b->daftra_invoice_id)
@@ -59,8 +63,10 @@
                                 <span class="text-stone-600 text-xs">—</span>
                             @endif
                         </td>
-                        <td class="px-4 py-3 text-end"><button wire:click="confirmDelete({{ $b->id }})"
-                                class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button></td>
+                        <td class="px-4 py-3 text-end">@can('bookings.delete')
+<button wire:click="confirmDelete({{ $b->id }})"
+                                class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan</td>
                     </tr>
                 @empty
                     <tr>

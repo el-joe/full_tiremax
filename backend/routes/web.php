@@ -33,37 +33,37 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('admin')->group(function () {
-        Route::get('/', Dashboard::class)->name('dashboard');
-        Route::get('dashboard', Dashboard::class)->name('dashboard.index');
+        Route::get('/', Dashboard::class)->name('dashboard')->middleware('can:dashboard.view');
+        Route::get('dashboard', Dashboard::class)->name('dashboard.index')->middleware('can:dashboard.view');
 
-        Route::get('brands', BrandManager::class)->name('brands.index');
-        Route::get('categories', CategoryManager::class)->name('categories.index');
-        Route::get('branches', BranchManager::class)->name('branches.index');
-        Route::get('governorates', GovernorateManager::class)->name('governorates.index');
-        Route::get('services', ServiceManager::class)->name('services.index');
+        Route::get('brands', BrandManager::class)->name('brands.index')->middleware('can:brands.view');
+        Route::get('categories', CategoryManager::class)->name('categories.index')->middleware('can:categories.view');
+        Route::get('branches', BranchManager::class)->name('branches.index')->middleware('can:branches.view');
+        Route::get('governorates', GovernorateManager::class)->name('governorates.index')->middleware('can:governorates.view');
+        Route::get('services', ServiceManager::class)->name('services.index')->middleware('can:services.view');
 
-        Route::get('vehicles/makes', VehicleMakeManager::class)->name('vehicle-makes.index');
-        Route::get('vehicles/models', VehicleModelManager::class)->name('vehicle-models.index');
-        Route::get('vehicles', VehicleManager::class)->name('vehicles.index');
+        Route::get('vehicles/makes', VehicleMakeManager::class)->name('vehicle-makes.index')->middleware('can:vehicles.view');
+        Route::get('vehicles/models', VehicleModelManager::class)->name('vehicle-models.index')->middleware('can:vehicles.view');
+        Route::get('vehicles', VehicleManager::class)->name('vehicles.index')->middleware('can:vehicles.view');
 
-        Route::get('products', ProductManager::class)->name('products.index');
-        Route::get('products/create', ProductForm::class)->name('products.create');
-        Route::get('products/{productId}/edit', ProductForm::class)->name('products.edit');
+        Route::get('products', ProductManager::class)->name('products.index')->middleware('can:products.view');
+        Route::get('products/create', ProductForm::class)->name('products.create')->middleware('can:products.create');
+        Route::get('products/{productId}/edit', ProductForm::class)->name('products.edit')->middleware('can:products.update');
 
-        Route::get('fitments', FitmentManager::class)->name('fitments.index');
+        Route::get('fitments', FitmentManager::class)->name('fitments.index')->middleware('can:fitments.view');
 
-        Route::get('orders', OrderManager::class)->name('orders.index');
-        Route::get('bookings', BookingManager::class)->name('bookings.index');
-        Route::get('customers', CustomerManager::class)->name('customers.index');
-        Route::get('offers', OfferManager::class)->name('offers.index');
-        Route::get('flash-sales', FlashSaleManager::class)->name('flash-sales.index');
-        Route::get('reviews', ReviewManager::class)->name('reviews.index');
-        Route::get('daftra-logs', DaftraLogManager::class)->name('daftra-logs.index');
+        Route::get('orders', OrderManager::class)->name('orders.index')->middleware('can:orders.view');
+        Route::get('bookings', BookingManager::class)->name('bookings.index')->middleware('can:bookings.view');
+        Route::get('customers', CustomerManager::class)->name('customers.index')->middleware('can:customers.view');
+        Route::get('offers', OfferManager::class)->name('offers.index')->middleware('can:offers.view');
+        Route::get('flash-sales', FlashSaleManager::class)->name('flash-sales.index')->middleware('can:flash_sales.view');
+        Route::get('reviews', ReviewManager::class)->name('reviews.index')->middleware('can:reviews.view');
+        Route::get('daftra-logs', DaftraLogManager::class)->name('daftra-logs.index')->middleware('can:daftra_logs.view');
 
-        Route::get('payment-gateways', PaymentGatewayManager::class)->name('payment-gateways.index');
+        Route::get('payment-gateways', PaymentGatewayManager::class)->name('payment-gateways.index')->middleware('can:payment_gateways.view');
 
-        Route::get('settings', SettingManager::class)->name('settings.index');
-        Route::get('whatsapp-templates', WhatsappTemplateManager::class)->name('whatsapp-templates.index');
+        Route::get('settings', SettingManager::class)->name('settings.index')->middleware('can:settings.view');
+        Route::get('whatsapp-templates', WhatsappTemplateManager::class)->name('whatsapp-templates.index')->middleware('can:whatsapp.view');
 
         Route::post('logout', function () {
             auth('admin')->logout();

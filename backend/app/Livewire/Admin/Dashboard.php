@@ -11,9 +11,12 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     #[Layout('components.admin.layout', ['title' => null])]
     public function render()
     {
+        $this->authorizePermission('dashboard.view');
         $stats = [
             'orders_today' => Order::whereDate('created_at', today())->count(),
             'orders_pending' => Order::where('status', Order::STATUS_PENDING)->count(),

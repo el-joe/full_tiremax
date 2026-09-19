@@ -11,6 +11,8 @@ use Livewire\Component;
 
 class VehicleMakeManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     public bool $showForm = false;
@@ -32,6 +34,7 @@ class VehicleMakeManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('vehicles.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['name' => ''], 'en' => ['name' => '']];
         $this->form['is_active'] = true;
@@ -40,6 +43,7 @@ class VehicleMakeManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('vehicles.update');
         $m = VehicleMake::findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -57,6 +61,7 @@ class VehicleMakeManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'vehicles.update' : 'vehicles.create');
         $this->validate();
         $m = $this->editingId ? VehicleMake::findOrFail($this->editingId) : new VehicleMake();
         $m->fill([
@@ -76,11 +81,13 @@ class VehicleMakeManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('vehicles.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('vehicles.delete');
         VehicleMake::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -88,6 +95,7 @@ class VehicleMakeManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Vehicle Makes'])]
     public function render()
     {
+        $this->authorizePermission('vehicles.view');
         $items = VehicleMake::query()
             ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
             ->withCount('models')

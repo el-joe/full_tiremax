@@ -5,10 +5,12 @@
             <input type="search" wire:model.live.debounce.400ms="search"
                 placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-            <button wire:click="openCreate"
+            @can('flash_sales.create')
+<button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">
                 + {{ __('messages.admin.add_new') }}
             </button>
+@endcan
         </div>
     </div>
 
@@ -49,10 +51,14 @@
                         </td>
                         <td class="px-4 py-3 text-stone-400">{{ $sale->products_count }}</td>
                         <td class="px-4 py-3 text-end">
-                            <button wire:click="edit({{ $sale->id }})"
+                            @can('flash_sales.update')
+<button wire:click="edit({{ $sale->id }})"
                                 class="text-yellow-500 text-xs me-3">{{ __('messages.admin.edit') }}</button>
-                            <button wire:click="confirmDelete({{ $sale->id }})"
+@endcan
+                            @can('flash_sales.delete')
+<button wire:click="confirmDelete({{ $sale->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty
@@ -132,7 +138,8 @@
                                 class="absolute z-50 top-full mt-1 left-0 right-0 bg-stone-800 border border-stone-700 rounded-lg shadow-2xl max-h-52 overflow-y-auto">
                                 @foreach ($searchResults as $p)
                                     @if (! in_array($p->id, $productIds))
-                                        <button type="button" wire:click="addProduct({{ $p->id }})"
+                                        @can('flash_sales.update')
+<button type="button" wire:click="addProduct({{ $p->id }})"
                                             class="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-stone-700/60 text-left gap-2">
                                             <span>
                                                 <span class="font-mono text-xs text-stone-400">{{ $p->sku }}</span>
@@ -141,6 +148,7 @@
                                             </span>
                                             <span class="text-yellow-500 shrink-0">+ Add</span>
                                         </button>
+@endcan
                                     @endif
                                 @endforeach
                             </div>
@@ -161,8 +169,10 @@
                                         <span class="font-semibold"> {{ $p->name }}</span>
                                         @if ($p->brand) <span class="text-stone-400 text-xs">· {{ $p->brand->name }}</span> @endif
                                     </span>
-                                    <button type="button" wire:click="removeProduct({{ $p->id }})"
+                                    @can('flash_sales.update')
+<button type="button" wire:click="removeProduct({{ $p->id }})"
                                         class="text-red-400 hover:text-red-300 text-xs shrink-0 ms-2">Remove</button>
+@endcan
                                 </div>
                             @endforeach
                         </div>
@@ -175,8 +185,10 @@
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"
                         class="px-4 py-2 rounded-lg bg-stone-800 text-sm">{{ __('messages.admin.cancel') }}</button>
-                    <button wire:click="save"
+                    @canany(['flash_sales.create', 'flash_sales.update'])
+<button wire:click="save"
                         class="px-4 py-2 rounded-lg bg-yellow-500 text-stone-950 font-bold text-sm">{{ __('messages.admin.save') }}</button>
+@endcanany
                 </div>
             </div>
         </div>

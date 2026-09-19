@@ -48,13 +48,17 @@
                         <td class="px-4 py-3 text-end">
                             <button wire:click="view({{ $o->id }})" class="text-yellow-500 text-xs me-3">View</button>
                             @if (!$o->daftra_invoice_id && \App\Integrations\Daftra::isEnabled())
-                                <button wire:click="syncToDaftra({{ $o->id }})" wire:loading.attr="disabled"
+                                @can('orders.update')
+<button wire:click="syncToDaftra({{ $o->id }})" wire:loading.attr="disabled"
                                     wire:target="syncToDaftra({{ $o->id }})"
                                     class="bg-blue-500 text-white text-xs px-2 py-1 rounded-md me-3 disabled:opacity-50">Sync
                                     to Daftra</button>
+@endcan
                             @endif
-                            <button wire:click="confirmDelete({{ $o->id }})"
+                            @can('orders.delete')
+<button wire:click="confirmDelete({{ $o->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty
@@ -140,10 +144,12 @@
                     <h4 class="font-bold text-stone-200 mb-2">Change status</h4>
                     <div class="flex flex-wrap gap-2">
                         @foreach ($statuses as $st)
-                            <button wire:click="changeStatus({{ $viewing->id }}, '{{ $st }}')"
+                            @can('orders.change_status')
+<button wire:click="changeStatus({{ $viewing->id }}, '{{ $st }}')"
                                 class="px-3 py-1 rounded-full text-xs {{ $viewing->status === $st ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800 hover:bg-stone-700' }}">
                                 {{ $st }}
                             </button>
+@endcan
                         @endforeach
                     </div>
                 </div>

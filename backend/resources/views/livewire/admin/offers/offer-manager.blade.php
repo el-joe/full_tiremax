@@ -3,9 +3,11 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.offers') }}</h2>
         <div class="flex gap-2"><input type="search" wire:model.live.debounce.400ms="search"
                 placeholder="{{ __('messages.admin.search') }}"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"><button
+                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">@can('offers.create')
+<button
                 wire:click="openCreate" class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+
-                {{ __('messages.admin.add_new') }}</button></div>
+                {{ __('messages.admin.add_new') }}</button>
+@endcan</div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
         <table class="w-full text-sm">
@@ -32,10 +34,14 @@
                         </td>
                         <td class="px-4 py-3">{{ $o->used_count }}{{ $o->usage_limit ? '/' . $o->usage_limit : '' }}</td>
                         <td class="px-4 py-3 text-end">
-                            <button wire:click="edit({{ $o->id }})"
+                            @can('offers.update')
+<button wire:click="edit({{ $o->id }})"
                                 class="text-yellow-500 text-xs me-3">{{ __('messages.admin.edit') }}</button>
-                            <button wire:click="confirmDelete({{ $o->id }})"
+@endcan
+                            @can('offers.delete')
+<button wire:click="confirmDelete({{ $o->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty
@@ -87,8 +93,10 @@
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"
                         class="px-4 py-2 rounded-lg bg-stone-800 text-sm">{{ __('messages.admin.cancel') }}</button>
-                    <button wire:click="save"
+                    @canany(['offers.create', 'offers.update'])
+<button wire:click="save"
                         class="px-4 py-2 rounded-lg bg-yellow-500 text-stone-950 font-bold text-sm">{{ __('messages.admin.save') }}</button>
+@endcanany
                 </div>
             </div>
         </div>

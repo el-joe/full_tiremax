@@ -8,10 +8,13 @@ use Livewire\Component;
 
 class WhatsappTemplateManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     public array $form = [];
 
     public function mount(): void
     {
+        $this->authorizePermission('whatsapp.view');
         $this->loadForm();
     }
 
@@ -30,6 +33,7 @@ class WhatsappTemplateManager extends Component
 
     public function save(int $id): void
     {
+        $this->authorizePermission('whatsapp.update');
         $template = WhatsappTemplate::findOrFail($id);
         $data = $this->form[$id];
 
@@ -44,6 +48,7 @@ class WhatsappTemplateManager extends Component
     #[Layout('components.admin.layout', ['title' => 'WhatsApp Templates'])]
     public function render()
     {
+        $this->authorizePermission('whatsapp.view');
         $templates = WhatsappTemplate::with('translations')->orderBy('key')->get();
 
         return view('livewire.admin.whatsapp-templates.whatsapp-template-manager', compact('templates'));

@@ -12,12 +12,15 @@ use Livewire\Component;
 
 class CustomerManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList, LogsAdminActions;
 
     public ?int $viewingId = null;
 
     public function view(int $id): void
     {
+        $this->authorizePermission('customers.view');
         $this->viewingId = $id;
     }
 
@@ -28,6 +31,7 @@ class CustomerManager extends Component
 
     public function toggleActive(int $id): void
     {
+        $this->authorizePermission('customers.update');
         $c = Customer::findOrFail($id);
         $c->is_active = !$c->is_active;
         $c->save();
@@ -36,6 +40,7 @@ class CustomerManager extends Component
 
     public function toggleBanned(int $id): void
     {
+        $this->authorizePermission('customers.ban');
         $c = Customer::findOrFail($id);
         $wasBanned = $c->is_banned;
         $c->is_banned = !$c->is_banned;
@@ -50,11 +55,13 @@ class CustomerManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('customers.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('customers.delete');
         Customer::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -62,6 +69,7 @@ class CustomerManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Customers'])]
     public function render()
     {
+        $this->authorizePermission('customers.view');
         $items = Customer::query()
             ->withCount(['orders', 'bookings'])
             ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%")

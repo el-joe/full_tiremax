@@ -13,6 +13,8 @@ use Livewire\Component;
 
 class VehicleManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     #[Url]
@@ -42,6 +44,7 @@ class VehicleManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('vehicles.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['trim' => ''], 'en' => ['trim' => '']];
         $this->form['vehicle_make_id'] = $this->makeId;
@@ -52,6 +55,7 @@ class VehicleManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('vehicles.update');
         $v = Vehicle::findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -70,6 +74,7 @@ class VehicleManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'vehicles.update' : 'vehicles.create');
         $this->validate();
         $v = $this->editingId ? Vehicle::findOrFail($this->editingId) : new Vehicle();
         $v->fill([
@@ -90,11 +95,13 @@ class VehicleManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('vehicles.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('vehicles.delete');
         Vehicle::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -102,6 +109,7 @@ class VehicleManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Vehicles'])]
     public function render()
     {
+        $this->authorizePermission('vehicles.view');
         $items = Vehicle::query()
             ->with(['make', 'model'])
             ->when($this->makeId, fn($q) => $q->where('vehicle_make_id', $this->makeId))

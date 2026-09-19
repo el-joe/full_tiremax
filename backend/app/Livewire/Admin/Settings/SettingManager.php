@@ -9,6 +9,8 @@ use Livewire\WithFileUploads;
 
 class SettingManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithFileUploads;
 
     public array $form = [];
@@ -25,6 +27,7 @@ class SettingManager extends Component
 
     public function mount(): void
     {
+        $this->authorizePermission('settings.view');
         $this->loadForm();
     }
 
@@ -43,6 +46,7 @@ class SettingManager extends Component
 
     public function save(int $id): void
     {
+        $this->authorizePermission('settings.update');
         $setting = Setting::findOrFail($id);
         $data = $this->form[$id];
 
@@ -75,6 +79,7 @@ class SettingManager extends Component
 
     public function removeImage(int $id): void
     {
+        $this->authorizePermission('settings.update');
         $setting = Setting::findOrFail($id);
         $setting->update(['value' => null]);
         unset($this->imageFiles[$id]);
@@ -84,6 +89,7 @@ class SettingManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Settings'])]
     public function render()
     {
+        $this->authorizePermission('settings.view');
         $groups = Setting::with('translations')
             ->orderBy('group')
             ->orderBy('key')

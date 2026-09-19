@@ -17,24 +17,28 @@
                     <tr class="hover:bg-stone-800/40" wire:key="gateway-{{ $gateway->id }}">
                         <td class="px-4 py-3 font-mono text-xs text-stone-400">{{ $gateway->name }}</td>
                         <td class="px-4 py-3">
-                            <input type="text" wire:key="name-{{ $gateway->id }}"
+                            <input type="text" wire:key="name-{{ $gateway->id }}" @cannot('payment_gateways.update') disabled @endcannot
                                 x-data="{ value: @js($gateway->display_name) }" x-model="value"
                                 x-on:keydown.enter="$wire.updateDisplayName({{ $gateway->id }}, value)"
                                 class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                         </td>
                         <td class="px-4 py-3">
-                            <button wire:click="toggleActive({{ $gateway->id }})"
+                            @can('payment_gateways.update')
+<button wire:click="toggleActive({{ $gateway->id }})"
                                 class="px-2 py-0.5 rounded-full text-xs {{ $gateway->is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-stone-700 text-stone-400' }}">
                                 {{ $gateway->is_active ? __('messages.admin.active') : __('messages.admin.inactive') }}
                             </button>
+@endcan
                         </td>
                         <td class="px-4 py-3 text-end">
+                            @can('payment_gateways.update')
                             <button
                                 x-data
                                 x-on:click="$wire.updateDisplayName({{ $gateway->id }}, $el.closest('tr').querySelector('input').value)"
                                 class="bg-yellow-500 text-stone-950 font-bold px-3 py-1.5 rounded-lg text-xs">
                                 {{ __('messages.admin.save') }}
                             </button>
+                            @endcan
                         </td>
                     </tr>
                 @empty

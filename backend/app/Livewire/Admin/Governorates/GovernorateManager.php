@@ -11,6 +11,8 @@ use Livewire\Component;
 
 class GovernorateManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     public bool $showForm = false;
@@ -35,6 +37,7 @@ class GovernorateManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('governorates.create');
         $this->reset('form', 'editingId');
         $this->form['translations'] = ['ar' => ['name' => ''], 'en' => ['name' => '']];
         $this->form['is_active'] = true;
@@ -43,6 +46,7 @@ class GovernorateManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('governorates.update');
         $g = Governorate::findOrFail($id);
         $this->editingId = $id;
         $this->form = [
@@ -61,6 +65,7 @@ class GovernorateManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'governorates.update' : 'governorates.create');
         $this->validate();
         $g = $this->editingId ? Governorate::findOrFail($this->editingId) : new Governorate();
         $g->fill([
@@ -81,12 +86,14 @@ class GovernorateManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('governorates.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
 
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('governorates.delete');
         Governorate::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -94,6 +101,7 @@ class GovernorateManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Governorates'])]
     public function render()
     {
+        $this->authorizePermission('governorates.view');
         $items = Governorate::query()
             ->when($this->search, fn($q) => $q->where('code', 'like', "%{$this->search}%")
                 ->orWhereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))

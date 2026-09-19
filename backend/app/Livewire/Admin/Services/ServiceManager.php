@@ -12,6 +12,8 @@ use Livewire\WithFileUploads;
 
 class ServiceManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList, WithFileUploads;
 
     public bool $showForm = false;
@@ -42,6 +44,7 @@ class ServiceManager extends Component
 
     public function openCreate(): void
     {
+        $this->authorizePermission('services.create');
         $this->reset('form', 'editingId', 'imageFile', 'existingImage');
         $this->form['translations'] = ['ar' => ['name' => '', 'description' => ''], 'en' => ['name' => '', 'description' => '']];
         $this->form['is_active'] = true;
@@ -51,6 +54,7 @@ class ServiceManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizePermission('services.update');
         $s = Service::findOrFail($id);
         $this->editingId = $id;
         $this->existingImage = $s->image;
@@ -72,6 +76,7 @@ class ServiceManager extends Component
 
     public function save(): void
     {
+        $this->authorizePermission($this->editingId ? 'services.update' : 'services.create');
         $this->validate();
 
         $s = $this->editingId ? Service::findOrFail($this->editingId) : new Service();
@@ -105,6 +110,7 @@ class ServiceManager extends Component
 
     public function removeImage(): void
     {
+        $this->authorizePermission('services.update');
         $this->existingImage = null;
         if ($this->editingId) {
             Service::findOrFail($this->editingId)->update(['image' => null]);
@@ -113,12 +119,14 @@ class ServiceManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('services.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
 
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('services.delete');
         Service::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -126,6 +134,7 @@ class ServiceManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Services'])]
     public function render()
     {
+        $this->authorizePermission('services.view');
         $items = Service::query()
             ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
             ->orderBy($this->sortBy, $this->sortDir)

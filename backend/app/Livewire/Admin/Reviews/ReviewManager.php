@@ -11,6 +11,8 @@ use Livewire\Component;
 
 class ReviewManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     #[Url]
@@ -23,24 +25,28 @@ class ReviewManager extends Component
 
     public function approve(int $id): void
     {
+        $this->authorizePermission('reviews.moderate');
         Review::findOrFail($id)->update(['is_approved' => true]);
         $this->toast(__('messages.success'));
     }
 
     public function reject(int $id): void
     {
+        $this->authorizePermission('reviews.moderate');
         Review::findOrFail($id)->update(['is_approved' => false]);
         $this->toast(__('messages.success'));
     }
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('reviews.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
 
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('reviews.delete');
         Review::findOrFail($id)->delete();
         $this->toast(__('messages.deleted'));
     }
@@ -48,6 +54,7 @@ class ReviewManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Reviews'])]
     public function render()
     {
+        $this->authorizePermission('reviews.view');
         $reviews = Review::query()
             ->with(['customer', 'product'])
             ->when($this->status === 'pending', fn($q) => $q->whereNull('is_approved'))

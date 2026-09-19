@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class DaftraLogManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList;
 
     #[Url]
@@ -21,6 +23,7 @@ class DaftraLogManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Daftra Sync Logs'])]
     public function render()
     {
+        $this->authorizePermission('daftra_logs.view');
         $items = DaftraSyncLog::query()
             ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
             ->when($this->entityTypeFilter, fn($q) => $q->where('syncable_type', $this->entityTypeFilter))

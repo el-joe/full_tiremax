@@ -19,6 +19,12 @@ class Login extends Component
             'password' => ['required', 'string'],
         ]);
 
+        $existing = \App\Models\Admin::where('email', $data['email'])->first();
+        if ($existing && !$existing->is_active && \Illuminate\Support\Facades\Hash::check($data['password'], $existing->password)) {
+            $this->addError('email', __('messages.admin.account_inactive'));
+            return null;
+        }
+
         if (
             !Auth::guard('admin')->attempt(
                 ['email' => $data['email'], 'password' => $data['password'], 'is_active' => true],

@@ -6,9 +6,11 @@
             <x-admin.select wire:model.live="brandFilter" :options="$brands->map(fn($b) => ['value' => $b->id, 'label' => $b->name])->all()" placeholder="All brands" class="w-48" />
             <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
                 class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-            <a href="{{ route('admin.products.create') }}"
+            @can('products.create')
+<a href="{{ route('admin.products.create') }}"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+
                 {{ __('messages.admin.add_new') }}</a>
+@endcan
         </div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
@@ -50,14 +52,20 @@
                             @endif
                         </td>
                         <td class="px-4 py-3 text-end">
-                            <button wire:click="toggleActive({{ $p->id }})"
+                            @can('products.update')
+<button wire:click="toggleActive({{ $p->id }})"
                                 class="text-xs me-2 {{ $p->is_active ? 'text-emerald-400' : 'text-stone-500' }}">
                                 {{ $p->is_active ? __('messages.admin.active') : __('messages.admin.inactive') }}
                             </button>
-                            <a href="{{ route('admin.products.edit', $p->id) }}"
+@endcan
+                            @can('products.update')
+<a href="{{ route('admin.products.edit', $p->id) }}"
                                 class="text-yellow-500 text-xs me-3">{{ __('messages.admin.edit') }}</a>
-                            <button wire:click="confirmDelete({{ $p->id }})"
+@endcan
+                            @can('products.delete')
+<button wire:click="confirmDelete({{ $p->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
+@endcan
                         </td>
                     </tr>
                 @empty

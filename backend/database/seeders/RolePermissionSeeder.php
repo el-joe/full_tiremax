@@ -2,48 +2,45 @@
 
 namespace Database\Seeders;
 
+use App\Support\AdminPermissions;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
-        $permissions = [
-            'manage_dashboard',
-            'manage_brands',
-            'manage_categories',
-            'manage_governorates',
-            'manage_branches',
-            'manage_services',
-            'manage_vehicles',
-            'manage_products',
-            'manage_fitments',
-            'manage_orders',
-            'manage_bookings',
-            'manage_customers',
-            'manage_offers',
-            'manage_settings',
-            'manage_admins',
-        ];
-
-        foreach ($permissions as $p) {
+        foreach (AdminPermissions::all() as $p) {
             Permission::firstOrCreate(['name' => $p, 'guard_name' => 'admin']);
         }
 
-        $superAdmin = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'admin']);
-        $superAdmin->syncPermissions(Permission::where('guard_name', 'admin')->get());
+        $role = fn (string $name) => Role::firstOrCreate(['name' => $name, 'guard_name' => 'admin']);
+        $mod = fn (string ...$m) => collect($m)->flatMap(fn ($x) => AdminPermissions::forModule($x))->all();
 
-        Role::firstOrCreate(['name' => 'branch-manager', 'guard_name' => 'admin'])
-            ->syncPermissions(['manage_dashboard', 'manage_orders', 'manage_bookings', 'manage_customers']);
+        $role('super-admin')->syncPermissions(Permission::where('guard_name', 'admin')->get());
 
-        Role::firstOrCreate(['name' => 'content-manager', 'guard_name' => 'admin'])
-            ->syncPermissions(['manage_dashboard', 'manage_brands', 'manage_categories', 'manage_products', 'manage_fitments', 'manage_vehicles', 'manage_offers']);
+        $role('branch-manager')->syncPermissions(array_merge(
+            ['dashboard.view', 'orders.view', 'orders.update', 'orders.change_status', 'bookings.view', 'bookings.update', 'bookings.change_status', 'customers.view'],
+        ));
 
-        Role::firstOrCreate(['name' => 'support', 'guard_name' => 'admin'])
-            ->syncPermissions(['manage_dashboard', 'manage_orders', 'manage_bookings', 'manage_customers']);
+        $role('content-manager')->syncPermissions(array_merge(
+            ['dashboard.view'],
+            $mod('products', 'brands', 'categories', 'fitments', 'vehicles', 'offers', 'flash_sales'),
+            ['reviews.view', 'reviews.moderate'],
+        ));
+
+        $role('support')->syncPermissions([
+            'dashboard.view',
+            'orders.view', 'orders.update', 'orders.change_status',
+            'bookings.view', 'bookings.update', 'bookings.change_status',
+            'customers.view', 'customers.update',
+            'reviews.view', 'reviews.moderate',
+        ]);
+
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 }

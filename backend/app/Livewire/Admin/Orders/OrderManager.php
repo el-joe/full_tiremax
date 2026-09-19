@@ -15,6 +15,8 @@ use Livewire\Component;
 
 class OrderManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList, LogsAdminActions;
 
     #[Url]
@@ -24,6 +26,7 @@ class OrderManager extends Component
 
     public function view(int $id): void
     {
+        $this->authorizePermission('orders.view');
         $this->viewingId = $id;
     }
 
@@ -34,6 +37,7 @@ class OrderManager extends Component
 
     public function changeStatus(int $id, string $status, OrderService $service): void
     {
+        $this->authorizePermission('orders.change_status');
         $order = Order::findOrFail($id);
         $oldStatus = $order->status;
         $service->changeStatus($order, $status);
@@ -43,6 +47,7 @@ class OrderManager extends Component
 
     public function syncToDaftra(int $id): void
     {
+        $this->authorizePermission('orders.update');
         $order = Order::findOrFail($id);
 
         try {
@@ -55,11 +60,13 @@ class OrderManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('orders.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('orders.delete');
         Order::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -67,6 +74,7 @@ class OrderManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Orders'])]
     public function render()
     {
+        $this->authorizePermission('orders.view');
         $items = Order::query()
             ->with(['customer', 'governorate', 'branch'])
             ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))

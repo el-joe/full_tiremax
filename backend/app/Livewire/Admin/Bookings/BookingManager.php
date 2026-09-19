@@ -13,6 +13,8 @@ use Livewire\Component;
 
 class BookingManager extends Component
 {
+    use \App\Livewire\Concerns\AuthorizesAdmin;
+
     use WithCrudList, LogsAdminActions;
 
     #[Url]
@@ -22,6 +24,7 @@ class BookingManager extends Component
 
     public function changeStatus(int $id, string $status, BookingService $service): void
     {
+        $this->authorizePermission('bookings.change_status');
         $booking = Booking::findOrFail($id);
         $oldStatus = $booking->status;
         $service->changeStatus($booking, $status);
@@ -31,11 +34,13 @@ class BookingManager extends Component
 
     public function confirmDelete(int $id): void
     {
+        $this->authorizePermission('bookings.delete');
         $this->dispatch('confirm-delete', id: $id);
     }
     #[On('delete-confirmed')]
     public function delete(int $id): void
     {
+        $this->authorizePermission('bookings.delete');
         Booking::findOrFail($id)->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));
     }
@@ -43,6 +48,7 @@ class BookingManager extends Component
     #[Layout('components.admin.layout', ['title' => 'Bookings'])]
     public function render()
     {
+        $this->authorizePermission('bookings.view');
         $items = Booking::query()
             ->with(['customer', 'service', 'branch'])
             ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
