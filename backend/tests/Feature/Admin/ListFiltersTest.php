@@ -144,9 +144,10 @@ class ListFiltersTest extends TestCase
         $this->assertSame([$o1->id], $this->ids($t()->set('paymentStatus', 'paid')));
         $this->assertSame([$o1->id], $this->ids($t()->set('branchFilter', $branch->id)));
         $this->assertSame([$o1->id], $this->ids($t()->set('governorateFilter', $gov->id)));
-        // guest = customer_id IS NULL (column becomes nullable in Phase 4); none exist yet
-        $this->assertSame([], $this->ids($t()->set('customerKind', 'guest')));
+        $g = Order::factory()->guest()->create(['customer_name' => 'Guesty McGuest', 'total' => 1]);
+        $this->assertSame([$g->id], $this->ids($t()->set('customerKind', 'guest')));
         $this->assertSame([$o1->id, $o2->id, $o3->id], $this->ids($t()->set('customerKind', 'registered')));
+        $this->assertSame([$g->id], $this->ids($t()->set('search', 'Guesty')));
         $this->assertSame([$o1->id], $this->ids($t()->set('from', '2026-01-01')->set('to', '2026-03-01')));
         $this->assertSame([$o1->id, $o3->id], $this->ids($t()->set('totalMin', '500')));
         $this->assertSame([$o1->id], $this->ids($t()->set('totalMin', '200')->set('totalMax', '600')));
@@ -171,10 +172,17 @@ class ListFiltersTest extends TestCase
         $this->assertSame([$b1->id], $this->ids($t()->set('quick', 'today')));
         $this->assertSame([$b2->id], $this->ids($t()->set('quick', 'tomorrow')));
         $this->assertSame([$b3->id], $this->ids($t()->set('from', now()->addDays(30)->toDateString())));
+        $bg = Booking::factory()->guest()->create(['customer_name' => 'Walkin Guest', 'customer_phone' => '07701234567', 'customer_email' => 'walk@in.com', 'scheduled_at' => now()->addDays(3)]);
         $this->assertSame([$b1->id, $b2->id, $b3->id], $this->ids($t()->set('customerKind', 'registered')));
+        $this->assertSame([$bg->id], $this->ids($t()->set('customerKind', 'guest')));
+        $this->assertSame([$bg->id], $this->ids($t()->set('search', 'Walkin')));
+        $this->assertSame([$bg->id], $this->ids($t()->set('search', '07701234567')));
+        $this->assertSame([$bg->id], $this->ids($t()->set('search', 'walk@in.com')));
+        $this->assertSame([$b1->id], $this->ids($t()->set('search', 'Zed')));
+        $b3 = $b3; // guest booking sits between b2 and b3 in time
         // default order: scheduled_at desc; sortBy honoured
-        $this->assertSame([$b3->id, $b2->id, $b1->id], $t()->viewData('items')->pluck('id')->all());
-        $this->assertSame([$b1->id, $b2->id, $b3->id], $t()->set('sortBy', 'scheduled_at')->set('sortDir', 'asc')->viewData('items')->pluck('id')->all());
+        $this->assertSame([$b3->id, $bg->id, $b2->id, $b1->id], $t()->viewData('items')->pluck('id')->all());
+        $this->assertSame([$b1->id, $b2->id, $bg->id, $b3->id], $t()->set('sortBy', 'scheduled_at')->set('sortDir', 'asc')->viewData('items')->pluck('id')->all());
     }
 
     public function test_products_filters(): void
@@ -257,14 +265,14 @@ class ListFiltersTest extends TestCase
         $p = Product::factory()->create(['en' => ['name' => 'Reviewed Thing']]);
         $c = Customer::factory()->create();
         $mk = fn ($extra) => Review::create($extra + ['customer_id' => $c->id, 'product_id' => $p->id, 'type' => 'customer', 'rating' => 5, 'comment' => 'fine']);
-        $r1 = $mk(['is_approved' => false, 'rating' => 4]);
+        $r1 = $mk(['is_approved' => null, 'rating' => 4]);
         $r2 = $mk(['is_approved' => true, 'rating' => 3]);
         $r3 = $mk(['is_approved' => false, 'type' => 'expert']);
-        // NOTE: is_approved is NOT NULL (default false) so 'pending' (whereNull) is empty; rejected == false rows.
 
         $t = fn () => Livewire::test(ReviewManager::class);
-        $this->assertSame([], $this->ids($t(), 'reviews'));
-        $this->assertSame([$r1->id, $r3->id], $this->ids($t()->set('status', 'rejected'), 'reviews'));
+        $this->assertSame([$r1->id], $this->ids($t(), 'reviews')); // default = pending
+        $this->assertSame([$r1->id], $this->ids($t()->set('status', 'pending'), 'reviews'));
+        $this->assertSame([$r3->id], $this->ids($t()->set('status', 'rejected'), 'reviews'));
         $this->assertSame([$r1->id, $r2->id, $r3->id], $this->ids($t()->set('status', 'all'), 'reviews'));
         $this->assertSame([$r2->id], $this->ids($t()->set('status', 'approved'), 'reviews'));
         $this->assertSame([$r2->id], $this->ids($t()->set('status', 'all')->set('rating', '3'), 'reviews'));

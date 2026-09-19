@@ -19,9 +19,9 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function show(Order $order): JsonResponse
+    public function show(Request $request, Order $order): JsonResponse
     {
-        $this->authorizeOrder($order);
+        $this->authorizeOrder($request, $order);
 
         $payment = $this->paymentService->getForOrder($order);
 
@@ -41,10 +41,9 @@ class PaymentController extends Controller
         return response()->json(['status' => $result->status]);
     }
 
-    private function authorizeOrder(Order $order): void
+    private function authorizeOrder(Request $request, Order $order): void
     {
-        $customer = auth('api')->user();
-        if ($order->customer_id !== $customer?->id) {
+        if (!\App\Support\Actor::fromRequest($request)->owns($order)) {
             abort(403);
         }
     }

@@ -69,8 +69,8 @@ class BookingManager extends Component
             ->when($this->statusFilter !== '', fn ($q) => $q->where('status', $this->statusFilter))
             ->when($this->branchFilter, fn ($q) => $q->where('branch_id', $this->branchFilter))
             ->when($this->serviceFilter, fn ($q) => $q->where('service_id', $this->serviceFilter))
-            ->when($this->customerKind === 'registered', fn ($q) => $q->whereNotNull('customer_id'))
-            ->when($this->customerKind === 'guest', fn ($q) => $q->whereNull('customer_id'))
+            ->when($this->customerKind === 'registered', fn ($q) => $q->whereNotNull('customer_id')->where('is_guest', false))
+            ->when($this->customerKind === 'guest', fn ($q) => $q->where(fn ($g) => $g->whereNull('customer_id')->orWhere('is_guest', true)))
             ->when($this->from !== '', fn ($q) => $q->whereDate('scheduled_at', '>=', $this->from))
             ->when($this->to !== '', fn ($q) => $q->whereDate('scheduled_at', '<=', $this->to))
             ->when($this->quick === 'today', fn ($q) => $q->whereDate('scheduled_at', today()))
@@ -78,6 +78,9 @@ class BookingManager extends Component
             ->when($this->quick === 'week', fn ($q) => $q->whereBetween('scheduled_at', [now()->startOfWeek(), now()->endOfWeek()]))
             ->when($this->search !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('reference', 'like', "%{$this->search}%")
+                ->orWhere('customer_name', 'like', "%{$this->search}%")
+                ->orWhere('customer_phone', 'like', "%{$this->search}%")
+                ->orWhere('customer_email', 'like', "%{$this->search}%")
                 ->orWhereHas('customer', fn ($c) => $c->where(fn ($cc) => $cc
                     ->where('name', 'like', "%{$this->search}%")
                     ->orWhere('phone', 'like', "%{$this->search}%")))))

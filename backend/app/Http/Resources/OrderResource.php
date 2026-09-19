@@ -21,6 +21,8 @@ class OrderResource extends JsonResource
             'shipping_fee' => (float) $this->shipping_fee,
             'installation_fee' => (float) $this->installation_fee,
             'total' => (float) $this->total,
+            'is_guest' => (bool) $this->is_guest,
+            'customer_id' => $this->customer_id,
             'customer_name' => $this->customer_name,
             'customer_phone' => $this->customer_phone,
             'customer_email' => $this->customer_email,

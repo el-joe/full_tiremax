@@ -6,22 +6,70 @@
     "_postman_id": "tiremax-api-v2"
   },
   "variable": [
-    { "key": "base_url", "value": "http://localhost:8000", "description": "API base URL (no trailing slash)" },
-    { "key": "token", "value": "", "description": "JWT access token — set after login/register" },
-    { "key": "product_id", "value": "1" },
-    { "key": "order_id", "value": "1" },
-    { "key": "booking_id", "value": "1" },
-    { "key": "address_id", "value": "1" },
-    { "key": "cart_item_id", "value": "1" },
-    { "key": "branch_id", "value": "1" },
-    { "key": "vehicle_id", "value": "1" },
-    { "key": "governorate_id", "value": "1" },
-    { "key": "flash_sale_id", "value": "1" },
-    { "key": "notification_id", "value": "1" }
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "description": "API base URL (no trailing slash)"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "description": "JWT access token — set after login/register"
+    },
+    {
+      "key": "product_id",
+      "value": "1"
+    },
+    {
+      "key": "order_id",
+      "value": "1"
+    },
+    {
+      "key": "booking_id",
+      "value": "1"
+    },
+    {
+      "key": "address_id",
+      "value": "1"
+    },
+    {
+      "key": "cart_item_id",
+      "value": "1"
+    },
+    {
+      "key": "branch_id",
+      "value": "1"
+    },
+    {
+      "key": "vehicle_id",
+      "value": "1"
+    },
+    {
+      "key": "governorate_id",
+      "value": "1"
+    },
+    {
+      "key": "flash_sale_id",
+      "value": "1"
+    },
+    {
+      "key": "notification_id",
+      "value": "1"
+    },
+    {
+      "key": "guest_token",
+      "value": "11111111-2222-3333-4444-555555555555"
+    }
   ],
   "auth": {
     "type": "bearer",
-    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
   },
   "item": [
     {
@@ -31,13 +79,35 @@
         {
           "name": "Register",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/auth/register", "host": ["{{base_url}}"], "path": ["api","v1","auth","register"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"name\": \"Ahmed Ali\",\n  \"phone\": \"01012345678\",\n  \"email\": \"ahmed@example.com\",\n  \"password\": \"secret123\",\n  \"password_confirmation\": \"secret123\",\n  \"address\": \"123 Tahrir St, Cairo\",\n  \"locale\": \"ar\"\n}"
             },
             "description": "Create a new customer account.\n\n**Body params:**\n- `name` *(required, string, max:120)* — Full name\n- `phone` *(required, string, max:20, unique)* — Phone number (used as login identifier)\n- `email` *(optional, email, max:120, unique)* — Email address\n- `password` *(required, string, min:6)* — Password\n- `password_confirmation` *(required, string)* — Must match `password`\n- `address` *(optional, string, max:255)* — Default text address\n- `locale` *(optional, enum: en|ar)* — Preferred language"
@@ -47,7 +117,12 @@
               "name": "201 Created",
               "status": "Created",
               "code": 201,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Registered successfully\",\n  \"data\": {\n    \"customer\": {\n      \"id\": 1,\n      \"name\": \"Ahmed Ali\",\n      \"phone\": \"01012345678\",\n      \"email\": \"ahmed@example.com\",\n      \"locale\": \"ar\"\n    },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -55,7 +130,12 @@
               "name": "422 Validation Error",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"phone\": [\"The phone has already been taken.\"],\n    \"password\": [\"The password confirmation does not match.\"]\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -78,13 +158,35 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/auth/login", "host": ["{{base_url}}"], "path": ["api","v1","auth","login"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"login\": \"01012345678\",\n  \"password\": \"secret123\"\n}"
             },
             "description": "Authenticate with phone number or email.\n\n**Body params:**\n- `login` *(required, string)* — Phone number **or** email address\n- `password` *(required, string)* — Account password\n\n> The test script automatically saves the returned token to the `token` collection variable."
@@ -94,7 +196,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Logged in successfully\",\n  \"data\": {\n    \"customer\": {\n      \"id\": 1,\n      \"name\": \"Ahmed Ali\",\n      \"phone\": \"01012345678\",\n      \"email\": \"ahmed@example.com\",\n      \"locale\": \"ar\"\n    },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -102,7 +209,12 @@
               "name": "401 Invalid Credentials",
               "status": "Unauthorized",
               "code": 401,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"Invalid credentials.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -112,8 +224,24 @@
           "name": "Refresh Token",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/auth/refresh", "host": ["{{base_url}}"], "path": ["api","v1","auth","refresh"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/refresh",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "refresh"
+              ]
+            },
             "description": "Issue a new access token using the current (possibly near-expiry) token. No body required — old token read from `Authorization` header.\n\n**Auth:** Bearer token required."
           },
           "response": [
@@ -121,7 +249,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -131,8 +264,24 @@
           "name": "Get My Profile",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/auth/me", "host": ["{{base_url}}"], "path": ["api","v1","auth","me"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            },
             "description": "Return the authenticated customer's profile.\n\n**Auth:** Bearer token required."
           },
           "response": [
@@ -140,7 +289,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Ahmed Ali\",\n    \"phone\": \"01012345678\",\n      \"email\": \"ahmed@example.com\",\n    \"address\": \"123 Tahrir St\",\n    \"locale\": \"ar\",\n    \"created_at\": \"2024-01-15T10:00:00Z\"\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -150,11 +304,31 @@
           "name": "Update My Profile",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/auth/me", "host": ["{{base_url}}"], "path": ["api","v1","auth","me"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"name\": \"Ahmed Mohamed\",\n  \"email\": \"newemail@example.com\",\n  \"address\": \"456 Nile St, Giza\",\n  \"locale\": \"en\",\n  \"password\": \"newpassword123\",\n  \"password_confirmation\": \"newpassword123\"\n}"
             },
             "description": "Update the authenticated customer's profile. All fields are optional (PATCH semantics via PUT).\n\n**Auth:** Bearer token required.\n\n**Body params (all optional):**\n- `name` *(string, max:120)* — Full name\n- `email` *(email, max:120, unique)* — Email address (pass `null` to unset)\n- `address` *(string, max:255)* — Default text address\n- `locale` *(enum: en|ar)* — Preferred language\n- `password` *(string, min:6)* — New password\n- `password_confirmation` *(string)* — Must match `password`"
@@ -164,7 +338,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Updated successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Ahmed Mohamed\",\n    \"phone\": \"01012345678\",\n    \"email\": \"newemail@example.com\",\n    \"address\": \"456 Nile St, Giza\",\n    \"locale\": \"en\"\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -172,7 +351,12 @@
               "name": "422 Validation Error",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"errors\": {\n    \"email\": [\"The email has already been taken.\"]\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -182,8 +366,24 @@
           "name": "Logout",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/auth/logout", "host": ["{{base_url}}"], "path": ["api","v1","auth","logout"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "logout"
+              ]
+            },
             "description": "Invalidate the current JWT token.\n\n**Auth:** Bearer token required.\n\n**No body required.**"
           },
           "response": [
@@ -191,7 +391,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Logged out successfully\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -206,10 +411,27 @@
         {
           "name": "Get Home Data",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/home", "host": ["{{base_url}}"], "path": ["api","v1","home"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/home",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "home"
+              ]
+            },
             "description": "Returns aggregated home screen data in a single call. No auth required.\n\n**Response sections:**\n- `featured` — up to 12 featured products (sort_order asc)\n- `best_sellers` — up to 8 products with BEST_SELLER badge\n- `new_arrivals` — up to 8 products with NEW badge (latest first)\n- `offers` — up to 8 products that have a sale price set\n- `brands` — all active brands (sort_order asc)\n- `governorates` — all active governorates (sort_order asc)"
           },
           "response": [
@@ -217,7 +439,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"featured\": [\n      {\n        \"id\": 1,\n        \"name\": \"Michelin Pilot Sport 4\",\n        \"price\": \"450.00\",\n        \"sale_price\": \"399.00\",\n        \"brand\": { \"id\": 1, \"name\": \"Michelin\" },\n        \"images\": [{ \"url\": \"https://...\" }],\n        \"badges\": [{ \"badge\": \"best_seller\" }]\n      }\n    ],\n    \"best_sellers\": [ /* ProductResource[] */ ],\n    \"new_arrivals\": [ /* ProductResource[] */ ],\n    \"offers\": [ /* ProductResource[] */ ],\n    \"brands\": [\n      { \"id\": 1, \"name\": \"Michelin\", \"name_ar\": \"ميشلان\", \"logo\": \"https://...\", \"is_active\": true }\n    ],\n    \"governorates\": [\n      { \"id\": 1, \"name\": \"Cairo\", \"name_ar\": \"القاهرة\" }\n    ]\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -233,20 +460,63 @@
           "name": "List Products",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/products?page=1&per_page=15&search=michelin&brand_id=1&category_id=2&min_price=100&max_price=500&sort=price_asc",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","products"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number (default: 1)" },
-                { "key": "per_page", "value": "15", "description": "Items per page (default: 15)" },
-                { "key": "search", "value": "michelin", "description": "Full-text search by product name or SKU" },
-                { "key": "brand_id", "value": "1", "description": "Filter by brand ID" },
-                { "key": "category_id", "value": "2", "description": "Filter by category ID" },
-                { "key": "min_price", "value": "100", "description": "Minimum price filter" },
-                { "key": "max_price", "value": "500", "description": "Maximum price filter" },
-                { "key": "sort", "value": "price_asc", "description": "Sorting: price_asc | price_desc | newest | name_asc" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "description": "Items per page (default: 15)"
+                },
+                {
+                  "key": "search",
+                  "value": "michelin",
+                  "description": "Full-text search by product name or SKU"
+                },
+                {
+                  "key": "brand_id",
+                  "value": "1",
+                  "description": "Filter by brand ID"
+                },
+                {
+                  "key": "category_id",
+                  "value": "2",
+                  "description": "Filter by category ID"
+                },
+                {
+                  "key": "min_price",
+                  "value": "100",
+                  "description": "Minimum price filter"
+                },
+                {
+                  "key": "max_price",
+                  "value": "500",
+                  "description": "Maximum price filter"
+                },
+                {
+                  "key": "sort",
+                  "value": "price_asc",
+                  "description": "Sorting: price_asc | price_desc | newest | name_asc"
+                }
               ]
             },
             "description": "Paginated product listing with search and filters. Auth optional.\n\n**Query params (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Full-text search on name / SKU\n- `brand_id` — Filter by brand\n- `category_id` — Filter by category\n- `min_price` / `max_price` — Price range filter\n- `sort` — Sort order: `price_asc`, `price_desc`, `newest`, `name_asc`"
@@ -256,7 +526,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Michelin Pilot Sport 4\",\n      \"sku\": \"MPS4-225-45-17\",\n      \"price\": \"450.00\",\n      \"sale_price\": \"399.00\",\n      \"stock\": 50,\n      \"brand\": { \"id\": 1, \"name\": \"Michelin\" },\n      \"images\": [{ \"url\": \"https://...\" }],\n      \"badges\": [{ \"badge\": \"best_seller\" }],\n      \"is_favorited\": false\n    }\n  ],\n  \"pagination\": {\n    \"total\": 120,\n    \"per_page\": 15,\n    \"current_page\": 1,\n    \"last_page\": 8\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -266,8 +541,24 @@
           "name": "Get Product",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/products/{{product_id}}", "host": ["{{base_url}}"], "path": ["api","v1","products","{{product_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/products/{{product_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{product_id}}"
+              ]
+            },
             "description": "Get full product details including specs. Also tracks a view event (customer ID if auth, IP, user-agent).\n\n**URL params:**\n- `product` *(integer)* — Product ID\n\n**Response includes:** brand, category, images, badges, `tireSpec` (width, aspect_ratio, rim_diameter, load_index, speed_rating), `batterySpec` (voltage, capacity, cca)"
           },
           "response": [
@@ -275,7 +566,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Michelin Pilot Sport 4\",\n    \"sku\": \"MPS4-225-45-17\",\n    \"description\": \"High performance summer tyre...\",\n    \"price\": \"450.00\",\n    \"sale_price\": \"399.00\",\n    \"stock\": 50,\n    \"is_active\": true,\n    \"is_featured\": true,\n    \"brand\": { \"id\": 1, \"name\": \"Michelin\", \"logo\": \"https://...\" },\n    \"category\": { \"id\": 2, \"name\": \"Summer Tyres\" },\n    \"images\": [{ \"url\": \"https://...\" }],\n    \"badges\": [{ \"badge\": \"best_seller\" }],\n    \"tireSpec\": {\n      \"width\": 225,\n      \"aspect_ratio\": 45,\n      \"rim_diameter\": 17,\n      \"load_index\": 94,\n      \"speed_rating\": \"Y\"\n    },\n    \"batterySpec\": null,\n    \"is_favorited\": false\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -283,7 +579,12 @@
               "name": "404 Not Found",
               "status": "Not Found",
               "code": 404,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"Resource not found.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -293,8 +594,25 @@
           "name": "Get Related Products",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/products/{{product_id}}/related", "host": ["{{base_url}}"], "path": ["api","v1","products","{{product_id}}","related"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/products/{{product_id}}/related",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{product_id}}",
+                "related"
+              ]
+            },
             "description": "Returns products related to the given product (same brand or category).\n\n**URL params:**\n- `product` *(integer)* — Product ID"
           },
           "response": [
@@ -302,7 +620,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [ /* ProductResource[] */ ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -317,10 +640,27 @@
         {
           "name": "List Brands",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/brands", "host": ["{{base_url}}"], "path": ["api","v1","brands"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/brands",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "brands"
+              ]
+            },
             "description": "Returns all active tyre/battery brands ordered by sort_order. No auth required."
           },
           "response": [
@@ -328,7 +668,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    { \"id\": 1, \"name\": \"Michelin\", \"name_ar\": \"ميشلان\", \"logo\": \"https://...\", \"sort_order\": 1, \"is_active\": true },\n    { \"id\": 2, \"name\": \"Bridgestone\", \"name_ar\": \"بريدجستون\", \"logo\": \"https://...\", \"sort_order\": 2, \"is_active\": true }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -343,10 +688,27 @@
         {
           "name": "List Branches",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/branches", "host": ["{{base_url}}"], "path": ["api","v1","branches"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/branches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "branches"
+              ]
+            },
             "description": "Returns all active branches/stores. No auth required."
           },
           "response": [
@@ -354,7 +716,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"TireMax Maadi\",\n      \"address\": \"15 Street 9, Maadi, Cairo\",\n      \"phone\": \"0223456789\",\n      \"lat\": 29.9602,\n      \"lng\": 31.2569,\n      \"is_active\": true\n    }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -369,10 +736,27 @@
         {
           "name": "List Governorates",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/governorates", "host": ["{{base_url}}"], "path": ["api","v1","governorates"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/governorates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "governorates"
+              ]
+            },
             "description": "Returns all active governorates sorted by sort_order. No auth required."
           },
           "response": [
@@ -380,7 +764,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    { \"id\": 1, \"name\": \"Cairo\", \"name_ar\": \"القاهرة\", \"shipping_cost\": \"30.00\", \"is_active\": true },\n    { \"id\": 2, \"name\": \"Giza\", \"name_ar\": \"الجيزة\", \"shipping_cost\": \"35.00\", \"is_active\": true }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -389,10 +778,29 @@
         {
           "name": "List Cities by Governorate",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/governorates/{{governorate_id}}/cities", "host": ["{{base_url}}"], "path": ["api","v1","governorates","{{governorate_id}}","cities"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/governorates/{{governorate_id}}/cities",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "governorates",
+                "{{governorate_id}}",
+                "cities"
+              ]
+            },
             "description": "Returns all cities belonging to a given governorate.\n\n**URL params:**\n- `governorate` *(integer)* — Governorate ID"
           },
           "response": [
@@ -400,7 +808,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    { \"id\": 10, \"name\": \"Maadi\", \"name_ar\": \"المعادي\", \"governorate_id\": 1 },\n    { \"id\": 11, \"name\": \"Nasr City\", \"name_ar\": \"مدينة نصر\", \"governorate_id\": 1 }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -415,10 +828,27 @@
         {
           "name": "List Services",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/services", "host": ["{{base_url}}"], "path": ["api","v1","services"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "services"
+              ]
+            },
             "description": "Returns all active services (tyre fitting, wheel alignment, etc.). No auth required."
           },
           "response": [
@@ -426,7 +856,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Tyre Fitting\",\n      \"name_ar\": \"تركيب الإطارات\",\n      \"price\": \"50.00\",\n      \"duration_minutes\": 60,\n      \"is_active\": true\n    }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -441,10 +876,27 @@
         {
           "name": "List Flash Sales",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/flash-sales", "host": ["{{base_url}}"], "path": ["api","v1","flash-sales"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/flash-sales",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "flash-sales"
+              ]
+            },
             "description": "Returns all currently active flash sales. No auth required."
           },
           "response": [
@@ -452,7 +904,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"title\": \"Summer Sale\",\n      \"discount_percent\": 20,\n      \"starts_at\": \"2024-06-01T00:00:00Z\",\n      \"ends_at\": \"2024-06-30T23:59:59Z\",\n      \"is_active\": true\n    }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -461,10 +918,29 @@
         {
           "name": "Get Flash Sale Products",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/flash-sales/{{flash_sale_id}}/products", "host": ["{{base_url}}"], "path": ["api","v1","flash-sales","{{flash_sale_id}}","products"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/flash-sales/{{flash_sale_id}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "flash-sales",
+                "{{flash_sale_id}}",
+                "products"
+              ]
+            },
             "description": "Returns products included in a specific flash sale.\n\n**URL params:**\n- `flashSale` *(integer)* — Flash sale ID"
           },
           "response": [
@@ -472,7 +948,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [ /* ProductResource[] discounted under this flash sale */ ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -487,10 +968,28 @@
         {
           "name": "List Vehicle Makes",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/vehicles/makes", "host": ["{{base_url}}"], "path": ["api","v1","vehicles","makes"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/vehicles/makes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "makes"
+              ]
+            },
             "description": "Returns all distinct vehicle makes. No auth required."
           },
           "response": [
@@ -498,7 +997,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\"Toyota\", \"BMW\", \"Mercedes-Benz\", \"Hyundai\", \"Kia\"]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -507,10 +1011,30 @@
         {
           "name": "List Models by Make",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/vehicles/makes/Toyota/models", "host": ["{{base_url}}"], "path": ["api","v1","vehicles","makes","Toyota","models"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/vehicles/makes/Toyota/models",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "makes",
+                "Toyota",
+                "models"
+              ]
+            },
             "description": "Returns all models for a given make.\n\n**URL params:**\n- `make` *(string)* — Vehicle make name (e.g. `Toyota`)"
           },
           "response": [
@@ -518,7 +1042,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\"Camry\", \"Corolla\", \"Land Cruiser\", \"Yaris\"]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -527,10 +1056,30 @@
         {
           "name": "List Years by Model",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/vehicles/models/Camry/years", "host": ["{{base_url}}"], "path": ["api","v1","vehicles","models","Camry","years"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/vehicles/models/Camry/years",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "models",
+                "Camry",
+                "years"
+              ]
+            },
             "description": "Returns all available years for a given model.\n\n**URL params:**\n- `model` *(string)* — Vehicle model name (e.g. `Camry`)"
           },
           "response": [
@@ -538,7 +1087,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [2018, 2019, 2020, 2021, 2022, 2023]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -547,17 +1101,42 @@
         {
           "name": "List Vehicles (with filters)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/vehicles?make=Toyota&model=Camry&year=2022",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","vehicles"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles"
+              ],
               "query": [
-                { "key": "make", "value": "Toyota", "description": "Filter by vehicle make" },
-                { "key": "model", "value": "Camry", "description": "Filter by vehicle model" },
-                { "key": "year", "value": "2022", "description": "Filter by model year" }
+                {
+                  "key": "make",
+                  "value": "Toyota",
+                  "description": "Filter by vehicle make"
+                },
+                {
+                  "key": "model",
+                  "value": "Camry",
+                  "description": "Filter by vehicle model"
+                },
+                {
+                  "key": "year",
+                  "value": "2022",
+                  "description": "Filter by model year"
+                }
               ]
             },
             "description": "Returns vehicle records with optional filters. Used to find the exact vehicle ID for fitment lookup.\n\n**Query params (all optional):**\n- `make` — Vehicle make\n- `model` — Vehicle model\n- `year` — Model year"
@@ -567,7 +1146,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 42,\n      \"make\": \"Toyota\",\n      \"model\": \"Camry\",\n      \"year\": 2022,\n      \"trim\": \"XLE\",\n      \"front_width\": 215,\n      \"front_aspect_ratio\": 55,\n      \"front_rim\": 17,\n      \"rear_width\": 215,\n      \"rear_aspect_ratio\": 55,\n      \"rear_rim\": 17\n    }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -576,10 +1160,28 @@
         {
           "name": "Get Vehicle",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/vehicles/{{vehicle_id}}", "host": ["{{base_url}}"], "path": ["api","v1","vehicles","{{vehicle_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/vehicles/{{vehicle_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "{{vehicle_id}}"
+              ]
+            },
             "description": "Get a single vehicle record by ID.\n\n**URL params:**\n- `vehicle` *(integer)* — Vehicle ID"
           },
           "response": [
@@ -587,7 +1189,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 42,\n    \"make\": \"Toyota\",\n    \"model\": \"Camry\",\n    \"year\": 2022,\n    \"trim\": \"XLE\",\n    \"front_width\": 215,\n    \"front_aspect_ratio\": 55,\n    \"front_rim\": 17\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -602,10 +1209,28 @@
         {
           "name": "Get Available Tyre Sizes",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/fitments/sizes", "host": ["{{base_url}}"], "path": ["api","v1","fitments","sizes"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fitments/sizes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "fitments",
+                "sizes"
+              ]
+            },
             "description": "Returns all distinct tyre sizes present in the active product catalog. Use to populate size-picker dropdowns."
           },
           "response": [
@@ -613,7 +1238,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    { \"width\": 205, \"aspect_ratio\": 55, \"rim_diameter\": 16 },\n    { \"width\": 225, \"aspect_ratio\": 45, \"rim_diameter\": 17 },\n    { \"width\": 245, \"aspect_ratio\": 40, \"rim_diameter\": 18 }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -622,10 +1252,29 @@
         {
           "name": "Find Tyres by Vehicle",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/fitments/by-vehicle/{{vehicle_id}}", "host": ["{{base_url}}"], "path": ["api","v1","fitments","by-vehicle","{{vehicle_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fitments/by-vehicle/{{vehicle_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "fitments",
+                "by-vehicle",
+                "{{vehicle_id}}"
+              ]
+            },
             "description": "Returns products (tyres) that fit the given vehicle's spec.\n\n**URL params:**\n- `vehicle` *(integer)* — Vehicle ID (from /vehicles)"
           },
           "response": [
@@ -633,7 +1282,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [ /* ProductResource[] matching the vehicle's tyre spec */ ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -642,17 +1296,43 @@
         {
           "name": "Find Tyres by Size",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/fitments/by-size?width=225&aspect_ratio=45&rim_diameter=17",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","fitments","by-size"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "fitments",
+                "by-size"
+              ],
               "query": [
-                { "key": "width", "value": "225", "description": "Tyre section width in mm (required, integer) — e.g. 225" },
-                { "key": "aspect_ratio", "value": "45", "description": "Aspect ratio / profile % (required, integer) — e.g. 45" },
-                { "key": "rim_diameter", "value": "17", "description": "Rim diameter in inches (required, integer) — e.g. 17" }
+                {
+                  "key": "width",
+                  "value": "225",
+                  "description": "Tyre section width in mm (required, integer) — e.g. 225"
+                },
+                {
+                  "key": "aspect_ratio",
+                  "value": "45",
+                  "description": "Aspect ratio / profile % (required, integer) — e.g. 45"
+                },
+                {
+                  "key": "rim_diameter",
+                  "value": "17",
+                  "description": "Rim diameter in inches (required, integer) — e.g. 17"
+                }
               ]
             },
             "description": "Returns all products matching a specific tyre size (e.g. 225/45R17).\n\n**Query params (all required):**\n- `width` *(integer)* — Section width in mm\n- `aspect_ratio` *(integer)* — Profile percentage\n- `rim_diameter` *(integer)* — Rim diameter in inches"
@@ -662,7 +1342,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [ /* ProductResource[] for size 225/45R17 */ ]\n}",
               "_postman_previewlanguage": "json"
             },
@@ -670,7 +1355,12 @@
               "name": "422 Missing Params",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"errors\": {\n    \"width\": [\"The width field is required.\"],\n    \"aspect_ratio\": [\"The aspect ratio field is required.\"],\n    \"rim_diameter\": [\"The rim diameter field is required.\"]\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -685,15 +1375,33 @@
         {
           "name": "List Product Reviews",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/reviews/{{product_id}}?page=1",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","reviews","{{product_id}}"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "reviews",
+                "{{product_id}}"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number (15 per page)" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (15 per page)"
+                }
               ]
             },
             "description": "Returns approved customer reviews for a product (paginated). Also returns aggregate rating statistics in meta.\n\n**URL params:**\n- `product` *(integer)* — Product ID\n\n**Response meta:** `rating_avg` (float), `rating_count` (integer), `pagination`"
@@ -703,7 +1411,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 5,\n      \"rating\": 5,\n      \"comment\": \"Excellent tyres, very quiet!\",\n      \"customer\": { \"id\": 1, \"name\": \"Ahmed Ali\" },\n      \"is_approved\": true,\n      \"created_at\": \"2024-03-10T14:30:00Z\"\n    }\n  ],\n  \"rating_avg\": 4.75,\n  \"rating_count\": 28,\n  \"pagination\": { \"total\": 28, \"per_page\": 15, \"current_page\": 1, \"last_page\": 2 }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -713,11 +1426,31 @@
           "name": "Submit Review",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/reviews/{{product_id}}", "host": ["{{base_url}}"], "path": ["api","v1","reviews","{{product_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/{{product_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "reviews",
+                "{{product_id}}"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Great tyre, highly recommend!\"\n}"
             },
             "description": "Submit a customer review for a product. Review is stored with `is_approved: false` and requires admin approval before it appears publicly.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `product` *(integer)* — Product ID\n\n**Body params:**\n- `rating` *(required, integer, 1–5)* — Star rating\n- `comment` *(optional, string, max:1000)* — Review text"
@@ -727,7 +1460,12 @@
               "name": "201 Created (pending approval)",
               "status": "Created",
               "code": 201,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Review submitted and pending approval.\",\n  \"data\": {\n    \"id\": 12,\n    \"rating\": 5,\n    \"comment\": \"Great tyre!\",\n    \"is_approved\": false,\n    \"created_at\": \"2024-06-25T09:00:00Z\"\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -743,8 +1481,23 @@
           "name": "Get Cart",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/cart", "host": ["{{base_url}}"], "path": ["api","v1","cart"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart"
+              ]
+            },
             "description": "Returns the current user's cart with all items, product thumbnails, subtotal, discount, and total.\n\n**Auth:** Bearer token required."
           },
           "response": [
@@ -752,7 +1505,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 1,\n    \"items_count\": 2,\n    \"subtotal\": \"798.00\",\n    \"discount\": \"0.00\",\n    \"total\": \"798.00\",\n    \"items\": [\n      {\n        \"id\": 10,\n        \"product_id\": 1,\n        \"quantity\": 2,\n        \"unit_price\": \"399.00\",\n        \"total_price\": \"798.00\",\n        \"product\": {\n          \"id\": 1,\n          \"name\": \"Michelin Pilot Sport 4\",\n          \"brand\": { \"id\": 1, \"name\": \"Michelin\" },\n          \"images\": [{ \"url\": \"https://...\" }]\n        }\n      }\n    ]\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -762,11 +1520,31 @@
           "name": "Add Item to Cart",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/cart/items", "host": ["{{base_url}}"], "path": ["api","v1","cart","items"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart/items",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"product_id\": 1,\n  \"quantity\": 2\n}"
             },
             "description": "Add a product to the cart. If the product already exists, quantity is incremented.\n\n**Auth:** Bearer token required.\n\n**Body params:**\n- `product_id` *(required, integer, exists:products)* — Product to add\n- `quantity` *(required, integer, 1–99)* — Number of units"
@@ -776,7 +1554,12 @@
               "name": "200 OK — Cart Updated",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Added to cart.\",\n  \"data\": { /* updated CartResource */ }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -784,7 +1567,12 @@
               "name": "422 Out of Stock",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"Product is out of stock.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -794,11 +1582,32 @@
           "name": "Update Cart Item",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/cart/items/{{cart_item_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cart","items","{{cart_item_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart/items/{{cart_item_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items",
+                "{{cart_item_id}}"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"quantity\": 4\n}"
             },
             "description": "Update the quantity of a specific cart item. Setting `quantity` to `0` removes the item.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `item` *(integer)* — Cart item ID\n\n**Body params:**\n- `quantity` *(required, integer, 0–99)* — New quantity (0 removes the item)"
@@ -808,7 +1617,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Updated.\",\n  \"data\": { /* updated CartResource */ }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -818,8 +1632,25 @@
           "name": "Remove Cart Item",
           "request": {
             "method": "DELETE",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/cart/items/{{cart_item_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cart","items","{{cart_item_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart/items/{{cart_item_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items",
+                "{{cart_item_id}}"
+              ]
+            },
             "description": "Remove a single item from the cart.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `item` *(integer)* — Cart item ID"
           },
           "response": [
@@ -827,7 +1658,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Deleted.\",\n  \"data\": { /* updated CartResource */ }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -837,8 +1673,23 @@
           "name": "Clear Cart",
           "request": {
             "method": "DELETE",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/cart", "host": ["{{base_url}}"], "path": ["api","v1","cart"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart"
+              ]
+            },
             "description": "Remove all items from the cart at once.\n\n**Auth:** Bearer token required."
           },
           "response": [
@@ -846,7 +1697,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Deleted.\",\n  \"data\": null\n}",
               "_postman_previewlanguage": "json"
             }
@@ -856,11 +1712,31 @@
           "name": "Apply Promo Code",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/cart/apply-offer", "host": ["{{base_url}}"], "path": ["api","v1","cart","apply-offer"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart/apply-offer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "apply-offer"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"code\": \"SUMMER20\"\n}"
             },
             "description": "Apply a promo/offer code to the current cart. Returns the calculated discount and new totals. **Does NOT persist** — pass the returned `discount` value when placing the order.\n\n**Auth:** Bearer token required.\n\n**Body params:**\n- `code` *(required, string)* — Promo code"
@@ -870,7 +1746,12 @@
               "name": "200 OK — Offer Applied",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"discount\": \"159.60\",\n    \"subtotal\": \"798.00\",\n    \"total\": \"638.40\",\n    \"offer\": {\n      \"code\": \"SUMMER20\",\n      \"title\": \"Summer Sale 20% Off\"\n    }\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -878,7 +1759,12 @@
               "name": "422 Invalid / Expired Code",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"Invalid or expired promo code.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -894,14 +1780,33 @@
           "name": "List My Orders",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/orders?page=1&status=pending",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","orders"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number" },
-                { "key": "status", "value": "pending", "description": "Filter by status: pending | confirmed | processing | shipped | delivered | completed | cancelled | refunded" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "description": "Filter by status: pending | confirmed | processing | shipped | delivered | completed | cancelled | refunded"
+                }
               ]
             },
             "description": "Returns the authenticated customer's orders (paginated).\n\n**Auth:** Bearer token required.\n\n**Query params:**\n- `page` — Page number\n- `status` — Filter by order status"
@@ -911,7 +1816,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 10,\n      \"type\": \"delivery\",\n      \"status\": \"confirmed\",\n      \"total\": \"638.40\",\n      \"payment_method\": \"cod\",\n      \"created_at\": \"2024-06-10T12:00:00Z\"\n    }\n  ],\n  \"pagination\": { \"total\": 5, \"per_page\": 15, \"current_page\": 1, \"last_page\": 1 }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -921,11 +1831,30 @@
           "name": "Place Order (Checkout)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/orders", "host": ["{{base_url}}"], "path": ["api","v1","orders"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"type\": \"delivery\",\n  \"governorate_id\": 1,\n  \"payment_method\": \"cod\",\n  \"customer_name\": \"Ahmed Ali\",\n  \"customer_phone\": \"01012345678\",\n  \"customer_email\": \"ahmed@example.com\",\n  \"shipping_address\": \"123 Tahrir St, Cairo\",\n  \"notes\": \"Please call before delivery\",\n  \"discount\": 159.60,\n  \"installation_fee\": 50.00\n}"
             },
             "description": "Convert the current cart into an order. Cart is cleared on success.\n\n**Auth:** Bearer token required.\n\n**Body params:**\n- `type` *(required, enum: basra|delivery)* — Fulfillment type: `basra` = in-store pickup, `delivery` = home delivery\n- `branch_id` *(required if type=basra, integer, exists:branches)* — Pickup branch ID\n- `governorate_id` *(required if type=delivery, integer, exists:governorates)* — Delivery governorate ID\n- `payment_method` *(optional, enum: cod|bank_transfer|paymob, default: cod)* — Payment method\n- `customer_name` *(optional, string, max:120)* — Override customer name on the order\n- `customer_phone` *(optional, string, max:20)* — Delivery contact phone\n- `customer_email` *(optional, email, max:120)* — Delivery contact email\n- `shipping_address` *(required if type=delivery, string, max:255)* — Full delivery address\n- `notes` *(optional, string, max:500)* — Special instructions\n- `discount` *(optional, numeric, min:0)* — Discount amount from promo code (use value from /cart/apply-offer)\n- `installation_fee` *(optional, numeric, min:0)* — Tyre fitting / installation fee"
@@ -935,7 +1864,12 @@
               "name": "201 Order Placed",
               "status": "Created",
               "code": 201,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Order placed successfully.\",\n  \"data\": {\n    \"id\": 10,\n    \"type\": \"delivery\",\n    \"status\": \"pending\",\n    \"subtotal\": \"798.00\",\n    \"discount\": \"159.60\",\n    \"installation_fee\": \"50.00\",\n    \"total\": \"688.40\",\n    \"payment_method\": \"cod\",\n    \"shipping_address\": \"123 Tahrir St, Cairo\",\n    \"notes\": \"Please call before delivery\",\n    \"created_at\": \"2024-06-25T09:00:00Z\",\n    \"items\": [\n      { \"product_id\": 1, \"name\": \"Michelin Pilot Sport 4\", \"quantity\": 2, \"unit_price\": \"399.00\" }\n    ],\n    \"governorate\": { \"id\": 1, \"name\": \"Cairo\" },\n    \"branch\": null\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -943,7 +1877,12 @@
               "name": "422 Empty Cart",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"Your cart is empty.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -953,8 +1892,24 @@
           "name": "Get Order",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/orders/{{order_id}}", "host": ["{{base_url}}"], "path": ["api","v1","orders","{{order_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/{{order_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "{{order_id}}"
+              ]
+            },
             "description": "Get full details of a specific order including all items. Only the order owner can access it.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `order` *(integer)* — Order ID"
           },
           "response": [
@@ -962,7 +1917,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 10,\n    \"type\": \"delivery\",\n    \"status\": \"confirmed\",\n    \"total\": \"688.40\",\n    \"payment_method\": \"cod\",\n    \"items\": [ /* OrderItemResource[] */ ],\n    \"governorate\": { \"id\": 1, \"name\": \"Cairo\" },\n    \"branch\": null\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -970,7 +1930,12 @@
               "name": "403 Forbidden",
               "status": "Forbidden",
               "code": 403,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"Forbidden.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -980,8 +1945,25 @@
           "name": "Cancel Order",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/orders/{{order_id}}/cancel", "host": ["{{base_url}}"], "path": ["api","v1","orders","{{order_id}}","cancel"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/{{order_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "{{order_id}}",
+                "cancel"
+              ]
+            },
             "description": "Request cancellation of an order. Only possible in early statuses (`pending`, `confirmed`).\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `order` *(integer)* — Order ID\n\n**No body required.**\n\n**Resulting status:** `cancelled`"
           },
           "response": [
@@ -989,7 +1971,12 @@
               "name": "200 OK — Cancelled",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Cancelled successfully.\",\n  \"data\": { \"id\": 10, \"status\": \"cancelled\" }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -997,7 +1984,12 @@
               "name": "422 Cannot Cancel at This Stage",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"Order cannot be cancelled at this stage.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1012,10 +2004,27 @@
         {
           "name": "List Active Gateways",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/payment-gateways", "host": ["{{base_url}}"], "path": ["api","v1","payment-gateways"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payment-gateways",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment-gateways"
+              ]
+            },
             "description": "Returns all active payment gateways. No auth required. Use to populate the payment method selector in checkout."
           },
           "response": [
@@ -1023,7 +2032,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"data\": [\n    { \"id\": 1, \"name\": \"paymob\", \"display_name\": \"Paymob Online\", \"driver\": \"paymob\", \"is_active\": true },\n    { \"id\": 2, \"name\": \"cod\", \"display_name\": \"Cash on Delivery\", \"driver\": \"cod\", \"is_active\": true },\n    { \"id\": 3, \"name\": \"bank_transfer\", \"display_name\": \"Bank Transfer\", \"driver\": \"manual\", \"is_active\": true }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1033,8 +2047,25 @@
           "name": "Get Payment for Order",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/orders/{{order_id}}/payment", "host": ["{{base_url}}"], "path": ["api","v1","orders","{{order_id}}","payment"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/{{order_id}}/payment",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "{{order_id}}",
+                "payment"
+              ]
+            },
             "description": "Returns payment record for an order (status, amount, reference, gateway).\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `order` *(integer)* — Order ID\n\n**Payment statuses:** `pending` | `processing` | `paid` | `failed` | `refunded`"
           },
           "response": [
@@ -1042,7 +2073,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"data\": {\n    \"id\": 3,\n    \"order_id\": 10,\n    \"status\": \"paid\",\n    \"amount\": \"688.40\",\n    \"reference\": \"PMB-20240625-001\",\n    \"paid_at\": \"2024-06-25T10:30:00Z\",\n    \"gateway\": { \"id\": 1, \"name\": \"paymob\", \"display_name\": \"Paymob Online\", \"driver\": \"paymob\" }\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -1050,7 +2086,12 @@
               "name": "404 No Payment Found",
               "status": "Not Found",
               "code": 404,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"message\": \"No payment found for this order.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1059,16 +2100,40 @@
         {
           "name": "Paymob Webhook Callback",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
-            "url": { "raw": "{{base_url}}/api/v1/payments/paymob/callback", "host": ["{{base_url}}"], "path": ["api","v1","payments","paymob","callback"] },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/paymob/callback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "paymob",
+                "callback"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"obj\": {\n    \"id\": 123456,\n    \"success\": true,\n    \"amount_cents\": 68840,\n    \"order\": { \"id\": \"pm-order-789\" }\n  },\n  \"type\": \"TRANSACTION\"\n}"
             },
             "description": "Webhook endpoint called by Paymob servers after a payment attempt. **Do not call manually** — it is triggered by Paymob. No bearer auth (server-side IP whitelist). Returns the resulting payment status."
@@ -1078,7 +2143,12 @@
               "name": "200 Processed — paid",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{ \"status\": \"paid\" }",
               "_postman_previewlanguage": "json"
             },
@@ -1086,7 +2156,12 @@
               "name": "200 Processed — failed",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{ \"status\": \"failed\" }",
               "_postman_previewlanguage": "json"
             }
@@ -1101,15 +2176,35 @@
         {
           "name": "Get Available Slots",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/bookings/branch/{{branch_id}}/slots?date=2024-07-15",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","bookings","branch","{{branch_id}}","slots"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings",
+                "branch",
+                "{{branch_id}}",
+                "slots"
+              ],
               "query": [
-                { "key": "date", "value": "2024-07-15", "description": "Date to check available slots (required, format: YYYY-MM-DD)" }
+                {
+                  "key": "date",
+                  "value": "2024-07-15",
+                  "description": "Date to check available slots (required, format: YYYY-MM-DD)"
+                }
               ]
             },
             "description": "Returns available time slots for a branch on a specific date. No auth required.\n\n**URL params:**\n- `branch` *(integer)* — Branch ID\n\n**Query params:**\n- `date` *(required, date YYYY-MM-DD)* — The date to get slots for"
@@ -1119,7 +2214,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    { \"time\": \"09:00\", \"available\": true },\n    { \"time\": \"10:00\", \"available\": false },\n    { \"time\": \"11:00\", \"available\": true },\n    { \"time\": \"14:00\", \"available\": true },\n    { \"time\": \"16:00\", \"available\": true }\n  ]\n}",
               "_postman_previewlanguage": "json"
             },
@@ -1127,7 +2227,12 @@
               "name": "422 Missing Date",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"errors\": { \"date\": [\"The date field is required.\"] }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1137,14 +2242,33 @@
           "name": "List My Bookings",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/bookings?page=1&status=confirmed",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","bookings"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number" },
-                { "key": "status", "value": "confirmed", "description": "Filter by status: pending | confirmed | in_progress | completed | cancelled | no_show" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "status",
+                  "value": "confirmed",
+                  "description": "Filter by status: pending | confirmed | in_progress | completed | cancelled | no_show"
+                }
               ]
             },
             "description": "Returns the authenticated customer's service bookings (paginated).\n\n**Auth:** Bearer token required."
@@ -1154,7 +2278,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"status\": \"confirmed\",\n      \"scheduled_at\": \"2024-07-15T10:00:00Z\",\n      \"branch\": { \"id\": 1, \"name\": \"TireMax Maadi\" },\n      \"service\": { \"id\": 1, \"name\": \"Tyre Fitting\" },\n      \"customer_notes\": null\n    }\n  ],\n  \"pagination\": { \"total\": 3, \"per_page\": 15, \"current_page\": 1, \"last_page\": 1 }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1164,11 +2293,30 @@
           "name": "Create Booking",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/bookings", "host": ["{{base_url}}"], "path": ["api","v1","bookings"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"branch_id\": 1,\n  \"service_id\": 1,\n  \"order_id\": 10,\n  \"scheduled_at\": \"2024-07-15T10:00:00\",\n  \"customer_notes\": \"Please check wheel balance too\"\n}"
             },
             "description": "Book a service appointment at a branch.\n\n**Auth:** Bearer token required.\n\n**Body params:**\n- `branch_id` *(required, integer, exists:branches)* — Target branch\n- `service_id` *(required, integer, exists:services)* — Service type\n- `order_id` *(optional, integer, exists:orders)* — Link to an order (e.g. tyre fitting after purchase)\n- `scheduled_at` *(required, datetime, must be after now)* — Appointment datetime (ISO 8601)\n- `customer_notes` *(optional, string, max:500)* — Special instructions\n\n**Initial status:** `pending`"
@@ -1178,7 +2326,12 @@
               "name": "201 Booking Created",
               "status": "Created",
               "code": 201,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Booking created successfully.\",\n  \"data\": {\n    \"id\": 5,\n    \"status\": \"pending\",\n    \"scheduled_at\": \"2024-07-15T10:00:00Z\",\n    \"branch\": { \"id\": 1, \"name\": \"TireMax Maadi\" },\n    \"service\": { \"id\": 1, \"name\": \"Tyre Fitting\" },\n    \"customer_notes\": \"Please check wheel balance too\"\n  }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -1186,7 +2339,12 @@
               "name": "422 Slot Unavailable",
               "status": "Unprocessable Entity",
               "code": 422,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": false,\n  \"message\": \"The selected time slot is no longer available.\"\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1196,8 +2354,24 @@
           "name": "Get Booking",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}", "host": ["{{base_url}}"], "path": ["api","v1","bookings","{{booking_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings",
+                "{{booking_id}}"
+              ]
+            },
             "description": "Get full details of a specific booking including branch and service info. Only the owner can access it.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `booking` *(integer)* — Booking ID"
           },
           "response": [
@@ -1205,7 +2379,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 5,\n    \"status\": \"confirmed\",\n    \"scheduled_at\": \"2024-07-15T10:00:00Z\",\n    \"branch\": { \"id\": 1, \"name\": \"TireMax Maadi\", \"address\": \"15 Street 9, Maadi\" },\n    \"service\": { \"id\": 1, \"name\": \"Tyre Fitting\", \"price\": \"50.00\", \"duration_minutes\": 60 },\n    \"customer_notes\": \"Please check wheel balance too\"\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1215,8 +2394,25 @@
           "name": "Cancel Booking",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/cancel", "host": ["{{base_url}}"], "path": ["api","v1","bookings","{{booking_id}}","cancel"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings",
+                "{{booking_id}}",
+                "cancel"
+              ]
+            },
             "description": "Cancel a booking. Only possible while status is `pending` or `confirmed`.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `booking` *(integer)* — Booking ID\n\n**No body required.**\n\n**Resulting status:** `cancelled`"
           },
           "response": [
@@ -1224,7 +2420,12 @@
               "name": "200 OK — Cancelled",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Cancelled successfully.\",\n  \"data\": { \"id\": 5, \"status\": \"cancelled\" }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1240,8 +2441,23 @@
           "name": "List My Addresses",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/addresses", "host": ["{{base_url}}"], "path": ["api","v1","addresses"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/addresses",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "addresses"
+              ]
+            },
             "description": "Returns all addresses for the authenticated customer. Default address appears first.\n\n**Auth:** Bearer token required."
           },
           "response": [
@@ -1249,7 +2465,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"full_name\": \"Ahmed Ali\",\n      \"phone\": \"01012345678\",\n      \"address\": \"123 Tahrir St\",\n      \"is_default\": true,\n      \"governorate\": { \"id\": 1, \"name\": \"Cairo\" },\n      \"city\": { \"id\": 10, \"name\": \"Maadi\" }\n    }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1259,11 +2480,30 @@
           "name": "Create Address",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/addresses", "host": ["{{base_url}}"], "path": ["api","v1","addresses"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/addresses",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "addresses"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"full_name\": \"Ahmed Ali\",\n  \"phone\": \"01012345678\",\n  \"governorate_id\": 1,\n  \"city_id\": 10,\n  \"address\": \"123 Tahrir St, Apt 5\",\n  \"is_default\": true\n}"
             },
             "description": "Add a new address to the customer's address book. The very first address is automatically set as default.\n\n**Auth:** Bearer token required.\n\n**Body params:**\n- `full_name` *(required, string, max:255)* — Recipient full name\n- `phone` *(required, string, max:20)* — Delivery contact phone\n- `governorate_id` *(required, integer, exists:governorates)* — Governorate ID\n- `city_id` *(required, integer, exists:cities)* — City ID (must belong to the governorate)\n- `address` *(required, string, max:500)* — Street / building / landmark\n- `is_default` *(optional, boolean)* — Mark as default address"
@@ -1273,7 +2513,12 @@
               "name": "201 Created",
               "status": "Created",
               "code": 201,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Created successfully.\",\n  \"data\": {\n    \"id\": 3,\n    \"full_name\": \"Ahmed Ali\",\n    \"phone\": \"01012345678\",\n    \"address\": \"123 Tahrir St, Apt 5\",\n    \"is_default\": true,\n    \"governorate\": { \"id\": 1, \"name\": \"Cairo\" },\n    \"city\": { \"id\": 10, \"name\": \"Maadi\" }\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1283,8 +2528,24 @@
           "name": "Get Address",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/addresses/{{address_id}}", "host": ["{{base_url}}"], "path": ["api","v1","addresses","{{address_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/addresses/{{address_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "addresses",
+                "{{address_id}}"
+              ]
+            },
             "description": "Get a specific address by ID.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `address` *(integer)* — Address ID"
           },
           "response": [
@@ -1292,7 +2553,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 1,\n    \"full_name\": \"Ahmed Ali\",\n    \"phone\": \"01012345678\",\n    \"address\": \"123 Tahrir St\",\n    \"is_default\": true,\n    \"governorate\": { \"id\": 1, \"name\": \"Cairo\" },\n    \"city\": { \"id\": 10, \"name\": \"Maadi\" }\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1302,11 +2568,31 @@
           "name": "Update Address",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/addresses/{{address_id}}", "host": ["{{base_url}}"], "path": ["api","v1","addresses","{{address_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/addresses/{{address_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "addresses",
+                "{{address_id}}"
+              ]
+            },
             "body": {
               "mode": "raw",
-              "options": { "raw": { "language": "json" } },
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
               "raw": "{\n  \"full_name\": \"Ahmed Mohamed\",\n  \"phone\": \"01098765432\",\n  \"governorate_id\": 2,\n  \"city_id\": 20,\n  \"address\": \"456 Pyramids Ave, Giza\",\n  \"is_default\": false\n}"
             },
             "description": "Update an existing address. All fields are optional (partial update).\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `address` *(integer)* — Address ID\n\n**Body params (all optional):**\n- `full_name` *(string, max:255)*\n- `phone` *(string, max:20)*\n- `governorate_id` *(integer, exists:governorates)*\n- `city_id` *(integer, exists:cities)*\n- `address` *(string, max:500)*\n- `is_default` *(boolean)*"
@@ -1316,7 +2602,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Updated successfully.\",\n  \"data\": { /* updated AddressResource */ }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1326,8 +2617,24 @@
           "name": "Delete Address",
           "request": {
             "method": "DELETE",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/addresses/{{address_id}}", "host": ["{{base_url}}"], "path": ["api","v1","addresses","{{address_id}}"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/addresses/{{address_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "addresses",
+                "{{address_id}}"
+              ]
+            },
             "description": "Delete an address. If the deleted address was the default, the next available address is automatically promoted to default.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `address` *(integer)* — Address ID"
           },
           "response": [
@@ -1335,7 +2642,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Deleted.\",\n  \"data\": null\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1345,8 +2657,25 @@
           "name": "Set Address as Default",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/addresses/{{address_id}}/set-default", "host": ["{{base_url}}"], "path": ["api","v1","addresses","{{address_id}}","set-default"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/addresses/{{address_id}}/set-default",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "addresses",
+                "{{address_id}}",
+                "set-default"
+              ]
+            },
             "description": "Mark an address as the default shipping address. Automatically unsets the previous default.\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `address` *(integer)* — Address ID\n\n**No body required.**"
           },
           "response": [
@@ -1354,7 +2683,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"message\": \"Updated.\",\n  \"data\": {\n    \"id\": 2,\n    \"is_default\": true,\n    \"full_name\": \"Ahmed Ali\"\n  }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1370,8 +2704,23 @@
           "name": "List My Favorites",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/favorites", "host": ["{{base_url}}"], "path": ["api","v1","favorites"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/favorites",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "favorites"
+              ]
+            },
             "description": "Returns all favorited products for the authenticated customer.\n\n**Auth:** Bearer token required."
           },
           "response": [
@@ -1379,7 +2728,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Michelin Pilot Sport 4\",\n      \"price\": \"450.00\",\n      \"sale_price\": \"399.00\",\n      \"is_favorited\": true,\n      \"brand\": { \"id\": 1, \"name\": \"Michelin\" }\n    }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1389,8 +2743,25 @@
           "name": "Toggle Favorite",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/favorites/{{product_id}}/toggle", "host": ["{{base_url}}"], "path": ["api","v1","favorites","{{product_id}}","toggle"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/favorites/{{product_id}}/toggle",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "favorites",
+                "{{product_id}}",
+                "toggle"
+              ]
+            },
             "description": "Add to favorites if not already saved; remove if already favorited (toggle behavior).\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `product` *(integer)* — Product ID\n\n**No body required.**"
           },
           "response": [
@@ -1398,7 +2769,12 @@
               "name": "200 OK — Added to favorites",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": { \"is_favorited\": true }\n}",
               "_postman_previewlanguage": "json"
             },
@@ -1406,7 +2782,12 @@
               "name": "200 OK — Removed from favorites",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": { \"is_favorited\": false }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1422,13 +2803,28 @@
           "name": "List Notifications",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/v1/notifications?page=1",
-              "host": ["{{base_url}}"],
-              "path": ["api","v1","notifications"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notifications"
+              ],
               "query": [
-                { "key": "page", "value": "1", "description": "Page number" }
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                }
               ]
             },
             "description": "Returns all notifications for the authenticated customer (paginated, latest first).\n\n**Auth:** Bearer token required.\n\n**Unread notifications** have `read_at: null`."
@@ -1438,7 +2834,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"type\": \"App\\\\Notifications\\\\OrderStatusUpdated\",\n      \"data\": {\n        \"title\": \"Order Confirmed\",\n        \"body\": \"Your order #10 has been confirmed and is being prepared.\",\n        \"order_id\": 10\n      },\n      \"read_at\": null,\n      \"created_at\": \"2024-06-25T10:00:00Z\"\n    }\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1448,8 +2849,24 @@
           "name": "Get Unread Count",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/notifications/unread-count", "host": ["{{base_url}}"], "path": ["api","v1","notifications","unread-count"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/unread-count",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notifications",
+                "unread-count"
+              ]
+            },
             "description": "Returns the count of unread notifications. Use for badge counters on the notification icon.\n\n**Auth:** Bearer token required."
           },
           "response": [
@@ -1457,7 +2874,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": { \"count\": 3 }\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1467,8 +2889,25 @@
           "name": "Mark Notification as Read",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/notifications/{{notification_id}}/read", "host": ["{{base_url}}"], "path": ["api","v1","notifications","{{notification_id}}","read"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/{{notification_id}}/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notifications",
+                "{{notification_id}}",
+                "read"
+              ]
+            },
             "description": "Mark a single notification as read (sets `read_at` to current timestamp).\n\n**Auth:** Bearer token required.\n\n**URL params:**\n- `id` *(string UUID)* — Notification ID\n\n**No body required.**"
           },
           "response": [
@@ -1476,7 +2915,12 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": null\n}",
               "_postman_previewlanguage": "json"
             }
@@ -1486,8 +2930,24 @@
           "name": "Mark All Notifications as Read",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Accept", "value": "application/json" }],
-            "url": { "raw": "{{base_url}}/api/v1/notifications/read-all", "host": ["{{base_url}}"], "path": ["api","v1","notifications","read-all"] },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/read-all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notifications",
+                "read-all"
+              ]
+            },
             "description": "Mark all unread notifications as read in one call.\n\n**Auth:** Bearer token required.\n\n**No body required.**"
           },
           "response": [
@@ -1495,11 +2955,369 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
               "body": "{\n  \"success\": true,\n  \"data\": null\n}",
               "_postman_previewlanguage": "json"
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Guest (X-Guest-Token)",
+      "description": "No account needed. Send X-Guest-Token (client-generated UUID, 16-64 chars [A-Za-z0-9_-]) on every request. Optional Authorization Bearer takes precedence.",
+      "item": [
+        {
+          "name": "Guest cart",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Guest add to cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cart/items",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": 1,\n  \"quantity\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Guest checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"basra\",\n  \"branch_id\": 1,\n  \"payment_method\": \"cod\",\n  \"customer_name\": \"Ali\",\n  \"customer_phone\": \"07701234567\",\n  \"customer_email\": \"ali@example.com\",\n  \"offer_code\": \"SUMMER10\",\n  \"locale\": \"ar\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Guest order lookup by token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/ORD-XXXXXX-XXXXXX",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "ORD-XXXXXX-XXXXXX"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Guest order lookup by phone",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/ORD-XXXXXX-XXXXXX?phone=07701234567",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "ORD-XXXXXX-XXXXXX"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Guest cancel order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/1/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "1",
+                "cancel"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Guest order payment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/1/payment",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "1",
+                "payment"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Guest booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branch_id\": 1,\n  \"service_id\": 1,\n  \"scheduled_at\": \"2030-01-01 10:00:00\",\n  \"customer_name\": \"Ali\",\n  \"customer_phone\": \"07701234567\",\n  \"customer_email\": \"ali@example.com\",\n  \"locale\": \"ar\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Guest booking lookup",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/BK-XXXXXX-XXXXX?phone=07701234567",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings",
+                "BK-XXXXXX-XXXXX"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register (links guest data)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ali\",\n  \"phone\": \"07701234567\",\n  \"password\": \"secret1\",\n  \"password_confirmation\": \"secret1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (links guest data)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Guest-Token",
+                "value": "{{guest_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"07701234567\",\n  \"password\": \"secret1\"\n}"
+            }
+          }
         }
       ]
     }

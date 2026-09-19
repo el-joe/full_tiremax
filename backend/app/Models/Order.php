@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\NormalizesPhone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, NormalizesPhone;
+
+    public function phoneSourceColumn(): string
+    {
+        return 'customer_phone';
+    }
 
     public const TYPE_BASRA = 'basra';
     public const TYPE_DELIVERY = 'delivery';
@@ -41,6 +47,10 @@ class Order extends Model
         'customer_name',
         'customer_phone',
         'customer_email',
+        'customer_locale',
+        'is_guest',
+        'guest_token',
+        'phone_normalized',
         'shipping_address',
         'tracking_number',
         'daftra_invoice_id',
@@ -50,6 +60,8 @@ class Order extends Model
         'placed_at',
     ];
 
+    protected $hidden = ['guest_token'];
+
     protected $casts = [
         'subtotal' => 'decimal:2',
         'discount' => 'decimal:2',
@@ -57,6 +69,7 @@ class Order extends Model
         'installation_fee' => 'decimal:2',
         'total' => 'decimal:2',
         'daftra_meta' => 'array',
+        'is_guest' => 'boolean',
         'placed_at' => 'datetime',
     ];
 

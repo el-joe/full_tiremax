@@ -69,6 +69,15 @@ class CustomerManager extends Component
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
     }
 
+    public function linkGuestOrders(int $id): void
+    {
+        $this->authorizePermission('customers.update');
+        $c = Customer::findOrFail($id);
+        $linked = app(\App\Services\GuestLinkService::class)->attach($c);
+        $this->logAction('customer.guest_linked', $c, [], $linked);
+        $this->dispatch('toast', icon: 'success', title: __('messages.success') . " ({$linked['orders']} orders, {$linked['bookings']} bookings)");
+    }
+
     public function confirmDelete(int $id): void
     {
         $this->authorizePermission('customers.delete');

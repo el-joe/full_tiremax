@@ -39,7 +39,7 @@ class ReviewController extends Controller
             'type' => Review::TYPE_CUSTOMER,
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'is_approved' => false,
+            'is_approved' => null, // pending moderation
         ]);
         return ApiResponse::created(new ReviewResource($review), __('messages.review_submitted'));
     }

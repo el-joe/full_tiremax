@@ -31,4 +31,13 @@ class OrderFactory extends Factory
             'placed_at' => now(),
         ];
     }
+
+    public function guest(?string $token = null): static
+    {
+        return $this->state(fn () => [
+            'customer_id' => null,
+            'is_guest' => true,
+            'guest_token' => $token ?? \Illuminate\Support\Str::random(32),
+        ]);
+    }
 }

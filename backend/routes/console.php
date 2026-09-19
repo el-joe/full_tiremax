@@ -12,3 +12,4 @@ Artisan::command('inspire', function () {
 Schedule::command('daftra:sync-products')->everyThirtyMinutes()->when(fn () => Daftra::isEnabled());
 Schedule::command('bookings:send-reminders')->dailyAt('09:00');
 Schedule::command('whatsapp:order-notifications')->everyFiveMinutes();
+Schedule::call(fn () => \App\Models\Cart::whereNull('customer_id')->whereNotNull('guest_token')->where('updated_at', '<', now()->subDays(30))->delete())->daily()->name('prune-guest-carts');

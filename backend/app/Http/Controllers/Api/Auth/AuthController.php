@@ -18,24 +18,24 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $payload = $this->auth->register($request->validated());
-        return ApiResponse::created([
-            'customer' => new CustomerResource($payload['customer']),
-            'access_token' => $payload['access_token'],
-            'token_type' => $payload['token_type'],
-            'expires_in' => $payload['expires_in'],
-        ], __('messages.registered'));
-    }
-
-    public function login(LoginRequest $request)
-    {
-        $payload = $this->auth->login($request->validated());
+        $payload = $this->auth->register($request->validated() + ['guest_token' => $request->header('X-Guest-Token') ?? $request->input('guest_token')]);
         return ApiResponse::success([
             'customer' => new CustomerResource($payload['customer']),
             'access_token' => $payload['access_token'],
             'token_type' => $payload['token_type'],
             'expires_in' => $payload['expires_in'],
-        ], __('messages.logged_in'));
+        ], __('messages.registered'), 201, $payload['meta'] ?? []);
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $payload = $this->auth->login($request->validated() + ['guest_token' => $request->header('X-Guest-Token') ?? $request->input('guest_token')]);
+        return ApiResponse::success([
+            'customer' => new CustomerResource($payload['customer']),
+            'access_token' => $payload['access_token'],
+            'token_type' => $payload['token_type'],
+            'expires_in' => $payload['expires_in'],
+        ], __('messages.logged_in'), 200, $payload['meta'] ?? []);
     }
 
     public function refresh()

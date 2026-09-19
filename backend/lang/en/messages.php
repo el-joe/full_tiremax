@@ -7,6 +7,7 @@ return [
     'deleted' => 'Resource deleted successfully.',
     'added' => 'Added.',
     'not_found' => 'Resource not found.',
+    'invalid_phone' => 'Invalid phone number.',
     'unauthenticated' => 'Authentication required.',
     'forbidden' => 'You are not allowed to perform this action.',
     'validation_failed' => 'The given data was invalid.',

@@ -47,6 +47,9 @@
                         </td>
                         <td class="px-4 py-3 text-end">
                             <button wire:click="view({{ $c->id }})" class="text-yellow-500 text-xs me-3">View</button>
+                            @can('customers.update')
+<button wire:click="linkGuestOrders({{ $c->id }})" class="text-sky-400 text-xs me-3">Link guest orders</button>
+@endcan
                             @can('customers.delete')
 <button wire:click="confirmDelete({{ $c->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>

@@ -31,8 +31,8 @@
                 @forelse ($items as $b)
                     <tr class="hover:bg-stone-800/40">
                         <td class="px-4 py-3 font-mono text-yellow-500">{{ $b->reference }}</td>
-                        <td class="px-4 py-3">{{ optional($b->customer)->name }}
-                            <div class="text-xs text-stone-400">{{ optional($b->customer)->phone }}</div>
+                        <td class="px-4 py-3">{{ $b->customer_name ?? $b->customer?->name ?? '—' }} @if ($b->is_guest || !$b->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif
+                            <div class="text-xs text-stone-400">{{ $b->customer_phone ?? $b->customer?->phone }}</div>
                         </td>
                         <td class="px-4 py-3">{{ optional($b->service)->name }}</td>
                         <td class="px-4 py-3 text-stone-400">{{ optional($b->branch)->name }}</td>

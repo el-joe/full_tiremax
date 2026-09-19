@@ -34,7 +34,7 @@
                 @forelse ($items as $o)
                     <tr class="hover:bg-stone-800/40">
                         <td class="px-4 py-3 font-mono text-yellow-500">{{ $o->reference }}</td>
-                        <td class="px-4 py-3">{{ $o->customer_name }}
+                        <td class="px-4 py-3">{{ $o->customer_name }} @if ($o->is_guest || !$o->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif
                             <div class="text-xs text-stone-400">{{ $o->customer_phone }}</div>
                         </td>
                         <td class="px-4 py-3 text-stone-400">{{ $o->type }}</td>
@@ -95,7 +95,7 @@
                 <div class="grid sm:grid-cols-2 gap-4 text-sm">
                     <div class="bg-stone-800/50 rounded-lg p-3">
                         <div class="text-xs text-stone-400">Customer</div>
-                        <div class="font-bold">{{ $viewing->customer_name }}</div>
+                        <div class="font-bold">{{ $viewing->customer_name }} @if ($viewing->is_guest || !$viewing->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif</div>
                         <div class="text-xs">{{ $viewing->customer_phone }}</div>
                         <div class="text-xs text-stone-400">{{ $viewing->customer_email }}</div>
                     </div>

@@ -25,4 +25,15 @@ class BookingFactory extends Factory
             'status' => Booking::STATUS_PENDING,
         ];
     }
+
+    public function guest(?string $token = null): static
+    {
+        return $this->state(fn () => [
+            'customer_id' => null,
+            'is_guest' => true,
+            'customer_name' => fake()->name(),
+            'customer_phone' => '07'.fake()->numerify('#########'),
+            'guest_token' => $token ?? \Illuminate\Support\Str::random(32),
+        ]);
+    }
 }

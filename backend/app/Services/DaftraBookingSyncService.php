@@ -67,16 +67,21 @@ class DaftraBookingSyncService
     private function resolveClient(Booking $booking): int|string
     {
         $customer = $booking->customer;
+        $snapshot = (object) [
+            'name' => $booking->customer_name ?? $customer?->name,
+            'email' => $booking->customer_email ?? $customer?->email,
+            'phone' => $booking->customer_phone ?? $customer?->phone,
+        ];
 
         $clientData = $this->daftra->findOrCreateClient([
-            'name'  => $customer->name,
-            'email' => $customer->email ?? '',
-            'phone' => $customer->phone,
+            'name'  => $snapshot->name,
+            'email' => $snapshot->email ?? '',
+            'phone' => $snapshot->phone,
         ]);
 
         $daftraId = $clientData['id'] ?? $clientData['Client']['id'] ?? 0;
 
-        if ($daftraId && !$customer->daftra_id) {
+        if ($daftraId && $customer && !$customer->daftra_id) {
             $customer->update(['daftra_id' => (string) $daftraId]);
         }
 

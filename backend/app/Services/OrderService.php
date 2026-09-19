@@ -13,6 +13,7 @@ use App\Models\OrderStatusLog;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Support\ApiException;
+use App\Support\Actor;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -33,10 +34,13 @@ class OrderService
             ->paginate((int) ($filters['per_page'] ?? 15));
     }
 
-    public function checkout(Customer $customer, array $data): Order
+    public function checkout(Actor|Customer $actor, array $data): Order
     {
-        return DB::transaction(function () use ($customer, $data) {
-            $cart = $this->cartService->show($customer);
+        $actor = $actor instanceof Customer ? new Actor($actor, null) : $actor;
+        $customer = $actor->customer;
+
+        return DB::transaction(function () use ($actor, $customer, $data) {
+            $cart = $this->cartService->show($actor);
             if ($cart->items->isEmpty()) {
                 throw ApiException::badRequest(__('messages.cart_empty'));
             }
@@ -49,7 +53,7 @@ class OrderService
 
             if ($type === Order::TYPE_BASRA) {
                 $branch = Branch::findOrFail($data['branch_id']);
-                $installationFee = (float) ($data['installation_fee'] ?? 0);
+                // installation fee is never accepted from the client
             } else {
                 $governorate = Governorate::findOrFail($data['governorate_id']);
                 if ($governorate->is_basra) {
@@ -86,12 +90,18 @@ class OrderService
                 $product->increment('real_sales_count', $item->quantity);
             }
 
-            $discount = (float) ($data['discount'] ?? 0);
+            $discount = 0.0;
+            if (!empty($data['offer_code'])) {
+                $discount = (float) $this->cartService->computeOfferForSubtotal($data['offer_code'], (float) $subtotal)['discount'];
+            }
             $total = max(0, $subtotal - $discount + $shippingFee + $installationFee);
 
             $order = Order::create([
                 'reference' => $this->generateReference(),
-                'customer_id' => $customer->id,
+                'customer_id' => $customer?->id,
+                'is_guest' => $customer === null,
+                'guest_token' => $customer === null ? $actor->guestToken : null,
+                'customer_locale' => $data['locale'] ?? $customer?->locale ?? app()->getLocale(),
                 'governorate_id' => $governorate?->id,
                 'branch_id' => $branch?->id,
                 'type' => $type,
@@ -103,9 +113,9 @@ class OrderService
                 'shipping_fee' => $shippingFee,
                 'installation_fee' => $installationFee,
                 'total' => $total,
-                'customer_name' => $data['customer_name'] ?? $customer->name,
-                'customer_phone' => $data['customer_phone'] ?? $customer->phone,
-                'customer_email' => $data['customer_email'] ?? $customer->email,
+                'customer_name' => $data['customer_name'] ?? $customer?->name,
+                'customer_phone' => $data['customer_phone'] ?? $customer?->phone,
+                'customer_email' => $data['customer_email'] ?? $customer?->email,
                 'shipping_address' => $data['shipping_address'] ?? null,
                 'notes' => $data['notes'] ?? null,
                 'placed_at' => now(),
@@ -118,17 +128,17 @@ class OrderService
                 'from_status' => null,
                 'to_status' => Order::STATUS_PENDING,
                 'note' => 'Order placed by customer',
-                'actor_type' => Customer::class,
-                'actor_id' => $customer->id,
+                'actor_type' => $customer ? Customer::class : null,
+                'actor_id' => $customer?->id,
             ]);
 
-            $this->cartService->clear($customer);
+            $this->cartService->clear($actor);
 
             $driver = $data['payment_method'] ?? 'cod';
             $this->paymentService->initiate($order, $driver);
 
             OrderPlaced::dispatch($order);
-            $customer->notify(new OrderPlacedNotification($order));
+            $customer?->notify(new OrderPlacedNotification($order));
 
             return $order->load('items.product', 'governorate', 'branch', 'payments.gateway');
         });

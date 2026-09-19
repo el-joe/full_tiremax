@@ -68,9 +68,9 @@ Route::prefix('v1')->group(function () {
         Route::get('reviews/{product}', [ReviewController::class, 'index']);
     });
 
-    // Authenticated --------------------------------------------------
+    // Guest-capable (customer JWT OR X-Guest-Token) ---------------------
     Route::get('bookings/branch/{branch}/slots', [BookingController::class, 'availableSlots']);
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware('jwt.optional')->group(function () {
         // Cart
         Route::get('cart', [CartController::class, 'show']);
         Route::post('cart/items', [CartController::class, 'addItem']);
@@ -80,19 +80,21 @@ Route::prefix('v1')->group(function () {
         Route::post('cart/apply-offer', [CartController::class, 'applyOffer']);
 
         // Orders
-        Route::get('orders', [OrderController::class, 'index']);
-        Route::post('orders', [OrderController::class, 'store']); // checkout
-        Route::get('orders/{order}', [OrderController::class, 'show']);
+        Route::post('orders', [OrderController::class, 'store'])->middleware('throttle:10,1'); // checkout
+        Route::get('orders/{orderRef}', [OrderController::class, 'show'])->middleware('throttle:60,1')->where('orderRef', '[A-Za-z0-9\-]+');
         Route::post('orders/{order}/cancel', [OrderController::class, 'cancel']);
-
-        // Payments
         Route::get('orders/{order}/payment', [PaymentController::class, 'show']);
 
         // Bookings
-        Route::get('bookings', [BookingController::class, 'index']);
-        Route::post('bookings', [BookingController::class, 'store']);
-        Route::get('bookings/{booking}', [BookingController::class, 'show']);
+        Route::post('bookings', [BookingController::class, 'store'])->middleware('throttle:10,1');
+        Route::get('bookings/{bookingRef}', [BookingController::class, 'show'])->middleware('throttle:60,1')->where('bookingRef', '[A-Za-z0-9\-]+');
         Route::post('bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+    });
+
+    // Authenticated only ---------------------------------------------
+    Route::middleware('auth:api')->group(function () {
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::get('bookings', [BookingController::class, 'index']);
 
         // Addresses
         Route::get('addresses', [AddressController::class, 'index']);

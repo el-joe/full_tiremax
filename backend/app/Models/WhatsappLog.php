@@ -10,6 +10,7 @@ class WhatsappLog extends Model
     protected $fillable = [
         'customer_id',
         'order_id',
+        'booking_id',
         'whatsapp_template_id',
         'phone',
         'status',

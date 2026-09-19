@@ -31,7 +31,7 @@
                     <div class="py-2 flex items-center justify-between text-sm">
                         <div>
                             <div class="font-bold text-yellow-500">{{ $o->reference }}</div>
-                            <div class="text-stone-400 text-xs">{{ $o->customer_name }} · {{ $o->created_at->diffForHumans() }}</div>
+                            <div class="text-stone-400 text-xs">{{ $o->customer_name }} @if ($o->is_guest) (Guest) @endif · {{ $o->created_at->diffForHumans() }}</div>
                         </div>
                         <div class="text-end">
                             <div class="font-bold text-stone-100">{{ number_format($o->total) }} IQD</div>
@@ -54,7 +54,7 @@
                         <div>
                             <div class="font-bold text-yellow-500">{{ $b->reference }}</div>
                             <div class="text-stone-400 text-xs">
-                                {{ optional($b->customer)->name }} · {{ optional($b->service)->name }}
+                                {{ $b->customer_name ?? $b->customer?->name }} @if ($b->is_guest) (Guest) @endif · {{ optional($b->service)->name }}
                             </div>
                         </div>
                         <div class="text-end">

@@ -23,7 +23,9 @@ class AuthService
 
         $token = JWTAuth::fromUser($customer);
 
-        return $this->respondWithToken($customer, $token);
+        $linked = app(GuestLinkService::class)->attach($customer, $data['guest_token'] ?? null);
+
+        return $this->respondWithToken($customer, $token) + ['meta' => ['linked_orders' => $linked['orders'], 'linked_bookings' => $linked['bookings']]];
     }
 
     public function login(array $credentials): array
@@ -42,7 +44,9 @@ class AuthService
 
         $token = JWTAuth::fromUser($customer);
 
-        return $this->respondWithToken($customer, $token);
+        $linked = app(GuestLinkService::class)->attach($customer, $credentials['guest_token'] ?? null);
+
+        return $this->respondWithToken($customer, $token) + ['meta' => ['linked_orders' => $linked['orders'], 'linked_bookings' => $linked['bookings']]];
     }
 
     public function refresh(): array

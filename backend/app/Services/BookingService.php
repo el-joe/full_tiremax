@@ -10,6 +10,7 @@ use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\Service;
 use App\Support\ApiException;
+use App\Support\Actor;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -25,11 +26,24 @@ class BookingService
             ->paginate((int) ($filters['per_page'] ?? 15));
     }
 
-    public function create(Customer $customer, array $data): Booking
+    public function create(Actor|Customer|null $actor, array $data): Booking
     {
-        return DB::transaction(function () use ($customer, $data) {
+        $actor = $actor instanceof Customer ? new Actor($actor, null) : $actor;
+        $customer = $actor?->customer;
+        if (!$customer && !$actor?->guestToken) {
+            throw ApiException::unauthorized(__('messages.unauthenticated'));
+        }
+
+        return DB::transaction(function () use ($actor, $customer, $data) {
             $branch = Branch::findOrFail($data['branch_id']);
             $service = Service::findOrFail($data['service_id']);
+
+            if (!empty($data['order_id'])) {
+                $linked = \App\Models\Order::find($data['order_id']);
+                if (!$linked || !$actor->owns($linked)) {
+                    throw ApiException::forbidden();
+                }
+            }
 
             $scheduledAt = Carbon::parse($data['scheduled_at']);
 
@@ -37,7 +51,13 @@ class BookingService
 
             $booking = Booking::create([
                 'reference' => 'BK-' . now()->format('ymd') . '-' . strtoupper(Str::random(5)),
-                'customer_id' => $customer->id,
+                'customer_id' => $customer?->id,
+                'customer_name' => $data['customer_name'] ?? $customer?->name,
+                'customer_phone' => $data['customer_phone'] ?? $customer?->phone,
+                'customer_email' => $data['customer_email'] ?? $customer?->email,
+                'customer_locale' => $data['locale'] ?? $customer?->locale ?? app()->getLocale(),
+                'is_guest' => $customer === null,
+                'guest_token' => $customer === null ? $actor->guestToken : null,
                 'branch_id' => $branch->id,
                 'service_id' => $service->id,
                 'order_id' => $data['order_id'] ?? null,
@@ -50,7 +70,7 @@ class BookingService
             ]);
 
             BookingCreated::dispatch($booking);
-            $customer->notify(new BookingCreatedNotification($booking));
+            $customer?->notify(new BookingCreatedNotification($booking));
 
             return $booking->load(['branch', 'service']);
         });
