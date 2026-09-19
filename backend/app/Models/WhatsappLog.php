@@ -12,6 +12,8 @@ class WhatsappLog extends Model
         'order_id',
         'booking_id',
         'whatsapp_template_id',
+        'template_key',
+        'locale',
         'phone',
         'status',
         'provider_message_id',
@@ -33,6 +35,11 @@ class WhatsappLog extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class);
     }
 
     public function template(): BelongsTo

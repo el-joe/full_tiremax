@@ -143,6 +143,7 @@ return [
         'remove' => 'Remove',
 
         'setting_groups' => [
+            'notifications' => 'Notifications',
             'general' => 'General',
             'shipping' => 'Shipping',
             'social' => 'Social Media',
@@ -154,6 +155,8 @@ return [
         ],
 
         'setting_keys' => [
+            'email_enabled' => 'Email notifications',
+            'whatsapp_enabled' => 'WhatsApp notifications',
             'site_name' => 'Site Name',
             'site_tagline' => 'Site Tagline',
             'site_email' => 'Site Email',

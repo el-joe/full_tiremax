@@ -82,6 +82,63 @@ class WhatsappTemplateSeeder extends Seeder
                 ],
             ],
 
+            [
+                'key' => 'order_placed',
+                'trigger_after_days' => null,
+                'is_active' => true,
+                'variables' => ['customer_name', 'order_ref', 'total', 'items_count', 'track_url'],
+                'en' => [
+                    'subject' => 'Order Received 🛒',
+                    'body' => "Hello {{customer_name}},\n\nWe received your order *{{order_ref}}*.\nTotal: *{{total}} IQD* ({{items_count}} item(s))\n\nTrack it: {{track_url}}\n\nIraq Max Tire 🔧",
+                ],
+                'ar' => [
+                    'subject' => 'تم استلام طلبك 🛒',
+                    'body' => "مرحباً {{customer_name}}،\n\nاستلمنا طلبك *{{order_ref}}*.\nالإجمالي: *{{total}} دينار* ({{items_count}} منتج)\n\nتتبع الطلب: {{track_url}}\n\nإيراق ماكس تاير 🔧",
+                ],
+            ],
+            [
+                'key' => 'order_cancelled',
+                'trigger_after_days' => null,
+                'is_active' => true,
+                'variables' => ['customer_name', 'order_ref'],
+                'en' => [
+                    'subject' => 'Order Cancelled',
+                    'body' => "Hello {{customer_name}},\n\nYour order *{{order_ref}}* has been cancelled.\n\nIraq Max Tire",
+                ],
+                'ar' => [
+                    'subject' => 'تم إلغاء طلبك',
+                    'body' => "مرحباً {{customer_name}}،\n\nتم إلغاء طلبك *{{order_ref}}*.\n\nإيراق ماكس تاير",
+                ],
+            ],
+            [
+                'key' => 'booking_created',
+                'trigger_after_days' => null,
+                'is_active' => true,
+                'variables' => ['customer_name', 'booking_ref', 'service', 'branch', 'date', 'time'],
+                'en' => [
+                    'subject' => 'Booking Received 📅',
+                    'body' => "Hi {{customer_name}},\n\nWe received your booking *{{booking_ref}}*.\n\n📋 Service: *{{service}}*\n📅 {{date}} at {{time}}\n📍 Branch: *{{branch}}*\n\nIraq Max Tire",
+                ],
+                'ar' => [
+                    'subject' => 'تم استلام حجزك 📅',
+                    'body' => "مرحباً {{customer_name}}،\n\nاستلمنا حجزك *{{booking_ref}}*.\n\n📋 الخدمة: *{{service}}*\n📅 {{date}} الساعة {{time}}\n📍 الفرع: *{{branch}}*\n\nإيراق ماكس تاير",
+                ],
+            ],
+            [
+                'key' => 'booking_cancelled',
+                'trigger_after_days' => null,
+                'is_active' => true,
+                'variables' => ['customer_name', 'booking_ref', 'service', 'branch', 'date', 'time'],
+                'en' => [
+                    'subject' => 'Booking Cancelled',
+                    'body' => "Hi {{customer_name}},\n\nYour booking *{{booking_ref}}* ({{service}}, {{date}} {{time}}) has been cancelled.\n\nIraq Max Tire",
+                ],
+                'ar' => [
+                    'subject' => 'تم إلغاء الحجز',
+                    'body' => "مرحباً {{customer_name}}،\n\nتم إلغاء حجزك *{{booking_ref}}* ({{service}}، {{date}} {{time}}).\n\nإيراق ماكس تاير",
+                ],
+            ],
+
             // ── Automated follow-ups ──────────────────────────────────────
             [
                 'key' => 'review_request',
@@ -128,6 +185,9 @@ class WhatsappTemplateSeeder extends Seeder
         ];
 
         foreach ($templates as $data) {
+            if (WhatsappTemplate::where('key', $data['key'])->exists()) {
+                continue; // never overwrite admin edits
+            }
             $template = WhatsappTemplate::updateOrCreate(
                 ['key' => $data['key']],
                 [

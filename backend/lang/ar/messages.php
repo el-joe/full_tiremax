@@ -143,6 +143,7 @@ return [
         'remove' => 'إزالة',
 
         'setting_groups' => [
+            'notifications' => 'الإشعارات',
             'general' => 'عام',
             'shipping' => 'الشحن',
             'social' => 'التواصل الاجتماعي',
@@ -154,6 +155,8 @@ return [
         ],
 
         'setting_keys' => [
+            'email_enabled' => 'إشعارات البريد الإلكتروني',
+            'whatsapp_enabled' => 'إشعارات واتساب',
             'site_name' => 'اسم الموقع',
             'site_tagline' => 'شعار الموقع',
             'site_email' => 'البريد الإلكتروني للموقع',

@@ -92,6 +92,14 @@
                     <button wire:click="close" class="text-stone-400 hover:text-stone-100">✕</button>
                 </div>
 
+
+                <div class="flex gap-2 border-b border-stone-800 pb-2 text-sm">
+                    <button wire:click="$set('tab','details')" class="px-3 py-1 rounded-full {{ $tab === 'details' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Details</button>
+                    <button wire:click="$set('tab','notifications')" class="px-3 py-1 rounded-full {{ $tab === 'notifications' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Notifications</button>
+                </div>
+                @if ($tab === 'notifications')
+                    @include('livewire.admin.partials.notifications-tab', ['emailLogs' => $emailLogs, 'waLogs' => $waLogs, 'canResend' => auth('admin')->user()?->can('orders.update')])
+                @else
                 <div class="grid sm:grid-cols-2 gap-4 text-sm">
                     <div class="bg-stone-800/50 rounded-lg p-3">
                         <div class="text-xs text-stone-400">Customer</div>
@@ -162,6 +170,7 @@
                         @endforeach
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     @endif

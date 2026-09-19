@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
             return null;
         });
 
+        // Notification listeners (SendOrder/BookingNotifications) are auto-discovered from app/Listeners.
         Event::listen(OrderPlaced::class, PushOrderToDaftra::class);
         Event::listen(BookingCreated::class, PushBookingToDaftra::class);
     }

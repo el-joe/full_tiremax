@@ -222,6 +222,10 @@ class SettingSeeder extends Seeder
                 'value' => '0'
             ],
 
+            // ── Notifications ─────────────────────────────────────────────
+            ['group' => 'notifications', 'key' => 'email_enabled', 'cast' => 'bool', 'translatable' => false, 'value' => '1'],
+            ['group' => 'notifications', 'key' => 'whatsapp_enabled', 'cast' => 'bool', 'translatable' => false, 'value' => '1'],
+
             // ── Daftra ERP ────────────────────────────────────────────────
             [
                 'group' => 'daftra',

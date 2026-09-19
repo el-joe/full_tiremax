@@ -138,7 +138,6 @@ class OrderService
             $this->paymentService->initiate($order, $driver);
 
             OrderPlaced::dispatch($order);
-            $customer?->notify(new OrderPlacedNotification($order));
 
             return $order->load('items.product', 'governorate', 'branch', 'payments.gateway');
         });
@@ -177,8 +176,8 @@ class OrderService
                 'actor_id' => $actor?->getKey(),
             ]);
 
-            if ($order->customer) {
-                $order->customer->notify(new OrderStatusChangedNotification($order, $from));
+            if ($from !== $status) {
+                \App\Events\OrderStatusChanged::dispatch($order, $from);
             }
 
             return $order->fresh('items.product');

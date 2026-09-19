@@ -37,6 +37,40 @@ class BookingManager extends Component
 
 
 
+    public ?int $viewingId = null;
+    public string $tab = 'details';
+
+    public function view(int $id): void
+    {
+        $this->authorizePermission('bookings.view');
+        $this->viewingId = $id;
+        $this->tab = 'details';
+    }
+
+    public function close(): void
+    {
+        $this->viewingId = null;
+    }
+
+    public function resendNotification(string $channel, int $logId): void
+    {
+        $this->authorizePermission('bookings.update');
+        $booking = Booking::findOrFail($this->viewingId);
+        $notifier = app(\App\Services\BookingNotifier::class);
+        if ($channel === 'email') {
+            $log = \App\Models\NotificationLog::where('subject_type', Booking::class)->where('subject_id', $booking->id)->findOrFail($logId);
+            $notifier->resendEmail($log, $booking);
+        } else {
+            $log = \App\Models\WhatsappLog::where('booking_id', $booking->id)->findOrFail($logId);
+            if ($log->template_key && \App\Support\NotificationSettings::whatsappEnabled()) {
+                \Illuminate\Support\Facades\Notification::route('whatsapp', $log->phone)
+                    ->notify(new \App\Notifications\WhatsappTemplateNotification($log->template_key, $booking, $booking->customer_locale ?: 'ar', true));
+            }
+        }
+        $this->logAction('booking.notification_resent', $booking, [], ['channel' => $channel]);
+        $this->dispatch('toast', icon: 'success', title: __('messages.success'));
+    }
+
     public function changeStatus(int $id, string $status, BookingService $service): void
     {
         $this->authorizePermission('bookings.change_status');
@@ -97,6 +131,12 @@ class BookingManager extends Component
         ];
         $branches = \App\Models\Branch::with("translations")->get();
 
-        return view('livewire.admin.bookings.booking-manager', compact('items', 'statuses', 'branches') + ['services' => \App\Models\Service::with('translations')->get()]);
+        $viewing = $this->viewingId ? Booking::with(['service.translations', 'branch.translations', 'customer'])->find($this->viewingId) : null;
+        $emailLogs = $viewing && $this->tab === 'notifications'
+            ? \App\Models\NotificationLog::where('subject_type', Booking::class)->where('subject_id', $viewing->id)->latest()->get() : collect();
+        $waLogs = $viewing && $this->tab === 'notifications'
+            ? \App\Models\WhatsappLog::with('template')->where('booking_id', $viewing->id)->latest()->get() : collect();
+
+        return view('livewire.admin.bookings.booking-manager', compact('items', 'statuses', 'branches', 'viewing', 'emailLogs', 'waLogs') + ['services' => \App\Models\Service::with('translations')->get()]);
     }
 }

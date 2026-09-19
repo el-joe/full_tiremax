@@ -58,7 +58,7 @@
                                 <span class="text-stone-600 text-xs">—</span>
                             @endif
                         </td>
-                        <td class="px-4 py-3 text-end">@can('bookings.delete')
+                        <td class="px-4 py-3 text-end"><button wire:click="view({{ $b->id }})" class="text-yellow-500 text-xs me-3">View</button>@can('bookings.delete')
 <button wire:click="confirmDelete({{ $b->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
 @endcan</td>
@@ -72,4 +72,40 @@
         </table>
         <div class="p-3">{{ $items->links() }}</div>
     </div>
+
+    @if ($viewing)
+        <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-40 p-4" wire:click.self="close">
+            <div class="bg-stone-900 border border-stone-800 rounded-2xl w-full max-w-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-bold text-yellow-500">{{ $viewing->reference }}</h3>
+                        <p class="text-xs text-stone-400">{{ $viewing->created_at->format('Y-m-d H:i') }}</p>
+                    </div>
+                    <button wire:click="close" class="text-stone-400 hover:text-stone-100">✕</button>
+                </div>
+
+                <div class="flex gap-2 border-b border-stone-800 pb-2 text-sm">
+                    <button wire:click="$set('tab','details')" class="px-3 py-1 rounded-full {{ $tab === 'details' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Details</button>
+                    <button wire:click="$set('tab','notifications')" class="px-3 py-1 rounded-full {{ $tab === 'notifications' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Notifications</button>
+                </div>
+                @if ($tab === 'notifications')
+                    @include('livewire.admin.partials.notifications-tab', ['emailLogs' => $emailLogs, 'waLogs' => $waLogs, 'canResend' => auth('admin')->user()?->can('bookings.update')])
+                @else
+                <div class="grid sm:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-stone-800/50 rounded-lg p-3">
+                        <div class="text-xs text-stone-400">Customer</div>
+                        <div class="font-bold">{{ $viewing->customer_name }} @if ($viewing->is_guest || !$viewing->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif</div>
+                        <div class="text-xs">{{ $viewing->customer_phone }}</div>
+                        <div class="text-xs text-stone-400">{{ $viewing->customer_email }}</div>
+                    </div>
+                    <div class="bg-stone-800/50 rounded-lg p-3">
+                        <div class="text-xs text-stone-400">Booking</div>
+                        <div>{{ optional($viewing->service)->name }} · {{ optional($viewing->branch)->name }}</div>
+                        <div class="text-xs text-stone-400">{{ optional($viewing->scheduled_at)->format('Y-m-d H:i') }} · {{ $viewing->status }}</div>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+    @endif
 </div>

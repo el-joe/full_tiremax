@@ -70,7 +70,6 @@ class BookingService
             ]);
 
             BookingCreated::dispatch($booking);
-            $customer?->notify(new BookingCreatedNotification($booking));
 
             return $booking->load(['branch', 'service']);
         });
@@ -80,8 +79,8 @@ class BookingService
     {
         $from = $booking->status;
         $booking->update(['status' => $status]);
-        if ($booking->customer) {
-            $booking->customer->notify(new BookingStatusChangedNotification($booking, $from));
+        if ($from !== $status) {
+            \App\Events\BookingStatusChanged::dispatch($booking, $from);
         }
         return $booking->fresh();
     }

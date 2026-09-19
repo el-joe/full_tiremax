@@ -56,3 +56,28 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Notifications & queue worker (email + WhatsApp)
+
+Order/booking emails and WhatsApp messages are queued (`QUEUE_CONNECTION=database`), so a worker must run:
+
+```bash
+php artisan queue:work --tries=3 --backoff=60
+```
+
+Supervisor example (`/etc/supervisor/conf.d/tiremax-worker.conf`):
+
+```ini
+[program:tiremax-worker]
+command=php /var/www/tiremax/backend/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+user=www-data
+numprocs=1
+stopwaitsecs=3600
+stdout_logfile=/var/log/tiremax-worker.log
+```
+
+systemd alternative: a unit with `ExecStart=/usr/bin/php /var/www/tiremax/backend/artisan queue:work --sleep=3 --tries=3 --max-time=3600`, `Restart=always`, `User=www-data`.
+
+Environment: `MAIL_MAILER` (smtp/ses/...), `MAIL_HOST/PORT/USERNAME/PASSWORD`, `MAIL_FROM_ADDRESS`, `FRONTEND_URL`, `WHATSAPP_API_URL`, `WHATSAPP_API_TOKEN`, `WHATSAPP_FROM_NUMBER`. The From address/name is overridden by Settings `general.site_email` / `site_name`. Toggle channels in Admin > Settings > Notifications. Run `php artisan bookings:send-reminders` daily (scheduled). Seed new templates with `php artisan db:seed --class=WhatsappTemplateSeeder`.

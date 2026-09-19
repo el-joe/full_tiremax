@@ -48,11 +48,13 @@ class OrderManager extends Component
 
 
     public ?int $viewingId = null;
+    public string $tab = 'details';
 
     public function view(int $id): void
     {
         $this->authorizePermission('orders.view');
         $this->viewingId = $id;
+        $this->tab = 'details';
     }
 
     public function close(): void
@@ -67,6 +69,25 @@ class OrderManager extends Component
         $oldStatus = $order->status;
         $service->changeStatus($order, $status);
         $this->logAction('order.status_changed', $order, ['status' => $oldStatus], ['status' => $status]);
+        $this->dispatch('toast', icon: 'success', title: __('messages.success'));
+    }
+
+    public function resendNotification(string $channel, int $logId): void
+    {
+        $this->authorizePermission('orders.update');
+        $order = Order::findOrFail($this->viewingId);
+        $notifier = app(\App\Services\OrderNotifier::class);
+        if ($channel === 'email') {
+            $log = \App\Models\NotificationLog::where('subject_type', Order::class)->where('subject_id', $order->id)->findOrFail($logId);
+            $notifier->resendEmail($log, $order);
+        } else {
+            $log = \App\Models\WhatsappLog::where('order_id', $order->id)->findOrFail($logId);
+            if ($log->template_key && \App\Support\NotificationSettings::whatsappEnabled()) {
+                \Illuminate\Support\Facades\Notification::route('whatsapp', $log->phone)
+                    ->notify(new \App\Notifications\WhatsappTemplateNotification($log->template_key, $order, $order->customer_locale ?: 'ar', true));
+            }
+        }
+        $this->logAction('order.notification_resent', $order, [], ['channel' => $channel]);
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
     }
 
@@ -135,7 +156,12 @@ class OrderManager extends Component
             Order::STATUS_REFUNDED,
         ];
 
-        return view('livewire.admin.orders.order-manager', compact('items', 'viewing', 'statuses') + [
+        $emailLogs = $viewing && $this->tab === 'notifications'
+            ? \App\Models\NotificationLog::where('subject_type', Order::class)->where('subject_id', $viewing->id)->latest()->get() : collect();
+        $waLogs = $viewing && $this->tab === 'notifications'
+            ? \App\Models\WhatsappLog::with('template')->where('order_id', $viewing->id)->latest()->get() : collect();
+
+        return view('livewire.admin.orders.order-manager', compact('items', 'viewing', 'statuses', 'emailLogs', 'waLogs') + [
             'branches' => \App\Models\Branch::with('translations')->get(),
             'governorates' => \App\Models\Governorate::with('translations')->orderBy('sort_order')->get(),
         ]);
