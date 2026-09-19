@@ -110,7 +110,7 @@ class VehicleModelManager extends Component
     public function render()
     {
         $this->authorizePermission('vehicles.view');
-        $items = VehicleModel::query()
+        $items = VehicleModel::query()->with('translations')
             ->with('make.translations')
             ->when($this->makeId, fn ($q) => $q->where('vehicle_make_id', $this->makeId))
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))

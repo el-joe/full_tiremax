@@ -122,7 +122,7 @@ class BranchManager extends Component
     public function render()
     {
         $this->authorizePermission('branches.view');
-        $items = Branch::query()
+        $items = Branch::query()->with('translations')
             ->with('translations')
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
             ->when($this->mainFilter !== '', fn ($q) => $q->where('is_main', $this->mainFilter === '1'))

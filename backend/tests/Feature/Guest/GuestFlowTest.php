@@ -222,13 +222,19 @@ class GuestFlowTest extends TestCase
         $r = $this->postJson('/api/v1/auth/register', [
             'name' => 'Ali', 'phone' => '07701234567', 'password' => 'secret1', 'password_confirmation' => 'secret1',
         ], $this->h())->assertCreated()
-            ->assertJsonPath('meta.linked_orders', 2)->assertJsonPath('meta.linked_bookings', 1);
+            ->assertJsonPath('meta.linked_orders', 1)->assertJsonPath('meta.linked_bookings', 0);
 
         $c = Customer::where('phone', '07701234567')->first();
         $this->assertSame($c->id, $o->fresh()->customer_id);
         $this->assertFalse($o->fresh()->is_guest);
+        // unverified phone: other-token orders/bookings are NOT linked by phone
+        $this->assertNull($byPhone->fresh()->customer_id);
+        $this->assertNull($bk->fresh()->customer_id);
+        // once the phone is verified, linking by phone works
+        $c->forceFill(['phone_verified_at' => now()])->save();
+        $res = app(\App\Services\GuestLinkService::class)->attach($c, null);
+        $this->assertSame(['orders' => 1, 'bookings' => 1], $res);
         $this->assertSame($c->id, $byPhone->fresh()->customer_id);
-        $this->assertSame($c->id, $bk->fresh()->customer_id);
         $this->assertNull($other->fresh()->customer_id);
         $cart = Cart::where('customer_id', $c->id)->first();
         $this->assertSame(3, (int) $cart->items()->sum('quantity'));
@@ -240,7 +246,7 @@ class GuestFlowTest extends TestCase
         Order::factory()->guest()->create(['customer_phone' => '07701234567']);
         $this->postJson('/api/v1/auth/register', [
             'name' => 'Ali', 'phone' => '07701234567', 'password' => 'secret1', 'password_confirmation' => 'secret1',
-        ], ['Accept' => 'application/json'])->assertCreated()->assertJsonPath('meta.linked_orders', 1);
+        ], ['Accept' => 'application/json'])->assertCreated()->assertJsonPath('meta.linked_orders', 0);
     }
 
     public function test_login_links_and_caps_cart_by_stock(): void

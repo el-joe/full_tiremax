@@ -119,7 +119,7 @@ class BrandManager extends Component
     public function render()
     {
         $this->authorizePermission('brands.view');
-        $brands = Brand::query()
+        $brands = Brand::query()->with('translations')
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
             ->searchTranslated($this->search, ['name'], ['slug'])
             ->tap(fn ($q) => $this->applySort($q))

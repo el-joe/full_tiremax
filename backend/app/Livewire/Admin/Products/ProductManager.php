@@ -74,7 +74,7 @@ class ProductManager extends Component
     {
         $this->authorizePermission('products.view');
         $items = Product::query()
-            ->with(['brand.translations', 'category.translations', 'tireSpec'])
+            ->with(['translations','brand.translations', 'category.translations', 'tireSpec'])
             ->when($this->type !== '', fn ($q) => $q->where('type', $this->type))
             ->when($this->brandFilter, fn ($q) => $q->where('brand_id', $this->brandFilter))
             ->when($this->categoryFilter, fn ($q) => $q->where('category_id', $this->categoryFilter))

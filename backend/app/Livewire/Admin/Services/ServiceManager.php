@@ -143,7 +143,7 @@ class ServiceManager extends Component
     public function render()
     {
         $this->authorizePermission('services.view');
-        $items = Service::query()
+        $items = Service::query()->with('translations')
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
             ->searchTranslated($this->search, ['name'], ['slug'])
             ->tap(fn ($q) => $this->applySort($q))

@@ -13,7 +13,7 @@
 **{{ __('emails.branch', [], $loc) }}:** {{ optional($booking->branch->translate($loc))->name ?? $booking->branch->code }}
 @endif
 
-<x-mail::button :url="config('app.frontend_url') . '/' . $loc . '/profile/bookings'">
+<x-mail::button :url="config('app.frontend_url') . '/' . $loc . '/profile/reservation'">
 {{ __('emails.view_booking', [], $loc) }}
 </x-mail::button>
 

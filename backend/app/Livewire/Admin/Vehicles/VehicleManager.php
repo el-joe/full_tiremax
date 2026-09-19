@@ -125,7 +125,7 @@ class VehicleManager extends Component
     {
         $this->authorizePermission('vehicles.view');
         $items = Vehicle::query()
-            ->with(['make.translations', 'model.translations'])
+            ->with(['translations','make.translations', 'model.translations'])
             ->when($this->makeId, fn ($q) => $q->whereHas('model', fn ($m) => $m->where('vehicle_make_id', $this->makeId)))
             ->when($this->modelId, fn ($q) => $q->where('vehicle_model_id', $this->modelId))
             ->when(is_numeric($this->yearFilter), fn ($q) => $q->where('year_from', '<=', (int) $this->yearFilter)
@@ -140,8 +140,8 @@ class VehicleManager extends Component
                 ->orWhere('year_to', 'like', "%{$this->search}%")))
             ->tap(fn ($q) => $this->applySort($q))
             ->paginate($this->pageSize());
-        $makes = VehicleMake::orderBy('id')->get();
-        $models = VehicleModel::when($this->makeId ?: ($this->form['vehicle_make_id'] ?? null), fn($q, $mid) => $q->where('vehicle_make_id', $mid))->get();
+        $makes = VehicleMake::with('translations')->orderBy('id')->get();
+        $models = VehicleModel::with('translations')->when($this->makeId ?: ($this->form['vehicle_make_id'] ?? null), fn($q, $mid) => $q->where('vehicle_make_id', $mid))->get();
         return view('livewire.admin.vehicles.vehicle-manager', compact('items', 'makes', 'models'));
     }
 }

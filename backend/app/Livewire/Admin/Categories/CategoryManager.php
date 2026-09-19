@@ -112,7 +112,7 @@ class CategoryManager extends Component
     public function render()
     {
         $this->authorizePermission('categories.view');
-        $items = Category::query()
+        $items = Category::query()->with('translations')
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
             ->when($this->typeFilter !== '', fn ($q) => $q->where('product_type', $this->typeFilter))
             ->searchTranslated($this->search, ['name'], ['slug'])

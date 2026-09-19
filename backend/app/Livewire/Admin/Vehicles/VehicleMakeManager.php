@@ -104,7 +104,7 @@ class VehicleMakeManager extends Component
     public function render()
     {
         $this->authorizePermission('vehicles.view');
-        $items = VehicleMake::query()
+        $items = VehicleMake::query()->with('translations')
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
             ->searchTranslated($this->search, ['name'], ['slug'])
             ->withCount('models')

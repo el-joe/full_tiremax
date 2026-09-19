@@ -123,7 +123,7 @@ class OfferManager extends Component
     public function render()
     {
         $this->authorizePermission('offers.view');
-        $items = Offer::query()
+        $items = Offer::query()->with('translations')
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
             ->when($this->typeFilter !== '', fn ($q) => $q->where('discount_type', $this->typeFilter))
             ->when($this->statusFilter === 'live', fn ($q) => $q->where(fn ($w) => $w->whereNull('starts_at')->orWhere('starts_at', '<=', now()))

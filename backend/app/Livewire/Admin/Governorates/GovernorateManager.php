@@ -112,7 +112,7 @@ class GovernorateManager extends Component
     public function render()
     {
         $this->authorizePermission('governorates.view');
-        $items = Governorate::query()
+        $items = Governorate::query()->with('translations')
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
             ->when($this->basraFilter !== '', fn ($q) => $q->where('is_basra', $this->basraFilter === '1'))
             ->searchTranslated($this->search, ['name'], ['code'])

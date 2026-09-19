@@ -15,7 +15,7 @@ class GuestLinkService
 {
     /**
      * Attach guest data (orders, bookings, cart) to a customer.
-     * Matches by guest token, normalised phone, or email (only when the customer's email is verified).
+     * Matches by guest token, normalised phone (only when the customer's phone is verified), or email (only when verified).
      *
      * @return array{orders:int,bookings:int}
      */
@@ -31,7 +31,7 @@ class GuestLinkService
                         $w->where('guest_token', $token);
                         $has = true;
                     }
-                    if ($customer->phone_normalized) {
+                    if ($customer->phone_normalized && $customer->phone_verified_at) {
                         $has ? $w->orWhere('phone_normalized', $customer->phone_normalized) : $w->where('phone_normalized', $customer->phone_normalized);
                         $has = true;
                     }
