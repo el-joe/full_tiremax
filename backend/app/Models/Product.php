@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model implements TranslatableContract
 {
-    use Translatable, SoftDeletes;
+    use HasFactory, Translatable, SoftDeletes;
 
     public const TYPE_TIRE = 'tire';
     public const TYPE_BATTERY = 'battery';
