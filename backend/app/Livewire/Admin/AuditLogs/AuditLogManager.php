@@ -14,22 +14,19 @@ class AuditLogManager extends Component
 {
     use AuthorizesAdmin, WithCrudList;
 
-    #[Url]
+    #[Url(as: 'admin', keep: false)]
     public ?int $adminFilter = null;
-    #[Url]
+    #[Url(as: 'action', keep: false)]
     public string $actionFilter = '';
-    #[Url]
+    #[Url(as: 'subject', keep: false)]
     public string $subjectFilter = '';
-    #[Url]
+    #[Url(as: 'from', keep: false)]
     public string $from = '';
-    #[Url]
+    #[Url(as: 'to', keep: false)]
     public string $to = '';
 
-    public function updatingAdminFilter(): void { $this->resetPage(); }
-    public function updatingActionFilter(): void { $this->resetPage(); }
-    public function updatingSubjectFilter(): void { $this->resetPage(); }
-    public function updatingFrom(): void { $this->resetPage(); }
-    public function updatingTo(): void { $this->resetPage(); }
+    protected array $filterKeys = ['adminFilter', 'actionFilter', 'subjectFilter', 'from', 'to'];
+    protected array $sortable = ['id', 'created_at'];
 
     #[Layout('components.admin.layout', ['title' => 'Audit Log'])]
     public function render()
@@ -45,8 +42,8 @@ class AuditLogManager extends Component
             ->when($s !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('action', 'like', "%{$s}%")->orWhere('ip', 'like', "%{$s}%")
                 ->orWhere('changes', 'like', "%{$s}%")->orWhere('subject_id', $s)))
-            ->orderByDesc('id')
-            ->paginate(20);
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
         return view('livewire.admin.audit-logs.audit-log-manager', [
             'logs' => $logs,

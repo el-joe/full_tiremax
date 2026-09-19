@@ -17,10 +17,24 @@ class VehicleManager extends Component
 
     use WithCrudList;
 
-    #[Url]
+    #[Url(as: 'make', keep: false)]
     public ?int $makeId = null;
-    #[Url]
+    #[Url(as: 'model', keep: false)]
     public ?int $modelId = null;
+    #[Url(as: 'year', keep: false)]
+    public string $yearFilter = '';
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+
+    protected array $filterKeys = ['makeId', 'modelId', 'yearFilter', 'activeFilter'];
+    protected array $sortable = ['id', 'year_from', 'created_at'];
+
+
+    public function updatedMakeId(): void
+    {
+        $this->modelId = null;
+    }
+
 
     public bool $showForm = false;
     public array $form = [
@@ -111,11 +125,21 @@ class VehicleManager extends Component
     {
         $this->authorizePermission('vehicles.view');
         $items = Vehicle::query()
-            ->with(['make', 'model'])
-            ->when($this->makeId, fn($q) => $q->where('vehicle_make_id', $this->makeId))
-            ->when($this->modelId, fn($q) => $q->where('vehicle_model_id', $this->modelId))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->with(['make.translations', 'model.translations'])
+            ->when($this->makeId, fn ($q) => $q->whereHas('model', fn ($m) => $m->where('vehicle_make_id', $this->makeId)))
+            ->when($this->modelId, fn ($q) => $q->where('vehicle_model_id', $this->modelId))
+            ->when(is_numeric($this->yearFilter), fn ($q) => $q->where('year_from', '<=', (int) $this->yearFilter)
+                ->where(fn ($w) => $w->whereNull('year_to')->orWhere('year_to', '>=', (int) $this->yearFilter)))
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->when($this->search !== '', fn ($q) => $q->where(fn ($w) => $w
+                ->whereHas('model', fn ($m) => $m->searchTranslated($this->search))
+                ->orWhereHas('make', fn ($mk) => $mk->searchTranslated($this->search))
+                ->orWhere('trim_code', 'like', "%{$this->search}%")
+                ->orWhere('engine', 'like', "%{$this->search}%")
+                ->orWhere('year_from', 'like', "%{$this->search}%")
+                ->orWhere('year_to', 'like', "%{$this->search}%")))
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
         $makes = VehicleMake::orderBy('id')->get();
         $models = VehicleModel::when($this->makeId ?: ($this->form['vehicle_make_id'] ?? null), fn($q, $mid) => $q->where('vehicle_make_id', $mid))->get();
         return view('livewire.admin.vehicles.vehicle-manager', compact('items', 'makes', 'models'));

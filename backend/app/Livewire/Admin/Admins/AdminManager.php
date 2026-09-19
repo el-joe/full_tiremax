@@ -18,12 +18,15 @@ class AdminManager extends Component
 {
     use AuthorizesAdmin, WithCrudList, LogsAdminActions, WithFileUploads;
 
-    #[Url]
+    #[Url(as: 'role', keep: false)]
     public string $roleFilter = '';
-    #[Url]
+    #[Url(as: 'active', keep: false)]
     public string $activeFilter = '';
-    #[Url]
+    #[Url(as: 'trashed', keep: false)]
     public string $trashed = '';
+
+    protected array $filterKeys = ['roleFilter', 'activeFilter', 'trashed'];
+    protected array $sortable = ['id', 'name', 'email', 'last_login_at', 'created_at'];
 
     public bool $showForm = false;
     public $avatarUpload = null;
@@ -46,10 +49,6 @@ class AdminManager extends Component
             'avatarUpload' => ['nullable', 'image', 'max:2048'],
         ];
     }
-
-    public function updatingRoleFilter(): void { $this->resetPage(); }
-    public function updatingActiveFilter(): void { $this->resetPage(); }
-    public function updatingTrashed(): void { $this->resetPage(); }
 
     protected function isLastActiveSuper(Admin $admin): bool
     {
@@ -203,8 +202,6 @@ class AdminManager extends Component
     {
         $this->authorizePermission('admins.view');
         $s = $this->search;
-        $sortBy = in_array($this->sortBy, ['id', 'name', 'email', 'last_login_at', 'created_at']) ? $this->sortBy : 'id';
-        $sortDir = $this->sortDir === 'asc' ? 'asc' : 'desc';
 
         $admins = Admin::query()->with('roles')
             ->when($this->trashed === 'only', fn ($q) => $q->onlyTrashed())
@@ -213,8 +210,8 @@ class AdminManager extends Component
                 ->where('name', 'like', "%{$s}%")->orWhere('email', 'like', "%{$s}%")->orWhere('phone', 'like', "%{$s}%")))
             ->when($this->roleFilter !== '', fn ($q) => $q->whereHas('roles', fn ($r) => $r->where('name', $this->roleFilter)))
             ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
-            ->orderBy($sortBy, $sortDir)
-            ->paginate(15);
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
         $allRoles = Role::where('guard_name', 'admin')->orderBy('name')->pluck('name');
 

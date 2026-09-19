@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Categories;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -14,6 +15,15 @@ class CategoryManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+    #[Url(as: 'type', keep: false)]
+    public string $typeFilter = '';
+
+    protected array $filterKeys = ['activeFilter', 'typeFilter'];
+    protected array $sortable = ['id', 'sort_order', 'created_at'];
+
 
     public bool $showForm = false;
     public array $form = [
@@ -103,9 +113,11 @@ class CategoryManager extends Component
     {
         $this->authorizePermission('categories.view');
         $items = Category::query()
-            ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->when($this->typeFilter !== '', fn ($q) => $q->where('product_type', $this->typeFilter))
+            ->searchTranslated($this->search, ['name'], ['slug'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
         return view('livewire.admin.categories.category-manager', compact('items'));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Vehicles;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\VehicleMake;
 use Illuminate\Support\Str;
@@ -14,6 +15,13 @@ class VehicleMakeManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+
+    protected array $filterKeys = ['activeFilter'];
+    protected array $sortable = ['id', 'sort_order', 'created_at'];
+
 
     public bool $showForm = false;
     public array $form = [
@@ -97,10 +105,11 @@ class VehicleMakeManager extends Component
     {
         $this->authorizePermission('vehicles.view');
         $items = VehicleMake::query()
-            ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->searchTranslated($this->search, ['name'], ['slug'])
             ->withCount('models')
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
         return view('livewire.admin.vehicles.vehicle-make-manager', compact('items'));
     }
 }

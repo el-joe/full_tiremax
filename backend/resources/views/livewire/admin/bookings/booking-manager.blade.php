@@ -1,21 +1,16 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.bookings') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <x-admin.select
-                wire:model.live="statusFilter"
-                :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()"
-                placeholder="All statuses"
-                class="w-44"
-            />
-            <x-admin.select
-                wire:model.live="branchFilter"
-                :options="$branches->map(fn($b) => ['value' => $b->id, 'label' => $b->name])->all()"
-                placeholder="All branches"
-                class="w-44"
-            />
-            <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
+                <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" :searchable="false" placeholder="All statuses" class="w-40" />
+                <x-admin.select wire:model.live="branchFilter" :options="$branches->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All branches" class="w-44" />
+                <x-admin.select wire:model.live="serviceFilter" :options="$services->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All services" class="w-44" />
+                <x-admin.select wire:model.live="quick" :options="[['value' => 'today', 'label' => 'Today'], ['value' => 'tomorrow', 'label' => 'Tomorrow'], ['value' => 'week', 'label' => 'This week']]" :searchable="false" placeholder="Any day" class="w-36" />
+                <x-admin.select wire:model.live="customerKind" :options="[['value' => 'registered', 'label' => 'Registered'], ['value' => 'guest', 'label' => 'Guest']]" :searchable="false" placeholder="All customers" class="w-40" />
+                <x-admin.date-range />
+            </x-admin.filter-bar>
+            
         </div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">

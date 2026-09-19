@@ -18,10 +18,29 @@ class ProductManager extends Component
 
     use WithCrudList, LogsAdminActions;
 
-    #[Url]
+    #[Url(as: 'type', keep: false)]
     public string $type = '';
-    #[Url]
+    #[Url(as: 'brand', keep: false)]
     public ?int $brandFilter = null;
+    #[Url(as: 'category', keep: false)]
+    public ?int $categoryFilter = null;
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+    #[Url(as: 'featured', keep: false)]
+    public string $featuredFilter = '';
+    #[Url(as: 'stock', keep: false)]
+    public string $stockFilter = '';
+    #[Url(as: 'sale', keep: false)]
+    public string $onSale = '';
+    #[Url(as: 'price_min', keep: false)]
+    public string $priceMin = '';
+    #[Url(as: 'price_max', keep: false)]
+    public string $priceMax = '';
+
+    protected array $filterKeys = ['type', 'brandFilter', 'categoryFilter', 'activeFilter', 'featuredFilter', 'stockFilter', 'onSale', 'priceMin', 'priceMax'];
+    protected array $sortable = ['id', 'sku', 'price', 'stock', 'created_at'];
+
+
 
     public function confirmDelete(int $id): void
     {
@@ -55,18 +74,25 @@ class ProductManager extends Component
     {
         $this->authorizePermission('products.view');
         $items = Product::query()
-            ->with(['brand', 'category', 'tireSpec'])
-            ->when($this->type, fn($q) => $q->where('type', $this->type))
-            ->when($this->brandFilter, fn($q) => $q->where('brand_id', $this->brandFilter))
-            ->when($this->search, fn($q) => $q->where(function ($w) {
-                $w->where('sku', 'like', "%{$this->search}%")
-                    ->orWhereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%"));
-            }))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(20);
+            ->with(['brand.translations', 'category.translations', 'tireSpec'])
+            ->when($this->type !== '', fn ($q) => $q->where('type', $this->type))
+            ->when($this->brandFilter, fn ($q) => $q->where('brand_id', $this->brandFilter))
+            ->when($this->categoryFilter, fn ($q) => $q->where('category_id', $this->categoryFilter))
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->when($this->featuredFilter !== '', fn ($q) => $q->where('is_featured', $this->featuredFilter === '1'))
+            ->when($this->stockFilter === 'in', fn ($q) => $q->where('stock', '>', 5))
+            ->when($this->stockFilter === 'low', fn ($q) => $q->where('stock', '>', 0)->where('stock', '<=', 5))
+            ->when($this->stockFilter === 'out', fn ($q) => $q->where('stock', '<=', 0))
+            ->when($this->onSale === '1', fn ($q) => $q->whereNotNull('sale_price')->where('sale_price', '>', 0))
+            ->when($this->onSale === '0', fn ($q) => $q->where(fn ($w) => $w->whereNull('sale_price')->orWhere('sale_price', '<=', 0)))
+            ->when(is_numeric($this->priceMin), fn ($q) => $q->where('price', '>=', $this->priceMin))
+            ->when(is_numeric($this->priceMax), fn ($q) => $q->where('price', '<=', $this->priceMax))
+            ->searchTranslated($this->search, ['name'], ['sku'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
-        $brands = Brand::active()->get();
-        $categories = Category::where('is_active', true)->get();
+        $brands = Brand::active()->with('translations')->get();
+        $categories = Category::where('is_active', true)->with('translations')->get();
 
         return view('livewire.admin.products.product-manager', compact('items', 'brands', 'categories'));
     }

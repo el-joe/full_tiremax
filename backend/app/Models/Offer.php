@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Offer extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use Translatable;
 
     protected $fillable = [

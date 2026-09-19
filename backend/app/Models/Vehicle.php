@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vehicle extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use Translatable, SoftDeletes;
 
     protected $fillable = [

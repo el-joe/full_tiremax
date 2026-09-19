@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use HasFactory, Translatable, SoftDeletes;
 
     public const TYPE_TIRE = 'tire';

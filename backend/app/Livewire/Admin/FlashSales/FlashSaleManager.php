@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\FlashSales;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\FlashSale;
 use App\Models\Product;
@@ -15,6 +16,15 @@ class FlashSaleManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+    #[Url(as: 'status', keep: false)]
+    public string $statusFilter = '';
+
+    protected array $filterKeys = ['activeFilter', 'statusFilter'];
+    protected array $sortable = ['id', 'starts_at', 'ends_at', 'created_at'];
+
 
     public bool $showForm = false;
 
@@ -148,10 +158,14 @@ class FlashSaleManager extends Component
             : collect();
 
         $items = FlashSale::query()
-            ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->when($this->statusFilter === 'live', fn ($q) => $q->where('starts_at', '<=', now())->where('ends_at', '>=', now()))
+            ->when($this->statusFilter === 'upcoming', fn ($q) => $q->where('starts_at', '>', now()))
+            ->when($this->statusFilter === 'ended', fn ($q) => $q->where('ends_at', '<', now()))
+            ->when($this->search !== '', fn ($q) => $q->where('title', 'like', "%{$this->search}%"))
             ->withCount('products')
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
         return view(
             'livewire.admin.flash-sales.flash-sale-manager',

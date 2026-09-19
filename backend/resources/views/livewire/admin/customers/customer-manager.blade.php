@@ -1,8 +1,15 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.customers') }}</h2>
-        <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
-            class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
+                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'active', 'label' => 'Active'], ['value' => 'inactive', 'label' => 'Inactive'], ['value' => 'banned', 'label' => 'Banned']]" :searchable="false" placeholder="All statuses" class="w-36" />
+                <x-admin.select wire:model.live="hasOrders" :options="[['value' => 'yes', 'label' => 'Has orders'], ['value' => 'no', 'label' => 'No orders']]" :searchable="false" placeholder="Orders" class="w-36" />
+                <x-admin.select wire:model.live="localeFilter" :options="[['value' => 'ar', 'label' => 'ar'], ['value' => 'en', 'label' => 'en']]" :searchable="false" placeholder="Locale" class="w-28" />
+                <x-admin.date-range from="registeredFrom" to="registeredTo" />
+            </x-admin.filter-bar>
+            
+        </div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
         <table class="w-full text-sm">

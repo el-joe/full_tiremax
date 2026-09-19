@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use HasFactory, Translatable, SoftDeletes;
 
     protected $fillable = [

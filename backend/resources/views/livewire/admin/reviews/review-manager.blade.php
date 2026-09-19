@@ -2,15 +2,12 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.reviews') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
-            <select wire:model.live="status"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="pending">{{ __('messages.admin.pending') }}</option>
-                <option value="approved">{{ __('messages.admin.approved') }}</option>
-                <option value="rejected">{{ __('messages.admin.rejected') }}</option>
-                <option value="all">{{ __('messages.admin.all') }}</option>
-            </select>
-            <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$reviews->total()">
+                <x-admin.select wire:model.live="status" :options="[['value' => 'pending', 'label' => 'Pending'], ['value' => 'approved', 'label' => 'Approved'], ['value' => 'rejected', 'label' => 'Rejected'], ['value' => 'all', 'label' => 'All']]" :searchable="false" placeholder="Status" class="w-36" />
+                <x-admin.select wire:model.live="rating" :options="[['value' => '1', 'label' => '1'], ['value' => '2', 'label' => '2'], ['value' => '3', 'label' => '3'], ['value' => '4', 'label' => '4'], ['value' => '5', 'label' => '5']]" :searchable="false" placeholder="Rating" class="w-28" />
+                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'customer', 'label' => 'Customer'], ['value' => 'expert', 'label' => 'Expert']]" :searchable="false" placeholder="Type" class="w-32" />
+            </x-admin.filter-bar>
+            
         </div>
     </div>
 

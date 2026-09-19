@@ -1,8 +1,13 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.vehicles') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="All makes" class="w-48" />
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
+                <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All makes" class="w-44" />
+                <x-admin.select wire:model.live="modelId" :options="$models->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All models" class="w-44" />
+                <input type="number" wire:model.live.debounce.500ms="yearFilter" placeholder="Year" class="w-24 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
+            </x-admin.filter-bar>
             @can('vehicles.create')
 <button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+

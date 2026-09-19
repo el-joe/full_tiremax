@@ -17,10 +17,25 @@ class BookingManager extends Component
 
     use WithCrudList, LogsAdminActions;
 
-    #[Url]
+    #[Url(as: 'status', keep: false)]
     public string $statusFilter = '';
-    #[Url]
+    #[Url(as: 'branch', keep: false)]
     public ?int $branchFilter = null;
+    #[Url(as: 'service', keep: false)]
+    public ?int $serviceFilter = null;
+    #[Url(as: 'from', keep: false)]
+    public string $from = '';
+    #[Url(as: 'to', keep: false)]
+    public string $to = '';
+    #[Url(as: 'quick', keep: false)]
+    public string $quick = '';
+    #[Url(as: 'kind', keep: false)]
+    public string $customerKind = '';
+
+    protected array $filterKeys = ['statusFilter', 'branchFilter', 'serviceFilter', 'from', 'to', 'quick', 'customerKind'];
+    protected array $sortable = ['created_at', 'scheduled_at', 'status'];
+
+
 
     public function changeStatus(int $id, string $status, BookingService $service): void
     {
@@ -50,12 +65,24 @@ class BookingManager extends Component
     {
         $this->authorizePermission('bookings.view');
         $items = Booking::query()
-            ->with(['customer', 'service', 'branch'])
-            ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
-            ->when($this->branchFilter, fn($q) => $q->where('branch_id', $this->branchFilter))
-            ->when($this->search, fn($q) => $q->where('reference', 'like', "%{$this->search}%"))
-            ->orderBy('scheduled_at', 'desc')
-            ->paginate(20);
+            ->with(['customer', 'service.translations', 'branch.translations'])
+            ->when($this->statusFilter !== '', fn ($q) => $q->where('status', $this->statusFilter))
+            ->when($this->branchFilter, fn ($q) => $q->where('branch_id', $this->branchFilter))
+            ->when($this->serviceFilter, fn ($q) => $q->where('service_id', $this->serviceFilter))
+            ->when($this->customerKind === 'registered', fn ($q) => $q->whereNotNull('customer_id'))
+            ->when($this->customerKind === 'guest', fn ($q) => $q->whereNull('customer_id'))
+            ->when($this->from !== '', fn ($q) => $q->whereDate('scheduled_at', '>=', $this->from))
+            ->when($this->to !== '', fn ($q) => $q->whereDate('scheduled_at', '<=', $this->to))
+            ->when($this->quick === 'today', fn ($q) => $q->whereDate('scheduled_at', today()))
+            ->when($this->quick === 'tomorrow', fn ($q) => $q->whereDate('scheduled_at', today()->addDay()))
+            ->when($this->quick === 'week', fn ($q) => $q->whereBetween('scheduled_at', [now()->startOfWeek(), now()->endOfWeek()]))
+            ->when($this->search !== '', fn ($q) => $q->where(fn ($w) => $w
+                ->where('reference', 'like', "%{$this->search}%")
+                ->orWhereHas('customer', fn ($c) => $c->where(fn ($cc) => $cc
+                    ->where('name', 'like', "%{$this->search}%")
+                    ->orWhere('phone', 'like', "%{$this->search}%")))))
+            ->tap(fn ($q) => $this->applySort($q, 'scheduled_at'))
+            ->paginate($this->pageSize());
 
         $statuses = [
             Booking::STATUS_PENDING,
@@ -65,8 +92,8 @@ class BookingManager extends Component
             Booking::STATUS_CANCELLED,
             Booking::STATUS_NO_SHOW,
         ];
-        $branches = \App\Models\Branch::all();
+        $branches = \App\Models\Branch::with("translations")->get();
 
-        return view('livewire.admin.bookings.booking-manager', compact('items', 'statuses', 'branches'));
+        return view('livewire.admin.bookings.booking-manager', compact('items', 'statuses', 'branches') + ['services' => \App\Models\Service::with('translations')->get()]);
     }
 }

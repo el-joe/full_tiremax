@@ -1,9 +1,12 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.fitments') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="All makes" class="w-48" />
-            <x-admin.select wire:model.live="modelId" :options="$models->map(fn($md) => ['value' => $md->id, 'label' => $md->name])->all()" placeholder="All models" class="w-48" />
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
+                <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All makes" class="w-44" />
+                <x-admin.select wire:model.live="modelId" :options="$models->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All models" class="w-44" />
+                <x-admin.select wire:model.live="productFilter" :options="$products->map(fn($x) => ['value' => $x->id, 'label' => $x->sku])->all()" :searchable="true" placeholder="All products" class="w-44" />
+            </x-admin.filter-bar>
             @can('fitments.create')
 <button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+

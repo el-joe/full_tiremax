@@ -1,9 +1,14 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.daftra_logs') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <x-admin.select wire:model.live="entityTypeFilter" :options="$entityTypes->map(fn($t) => ['value' => $t, 'label' => class_basename($t)])->all()" placeholder="All types" class="w-44" />
-            <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'success', 'label' => 'success'], ['value' => 'failed', 'label' => 'failed'], ['value' => 'pending', 'label' => 'pending']]" placeholder="All statuses" class="w-44" />
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
+                <x-admin.select wire:model.live="entityTypeFilter" :options="$entityTypes->map(fn($t) => ['value' => $t, 'label' => class_basename($t)])->all()" :searchable="false" placeholder="All types" class="w-44" />
+                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'success', 'label' => 'success'], ['value' => 'failed', 'label' => 'failed'], ['value' => 'pending', 'label' => 'pending']]" :searchable="false" placeholder="All statuses" class="w-40" />
+                <x-admin.select wire:model.live="actionFilter" :options="$actions->map(fn($t) => ['value' => $t, 'label' => $t])->all()" :searchable="false" placeholder="All actions" class="w-44" />
+                <x-admin.date-range />
+            </x-admin.filter-bar>
+            
         </div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">

@@ -1,22 +1,23 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.admins') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-            <select wire:model.live="roleFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">{{ __('messages.admin.all_roles') }}</option>
-                @foreach ($allRoles as $r)<option value="{{ $r }}">{{ $r }}</option>@endforeach
-            </select>
-            <select wire:model.live="activeFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">{{ __('messages.admin.all') }}</option>
-                <option value="1">{{ __('messages.admin.active') }}</option>
-                <option value="0">{{ __('messages.admin.inactive') }}</option>
-            </select>
-            <select wire:model.live="trashed" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">{{ __('messages.admin.trashed_none') }}</option>
-                <option value="only">{{ __('messages.admin.trashed_only') }}</option>
-                <option value="with">{{ __('messages.admin.trashed_with') }}</option>
-            </select>
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$admins->total()">
+                <select wire:model.live="roleFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    <option value="">{{ __('messages.admin.all_roles') }}</option>
+                    @foreach ($allRoles as $r)<option value="{{ $r }}">{{ $r }}</option>@endforeach
+                </select>
+                <select wire:model.live="activeFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    <option value="">{{ __('messages.admin.all') }}</option>
+                    <option value="1">{{ __('messages.admin.active') }}</option>
+                    <option value="0">{{ __('messages.admin.inactive') }}</option>
+                </select>
+                <select wire:model.live="trashed" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    <option value="">{{ __('messages.admin.trashed_none') }}</option>
+                    <option value="only">{{ __('messages.admin.trashed_only') }}</option>
+                    <option value="with">{{ __('messages.admin.trashed_with') }}</option>
+                </select>
+            </x-admin.filter-bar>
             @can('admins.create')
             <button wire:click="openCreate" class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+ {{ __('messages.admin.add_new') }}</button>
             @endcan

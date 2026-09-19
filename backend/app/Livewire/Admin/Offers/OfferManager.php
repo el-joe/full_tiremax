@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Offers;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Offer;
 use Livewire\Attributes\Layout;
@@ -13,6 +14,17 @@ class OfferManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+    #[Url(as: 'status', keep: false)]
+    public string $statusFilter = '';
+    #[Url(as: 'type', keep: false)]
+    public string $typeFilter = '';
+
+    protected array $filterKeys = ['activeFilter', 'statusFilter', 'typeFilter'];
+    protected array $sortable = ['id', 'ends_at', 'created_at'];
+
 
     public bool $showForm = false;
     public array $form = [
@@ -112,9 +124,15 @@ class OfferManager extends Component
     {
         $this->authorizePermission('offers.view');
         $items = Offer::query()
-            ->when($this->search, fn($q) => $q->where('code', 'like', "%{$this->search}%"))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->when($this->typeFilter !== '', fn ($q) => $q->where('discount_type', $this->typeFilter))
+            ->when($this->statusFilter === 'live', fn ($q) => $q->where(fn ($w) => $w->whereNull('starts_at')->orWhere('starts_at', '<=', now()))
+                ->where(fn ($w) => $w->whereNull('ends_at')->orWhere('ends_at', '>=', now())))
+            ->when($this->statusFilter === 'upcoming', fn ($q) => $q->where('starts_at', '>', now()))
+            ->when($this->statusFilter === 'expired', fn ($q) => $q->where('ends_at', '<', now()))
+            ->searchTranslated($this->search, ['title'], ['code'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
         return view('livewire.admin.offers.offer-manager', compact('items'));
     }
 }

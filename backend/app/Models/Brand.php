@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Brand extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use Translatable, SoftDeletes;
 
     protected $fillable = ['daftra_id', 'slug', 'logo', 'country', 'is_active', 'sort_order'];

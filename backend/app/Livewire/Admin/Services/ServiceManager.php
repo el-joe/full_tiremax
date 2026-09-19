@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Services;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Service;
 use Illuminate\Support\Str;
@@ -15,6 +16,13 @@ class ServiceManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList, WithFileUploads;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+
+    protected array $filterKeys = ['activeFilter'];
+    protected array $sortable = ['id', 'price', 'sort_order', 'created_at'];
+
 
     public bool $showForm = false;
     public array $form = [
@@ -136,9 +144,10 @@ class ServiceManager extends Component
     {
         $this->authorizePermission('services.view');
         $items = Service::query()
-            ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->searchTranslated($this->search, ['name'], ['slug'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
         return view('livewire.admin.services.service-manager', compact('items'));
     }

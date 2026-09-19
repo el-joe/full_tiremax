@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Governorates;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Governorate;
 use Illuminate\Support\Str;
@@ -14,6 +15,15 @@ class GovernorateManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+    #[Url(as: 'basra', keep: false)]
+    public string $basraFilter = '';
+
+    protected array $filterKeys = ['activeFilter', 'basraFilter'];
+    protected array $sortable = ['id', 'shipping_fee', 'sort_order', 'created_at'];
+
 
     public bool $showForm = false;
     public array $form = [
@@ -103,10 +113,11 @@ class GovernorateManager extends Component
     {
         $this->authorizePermission('governorates.view');
         $items = Governorate::query()
-            ->when($this->search, fn($q) => $q->where('code', 'like', "%{$this->search}%")
-                ->orWhereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(20);
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->when($this->basraFilter !== '', fn ($q) => $q->where('is_basra', $this->basraFilter === '1'))
+            ->searchTranslated($this->search, ['name'], ['code'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
         return view('livewire.admin.governorates.governorate-manager', compact('items'));
     }
 }

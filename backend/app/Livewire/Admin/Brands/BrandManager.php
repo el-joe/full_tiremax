@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Brands;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Brand;
 use Illuminate\Support\Str;
@@ -14,6 +15,13 @@ class BrandManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+
+    protected array $filterKeys = ['activeFilter'];
+    protected array $sortable = ['id', 'sort_order', 'created_at'];
+
 
     public bool $showForm = false;
 
@@ -112,9 +120,10 @@ class BrandManager extends Component
     {
         $this->authorizePermission('brands.view');
         $brands = Brand::query()
-            ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->searchTranslated($this->search, ['name'], ['slug'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
         return view('livewire.admin.brands.brand-manager', compact('brands'));
     }

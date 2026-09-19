@@ -21,6 +21,7 @@ use App\Livewire\Admin\Settings\SettingManager;
 use App\Livewire\Admin\Vehicles\VehicleManager;
 use App\Livewire\Admin\Vehicles\VehicleMakeManager;
 use App\Livewire\Admin\Vehicles\VehicleModelManager;
+use App\Livewire\Admin\WhatsappLogs\WhatsappLogManager;
 use App\Livewire\Admin\WhatsappTemplates\WhatsappTemplateManager;
 use App\Livewire\Admin\Bookings\BookingManager;
 use App\Livewire\Admin\Admins\AdminManager;
@@ -69,6 +70,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('roles', RoleManager::class)->name('roles.index')->middleware('can:roles.view');
         Route::get('audit-logs', AuditLogManager::class)->name('audit-logs.index')->middleware('can:audit_logs.view');
         Route::get('settings', SettingManager::class)->name('settings.index')->middleware('can:settings.view');
+        Route::get('whatsapp-logs', WhatsappLogManager::class)->name('whatsapp-logs.index')->middleware('can:whatsapp.view');
         Route::get('whatsapp-templates', WhatsappTemplateManager::class)->name('whatsapp-templates.index')->middleware('can:whatsapp.view');
 
         Route::post('logout', function () {

@@ -17,8 +17,15 @@ class VehicleModelManager extends Component
 
     use WithCrudList;
 
-    #[Url]
+    #[Url(as: 'make', keep: false)]
     public ?int $makeId = null;
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+
+    protected array $filterKeys = ['makeId', 'activeFilter'];
+    protected array $sortable = ['id', 'sort_order', 'created_at'];
+
+
 
     public bool $showForm = false;
     public array $form = [
@@ -104,12 +111,13 @@ class VehicleModelManager extends Component
     {
         $this->authorizePermission('vehicles.view');
         $items = VehicleModel::query()
-            ->with('make')
-            ->when($this->makeId, fn($q) => $q->where('vehicle_make_id', $this->makeId))
-            ->when($this->search, fn($q) => $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$this->search}%")))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
-        $makes = VehicleMake::all();
+            ->with('make.translations')
+            ->when($this->makeId, fn ($q) => $q->where('vehicle_make_id', $this->makeId))
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->searchTranslated($this->search, ['name'], ['slug'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
+        $makes = VehicleMake::with('translations')->get();
         return view('livewire.admin.vehicles.vehicle-model-manager', compact('items', 'makes'));
     }
 }

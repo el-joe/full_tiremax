@@ -19,6 +19,7 @@
         ['can' => 'reviews.view', 'route' => 'admin.reviews.index', 'label' => __('messages.admin.reviews'), 'icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.914c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
         ['can' => 'daftra_logs.view', 'route' => 'admin.daftra-logs.index', 'label' => __('messages.admin.daftra_logs'), 'icon' => 'M4 4v16h16M8 16l3-4 3 3 4-6'],
         ['can' => 'whatsapp.view', 'route' => 'admin.whatsapp-templates.index', 'label' => __('messages.admin.whatsapp'), 'icon' => 'M20 12a8 8 0 11-15.5-3M4 4l1.5 5L11 8'],
+        ['can' => 'whatsapp.view', 'route' => 'admin.whatsapp-logs.index', 'label' => __('messages.admin.whatsapp_logs'), 'icon' => 'M20 12a8 8 0 11-15.5-3M4 4l1.5 5L11 8'],
         ['can' => 'payment_gateways.view', 'route' => 'admin.payment-gateways.index', 'label' => __('messages.admin.payment_gateways'), 'icon' => 'M3 10h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2zM7 15h4'],
         ['can' => 'admins.view', 'route' => 'admin.admins.index', 'label' => __('messages.admin.admins'), 'icon' => 'M12 4a4 4 0 100 8 4 4 0 000-8zM4 20c0-4 4-6 8-6s8 2 8 6'],
         ['can' => 'roles.view', 'route' => 'admin.roles.index', 'label' => __('messages.admin.roles'), 'icon' => 'M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z'],

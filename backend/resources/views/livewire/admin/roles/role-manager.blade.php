@@ -2,8 +2,10 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.roles') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$roles->total()">
+                
+            </x-admin.filter-bar>
             @can('roles.create')
             <button wire:click="openCreate" class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">+ {{ __('messages.admin.add_new') }}</button>
             @endcan

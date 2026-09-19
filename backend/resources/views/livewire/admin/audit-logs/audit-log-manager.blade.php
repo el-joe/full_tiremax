@@ -1,22 +1,23 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.audit_logs') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-            <select wire:model.live="adminFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">{{ __('messages.admin.all_admins') }}</option>
-                @foreach ($admins as $a)<option value="{{ $a->id }}">{{ $a->name }}</option>@endforeach
-            </select>
-            <select wire:model.live="actionFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">{{ __('messages.admin.all_actions') }}</option>
-                @foreach ($actions as $a)<option value="{{ $a }}">{{ $a }}</option>@endforeach
-            </select>
-            <select wire:model.live="subjectFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="">{{ __('messages.admin.all_subjects') }}</option>
-                @foreach ($subjects as $s)<option value="{{ $s }}">{{ class_basename($s) }}</option>@endforeach
-            </select>
-            <input type="date" wire:model.live="from" title="{{ __('messages.admin.from') }}" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-            <input type="date" wire:model.live="to" title="{{ __('messages.admin.to') }}" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$logs->total()">
+                <select wire:model.live="adminFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    <option value="">{{ __('messages.admin.all_admins') }}</option>
+                    @foreach ($admins as $a)<option value="{{ $a->id }}">{{ $a->name }}</option>@endforeach
+                </select>
+                <select wire:model.live="actionFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    <option value="">{{ __('messages.admin.all_actions') }}</option>
+                    @foreach ($actions as $a)<option value="{{ $a }}">{{ $a }}</option>@endforeach
+                </select>
+                <select wire:model.live="subjectFilter" class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    <option value="">{{ __('messages.admin.all_subjects') }}</option>
+                    @foreach ($subjects as $s)<option value="{{ $s }}">{{ class_basename($s) }}</option>@endforeach
+                </select>
+                <x-admin.date-range />
+            </x-admin.filter-bar>
+            
         </div>
     </div>
 

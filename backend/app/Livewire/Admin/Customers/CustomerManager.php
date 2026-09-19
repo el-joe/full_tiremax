@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Customers;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\AuditLog;
 use App\Models\Customer;
@@ -15,6 +16,21 @@ class CustomerManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList, LogsAdminActions;
+
+    #[Url(as: 'status', keep: false)]
+    public string $statusFilter = '';
+    #[Url(as: 'has_orders', keep: false)]
+    public string $hasOrders = '';
+    #[Url(as: 'from', keep: false)]
+    public string $registeredFrom = '';
+    #[Url(as: 'to', keep: false)]
+    public string $registeredTo = '';
+    #[Url(as: 'locale', keep: false)]
+    public string $localeFilter = '';
+
+    protected array $filterKeys = ['statusFilter', 'hasOrders', 'registeredFrom', 'registeredTo', 'localeFilter'];
+    protected array $sortable = ['id', 'name', 'created_at', 'orders_count'];
+
 
     public ?int $viewingId = null;
 
@@ -72,11 +88,20 @@ class CustomerManager extends Component
         $this->authorizePermission('customers.view');
         $items = Customer::query()
             ->withCount(['orders', 'bookings'])
-            ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%")
+            ->when($this->search !== '', fn ($q) => $q->where(fn ($w) => $w
+                ->where('name', 'like', "%{$this->search}%")
                 ->orWhere('phone', 'like', "%{$this->search}%")
-                ->orWhere('email', 'like', "%{$this->search}%"))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(20);
+                ->orWhere('email', 'like', "%{$this->search}%")))
+            ->when($this->statusFilter === 'active', fn ($q) => $q->where('is_active', true)->where('is_banned', false))
+            ->when($this->statusFilter === 'inactive', fn ($q) => $q->where('is_active', false))
+            ->when($this->statusFilter === 'banned', fn ($q) => $q->where('is_banned', true))
+            ->when($this->hasOrders === 'yes', fn ($q) => $q->has('orders'))
+            ->when($this->hasOrders === 'no', fn ($q) => $q->doesntHave('orders'))
+            ->when($this->registeredFrom !== '', fn ($q) => $q->whereDate('created_at', '>=', $this->registeredFrom))
+            ->when($this->registeredTo !== '', fn ($q) => $q->whereDate('created_at', '<=', $this->registeredTo))
+            ->when($this->localeFilter !== '', fn ($q) => $q->where('locale', $this->localeFilter))
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
         $viewing = $this->viewingId
             ? Customer::with([

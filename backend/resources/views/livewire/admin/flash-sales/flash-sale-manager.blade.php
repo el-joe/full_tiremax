@@ -1,10 +1,11 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.flash_sales') }}</h2>
-        <div class="flex gap-2">
-            <input type="search" wire:model.live.debounce.400ms="search"
-                placeholder="{{ __('messages.admin.search') }}"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
+                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'live', 'label' => 'Live'], ['value' => 'upcoming', 'label' => 'Upcoming'], ['value' => 'ended', 'label' => 'Ended']]" :searchable="false" placeholder="Any status" class="w-36" />
+            </x-admin.filter-bar>
             @can('flash_sales.create')
 <button wire:click="openCreate"
                 class="bg-yellow-500 text-stone-950 font-bold px-4 py-2 rounded-lg text-sm">

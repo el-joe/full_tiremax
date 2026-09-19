@@ -1,10 +1,19 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.orders') }}</h2>
-        <div class="flex gap-2 flex-wrap">
-            <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" placeholder="All statuses" class="w-44" />
-            <input type="search" wire:model.live.debounce.400ms="search" placeholder="{{ __('messages.admin.search') }}"
-                class="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+        <div class="flex gap-2 flex-wrap items-center">
+            <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
+                <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" :searchable="false" placeholder="All statuses" class="w-40" />
+                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'basra', 'label' => 'basra'], ['value' => 'delivery', 'label' => 'delivery']]" :searchable="false" placeholder="All types" class="w-36" />
+                <x-admin.select wire:model.live="paymentMethod" :options="[['value' => 'cod', 'label' => 'cod'], ['value' => 'bank_transfer', 'label' => 'bank_transfer'], ['value' => 'paymob', 'label' => 'paymob']]" :searchable="false" placeholder="Payment method" class="w-44" />
+                <x-admin.select wire:model.live="paymentStatus" :options="[['value' => 'pending', 'label' => 'pending'], ['value' => 'paid', 'label' => 'paid'], ['value' => 'failed', 'label' => 'failed'], ['value' => 'refunded', 'label' => 'refunded']]" :searchable="false" placeholder="Payment status" class="w-40" />
+                <x-admin.select wire:model.live="branchFilter" :options="$branches->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All branches" class="w-44" />
+                <x-admin.select wire:model.live="governorateFilter" :options="$governorates->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All governorates" class="w-44" />
+                <x-admin.select wire:model.live="customerKind" :options="[['value' => 'registered', 'label' => 'Registered'], ['value' => 'guest', 'label' => 'Guest']]" :searchable="false" placeholder="All customers" class="w-40" />
+                <x-admin.date-range />
+                <input type="number" wire:model.live.debounce.500ms="totalMin" placeholder="Min total" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm"><input type="number" wire:model.live.debounce.500ms="totalMax" placeholder="Max total" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
+            </x-admin.filter-bar>
+            
         </div>
     </div>
     <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">

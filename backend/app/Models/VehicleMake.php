@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class VehicleMake extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use Translatable;
 
     protected $fillable = ['slug', 'logo', 'is_active', 'sort_order'];

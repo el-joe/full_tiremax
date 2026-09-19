@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Service extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use HasFactory, Translatable;
 
     protected $fillable = ['slug', 'icon', 'image', 'duration_minutes', 'price', 'is_active', 'sort_order'];

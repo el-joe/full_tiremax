@@ -19,6 +19,9 @@ class RoleManager extends Component
 {
     use AuthorizesAdmin, WithCrudList, LogsAdminActions;
 
+    protected array $filterKeys = [];
+    protected array $sortable = ['name', 'id'];
+
     public bool $showForm = false;
     public string $name = '';
     /** @var array<int, string> */
@@ -149,8 +152,8 @@ class RoleManager extends Component
         $roles = Role::query()->where('guard_name', 'admin')
             ->withCount('permissions')
             ->when($s !== '', fn ($q) => $q->where('name', 'like', "%{$s}%"))
-            ->orderBy('name')
-            ->paginate(15);
+            ->tap(fn ($q) => $this->applySort($q, 'name', 'asc'))
+            ->paginate($this->pageSize());
         // admin count via spatie pivot
         $counts = \DB::table(config('permission.table_names.model_has_roles'))
             ->whereIn('role_id', $roles->pluck('id'))

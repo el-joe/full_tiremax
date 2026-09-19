@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Branches;
 
+use Livewire\Attributes\Url;
 use App\Livewire\Concerns\WithCrudList;
 use App\Models\Branch;
 use Livewire\Attributes\Layout;
@@ -13,6 +14,15 @@ class BranchManager extends Component
     use \App\Livewire\Concerns\AuthorizesAdmin;
 
     use WithCrudList;
+
+    #[Url(as: 'active', keep: false)]
+    public string $activeFilter = '';
+    #[Url(as: 'main', keep: false)]
+    public string $mainFilter = '';
+
+    protected array $filterKeys = ['activeFilter', 'mainFilter'];
+    protected array $sortable = ['id', 'created_at'];
+
 
     public bool $showForm = false;
     public array $form = [
@@ -113,9 +123,12 @@ class BranchManager extends Component
     {
         $this->authorizePermission('branches.view');
         $items = Branch::query()
-            ->when($this->search, fn($q) => $q->where('code', 'like', "%{$this->search}%"))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(15);
+            ->with('translations')
+            ->when($this->activeFilter !== '', fn ($q) => $q->where('is_active', $this->activeFilter === '1'))
+            ->when($this->mainFilter !== '', fn ($q) => $q->where('is_main', $this->mainFilter === '1'))
+            ->searchTranslated($this->search, ['name', 'address'], ['code', 'phone'])
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
         return view('livewire.admin.branches.branch-manager', compact('items'));
     }
 }

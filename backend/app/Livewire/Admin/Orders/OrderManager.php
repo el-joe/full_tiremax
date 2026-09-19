@@ -19,8 +19,33 @@ class OrderManager extends Component
 
     use WithCrudList, LogsAdminActions;
 
-    #[Url]
+    #[Url(as: 'status', keep: false)]
     public string $statusFilter = '';
+    #[Url(as: 'type', keep: false)]
+    public string $typeFilter = '';
+    #[Url(as: 'payment_method', keep: false)]
+    public string $paymentMethod = '';
+    #[Url(as: 'payment_status', keep: false)]
+    public string $paymentStatus = '';
+    #[Url(as: 'branch', keep: false)]
+    public ?int $branchFilter = null;
+    #[Url(as: 'governorate', keep: false)]
+    public ?int $governorateFilter = null;
+    #[Url(as: 'kind', keep: false)]
+    public string $customerKind = '';
+    #[Url(as: 'from', keep: false)]
+    public string $from = '';
+    #[Url(as: 'to', keep: false)]
+    public string $to = '';
+    #[Url(as: 'total_min', keep: false)]
+    public string $totalMin = '';
+    #[Url(as: 'total_max', keep: false)]
+    public string $totalMax = '';
+
+    protected array $filterKeys = ['statusFilter', 'typeFilter', 'paymentMethod', 'paymentStatus', 'branchFilter', 'governorateFilter', 'customerKind', 'from', 'to', 'totalMin', 'totalMax'];
+    protected array $sortable = ['id', 'total', 'status', 'created_at'];
+
+
 
     public ?int $viewingId = null;
 
@@ -76,15 +101,26 @@ class OrderManager extends Component
     {
         $this->authorizePermission('orders.view');
         $items = Order::query()
-            ->with(['customer', 'governorate', 'branch'])
-            ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
-            ->when($this->search, fn($q) => $q->where(function ($w) {
-                $w->where('reference', 'like', "%{$this->search}%")
-                    ->orWhere('customer_phone', 'like', "%{$this->search}%")
-                    ->orWhere('customer_name', 'like', "%{$this->search}%");
-            }))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(20);
+            ->with(['customer', 'governorate.translations', 'branch.translations'])
+            ->when($this->statusFilter !== '', fn ($q) => $q->where('status', $this->statusFilter))
+            ->when($this->typeFilter !== '', fn ($q) => $q->where('type', $this->typeFilter))
+            ->when($this->paymentMethod !== '', fn ($q) => $q->where('payment_method', $this->paymentMethod))
+            ->when($this->paymentStatus !== '', fn ($q) => $q->where('payment_status', $this->paymentStatus))
+            ->when($this->branchFilter, fn ($q) => $q->where('branch_id', $this->branchFilter))
+            ->when($this->governorateFilter, fn ($q) => $q->where('governorate_id', $this->governorateFilter))
+            ->when($this->customerKind === 'registered', fn ($q) => $q->whereNotNull('customer_id'))
+            ->when($this->customerKind === 'guest', fn ($q) => $q->whereNull('customer_id'))
+            ->when($this->from !== '', fn ($q) => $q->whereDate('created_at', '>=', $this->from))
+            ->when($this->to !== '', fn ($q) => $q->whereDate('created_at', '<=', $this->to))
+            ->when(is_numeric($this->totalMin), fn ($q) => $q->where('total', '>=', $this->totalMin))
+            ->when(is_numeric($this->totalMax), fn ($q) => $q->where('total', '<=', $this->totalMax))
+            ->when($this->search !== '', fn ($q) => $q->where(fn ($w) => $w
+                ->where('reference', 'like', "%{$this->search}%")
+                ->orWhere('customer_phone', 'like', "%{$this->search}%")
+                ->orWhere('customer_name', 'like', "%{$this->search}%")
+                ->orWhere('customer_email', 'like', "%{$this->search}%")))
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
         $viewing = $this->viewingId ? Order::with(['items.product', 'statusLogs', 'customer', 'governorate', 'branch'])->find($this->viewingId) : null;
 
@@ -99,6 +135,9 @@ class OrderManager extends Component
             Order::STATUS_REFUNDED,
         ];
 
-        return view('livewire.admin.orders.order-manager', compact('items', 'viewing', 'statuses'));
+        return view('livewire.admin.orders.order-manager', compact('items', 'viewing', 'statuses') + [
+            'branches' => \App\Models\Branch::with('translations')->get(),
+            'governorates' => \App\Models\Governorate::with('translations')->orderBy('sort_order')->get(),
+        ]);
     }
 }

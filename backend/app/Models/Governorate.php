@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Governorate extends Model implements TranslatableContract
 {
+    use \App\Models\Concerns\SearchesTranslations;
     use Translatable;
 
     protected $fillable = ['code', 'is_basra', 'shipping_fee', 'is_active', 'sort_order'];

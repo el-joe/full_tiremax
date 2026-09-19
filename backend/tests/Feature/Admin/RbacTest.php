@@ -52,6 +52,7 @@ class RbacTest extends TestCase
             'admin.payment-gateways.index' => 'payment_gateways.view',
             'admin.settings.index' => 'settings.view',
             'admin.whatsapp-templates.index' => 'whatsapp.view',
+            'admin.whatsapp-logs.index' => 'whatsapp.view',
             'admin.admins.index' => 'admins.view',
             'admin.roles.index' => 'roles.view',
             'admin.audit-logs.index' => 'audit_logs.view',

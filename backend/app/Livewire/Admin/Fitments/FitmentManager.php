@@ -19,12 +19,30 @@ class FitmentManager extends Component
 
     use WithCrudList;
 
-    #[Url]
+    #[Url(as: 'make', keep: false)]
     public ?int $makeId = null;
-    #[Url]
+    #[Url(as: 'model', keep: false)]
     public ?int $modelId = null;
-    #[Url]
+    #[Url(as: 'vehicle', keep: false)]
     public ?int $vehicleId = null;
+    #[Url(as: 'product', keep: false)]
+    public ?int $productFilter = null;
+
+    protected array $filterKeys = ['makeId', 'modelId', 'vehicleId', 'productFilter'];
+    protected array $sortable = ['id', 'year_from', 'created_at'];
+
+
+    public function updatedMakeId(): void
+    {
+        $this->modelId = null;
+        $this->vehicleId = null;
+    }
+
+    public function updatedModelId(): void
+    {
+        $this->vehicleId = null;
+    }
+
 
     public bool $showForm = false;
     public array $form = [
@@ -122,15 +140,17 @@ class FitmentManager extends Component
     {
         $this->authorizePermission('fitments.view');
         $items = Fitment::query()
-            ->with(['vehicle.make', 'vehicle.model', 'product.brand'])
-            ->when($this->vehicleId, fn($q) => $q->where('vehicle_id', $this->vehicleId))
-            ->when($this->modelId, fn($q) => $q->whereHas('vehicle', fn($qb) => $qb->where('vehicle_model_id', $this->modelId)))
-            ->when($this->makeId, fn($q) => $q->whereHas('vehicle', fn($qb) => $qb->where('vehicle_make_id', $this->makeId)))
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate(20);
+            ->with(['vehicle.make.translations', 'vehicle.model.translations', 'product.brand.translations', 'product.translations'])
+            ->when($this->vehicleId, fn ($q) => $q->where('vehicle_id', $this->vehicleId))
+            ->when($this->productFilter, fn ($q) => $q->where('product_id', $this->productFilter))
+            ->when($this->modelId, fn ($q) => $q->whereHas('vehicle', fn ($qb) => $qb->where('vehicle_model_id', $this->modelId)))
+            ->when($this->makeId, fn ($q) => $q->whereHas('vehicle.model', fn ($qb) => $qb->where('vehicle_make_id', $this->makeId)))
+            ->when($this->search !== '', fn ($q) => $q->whereHas('product', fn ($p) => $p->searchTranslated($this->search, ['name'], ['sku'])))
+            ->tap(fn ($q) => $this->applySort($q))
+            ->paginate($this->pageSize());
 
-        $makes = VehicleMake::all();
-        $models = VehicleModel::when($this->makeId, fn($q, $m) => $q->where('vehicle_make_id', $m))->get();
+        $makes = VehicleMake::with('translations')->get();
+        $models = VehicleModel::with('translations')->when($this->makeId, fn($q, $m) => $q->where('vehicle_make_id', $m))->get();
         $vehicles = Vehicle::with(['make', 'model'])
             ->when($this->modelId, fn($q, $m) => $q->where('vehicle_model_id', $m))
             ->limit(200)->get();
