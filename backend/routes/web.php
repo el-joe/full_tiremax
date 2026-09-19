@@ -23,6 +23,9 @@ use App\Livewire\Admin\Vehicles\VehicleMakeManager;
 use App\Livewire\Admin\Vehicles\VehicleModelManager;
 use App\Livewire\Admin\WhatsappTemplates\WhatsappTemplateManager;
 use App\Livewire\Admin\Bookings\BookingManager;
+use App\Livewire\Admin\Admins\AdminManager;
+use App\Livewire\Admin\Roles\RoleManager;
+use App\Livewire\Admin\AuditLogs\AuditLogManager;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('admin.dashboard'));
@@ -62,6 +65,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('payment-gateways', PaymentGatewayManager::class)->name('payment-gateways.index')->middleware('can:payment_gateways.view');
 
+        Route::get('admins', AdminManager::class)->name('admins.index')->middleware('can:admins.view');
+        Route::get('roles', RoleManager::class)->name('roles.index')->middleware('can:roles.view');
+        Route::get('audit-logs', AuditLogManager::class)->name('audit-logs.index')->middleware('can:audit_logs.view');
         Route::get('settings', SettingManager::class)->name('settings.index')->middleware('can:settings.view');
         Route::get('whatsapp-templates', WhatsappTemplateManager::class)->name('whatsapp-templates.index')->middleware('can:whatsapp.view');
 
