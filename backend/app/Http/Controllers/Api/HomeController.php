@@ -17,27 +17,27 @@ class HomeController extends Controller
     {
         $featured = Product::active()
             ->where('is_featured', true)
-            ->with(['brand', 'images', 'badges', 'tireSpec', 'batterySpec'])
+            ->with(['brand', 'images', 'badges', 'tireSpec', 'batterySpec', 'translations'])
             ->orderBy('sort_order')
             ->limit(12)
             ->get();
 
         $bestSellers = Product::active()
             ->whereHas('badges', fn($q) => $q->where('badge', Product::BADGE_BEST_SELLER))
-            ->with(['brand', 'images', 'badges'])
+            ->with(['brand', 'images', 'badges', 'translations'])
             ->limit(8)
             ->get();
 
         $newArrivals = Product::active()
             ->whereHas('badges', fn($q) => $q->where('badge', Product::BADGE_NEW))
-            ->with(['brand', 'images', 'badges'])
+            ->with(['brand', 'images', 'badges', 'translations'])
             ->latest()
             ->limit(8)
             ->get();
 
         $offers = Product::active()
             ->whereNotNull('sale_price')
-            ->with(['brand', 'images', 'badges'])
+            ->with(['brand', 'images', 'badges', 'translations'])
             ->limit(8)
             ->get();
 
