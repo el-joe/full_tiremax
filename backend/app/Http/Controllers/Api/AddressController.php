@@ -16,7 +16,7 @@ class AddressController extends Controller
     {
         $addresses = $request->user()
             ->addresses()
-            ->with(['governorate', 'city'])
+            ->with(['governorate', 'governorate.translations', 'city'])
             ->orderByDesc('is_default')
             ->orderByDesc('created_at')
             ->get();
@@ -39,7 +39,7 @@ class AddressController extends Controller
         }
 
         $address = $customer->addresses()->create($data);
-        $address->load(['governorate', 'city']);
+        $address->load(['governorate', 'governorate.translations', 'city']);
 
         return ApiResponse::created(new AddressResource($address), __('messages.created'));
     }
@@ -50,7 +50,7 @@ class AddressController extends Controller
             return ApiResponse::forbidden();
         }
 
-        $address->load(['governorate', 'city']);
+        $address->load(['governorate', 'governorate.translations', 'city']);
         return ApiResponse::success(new AddressResource($address));
     }
 
@@ -67,7 +67,7 @@ class AddressController extends Controller
         }
 
         $address->update($data);
-        $address->load(['governorate', 'city']);
+        $address->load(['governorate', 'governorate.translations', 'city']);
 
         return ApiResponse::success(new AddressResource($address), __('messages.updated'));
     }
@@ -98,7 +98,7 @@ class AddressController extends Controller
 
         $request->user()->addresses()->update(['is_default' => false]);
         $address->update(['is_default' => true]);
-        $address->load(['governorate', 'city']);
+        $address->load(['governorate', 'governorate.translations', 'city']);
 
         return ApiResponse::success(new AddressResource($address), __('messages.updated'));
     }

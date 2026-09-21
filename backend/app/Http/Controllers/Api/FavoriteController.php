@@ -14,7 +14,7 @@ class FavoriteController extends Controller
     public function index(Request $request)
     {
         $items = $request->user()->favorites()
-            ->with(['product.brand', 'product.images', 'product.badges'])
+            ->with(['product.brand', 'product.brand.translations', 'product.images', 'product.badges', 'product.translations'])
             ->latest()
             ->get()
             ->map(fn($f) => $f->product)

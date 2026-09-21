@@ -29,7 +29,7 @@ class OrderService
     public function paginateForCustomer(Customer $customer, array $filters = []): LengthAwarePaginator
     {
         return $customer->orders()
-            ->with(['items.product', 'governorate', 'branch'])
+            ->with(['items.product', 'governorate', 'governorate.translations', 'branch', 'branch.translations'])
             ->latest()
             ->paginate((int) ($filters['per_page'] ?? 15));
     }
@@ -139,7 +139,7 @@ class OrderService
 
             OrderPlaced::dispatch($order);
 
-            return $order->load('items.product', 'governorate', 'branch', 'payments.gateway');
+            return $order->load('items.product', 'governorate', 'governorate.translations', 'branch', 'branch.translations', 'payments.gateway');
         });
     }
 

@@ -25,20 +25,20 @@ class CartController extends Controller
     public function addItem(StoreCartItemRequest $request)
     {
         $cart = $this->service->addItem(Actor::fromRequest($request)->require(), $request->product_id, (int) $request->quantity);
-        return ApiResponse::success(new CartResource($cart->load(['items.product.brand', 'items.product.images'])), __('messages.added'));
+        return ApiResponse::success(new CartResource($cart->load(['items.product.brand', 'items.product.brand.translations', 'items.product.images', 'items.product.translations', 'governorate', 'governorate.translations'])), __('messages.added'));
     }
 
     public function updateItem(Request $request, CartItem $item)
     {
         $request->validate(['quantity' => ['required', 'integer', 'min:0', 'max:99']]);
         $cart = $this->service->updateItem(Actor::fromRequest($request)->require(), $item->id, (int) $request->quantity);
-        return ApiResponse::success(new CartResource($cart->load(['items.product.brand', 'items.product.images'])), __('messages.updated'));
+        return ApiResponse::success(new CartResource($cart->load(['items.product.brand', 'items.product.brand.translations', 'items.product.images', 'items.product.translations', 'governorate', 'governorate.translations'])), __('messages.updated'));
     }
 
     public function removeItem(Request $request, CartItem $item)
     {
         $cart = $this->service->removeItem(Actor::fromRequest($request)->require(), $item->id);
-        return ApiResponse::success(new CartResource($cart->load(['items.product.brand', 'items.product.images'])), __('messages.deleted'));
+        return ApiResponse::success(new CartResource($cart->load(['items.product.brand', 'items.product.brand.translations', 'items.product.images', 'items.product.translations', 'governorate', 'governorate.translations'])), __('messages.deleted'));
     }
 
     public function clear(Request $request)

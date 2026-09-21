@@ -36,7 +36,7 @@ class ProductController extends Controller
 
     public function show(Request $request, Product $product)
     {
-        $product->load(['brand', 'category', 'images', 'badges', 'tireSpec', 'batterySpec']);
+        $product->load(['brand', 'brand.translations', 'category', 'category.translations', 'images', 'badges', 'tireSpec', 'batterySpec', 'translations']);
         $this->service->trackView($product, optional($request->user())->id, $request->ip(), $request->userAgent());
         return ApiResponse::success(new ProductResource($product));
     }

@@ -57,7 +57,7 @@ class OrderController extends Controller
             throw ApiException::notFound();
         }
 
-        $order->load(['items.product', 'governorate', 'branch']);
+        $order->load(['items.product', 'governorate', 'governorate.translations', 'branch', 'branch.translations']);
         return ApiResponse::success(new OrderResource($order));
     }
 

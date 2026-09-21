@@ -11,7 +11,7 @@ class GovernorateController extends Controller
 {
     public function index()
     {
-        $items = Governorate::where('is_active', true)->orderBy('sort_order')->get();
+        $items = Governorate::where('is_active', true)->with('translations')->orderBy('sort_order')->get();
         return ApiResponse::success(GovernorateResource::collection($items));
     }
 }

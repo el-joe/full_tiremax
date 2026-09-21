@@ -11,7 +11,7 @@ class BranchController extends Controller
 {
     public function index()
     {
-        $branches = Branch::where('is_active', true)->with('schedules')->get();
+        $branches = Branch::where('is_active', true)->with(['schedules', 'translations'])->get();
         return ApiResponse::success(BranchResource::collection($branches));
     }
 }

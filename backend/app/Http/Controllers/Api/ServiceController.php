@@ -13,7 +13,7 @@ class ServiceController extends Controller
     {
         return ApiResponse::success(
             ServiceResource::collection(
-                Service::where('is_active', true)->orderBy('sort_order')->get()
+                Service::where('is_active', true)->with('translations')->orderBy('sort_order')->get()
             )
         );
     }

@@ -11,7 +11,7 @@ class BrandController extends Controller
 {
     public function index()
     {
-        $brands = Brand::where('is_active', true)->orderBy('sort_order')->get();
+        $brands = Brand::where('is_active', true)->with('translations')->orderBy('sort_order')->get();
         return ApiResponse::success(BrandResource::collection($brands));
     }
 }

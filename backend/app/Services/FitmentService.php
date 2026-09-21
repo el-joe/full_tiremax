@@ -18,7 +18,7 @@ class FitmentService
         $q = Product::active()
             ->whereHas('fitments', fn($qb) => $qb->where('vehicle_id', $vehicle->id)->where('is_excluded', false))
             ->whereNotIn('id', $excluded)
-            ->with(['brand', 'images', 'badges', 'tireSpec', 'batterySpec']);
+            ->with(['brand', 'brand.translations', 'images', 'badges', 'tireSpec', 'batterySpec', 'translations']);
 
         if (!empty($filters['type'])) {
             $q->ofType($filters['type']);
@@ -46,7 +46,7 @@ class FitmentService
                     ->where('aspect_ratio', $size['aspect_ratio'])
                     ->where('rim_diameter', $size['rim_diameter']);
             })
-            ->with(['brand', 'images', 'badges', 'tireSpec'])
+            ->with(['brand', 'brand.translations', 'images', 'badges', 'tireSpec', 'translations'])
             ->get();
     }
 

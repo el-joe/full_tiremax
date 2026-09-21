@@ -21,7 +21,7 @@ class BookingService
     public function paginateForCustomer(Customer $customer, array $filters = []): LengthAwarePaginator
     {
         return $customer->bookings()
-            ->with(['branch', 'service'])
+            ->with(['branch', 'branch.translations', 'service', 'service.translations'])
             ->latest('scheduled_at')
             ->paginate((int) ($filters['per_page'] ?? 15));
     }
@@ -71,7 +71,7 @@ class BookingService
 
             BookingCreated::dispatch($booking);
 
-            return $booking->load(['branch', 'service']);
+            return $booking->load(['branch', 'branch.translations', 'service', 'service.translations']);
         });
     }
 

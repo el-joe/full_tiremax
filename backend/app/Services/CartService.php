@@ -28,7 +28,7 @@ class CartService
     public function show(Actor|Customer $customer): Cart
     {
         $cart = $this->getOrCreate($customer);
-        return $cart->load(['items.product.brand', 'items.product.images', 'governorate']);
+        return $cart->load(['items.product.brand', 'items.product.brand.translations', 'items.product.images', 'items.product.translations', 'governorate', 'governorate.translations']);
     }
 
     public function addItem(Actor|Customer $customer, int $productId, int $quantity = 1): Cart
@@ -49,7 +49,7 @@ class CartService
             $item->unit_price = $product->effective_price;
             $item->save();
 
-            return $cart->load('items.product');
+            return $cart->load(['items.product', 'items.product.brand', 'items.product.brand.translations', 'items.product.translations']);
         });
     }
 
