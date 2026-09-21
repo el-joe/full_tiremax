@@ -17,27 +17,27 @@ class HomeController extends Controller
     {
         $featured = Product::active()
             ->where('is_featured', true)
-            ->with(['brand', 'images', 'badges', 'tireSpec', 'batterySpec', 'translations'])
+            ->with(['brand', 'brand.translations', 'images', 'badges', 'tireSpec', 'batterySpec', 'translations'])
             ->orderBy('sort_order')
             ->limit(12)
             ->get();
 
         $bestSellers = Product::active()
             ->whereHas('badges', fn($q) => $q->where('badge', Product::BADGE_BEST_SELLER))
-            ->with(['brand', 'images', 'badges', 'translations'])
+            ->with(['brand', 'brand.translations', 'images', 'badges', 'translations'])
             ->limit(8)
             ->get();
 
         $newArrivals = Product::active()
             ->whereHas('badges', fn($q) => $q->where('badge', Product::BADGE_NEW))
-            ->with(['brand', 'images', 'badges', 'translations'])
+            ->with(['brand', 'brand.translations', 'images', 'badges', 'translations'])
             ->latest()
             ->limit(8)
             ->get();
 
         $offers = Product::active()
             ->whereNotNull('sale_price')
-            ->with(['brand', 'images', 'badges', 'translations'])
+            ->with(['brand', 'brand.translations', 'images', 'badges', 'translations'])
             ->limit(8)
             ->get();
 
@@ -46,8 +46,8 @@ class HomeController extends Controller
             'best_sellers' => ProductResource::collection($bestSellers),
             'new_arrivals' => ProductResource::collection($newArrivals),
             'offers' => ProductResource::collection($offers),
-            'brands' => BrandResource::collection(Brand::where('is_active', true)->orderBy('sort_order')->get()),
-            'governorates' => GovernorateResource::collection(Governorate::where('is_active', true)->orderBy('sort_order')->get()),
+            'brands' => BrandResource::collection(Brand::where('is_active', true)->with('translations')->orderBy('sort_order')->get()),
+            'governorates' => GovernorateResource::collection(Governorate::where('is_active', true)->with('translations')->orderBy('sort_order')->get()),
         ]);
     }
 }
