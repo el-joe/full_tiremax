@@ -147,14 +147,14 @@ class FlashSaleManager extends Component
                     $q->whereHas('translations', fn($qb) => $qb->where('name', 'like', "%{$term}%"))
                         ->orWhere('sku', 'like', "%{$term}%");
                 })
-                ->with('brand')
+                ->with('brand.translations')
                 ->limit(10)
                 ->get();
         }
 
         // Products already in the sale
         $selectedProducts = $this->productIds
-            ? Product::whereIn('id', $this->productIds)->with('brand')->get()
+            ? Product::whereIn('id', $this->productIds)->with('brand.translations')->get()
             : collect();
 
         $items = FlashSale::query()

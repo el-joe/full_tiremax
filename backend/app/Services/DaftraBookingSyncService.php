@@ -22,7 +22,7 @@ class DaftraBookingSyncService
             return;
         }
 
-        $booking->loadMissing(['customer', 'service', 'branch']);
+        $booking->loadMissing(['customer', 'service.translations', 'branch.translations']);
 
         $log = DaftraSyncLog::create([
             'syncable_type' => Booking::class,

@@ -32,7 +32,7 @@ class Dashboard extends Component
         ];
 
         $latestOrders = Order::with('customer')->latest()->limit(7)->get();
-        $latestBookings = Booking::with(['customer', 'branch', 'service'])->latest('scheduled_at')->limit(7)->get();
+        $latestBookings = Booking::with(['customer', 'branch.translations', 'service.translations'])->latest('scheduled_at')->limit(7)->get();
 
         return view('livewire.admin.dashboard', compact('stats', 'latestOrders', 'latestBookings'));
     }

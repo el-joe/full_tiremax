@@ -29,7 +29,7 @@ class WhatsappService
             return null;
         }
 
-        $template = WhatsappTemplate::where('key', $templateKey)->where('is_active', true)->first();
+        $template = WhatsappTemplate::with('translations')->where('key', $templateKey)->where('is_active', true)->first();
         if (!$template) {
             return null;
         }
@@ -136,7 +136,7 @@ class WhatsappService
 
     private function bookingVariables(Booking $b, string $locale): array
     {
-        $b->loadMissing(['service', 'branch']);
+        $b->loadMissing(['service.translations', 'branch.translations']);
         $service = $b->service?->translate($locale)?->name ?? $b->service?->translate('en')?->name ?? '';
         $branch = $b->branch?->translate($locale)?->name ?? $b->branch?->translate('en')?->name ?? '';
         $at = $b->scheduled_at;

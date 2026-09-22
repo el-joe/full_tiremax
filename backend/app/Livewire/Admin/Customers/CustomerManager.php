@@ -115,7 +115,7 @@ class CustomerManager extends Component
         $viewing = $this->viewingId
             ? Customer::with([
                 'orders' => fn($q) => $q->latest()->limit(10),
-                'bookings' => fn($q) => $q->with('service')->latest()->limit(5),
+                'bookings' => fn($q) => $q->with('service.translations')->latest()->limit(5),
             ])
                 ->withCount('orders as total_orders')
                 ->withSum('orders as total_spent', 'total')

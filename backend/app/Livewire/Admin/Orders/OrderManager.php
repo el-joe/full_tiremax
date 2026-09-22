@@ -143,7 +143,7 @@ class OrderManager extends Component
             ->tap(fn ($q) => $this->applySort($q))
             ->paginate($this->pageSize());
 
-        $viewing = $this->viewingId ? Order::with(['items.product', 'statusLogs', 'customer', 'governorate', 'branch'])->find($this->viewingId) : null;
+        $viewing = $this->viewingId ? Order::with(['items.product.translations', 'statusLogs', 'customer', 'governorate.translations', 'branch.translations'])->find($this->viewingId) : null;
 
         $statuses = [
             Order::STATUS_PENDING,

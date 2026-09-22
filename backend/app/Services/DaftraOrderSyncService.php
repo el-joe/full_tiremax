@@ -39,7 +39,7 @@ class DaftraOrderSyncService
             return; // Already synced
         }
 
-        $order->loadMissing(['customer', 'items.product', 'bookings.service']);
+        $order->loadMissing(['customer', 'items.product.translations', 'bookings.service.translations']);
 
         $log = DaftraSyncLog::create([
             'order_id' => $order->id,

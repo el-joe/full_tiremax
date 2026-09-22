@@ -56,7 +56,7 @@ class BookingController extends Controller
             throw ApiException::notFound();
         }
 
-        $booking->load(['branch', 'service']);
+        $booking->load(['branch.translations', 'service.translations']);
         return ApiResponse::success(new BookingResource($booking));
     }
 

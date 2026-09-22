@@ -37,7 +37,7 @@ class FlashSaleController extends Controller
     {
         $query = $flashSale->products()
             ->active()
-            ->with(['brand', 'category', 'images', 'badges', 'tireSpec', 'batterySpec'])
+            ->with(['translations', 'brand.translations', 'category.translations', 'images', 'badges', 'tireSpec', 'batterySpec'])
             ->withCount(['reviews as reviews_count' => fn($q) => $q->where('is_approved', true)]);
 
         if ($request->filled('type')) {

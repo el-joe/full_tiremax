@@ -70,7 +70,7 @@ class VehicleManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('vehicles.update');
-        $v = Vehicle::findOrFail($id);
+        $v = Vehicle::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'vehicle_make_id' => $v->vehicle_make_id,
@@ -90,7 +90,7 @@ class VehicleManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'vehicles.update' : 'vehicles.create');
         $this->validate();
-        $v = $this->editingId ? Vehicle::findOrFail($this->editingId) : new Vehicle();
+        $v = $this->editingId ? Vehicle::with('translations')->findOrFail($this->editingId) : new Vehicle();
         $v->fill([
             'vehicle_make_id' => (int) $this->form['vehicle_make_id'],
             'vehicle_model_id' => (int) $this->form['vehicle_model_id'],
