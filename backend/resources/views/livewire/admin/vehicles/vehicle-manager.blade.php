@@ -3,10 +3,10 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.vehicles') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All makes" class="w-44" />
-                <x-admin.select wire:model.live="modelId" :options="$models->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All models" class="w-44" />
-                <input type="number" wire:model.live.debounce.500ms="yearFilter" placeholder="Year" class="w-24 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
-                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
+                <x-admin.select wire:model.live="makeId" :options="$makes->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_makes') }}" class="w-44" />
+                <x-admin.select wire:model.live="modelId" :options="$models->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_models') }}" class="w-44" />
+                <input type="number" wire:model.live.debounce.500ms="yearFilter" placeholder="{{ __('messages.admin.year_placeholder') }}" class="w-24 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => __('messages.admin.active')], ['value' => '0', 'label' => __('messages.admin.inactive')]]" :searchable="false" placeholder="{{ __('messages.admin.all') }}" class="w-36" />
             </x-admin.filter-bar>
             @can('vehicles.create')
 <button wire:click="openCreate"
@@ -20,10 +20,10 @@
             <thead class="bg-stone-800/60">
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
-                    <th class="px-4 py-3 text-start">Make</th>
-                    <th class="px-4 py-3 text-start">Model</th>
-                    <th class="px-4 py-3 text-start">Years</th>
-                    <th class="px-4 py-3 text-start">Trim</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.make') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.model') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.years') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.trim') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -63,25 +63,25 @@
                 <h3 class="text-lg font-bold">{{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
-                    <div><label class="text-xs text-stone-400">Make</label>
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.make') }}</label>
                         <x-admin.select wire:model.live="form.vehicle_make_id" :options="$makes->map(fn($mk) => ['value' => $mk->id, 'label' => $mk->name])->all()" placeholder="—" />
                     </div>
-                    <div><label class="text-xs text-stone-400">Model</label>
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.model') }}</label>
                         <x-admin.select wire:model="form.vehicle_model_id" :options="$models->map(fn($md) => ['value' => $md->id, 'label' => $md->name])->all()" placeholder="—" />
                     </div>
-                    <div><label class="text-xs text-stone-400">Year from</label><input type="number"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.year_from') }}</label><input type="number"
                             wire:model="form.year_from"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Year to</label><input type="number" wire:model="form.year_to"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.year_to') }}</label><input type="number" wire:model="form.year_to"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Trim (AR)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.trim_ar') }}</label><input
                             wire:model="form.translations.ar.trim"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Trim (EN)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.trim_en') }}</label><input
                             wire:model="form.translations.en.trim"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
                     <label class="flex items-center gap-2 mt-6"><input type="checkbox" wire:model="form.is_active"
-                            class="rounded bg-stone-800 text-yellow-500"> Active</label>
+                            class="rounded bg-stone-800 text-yellow-500"> {{ __('messages.admin.active') }}</label>
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"

@@ -3,11 +3,11 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.bookings') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" :searchable="false" placeholder="All statuses" class="w-40" />
-                <x-admin.select wire:model.live="branchFilter" :options="$branches->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All branches" class="w-44" />
-                <x-admin.select wire:model.live="serviceFilter" :options="$services->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All services" class="w-44" />
-                <x-admin.select wire:model.live="quick" :options="[['value' => 'today', 'label' => 'Today'], ['value' => 'tomorrow', 'label' => 'Tomorrow'], ['value' => 'week', 'label' => 'This week']]" :searchable="false" placeholder="Any day" class="w-36" />
-                <x-admin.select wire:model.live="customerKind" :options="[['value' => 'registered', 'label' => 'Registered'], ['value' => 'guest', 'label' => 'Guest']]" :searchable="false" placeholder="All customers" class="w-40" />
+                <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" :searchable="false" placeholder="{{ __('messages.admin.all_statuses') }}" class="w-40" />
+                <x-admin.select wire:model.live="branchFilter" :options="$branches->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_branches') }}" class="w-44" />
+                <x-admin.select wire:model.live="serviceFilter" :options="$services->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_services') }}" class="w-44" />
+                <x-admin.select wire:model.live="quick" :options="[['value' => 'today', 'label' => __('messages.admin.today')], ['value' => 'tomorrow', 'label' => __('messages.admin.tomorrow')], ['value' => 'week', 'label' => __('messages.admin.this_week')]]" :searchable="false" placeholder="{{ __('messages.admin.any_day') }}" class="w-36" />
+                <x-admin.select wire:model.live="customerKind" :options="[['value' => 'registered', 'label' => __('messages.admin.registered')], ['value' => 'guest', 'label' => __('messages.admin.guest')]]" :searchable="false" placeholder="{{ __('messages.admin.all_customers') }}" class="w-40" />
                 <x-admin.date-range />
             </x-admin.filter-bar>
             
@@ -17,13 +17,13 @@
         <table class="w-full text-sm">
             <thead class="bg-stone-800/60">
                 <tr>
-                    <th class="px-4 py-3 text-start">Ref</th>
-                    <th class="px-4 py-3 text-start">Customer</th>
-                    <th class="px-4 py-3 text-start">Service</th>
-                    <th class="px-4 py-3 text-start">Branch</th>
-                    <th class="px-4 py-3 text-start">Scheduled</th>
-                    <th class="px-4 py-3 text-start">Status</th>
-                    <th class="px-4 py-3 text-start">Daftra</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.ref') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.customer') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.service') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.branch') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.scheduled') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.daftra') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -31,7 +31,7 @@
                 @forelse ($items as $b)
                     <tr class="hover:bg-stone-800/40">
                         <td class="px-4 py-3 font-mono text-yellow-500">{{ $b->reference }}</td>
-                        <td class="px-4 py-3">{{ $b->customer_name ?? $b->customer?->name ?? '—' }} @if ($b->is_guest || !$b->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif
+                        <td class="px-4 py-3">{{ $b->customer_name ?? $b->customer?->name ?? '—' }} @if ($b->is_guest || !$b->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">{{ __('messages.admin.guest') }}</span> @endif
                             <div class="text-xs text-stone-400">{{ $b->customer_phone ?? $b->customer?->phone }}</div>
                         </td>
                         <td class="px-4 py-3">{{ optional($b->service)->name }}</td>
@@ -58,7 +58,7 @@
                                 <span class="text-stone-600 text-xs">—</span>
                             @endif
                         </td>
-                        <td class="px-4 py-3 text-end"><button wire:click="view({{ $b->id }})" class="text-yellow-500 text-xs me-3">View</button>@can('bookings.delete')
+                        <td class="px-4 py-3 text-end"><button wire:click="view({{ $b->id }})" class="text-yellow-500 text-xs me-3">{{ __('messages.admin.view') }}</button>@can('bookings.delete')
 <button wire:click="confirmDelete({{ $b->id }})"
                                 class="text-red-400 text-xs">{{ __('messages.admin.delete') }}</button>
 @endcan</td>
@@ -85,21 +85,21 @@
                 </div>
 
                 <div class="flex gap-2 border-b border-stone-800 pb-2 text-sm">
-                    <button wire:click="$set('tab','details')" class="px-3 py-1 rounded-full {{ $tab === 'details' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Details</button>
-                    <button wire:click="$set('tab','notifications')" class="px-3 py-1 rounded-full {{ $tab === 'notifications' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Notifications</button>
+                    <button wire:click="$set('tab','details')" class="px-3 py-1 rounded-full {{ $tab === 'details' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">{{ __('messages.admin.details') }}</button>
+                    <button wire:click="$set('tab','notifications')" class="px-3 py-1 rounded-full {{ $tab === 'notifications' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">{{ __('messages.admin.notifications') }}</button>
                 </div>
                 @if ($tab === 'notifications')
                     @include('livewire.admin.partials.notifications-tab', ['emailLogs' => $emailLogs, 'waLogs' => $waLogs, 'canResend' => auth('admin')->user()?->can('bookings.update')])
                 @else
                 <div class="grid sm:grid-cols-2 gap-4 text-sm">
                     <div class="bg-stone-800/50 rounded-lg p-3">
-                        <div class="text-xs text-stone-400">Customer</div>
-                        <div class="font-bold">{{ $viewing->customer_name }} @if ($viewing->is_guest || !$viewing->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif</div>
+                        <div class="text-xs text-stone-400">{{ __('messages.admin.customer') }}</div>
+                        <div class="font-bold">{{ $viewing->customer_name }} @if ($viewing->is_guest || !$viewing->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">{{ __('messages.admin.guest') }}</span> @endif</div>
                         <div class="text-xs">{{ $viewing->customer_phone }}</div>
                         <div class="text-xs text-stone-400">{{ $viewing->customer_email }}</div>
                     </div>
                     <div class="bg-stone-800/50 rounded-lg p-3">
-                        <div class="text-xs text-stone-400">Booking</div>
+                        <div class="text-xs text-stone-400">{{ __('messages.admin.booking') }}</div>
                         <div>{{ optional($viewing->service)->name }} · {{ optional($viewing->branch)->name }}</div>
                         <div class="text-xs text-stone-400">{{ optional($viewing->scheduled_at)->format('Y-m-d H:i') }} · {{ $viewing->status }}</div>
                     </div>

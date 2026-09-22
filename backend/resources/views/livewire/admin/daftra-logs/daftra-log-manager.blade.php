@@ -3,9 +3,9 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.daftra_logs') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="entityTypeFilter" :options="$entityTypes->map(fn($t) => ['value' => $t, 'label' => class_basename($t)])->all()" :searchable="false" placeholder="All types" class="w-44" />
-                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'success', 'label' => 'success'], ['value' => 'failed', 'label' => 'failed'], ['value' => 'pending', 'label' => 'pending']]" :searchable="false" placeholder="All statuses" class="w-40" />
-                <x-admin.select wire:model.live="actionFilter" :options="$actions->map(fn($t) => ['value' => $t, 'label' => $t])->all()" :searchable="false" placeholder="All actions" class="w-44" />
+                <x-admin.select wire:model.live="entityTypeFilter" :options="$entityTypes->map(fn($t) => ['value' => $t, 'label' => class_basename($t)])->all()" :searchable="false" placeholder="{{ __('messages.admin.all_types') }}" class="w-44" />
+                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'success', 'label' => __('messages.admin.success_status')], ['value' => 'failed', 'label' => __('messages.admin.failed')], ['value' => 'pending', 'label' => __('messages.admin.pending')]]" :searchable="false" placeholder="{{ __('messages.admin.all_statuses') }}" class="w-40" />
+                <x-admin.select wire:model.live="actionFilter" :options="$actions->map(fn($t) => ['value' => $t, 'label' => $t])->all()" :searchable="false" placeholder="{{ __('messages.admin.all_actions') }}" class="w-44" />
                 <x-admin.date-range />
             </x-admin.filter-bar>
             
@@ -15,11 +15,11 @@
         <table class="w-full text-sm">
             <thead class="bg-stone-800/60">
                 <tr>
-                    <th class="px-4 py-3 text-start">Entity</th>
-                    <th class="px-4 py-3 text-start">Status</th>
-                    <th class="px-4 py-3 text-start">Daftra ID</th>
-                    <th class="px-4 py-3 text-start">Error</th>
-                    <th class="px-4 py-3 text-start">Synced At</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.entity') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.daftra_id') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.error') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.synced_at') }}</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-stone-800">

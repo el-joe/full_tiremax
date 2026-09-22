@@ -10,7 +10,7 @@
                         <span class="text-xs uppercase tracking-wide text-stone-500">{{ __('messages.admin.name') }}</span>
                         <div class="font-bold">{{ $template->key }}</div>
                         @if ($template->trigger_after_days)
-                            <div class="text-xs text-stone-500">+{{ $template->trigger_after_days }} days</div>
+                            <div class="text-xs text-stone-500">+{{ $template->trigger_after_days }} {{ __('messages.admin.days_unit') }}</div>
                         @endif
                     </div>
                     <label class="flex items-center gap-2">
@@ -21,12 +21,22 @@
                 </div>
                 <div class="grid sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="text-xs text-stone-400">Body (AR)</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.subject_ar') }}</label>
+                        <input type="text" wire:model="form.{{ $template->id }}.subject_ar"
+                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.subject_en') }}</label>
+                        <input type="text" wire:model="form.{{ $template->id }}.subject_en"
+                            class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.body_ar') }}</label>
                         <textarea wire:model="form.{{ $template->id }}.body_ar" rows="4"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></textarea>
                     </div>
                     <div>
-                        <label class="text-xs text-stone-400">Body (EN)</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.body_en') }}</label>
                         <textarea wire:model="form.{{ $template->id }}.body_en" rows="4"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></textarea>
                     </div>

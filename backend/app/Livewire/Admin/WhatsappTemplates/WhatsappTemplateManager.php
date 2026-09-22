@@ -25,6 +25,8 @@ class WhatsappTemplateManager extends Component
         foreach ($templates as $template) {
             $this->form[$template->id] = [
                 'is_active' => $template->is_active,
+                'subject_ar' => optional($template->translate('ar'))->subject ?? '',
+                'subject_en' => optional($template->translate('en'))->subject ?? '',
                 'body_ar' => optional($template->translate('ar'))->body ?? '',
                 'body_en' => optional($template->translate('en'))->body ?? '',
             ];
@@ -34,12 +36,12 @@ class WhatsappTemplateManager extends Component
     public function save(int $id): void
     {
         $this->authorizePermission('whatsapp.update');
-        $template = WhatsappTemplate::findOrFail($id);
+        $template = WhatsappTemplate::with('translations')->findOrFail($id);
         $data = $this->form[$id];
 
         $template->update(['is_active' => (bool) $data['is_active']]);
-        $template->translateOrNew('ar')->fill(['body' => $data['body_ar']]);
-        $template->translateOrNew('en')->fill(['body' => $data['body_en']]);
+        $template->translateOrNew('ar')->fill(['subject' => $data['subject_ar'], 'body' => $data['body_ar']]);
+        $template->translateOrNew('en')->fill(['subject' => $data['subject_en'], 'body' => $data['body_en']]);
         $template->save();
 
         $this->dispatch('toast', icon: 'success', title: __('messages.admin.save'));

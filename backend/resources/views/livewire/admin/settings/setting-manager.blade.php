@@ -61,7 +61,7 @@
                                     <div class="flex-1">
                                         <input type="file" wire:model="imageFiles.{{ $setting->id }}" accept="image/*"
                                             class="w-full text-xs text-stone-400 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-stone-700 file:text-stone-200 file:text-xs hover:file:bg-stone-600 cursor-pointer">
-                                        <p class="text-xs text-stone-500 mt-1">JPEG, PNG, WebP — max 2 MB</p>
+                                        <p class="text-xs text-stone-500 mt-1">{{ __('messages.admin.image_helper') }}</p>
                                         @error("imageFiles.{$setting->id}") <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                                     </div>
                                 </div>

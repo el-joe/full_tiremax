@@ -58,7 +58,7 @@ class VehicleModelManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('vehicles.update');
-        $m = VehicleModel::findOrFail($id);
+        $m = VehicleModel::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'vehicle_make_id' => $m->vehicle_make_id,
@@ -77,7 +77,7 @@ class VehicleModelManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'vehicles.update' : 'vehicles.create');
         $this->validate();
-        $m = $this->editingId ? VehicleModel::findOrFail($this->editingId) : new VehicleModel();
+        $m = $this->editingId ? VehicleModel::with('translations')->findOrFail($this->editingId) : new VehicleModel();
         $m->fill([
             'vehicle_make_id' => (int) $this->form['vehicle_make_id'],
             'slug' => $this->form['slug'] ?: Str::slug($this->form['translations']['en']['name']),

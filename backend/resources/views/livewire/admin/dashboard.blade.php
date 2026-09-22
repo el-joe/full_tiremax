@@ -4,12 +4,12 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         @foreach ([
             ['perm' => 'orders.view', 'label' => __('messages.admin.orders'),    'value' => $stats['orders_today'],    'sub' => 'today',     'color' => 'text-yellow-500'],
-            ['perm' => 'orders.view', 'label' => 'Pending Orders',                'value' => $stats['orders_pending'],  'sub' => '',          'color' => 'text-orange-400'],
-            ['perm' => 'orders.view', 'label' => 'Revenue (month)',               'value' => number_format($stats['revenue_month']) . ' IQD', 'sub' => '', 'color' => 'text-emerald-400'],
+            ['perm' => 'orders.view', 'label' => __('messages.admin.pending_orders'),                'value' => $stats['orders_pending'],  'sub' => '',          'color' => 'text-orange-400'],
+            ['perm' => 'orders.view', 'label' => __('messages.admin.revenue_month'),               'value' => number_format($stats['revenue_month']) . ' IQD', 'sub' => '', 'color' => 'text-emerald-400'],
             ['perm' => 'bookings.view', 'label' => __('messages.admin.bookings'),  'value' => $stats['bookings_today'],  'sub' => 'today',     'color' => 'text-sky-400'],
             ['perm' => 'products.view', 'label' => __('messages.admin.products'),  'value' => $stats['products_total'],  'sub' => '',          'color' => 'text-stone-200'],
-            ['perm' => 'products.view', 'label' => 'Low stock',                     'value' => $stats['low_stock'],       'sub' => '',          'color' => 'text-amber-400'],
-            ['perm' => 'products.view', 'label' => 'Out of stock',                  'value' => $stats['out_of_stock'],    'sub' => '',          'color' => 'text-red-400'],
+            ['perm' => 'products.view', 'label' => __('messages.admin.low_stock'),                     'value' => $stats['low_stock'],       'sub' => '',          'color' => 'text-amber-400'],
+            ['perm' => 'products.view', 'label' => __('messages.admin.out_of_stock'),                  'value' => $stats['out_of_stock'],    'sub' => '',          'color' => 'text-red-400'],
             ['perm' => 'customers.view', 'label' => __('messages.admin.customers'), 'value' => $stats['customers_total'], 'sub' => '',          'color' => 'text-fuchsia-400'],
         ] as $card)
             @can($card['perm'])
@@ -31,7 +31,7 @@
                     <div class="py-2 flex items-center justify-between text-sm">
                         <div>
                             <div class="font-bold text-yellow-500">{{ $o->reference }}</div>
-                            <div class="text-stone-400 text-xs">{{ $o->customer_name }} @if ($o->is_guest) (Guest) @endif · {{ $o->created_at->diffForHumans() }}</div>
+                            <div class="text-stone-400 text-xs">{{ $o->customer_name }} @if ($o->is_guest) ({{ __('messages.admin.guest') }}) @endif · {{ $o->created_at->diffForHumans() }}</div>
                         </div>
                         <div class="text-end">
                             <div class="font-bold text-stone-100">{{ number_format($o->total) }} IQD</div>
@@ -54,7 +54,7 @@
                         <div>
                             <div class="font-bold text-yellow-500">{{ $b->reference }}</div>
                             <div class="text-stone-400 text-xs">
-                                {{ $b->customer_name ?? $b->customer?->name }} @if ($b->is_guest) (Guest) @endif · {{ optional($b->service)->name }}
+                                {{ $b->customer_name ?? $b->customer?->name }} @if ($b->is_guest) ({{ __('messages.admin.guest') }}) @endif · {{ optional($b->service)->name }}
                             </div>
                         </div>
                         <div class="text-end">

@@ -3,15 +3,15 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.orders') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" :searchable="false" placeholder="All statuses" class="w-40" />
-                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'basra', 'label' => 'basra'], ['value' => 'delivery', 'label' => 'delivery']]" :searchable="false" placeholder="All types" class="w-36" />
-                <x-admin.select wire:model.live="paymentMethod" :options="[['value' => 'cod', 'label' => 'cod'], ['value' => 'bank_transfer', 'label' => 'bank_transfer'], ['value' => 'paymob', 'label' => 'paymob']]" :searchable="false" placeholder="Payment method" class="w-44" />
-                <x-admin.select wire:model.live="paymentStatus" :options="[['value' => 'pending', 'label' => 'pending'], ['value' => 'paid', 'label' => 'paid'], ['value' => 'failed', 'label' => 'failed'], ['value' => 'refunded', 'label' => 'refunded']]" :searchable="false" placeholder="Payment status" class="w-40" />
-                <x-admin.select wire:model.live="branchFilter" :options="$branches->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All branches" class="w-44" />
-                <x-admin.select wire:model.live="governorateFilter" :options="$governorates->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All governorates" class="w-44" />
-                <x-admin.select wire:model.live="customerKind" :options="[['value' => 'registered', 'label' => 'Registered'], ['value' => 'guest', 'label' => 'Guest']]" :searchable="false" placeholder="All customers" class="w-40" />
+                <x-admin.select wire:model.live="statusFilter" :options="collect($statuses)->map(fn($st) => ['value' => $st, 'label' => $st])->all()" :searchable="false" placeholder="{{ __('messages.admin.all_statuses') }}" class="w-40" />
+                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'basra', 'label' => __('messages.admin.basra')], ['value' => 'delivery', 'label' => __('messages.admin.delivery')]]" :searchable="false" placeholder="{{ __('messages.admin.all_types') }}" class="w-36" />
+                <x-admin.select wire:model.live="paymentMethod" :options="[['value' => 'cod', 'label' => __('messages.admin.cod')], ['value' => 'bank_transfer', 'label' => __('messages.admin.bank_transfer')], ['value' => 'paymob', 'label' => 'paymob']]" :searchable="false" placeholder="{{ __('messages.admin.payment_method') }}" class="w-44" />
+                <x-admin.select wire:model.live="paymentStatus" :options="[['value' => 'pending', 'label' => __('messages.admin.pending')], ['value' => 'paid', 'label' => __('messages.admin.paid')], ['value' => 'failed', 'label' => __('messages.admin.failed')], ['value' => 'refunded', 'label' => __('messages.admin.refunded')]]" :searchable="false" placeholder="{{ __('messages.admin.payment_status') }}" class="w-40" />
+                <x-admin.select wire:model.live="branchFilter" :options="$branches->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_branches') }}" class="w-44" />
+                <x-admin.select wire:model.live="governorateFilter" :options="$governorates->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_governorates') }}" class="w-44" />
+                <x-admin.select wire:model.live="customerKind" :options="[['value' => 'registered', 'label' => __('messages.admin.registered')], ['value' => 'guest', 'label' => __('messages.admin.guest')]]" :searchable="false" placeholder="{{ __('messages.admin.all_customers') }}" class="w-40" />
                 <x-admin.date-range />
-                <input type="number" wire:model.live.debounce.500ms="totalMin" placeholder="Min total" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm"><input type="number" wire:model.live.debounce.500ms="totalMax" placeholder="Max total" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
+                <input type="number" wire:model.live.debounce.500ms="totalMin" placeholder="{{ __('messages.admin.min_total') }}" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm"><input type="number" wire:model.live.debounce.500ms="totalMax" placeholder="{{ __('messages.admin.max_total') }}" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
             </x-admin.filter-bar>
             
         </div>
@@ -20,13 +20,13 @@
         <table class="w-full text-sm">
             <thead class="bg-stone-800/60">
                 <tr>
-                    <th class="px-4 py-3 text-start">Ref</th>
-                    <th class="px-4 py-3 text-start">Customer</th>
-                    <th class="px-4 py-3 text-start">Type</th>
-                    <th class="px-4 py-3 text-start">Total</th>
-                    <th class="px-4 py-3 text-start">Status</th>
-                    <th class="px-4 py-3 text-start">Date</th>
-                    <th class="px-4 py-3 text-start">Daftra</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.ref') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.customer') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.type') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.total') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.date') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.daftra') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -34,7 +34,7 @@
                 @forelse ($items as $o)
                     <tr class="hover:bg-stone-800/40">
                         <td class="px-4 py-3 font-mono text-yellow-500">{{ $o->reference }}</td>
-                        <td class="px-4 py-3">{{ $o->customer_name }} @if ($o->is_guest || !$o->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif
+                        <td class="px-4 py-3">{{ $o->customer_name }} @if ($o->is_guest || !$o->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">{{ __('messages.admin.guest') }}</span> @endif
                             <div class="text-xs text-stone-400">{{ $o->customer_phone }}</div>
                         </td>
                         <td class="px-4 py-3 text-stone-400">{{ $o->type }}</td>
@@ -55,13 +55,12 @@
                             @endif
                         </td>
                         <td class="px-4 py-3 text-end">
-                            <button wire:click="view({{ $o->id }})" class="text-yellow-500 text-xs me-3">View</button>
+                            <button wire:click="view({{ $o->id }})" class="text-yellow-500 text-xs me-3">{{ __('messages.admin.view') }}</button>
                             @if (!$o->daftra_invoice_id && \App\Integrations\Daftra::isEnabled())
                                 @can('orders.update')
 <button wire:click="syncToDaftra({{ $o->id }})" wire:loading.attr="disabled"
                                     wire:target="syncToDaftra({{ $o->id }})"
-                                    class="bg-blue-500 text-white text-xs px-2 py-1 rounded-md me-3 disabled:opacity-50">Sync
-                                    to Daftra</button>
+                                    class="bg-blue-500 text-white text-xs px-2 py-1 rounded-md me-3 disabled:opacity-50">{{ __('messages.admin.sync_to_daftra') }}</button>
 @endcan
                             @endif
                             @can('orders.delete')
@@ -94,34 +93,34 @@
 
 
                 <div class="flex gap-2 border-b border-stone-800 pb-2 text-sm">
-                    <button wire:click="$set('tab','details')" class="px-3 py-1 rounded-full {{ $tab === 'details' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Details</button>
-                    <button wire:click="$set('tab','notifications')" class="px-3 py-1 rounded-full {{ $tab === 'notifications' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">Notifications</button>
+                    <button wire:click="$set('tab','details')" class="px-3 py-1 rounded-full {{ $tab === 'details' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">{{ __('messages.admin.details') }}</button>
+                    <button wire:click="$set('tab','notifications')" class="px-3 py-1 rounded-full {{ $tab === 'notifications' ? 'bg-yellow-500 text-stone-950 font-bold' : 'bg-stone-800' }}">{{ __('messages.admin.notifications') }}</button>
                 </div>
                 @if ($tab === 'notifications')
                     @include('livewire.admin.partials.notifications-tab', ['emailLogs' => $emailLogs, 'waLogs' => $waLogs, 'canResend' => auth('admin')->user()?->can('orders.update')])
                 @else
                 <div class="grid sm:grid-cols-2 gap-4 text-sm">
                     <div class="bg-stone-800/50 rounded-lg p-3">
-                        <div class="text-xs text-stone-400">Customer</div>
-                        <div class="font-bold">{{ $viewing->customer_name }} @if ($viewing->is_guest || !$viewing->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">Guest</span> @endif</div>
+                        <div class="text-xs text-stone-400">{{ __('messages.admin.customer') }}</div>
+                        <div class="font-bold">{{ $viewing->customer_name }} @if ($viewing->is_guest || !$viewing->customer_id) <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] align-middle">{{ __('messages.admin.guest') }}</span> @endif</div>
                         <div class="text-xs">{{ $viewing->customer_phone }}</div>
                         <div class="text-xs text-stone-400">{{ $viewing->customer_email }}</div>
                     </div>
                     <div class="bg-stone-800/50 rounded-lg p-3">
-                        <div class="text-xs text-stone-400">Shipping</div>
+                        <div class="text-xs text-stone-400">{{ __('messages.admin.shipping') }}</div>
                         <div>{{ optional($viewing->governorate)->name }}</div>
                         <div class="text-xs text-stone-400">{{ $viewing->shipping_address }}</div>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="font-bold mb-2 text-stone-200">Items</h4>
+                    <h4 class="font-bold mb-2 text-stone-200">{{ __('messages.admin.items') }}</h4>
                     <div class="bg-stone-800/30 rounded-lg divide-y divide-stone-800">
                         @foreach ($viewing->items as $it)
                             <div class="flex justify-between p-3 text-sm">
                                 <div>
                                     <div class="font-bold">{{ optional($it->product)->name ?? $it->product_name }}</div>
-                                    <div class="text-xs text-stone-400">SKU: {{ $it->sku }} · Qty: {{ $it->quantity }}</div>
+                                    <div class="text-xs text-stone-400">{{ __('messages.admin.sku_label') }} {{ $it->sku }} · {{ __('messages.admin.qty_label') }} {{ $it->quantity }}</div>
                                 </div>
                                 <div class="font-bold">{{ number_format($it->line_total) }} IQD</div>
                             </div>
@@ -131,23 +130,23 @@
 
                 <div class="grid grid-cols-4 gap-3 text-sm">
                     <div class="bg-stone-800/50 rounded-lg p-2">
-                        <div class="text-xs text-stone-400">Subtotal</div>{{ number_format($viewing->subtotal) }}
+                        <div class="text-xs text-stone-400">{{ __('messages.admin.subtotal') }}</div>{{ number_format($viewing->subtotal) }}
                     </div>
                     <div class="bg-stone-800/50 rounded-lg p-2">
-                        <div class="text-xs text-stone-400">Shipping</div>{{ number_format($viewing->shipping_fee) }}
+                        <div class="text-xs text-stone-400">{{ __('messages.admin.shipping') }}</div>{{ number_format($viewing->shipping_fee) }}
                     </div>
                     <div class="bg-stone-800/50 rounded-lg p-2">
-                        <div class="text-xs text-stone-400">Discount</div>-{{ number_format($viewing->discount) }}
+                        <div class="text-xs text-stone-400">{{ __('messages.admin.discount') }}</div>-{{ number_format($viewing->discount) }}
                     </div>
                     <div class="bg-yellow-500/20 rounded-lg p-2">
-                        <div class="text-xs text-yellow-500">Total</div><span
+                        <div class="text-xs text-yellow-500">{{ __('messages.admin.total') }}</div><span
                             class="font-bold">{{ number_format($viewing->total) }}</span>
                     </div>
                 </div>
 
                 @if ($viewing->daftra_invoice_id)
                     <div class="border-t border-stone-800 pt-3 flex items-center gap-3">
-                        <span class="text-xs text-stone-400">Daftra Invoice:</span>
+                        <span class="text-xs text-stone-400">{{ __('messages.admin.daftra_invoice') }}</span>
                         @if ($viewing->daftra_invoice_url)
                             <a href="{{ $viewing->daftra_invoice_url }}" target="_blank"
                                 class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono hover:underline">#{{ $viewing->daftra_invoice_id }}</a>
@@ -158,7 +157,7 @@
                 @endif
 
                 <div class="border-t border-stone-800 pt-3">
-                    <h4 class="font-bold text-stone-200 mb-2">Change status</h4>
+                    <h4 class="font-bold text-stone-200 mb-2">{{ __('messages.admin.change_status') }}</h4>
                     <div class="flex flex-wrap gap-2">
                         @foreach ($statuses as $st)
                             @can('orders.change_status')

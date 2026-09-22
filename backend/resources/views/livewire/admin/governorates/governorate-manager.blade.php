@@ -3,8 +3,8 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.governorates') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
-                <x-admin.select wire:model.live="basraFilter" :options="[['value' => '1', 'label' => 'Yes'], ['value' => '0', 'label' => 'No']]" :searchable="false" placeholder="Basra?" class="w-36" />
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => __('messages.admin.active')], ['value' => '0', 'label' => __('messages.admin.inactive')]]" :searchable="false" placeholder="{{ __('messages.admin.all') }}" class="w-36" />
+                <x-admin.select wire:model.live="basraFilter" :options="[['value' => '1', 'label' => __('messages.admin.yes')], ['value' => '0', 'label' => __('messages.admin.no')]]" :searchable="false" placeholder="{{ __('messages.admin.basra') }}?" class="w-36" />
             </x-admin.filter-bar>
             @can('governorates.create')
 <button wire:click="openCreate"
@@ -19,9 +19,9 @@
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.name') }}</th>
-                    <th class="px-4 py-3 text-start">Code</th>
-                    <th class="px-4 py-3 text-start">Shipping</th>
-                    <th class="px-4 py-3 text-start">Basra</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.code') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.shipping') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.basra') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -63,26 +63,26 @@
                 <h3 class="text-lg font-bold">{{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
-                    <div><label class="text-xs text-stone-400">Name (AR)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.name_ar') }}</label><input
                             wire:model="form.translations.ar.name"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">@error('form.translations.ar.name')
                             <p class="text-red-400 text-xs">{{ $message }}</p>@enderror</div>
-                    <div><label class="text-xs text-stone-400">Name (EN)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.name_en') }}</label><input
                             wire:model="form.translations.en.name"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">@error('form.translations.en.name')
                             <p class="text-red-400 text-xs">{{ $message }}</p>@enderror</div>
-                    <div><label class="text-xs text-stone-400">Code</label><input wire:model="form.code"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.code') }}</label><input wire:model="form.code"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">@error('form.code')
                             <p class="text-red-400 text-xs">{{ $message }}</p>@enderror</div>
-                    <div><label class="text-xs text-stone-400">Shipping fee (IQD)</label><input type="number"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.shipping_fee') }} (IQD)</label><input type="number"
                             wire:model="form.shipping_fee"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Sort order</label><input type="number"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.sort_order') }}</label><input type="number"
                             wire:model="form.sort_order"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
                     <div class="flex flex-col gap-2 mt-6">
                         <label class="flex items-center gap-2"><input type="checkbox" wire:model="form.is_basra"
-                                class="rounded bg-stone-800 border-stone-700 text-yellow-500"> Is Basra</label>
+                                class="rounded bg-stone-800 border-stone-700 text-yellow-500"> {{ __('messages.admin.is_basra') }}</label>
                         <label class="flex items-center gap-2"><input type="checkbox" wire:model="form.is_active"
                                 class="rounded bg-stone-800 border-stone-700 text-yellow-500">
                             {{ __('messages.admin.active') }}</label>

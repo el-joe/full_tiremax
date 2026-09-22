@@ -3,7 +3,7 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.brands') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$brands->total()">
-                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => __('messages.admin.active')], ['value' => '0', 'label' => __('messages.admin.inactive')]]" :searchable="false" placeholder="{{ __('messages.admin.all') }}" class="w-36" />
             </x-admin.filter-bar>
             @can('brands.create')
 <button wire:click="openCreate"
@@ -20,9 +20,9 @@
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.name') }}</th>
-                    <th class="px-4 py-3 text-start">Slug</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.slug') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
-                    <th class="px-4 py-3 text-start">Daftra</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.daftra') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -93,17 +93,17 @@
                         @enderror
                     </div>
                     <div>
-                        <label class="text-xs text-stone-400">Slug</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.slug') }}</label>
                         <input wire:model="form.slug"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                     </div>
                     <div>
-                        <label class="text-xs text-stone-400">Country</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.country') }}</label>
                         <input wire:model="form.country"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                     </div>
                     <div>
-                        <label class="text-xs text-stone-400">Sort order</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.sort_order') }}</label>
                         <input type="number" wire:model="form.sort_order"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                     </div>

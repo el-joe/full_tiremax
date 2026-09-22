@@ -52,7 +52,7 @@ class ProductManager extends Component
     public function delete(int $id): void
     {
         $this->authorizePermission('products.delete');
-        $product = Product::findOrFail($id);
+        $product = Product::with('translations')->findOrFail($id);
         $this->logAction('product.deleted', $product, ['name' => $product->name, 'sku' => $product->sku]);
         $product->delete();
         $this->dispatch('toast', icon: 'success', title: __('messages.deleted'));

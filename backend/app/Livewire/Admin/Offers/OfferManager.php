@@ -63,7 +63,7 @@ class OfferManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('offers.update');
-        $o = Offer::findOrFail($id);
+        $o = Offer::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'code' => $o->code,
@@ -86,7 +86,7 @@ class OfferManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'offers.update' : 'offers.create');
         $this->validate();
-        $o = $this->editingId ? Offer::findOrFail($this->editingId) : new Offer();
+        $o = $this->editingId ? Offer::with('translations')->findOrFail($this->editingId) : new Offer();
         $o->fill([
             'code' => $this->form['code'],
             'discount_type' => $this->form['discount_type'],

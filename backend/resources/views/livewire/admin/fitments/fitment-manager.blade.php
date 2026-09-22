@@ -19,10 +19,10 @@
             <thead class="bg-stone-800/60">
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
-                    <th class="px-4 py-3 text-start">Vehicle</th>
-                    <th class="px-4 py-3 text-start">Product</th>
-                    <th class="px-4 py-3 text-start">Years</th>
-                    <th class="px-4 py-3 text-start">Flags</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.vehicle') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.product') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.years') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.flags') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -40,11 +40,11 @@
                         </td>
                         <td class="px-4 py-3 text-xs">
                             @if ($f->is_oem) <span
-                            class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full">OEM</span> @endif
+                            class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full">{{ __('messages.admin.oem') }}</span> @endif
                             @if ($f->is_alternative) <span
-                            class="px-2 py-0.5 bg-sky-500/20 text-sky-400 rounded-full">ALT</span> @endif
+                            class="px-2 py-0.5 bg-sky-500/20 text-sky-400 rounded-full">{{ __('messages.admin.alt') }}</span> @endif
                             @if ($f->is_excluded) <span
-                            class="px-2 py-0.5 bg-red-500/20 text-red-400 rounded-full">EXCL</span> @endif
+                            class="px-2 py-0.5 bg-red-500/20 text-red-400 rounded-full">{{ __('messages.admin.excl') }}</span> @endif
                         </td>
                         <td class="px-4 py-3 text-end">
                             @can('fitments.update')
@@ -75,35 +75,35 @@
                 <h3 class="text-lg font-bold">{{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
-                    <div class="sm:col-span-2"><label class="text-xs text-stone-400">Vehicle</label>
+                    <div class="sm:col-span-2"><label class="text-xs text-stone-400">{{ __('messages.admin.vehicle') }}</label>
                         <x-admin.select wire:model="form.vehicle_id" :options="$vehicles->map(fn($v) => ['value' => $v->id, 'label' => optional($v->make)->name . ' ' . optional($v->model)->name . ' ' . $v->year_from . ($v->year_to ? '-' . $v->year_to : '')])->all()" placeholder="—" />
                     </div>
-                    <div class="sm:col-span-2"><label class="text-xs text-stone-400">Product (Tire)</label>
+                    <div class="sm:col-span-2"><label class="text-xs text-stone-400">{{ __('messages.admin.product_tire') }}</label>
                         <x-admin.select wire:model="form.product_id" :options="$products->map(fn($p) => ['value' => $p->id, 'label' => $p->sku . ' – ' . optional($p->brand)->name . ' – ' . $p->name])->all()" placeholder="—" />
                     </div>
-                    <div><label class="text-xs text-stone-400">Year from</label><input type="number"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.year_from') }}</label><input type="number"
                             wire:model="form.year_from"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Year to</label><input type="number" wire:model="form.year_to"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.year_to') }}</label><input type="number" wire:model="form.year_to"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Trim</label><input wire:model="form.trim"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.trim') }}</label><input wire:model="form.trim"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
                     <div></div>
-                    <div><label class="text-xs text-stone-400">Notes (AR)</label><textarea
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.notes_ar') }}</label><textarea
                             wire:model="form.translations.ar.notes" rows="2"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></textarea>
                     </div>
-                    <div><label class="text-xs text-stone-400">Notes (EN)</label><textarea
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.notes_en') }}</label><textarea
                             wire:model="form.translations.en.notes" rows="2"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></textarea>
                     </div>
                     <div class="sm:col-span-2 flex flex-wrap gap-4">
                         <label class="flex items-center gap-2"><input type="checkbox" wire:model="form.is_oem"
-                                class="rounded bg-stone-800 text-yellow-500"> OEM</label>
+                                class="rounded bg-stone-800 text-yellow-500"> {{ __('messages.admin.oem') }}</label>
                         <label class="flex items-center gap-2"><input type="checkbox" wire:model="form.is_alternative"
-                                class="rounded bg-stone-800 text-yellow-500"> Alternative</label>
+                                class="rounded bg-stone-800 text-yellow-500"> {{ __('messages.admin.alternative') }}</label>
                         <label class="flex items-center gap-2"><input type="checkbox" wire:model="form.is_excluded"
-                                class="rounded bg-stone-800 text-yellow-500"> Excluded</label>
+                                class="rounded bg-stone-800 text-yellow-500"> {{ __('messages.admin.excluded') }}</label>
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">

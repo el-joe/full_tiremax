@@ -79,7 +79,7 @@ class FitmentManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('fitments.update');
-        $f = Fitment::findOrFail($id);
+        $f = Fitment::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'vehicle_id' => $f->vehicle_id,
@@ -102,7 +102,7 @@ class FitmentManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'fitments.update' : 'fitments.create');
         $this->validate();
-        $f = $this->editingId ? Fitment::findOrFail($this->editingId) : new Fitment();
+        $f = $this->editingId ? Fitment::with('translations')->findOrFail($this->editingId) : new Fitment();
         $f->fill([
             'vehicle_id' => (int) $this->form['vehicle_id'],
             'product_id' => (int) $this->form['product_id'],

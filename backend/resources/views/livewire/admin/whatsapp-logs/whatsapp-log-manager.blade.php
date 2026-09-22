@@ -2,8 +2,8 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.whatsapp_logs') }}</h2>
         <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-            <x-admin.select wire:model.live="statusFilter" :options="collect(['pending', 'sent', 'delivered', 'read', 'failed'])->map(fn($s) => ['value' => $s, 'label' => $s])->all()" :searchable="false" placeholder="All statuses" class="w-40" />
-            <x-admin.select wire:model.live="templateFilter" :options="$templates->map(fn($t) => ['value' => $t->id, 'label' => $t->key])->all()" placeholder="All templates" class="w-48" />
+            <x-admin.select wire:model.live="statusFilter" :options="collect(['pending', 'sent', 'delivered', 'read', 'failed'])->map(fn($s) => ['value' => $s, 'label' => __('messages.admin.' . $s)])->all()" :searchable="false" placeholder="{{ __('messages.admin.all_statuses') }}" class="w-40" />
+            <x-admin.select wire:model.live="templateFilter" :options="$templates->map(fn($t) => ['value' => $t->id, 'label' => $t->key])->all()" placeholder="{{ __('messages.admin.all_templates') }}" class="w-48" />
             <x-admin.date-range />
         </x-admin.filter-bar>
     </div>
@@ -11,11 +11,11 @@
         <table class="w-full text-sm">
             <thead class="bg-stone-800/60">
                 <tr>
-                    <th class="px-4 py-3 text-start">Phone</th>
-                    <th class="px-4 py-3 text-start">Customer</th>
-                    <th class="px-4 py-3 text-start">Template</th>
-                    <th class="px-4 py-3 text-start">Status</th>
-                    <th class="px-4 py-3 text-start">Date</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.phone') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.customer') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.template') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.date') }}</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-stone-800">

@@ -57,7 +57,7 @@ class CategoryManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('categories.update');
-        $c = Category::findOrFail($id);
+        $c = Category::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'slug' => $c->slug,
@@ -77,7 +77,7 @@ class CategoryManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'categories.update' : 'categories.create');
         $this->validate();
-        $c = $this->editingId ? Category::findOrFail($this->editingId) : new Category();
+        $c = $this->editingId ? Category::with('translations')->findOrFail($this->editingId) : new Category();
         $c->fill([
             'slug' => $this->form['slug'] ?: Str::slug($this->form['translations']['en']['name']),
             'product_type' => $this->form['product_type'],

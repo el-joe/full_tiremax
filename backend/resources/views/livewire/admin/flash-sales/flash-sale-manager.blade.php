@@ -3,8 +3,8 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.flash_sales') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
-                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'live', 'label' => 'Live'], ['value' => 'upcoming', 'label' => 'Upcoming'], ['value' => 'ended', 'label' => 'Ended']]" :searchable="false" placeholder="Any status" class="w-36" />
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => __('messages.admin.active')], ['value' => '0', 'label' => __('messages.admin.inactive')]]" :searchable="false" placeholder="{{ __('messages.admin.all') }}" class="w-36" />
+                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'live', 'label' => __('messages.admin.live')], ['value' => 'upcoming', 'label' => __('messages.admin.upcoming')], ['value' => 'ended', 'label' => __('messages.admin.ended')]]" :searchable="false" placeholder="{{ __('messages.admin.status') }}" class="w-36" />
             </x-admin.filter-bar>
             @can('flash_sales.create')
 <button wire:click="openCreate"
@@ -20,11 +20,11 @@
             <thead class="bg-stone-800/60">
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
-                    <th class="px-4 py-3 text-start">Title</th>
-                    <th class="px-4 py-3 text-start">Discount</th>
-                    <th class="px-4 py-3 text-start">Window</th>
-                    <th class="px-4 py-3 text-start">Status</th>
-                    <th class="px-4 py-3 text-start">Products</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.title') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.discount') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.window') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.products') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -88,13 +88,13 @@
                 {{-- Basic info --}}
                 <div class="grid sm:grid-cols-2 gap-3">
                     <div class="sm:col-span-2">
-                        <label class="text-xs text-stone-400">Title</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.title') }}</label>
                         <input wire:model="form.title"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                         @error('form.title') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
-                        <label class="text-xs text-stone-400">Discount %</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.discount_percent') }}</label>
                         <input type="number" step="0.01" min="1" max="100" wire:model="form.discount_percent"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                         @error('form.discount_percent') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
@@ -103,17 +103,17 @@
                         <label class="flex items-center gap-2">
                             <input type="checkbox" wire:model="form.is_active"
                                 class="rounded bg-stone-800 border-stone-700 text-yellow-500">
-                            <span class="text-sm">Active</span>
+                            <span class="text-sm">{{ __('messages.admin.active') }}</span>
                         </label>
                     </div>
                     <div>
-                        <label class="text-xs text-stone-400">Starts at</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.starts_at') }}</label>
                         <input type="datetime-local" wire:model="form.starts_at"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                         @error('form.starts_at') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
-                        <label class="text-xs text-stone-400">Ends at</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.ends_at') }}</label>
                         <input type="datetime-local" wire:model="form.ends_at"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
                         @error('form.ends_at') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
@@ -122,7 +122,7 @@
 
                 {{-- ── Product picker ──────────────────────────────────────── --}}
                 <div class="border-t border-stone-800 pt-4 space-y-3">
-                    <h4 class="text-sm font-semibold text-stone-200">Products in this flash sale
+                    <h4 class="text-sm font-semibold text-stone-200">{{ __('messages.admin.products_in_sale') }}
                         <span class="text-stone-500">({{ count($productIds) }})</span>
                     </h4>
 
@@ -130,7 +130,7 @@
                     <div class="relative" x-data="{ open: false }"
                         @focusin="open = true" @click.outside="open = false">
                         <input type="text" wire:model.live.debounce.300ms="productSearch"
-                            placeholder="Search by name or SKU..."
+                            placeholder="{{ __('messages.admin.search_by_name_sku') }}"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"
                             @focus="open = true">
 
@@ -147,7 +147,7 @@
                                                 <span class="font-semibold"> {{ $p->name }}</span>
                                                 @if ($p->brand) <span class="text-stone-400 text-xs">· {{ $p->brand->name }}</span> @endif
                                             </span>
-                                            <span class="text-yellow-500 shrink-0">+ Add</span>
+                                            <span class="text-yellow-500 shrink-0">+ {{ __('messages.admin.add') }}</span>
                                         </button>
 @endcan
                                     @endif
@@ -155,7 +155,7 @@
                             </div>
                         @elseif (mb_strlen(trim($productSearch)) >= 2 && $searchResults->isEmpty())
                             <div class="absolute z-50 top-full mt-1 left-0 right-0 bg-stone-800 border border-stone-700 rounded-lg px-3 py-3 text-sm text-stone-500">
-                                No products found.
+                                {{ __('messages.admin.no_products_found') }}
                             </div>
                         @endif
                     </div>
@@ -172,13 +172,13 @@
                                     </span>
                                     @can('flash_sales.update')
 <button type="button" wire:click="removeProduct({{ $p->id }})"
-                                        class="text-red-400 hover:text-red-300 text-xs shrink-0 ms-2">Remove</button>
+                                        class="text-red-400 hover:text-red-300 text-xs shrink-0 ms-2">{{ __('messages.admin.remove') }}</button>
 @endcan
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <p class="text-xs text-stone-500">No products added yet. Search above to add products.</p>
+                        <p class="text-xs text-stone-500">{{ __('messages.admin.no_products_added') }}</p>
                     @endif
                 </div>
 

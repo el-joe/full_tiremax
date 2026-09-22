@@ -52,7 +52,7 @@ class VehicleMakeManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('vehicles.update');
-        $m = VehicleMake::findOrFail($id);
+        $m = VehicleMake::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'slug' => $m->slug,
@@ -71,7 +71,7 @@ class VehicleMakeManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'vehicles.update' : 'vehicles.create');
         $this->validate();
-        $m = $this->editingId ? VehicleMake::findOrFail($this->editingId) : new VehicleMake();
+        $m = $this->editingId ? VehicleMake::with('translations')->findOrFail($this->editingId) : new VehicleMake();
         $m->fill([
             'slug' => $this->form['slug'] ?: Str::slug($this->form['translations']['en']['name']),
             'logo' => $this->form['logo'],

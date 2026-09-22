@@ -1,8 +1,8 @@
 @props([
     'options'           => [],
     'multiple'          => false,
-    'placeholder'       => 'Select...',
-    'searchPlaceholder' => 'Search...',
+    'placeholder'       => __('messages.admin.select_placeholder'),
+    'searchPlaceholder' => __('messages.admin.search_placeholder'),
     'searchable'        => true,
     'nullable'          => true,
     'value'             => null,
@@ -208,19 +208,19 @@
                 x-show="filtered.length === 0"
                 class="px-3 py-5 text-sm text-stone-500 text-center"
             >
-                No results
+                {{ __('messages.admin.no_results') }}
             </div>
         </div>
 
         @if ($multiple)
         {{-- Multiple footer --}}
         <div class="px-3 py-2 border-t border-stone-700/60 flex items-center justify-between">
-            <span x-text="selectedValues.length + ' selected'" class="text-xs text-stone-400"></span>
+            <span x-text="selectedValues.length + ' ' + @js(__('messages.admin.selected'))" class="text-xs text-stone-400"></span>
             <button
                 type="button"
                 @click="open = false"
                 class="text-xs font-semibold text-yellow-500 hover:text-yellow-400 transition-colors"
-            >Done</button>
+            >{{ __('messages.admin.done') }}</button>
         </div>
         @endif
     </div>

@@ -6,7 +6,7 @@
         <table class="w-full text-sm">
             <thead class="bg-stone-800/60">
                 <tr>
-                    <th class="px-4 py-3 text-start">Driver</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.driver') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.name') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.status') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>

@@ -3,14 +3,14 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.products') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="type" :options="[['value' => 'tire', 'label' => 'Tire'], ['value' => 'battery', 'label' => 'Battery']]" :searchable="false" placeholder="All types" class="w-36" />
-                <x-admin.select wire:model.live="brandFilter" :options="$brands->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All brands" class="w-44" />
-                <x-admin.select wire:model.live="categoryFilter" :options="$categories->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="All categories" class="w-44" />
-                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
-                <x-admin.select wire:model.live="featuredFilter" :options="[['value' => '1', 'label' => 'Yes'], ['value' => '0', 'label' => 'No']]" :searchable="false" placeholder="Featured" class="w-36" />
-                <x-admin.select wire:model.live="stockFilter" :options="[['value' => 'in', 'label' => 'In stock'], ['value' => 'low', 'label' => 'Low (<=5)'], ['value' => 'out', 'label' => 'Out of stock']]" :searchable="false" placeholder="Stock" class="w-36" />
-                <x-admin.select wire:model.live="onSale" :options="[['value' => '1', 'label' => 'Yes'], ['value' => '0', 'label' => 'No']]" :searchable="false" placeholder="On sale" class="w-36" />
-                <input type="number" wire:model.live.debounce.500ms="priceMin" placeholder="Min price" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm"><input type="number" wire:model.live.debounce.500ms="priceMax" placeholder="Max price" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
+                <x-admin.select wire:model.live="type" :options="[['value' => 'tire', 'label' => __('messages.admin.tire')], ['value' => 'battery', 'label' => __('messages.admin.battery')]]" :searchable="false" placeholder="{{ __('messages.admin.all_types') }}" class="w-36" />
+                <x-admin.select wire:model.live="brandFilter" :options="$brands->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_brands') }}" class="w-44" />
+                <x-admin.select wire:model.live="categoryFilter" :options="$categories->map(fn($x) => ['value' => $x->id, 'label' => $x->name])->all()" :searchable="true" placeholder="{{ __('messages.admin.all_categories') }}" class="w-44" />
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => __('messages.admin.active')], ['value' => '0', 'label' => __('messages.admin.inactive')]]" :searchable="false" placeholder="{{ __('messages.admin.all') }}" class="w-36" />
+                <x-admin.select wire:model.live="featuredFilter" :options="[['value' => '1', 'label' => __('messages.admin.yes')], ['value' => '0', 'label' => __('messages.admin.no')]]" :searchable="false" placeholder="{{ __('messages.admin.featured') }}" class="w-36" />
+                <x-admin.select wire:model.live="stockFilter" :options="[['value' => 'in', 'label' => __('messages.admin.in_stock')], ['value' => 'low', 'label' => __('messages.admin.low_stock_le5')], ['value' => 'out', 'label' => __('messages.admin.out_of_stock')]]" :searchable="false" placeholder="{{ __('messages.admin.stock') }}" class="w-36" />
+                <x-admin.select wire:model.live="onSale" :options="[['value' => '1', 'label' => __('messages.admin.yes')], ['value' => '0', 'label' => __('messages.admin.no')]]" :searchable="false" placeholder="{{ __('messages.admin.on_sale') }}" class="w-36" />
+                <input type="number" wire:model.live.debounce.500ms="priceMin" placeholder="{{ __('messages.admin.min_price') }}" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm"><input type="number" wire:model.live.debounce.500ms="priceMax" placeholder="{{ __('messages.admin.max_price') }}" class="w-28 bg-stone-800 border border-stone-700 rounded-lg px-2 py-2 text-sm">
             </x-admin.filter-bar>
             @can('products.create')
 <a href="{{ route('admin.products.create') }}"
@@ -24,13 +24,13 @@
             <thead class="bg-stone-800/60">
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
-                    <th class="px-4 py-3 text-start">SKU</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.sku') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.name') }}</th>
-                    <th class="px-4 py-3 text-start">Brand</th>
-                    <th class="px-4 py-3 text-start">Type</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.brand') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.type') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.price') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.stock') }}</th>
-                    <th class="px-4 py-3 text-start">Daftra</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.daftra') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>

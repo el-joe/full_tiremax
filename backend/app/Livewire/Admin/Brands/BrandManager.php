@@ -80,7 +80,7 @@ class BrandManager extends Component
         $slug = $this->form['slug'] ?: Str::slug($this->form['translations']['en']['name']);
 
         $brand = $this->editingId
-            ? Brand::findOrFail($this->editingId)
+            ? Brand::with('translations')->findOrFail($this->editingId)
             : new Brand();
 
         $brand->fill([

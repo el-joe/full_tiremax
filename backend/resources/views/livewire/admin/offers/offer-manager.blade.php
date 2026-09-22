@@ -3,9 +3,9 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.offers') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
-                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'live', 'label' => 'Live'], ['value' => 'upcoming', 'label' => 'Upcoming'], ['value' => 'expired', 'label' => 'Expired']]" :searchable="false" placeholder="Any status" class="w-36" />
-                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'percent', 'label' => 'Percent'], ['value' => 'fixed', 'label' => 'Fixed']]" :searchable="false" placeholder="Any type" class="w-36" />
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => __('messages.admin.active')], ['value' => '0', 'label' => __('messages.admin.inactive')]]" :searchable="false" placeholder="{{ __('messages.admin.all') }}" class="w-36" />
+                <x-admin.select wire:model.live="statusFilter" :options="[['value' => 'live', 'label' => __('messages.admin.live')], ['value' => 'upcoming', 'label' => __('messages.admin.upcoming')], ['value' => 'expired', 'label' => __('messages.admin.expired')]]" :searchable="false" placeholder="{{ __('messages.admin.all_statuses') }}" class="w-36" />
+                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'percent', 'label' => __('messages.admin.percent')], ['value' => 'fixed', 'label' => __('messages.admin.fixed')]]" :searchable="false" placeholder="{{ __('messages.admin.all_types') }}" class="w-36" />
             </x-admin.filter-bar>
             @can('offers.create')
 <button
@@ -18,11 +18,11 @@
         <table class="w-full text-sm">
             <thead class="bg-stone-800/60">
                 <tr>
-                    <th class="px-4 py-3 text-start">Code</th>
-                    <th class="px-4 py-3 text-start">Title</th>
-                    <th class="px-4 py-3 text-start">Discount</th>
-                    <th class="px-4 py-3 text-start">Window</th>
-                    <th class="px-4 py-3 text-start">Used</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.code') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.title') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.discount') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.window') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.used') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -66,34 +66,34 @@
                 <h3 class="text-lg font-bold">{{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
-                    <div><label class="text-xs text-stone-400">Code</label><input wire:model="form.code"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.code') }}</label><input wire:model="form.code"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Discount type</label><x-admin.select
-                            wire:model="form.discount_type" :options="[['value' => 'percent', 'label' => 'Percent'], ['value' => 'fixed', 'label' => 'Fixed']]" :searchable="false" :nullable="false"
-                            placeholder="Select type" /></div>
-                    <div><label class="text-xs text-stone-400">Discount value</label><input type="number" step="0.01"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.discount_type') }}</label><x-admin.select
+                            wire:model="form.discount_type" :options="[['value' => 'percent', 'label' => __('messages.admin.percent')], ['value' => 'fixed', 'label' => __('messages.admin.fixed')]]" :searchable="false" :nullable="false"
+                            placeholder="{{ __('messages.admin.select_type') }}" /></div>
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.discount_value') }}</label><input type="number" step="0.01"
                             wire:model="form.discount_value"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Min subtotal</label><input type="number"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.min_subtotal') }}</label><input type="number"
                             wire:model="form.min_subtotal"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Title (AR)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.title_ar') }}</label><input
                             wire:model="form.translations.ar.title"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Title (EN)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.title_en') }}</label><input
                             wire:model="form.translations.en.title"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Starts at</label><input type="datetime-local"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.starts_at') }}</label><input type="datetime-local"
                             wire:model="form.starts_at"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Ends at</label><input type="datetime-local"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.ends_at') }}</label><input type="datetime-local"
                             wire:model="form.ends_at"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Usage limit</label><input type="number"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.usage_limit') }}</label><input type="number"
                             wire:model="form.usage_limit"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
                     <label class="flex items-center gap-2 mt-6"><input type="checkbox" wire:model="form.is_active"
-                            class="rounded bg-stone-800 text-yellow-500"> Active</label>
+                            class="rounded bg-stone-800 text-yellow-500"> {{ __('messages.admin.active') }}</label>
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"

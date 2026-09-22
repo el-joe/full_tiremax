@@ -3,9 +3,9 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.reviews') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$reviews->total()">
-                <x-admin.select wire:model.live="status" :options="[['value' => 'pending', 'label' => 'Pending'], ['value' => 'approved', 'label' => 'Approved'], ['value' => 'rejected', 'label' => 'Rejected'], ['value' => 'all', 'label' => 'All']]" :searchable="false" placeholder="Status" class="w-36" />
-                <x-admin.select wire:model.live="rating" :options="[['value' => '1', 'label' => '1'], ['value' => '2', 'label' => '2'], ['value' => '3', 'label' => '3'], ['value' => '4', 'label' => '4'], ['value' => '5', 'label' => '5']]" :searchable="false" placeholder="Rating" class="w-28" />
-                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'customer', 'label' => 'Customer'], ['value' => 'expert', 'label' => 'Expert']]" :searchable="false" placeholder="Type" class="w-32" />
+                <x-admin.select wire:model.live="status" :options="[['value' => 'pending', 'label' => __('messages.admin.pending')], ['value' => 'approved', 'label' => __('messages.admin.approved')], ['value' => 'rejected', 'label' => __('messages.admin.rejected')], ['value' => 'all', 'label' => __('messages.admin.all')]]" :searchable="false" placeholder="{{ __('messages.admin.status') }}" class="w-36" />
+                <x-admin.select wire:model.live="rating" :options="[['value' => '1', 'label' => '1'], ['value' => '2', 'label' => '2'], ['value' => '3', 'label' => '3'], ['value' => '4', 'label' => '4'], ['value' => '5', 'label' => '5']]" :searchable="false" placeholder="{{ __('messages.admin.rating') }}" class="w-28" />
+                <x-admin.select wire:model.live="typeFilter" :options="[['value' => 'customer', 'label' => __('messages.admin.customer')], ['value' => 'expert', 'label' => __('messages.admin.expert')]]" :searchable="false" placeholder="{{ __('messages.admin.type') }}" class="w-32" />
             </x-admin.filter-bar>
             
         </div>

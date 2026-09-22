@@ -108,7 +108,7 @@ class ProductForm extends Component
         $this->authorizePermission($this->productId ? 'products.update' : 'products.create');
         $this->validate();
         return DB::transaction(function () {
-            $p = $this->productId ? Product::findOrFail($this->productId) : new Product();
+            $p = $this->productId ? Product::with('translations')->findOrFail($this->productId) : new Product();
             $p->fill([
                 'type' => $this->form['type'],
                 'sku' => $this->form['sku'],

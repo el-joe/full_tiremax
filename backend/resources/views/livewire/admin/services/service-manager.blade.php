@@ -3,7 +3,7 @@
         <h2 class="text-xl font-bold">{{ __('messages.admin.services') }}</h2>
         <div class="flex gap-2 flex-wrap items-center">
             <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => 'Active'], ['value' => '0', 'label' => 'Inactive']]" :searchable="false" placeholder="All" class="w-36" />
+                <x-admin.select wire:model.live="activeFilter" :options="[['value' => '1', 'label' => __('messages.admin.active')], ['value' => '0', 'label' => __('messages.admin.inactive')]]" :searchable="false" placeholder="{{ __('messages.admin.all') }}" class="w-36" />
             </x-admin.filter-bar>
             @can('services.create')
 <button
@@ -17,9 +17,9 @@
             <thead class="bg-stone-800/60">
                 <tr>
                     <th class="px-4 py-3 text-start">#</th>
-                    <th class="px-4 py-3 text-start">Image</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.image') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.name') }}</th>
-                    <th class="px-4 py-3 text-start">Duration</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.duration') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.price') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
@@ -42,7 +42,7 @@
                             @endif
                         </td>
                         <td class="px-4 py-3 font-bold">{{ $s->name }}</td>
-                        <td class="px-4 py-3">{{ $s->duration_minutes }} min</td>
+                        <td class="px-4 py-3">{{ $s->duration_minutes }} {{ __('messages.admin.min_unit') }}</td>
                         <td class="px-4 py-3">{{ number_format($s->price) }} IQD</td>
                         <td class="px-4 py-3 text-end">
                             @can('services.update')
@@ -71,24 +71,24 @@
                 <h3 class="text-lg font-bold">{{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
-                    <div><label class="text-xs text-stone-400">Name (AR)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.name_ar') }}</label><input
                             wire:model="form.translations.ar.name"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Name (EN)</label><input
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.name_en') }}</label><input
                             wire:model="form.translations.en.name"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Description (AR)</label><textarea
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.description_ar') }}</label><textarea
                             wire:model="form.translations.ar.description"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"
                             rows="2"></textarea></div>
-                    <div><label class="text-xs text-stone-400">Description (EN)</label><textarea
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.description_en') }}</label><textarea
                             wire:model="form.translations.en.description"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"
                             rows="2"></textarea></div>
 
                     {{-- Image upload --}}
                     <div class="sm:col-span-2">
-                        <label class="text-xs text-stone-400">Image</label>
+                        <label class="text-xs text-stone-400">{{ __('messages.admin.image') }}</label>
                         <div class="mt-1 flex items-start gap-4">
                             {{-- Preview --}}
                             @if ($imageFile)
@@ -115,19 +115,19 @@
                             <div class="flex-1">
                                 <input type="file" wire:model="imageFile" accept="image/*"
                                     class="w-full text-xs text-stone-400 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-stone-700 file:text-stone-200 file:text-xs hover:file:bg-stone-600 cursor-pointer">
-                                <p class="text-xs text-stone-500 mt-1">JPEG, PNG, WebP — max 2 MB</p>
+                                <p class="text-xs text-stone-500 mt-1">{{ __('messages.admin.image_helper') }}</p>
                                 @error('imageFile') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
 
-                    <div><label class="text-xs text-stone-400">Duration (minutes)</label><input type="number"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.duration_minutes') }}</label><input type="number"
                             wire:model="form.duration_minutes"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
-                    <div><label class="text-xs text-stone-400">Price</label><input type="number" wire:model="form.price"
+                    <div><label class="text-xs text-stone-400">{{ __('messages.admin.price') }}</label><input type="number" wire:model="form.price"
                             class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm"></div>
                     <label class="flex items-center gap-2 mt-6"><input type="checkbox" wire:model="form.is_active"
-                            class="rounded bg-stone-800 text-yellow-500"> Active</label>
+                            class="rounded bg-stone-800 text-yellow-500"> {{ __('messages.admin.active') }}</label>
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
                     <button wire:click="$set('showForm', false)"

@@ -57,7 +57,7 @@ class GovernorateManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('governorates.update');
-        $g = Governorate::findOrFail($id);
+        $g = Governorate::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'code' => $g->code,
@@ -77,7 +77,7 @@ class GovernorateManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'governorates.update' : 'governorates.create');
         $this->validate();
-        $g = $this->editingId ? Governorate::findOrFail($this->editingId) : new Governorate();
+        $g = $this->editingId ? Governorate::with('translations')->findOrFail($this->editingId) : new Governorate();
         $g->fill([
             'code' => $this->form['code'] ?: Str::slug($this->form['translations']['en']['name']),
             'is_basra' => (bool) $this->form['is_basra'],

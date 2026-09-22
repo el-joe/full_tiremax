@@ -36,7 +36,7 @@ class VehicleController extends Controller
 
     public function index(Request $request)
     {
-        $q = Vehicle::query()->with(['model.make', 'model.translations', 'translations']);
+        $q = Vehicle::query()->with(['model.make', 'model.translations', 'model.make.translations', 'translations']);
         if ($request->filled('make_id')) {
             $q->whereHas('model', fn($qb) => $qb->where('vehicle_make_id', $request->make_id));
         }
@@ -54,7 +54,7 @@ class VehicleController extends Controller
 
     public function show(Vehicle $vehicle)
     {
-        $vehicle->load(['model.make', 'model.translations', 'translations']);
+        $vehicle->load(['model.make', 'model.translations', 'model.make.translations', 'translations']);
         return ApiResponse::success(new VehicleResource($vehicle));
     }
 }

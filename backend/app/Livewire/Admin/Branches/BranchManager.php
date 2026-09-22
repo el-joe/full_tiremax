@@ -60,7 +60,7 @@ class BranchManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('branches.update');
-        $b = Branch::findOrFail($id);
+        $b = Branch::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->form = [
             'code' => $b->code,
@@ -84,7 +84,7 @@ class BranchManager extends Component
     {
         $this->authorizePermission($this->editingId ? 'branches.update' : 'branches.create');
         $this->validate();
-        $b = $this->editingId ? Branch::findOrFail($this->editingId) : new Branch();
+        $b = $this->editingId ? Branch::with('translations')->findOrFail($this->editingId) : new Branch();
         $b->fill([
             'code' => $this->form['code'],
             'phone' => $this->form['phone'],

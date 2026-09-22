@@ -63,7 +63,7 @@ class ServiceManager extends Component
     public function edit(int $id): void
     {
         $this->authorizePermission('services.update');
-        $s = Service::findOrFail($id);
+        $s = Service::with('translations')->findOrFail($id);
         $this->editingId = $id;
         $this->existingImage = $s->image;
         $this->imageFile = null;
@@ -87,7 +87,7 @@ class ServiceManager extends Component
         $this->authorizePermission($this->editingId ? 'services.update' : 'services.create');
         $this->validate();
 
-        $s = $this->editingId ? Service::findOrFail($this->editingId) : new Service();
+        $s = $this->editingId ? Service::with('translations')->findOrFail($this->editingId) : new Service();
 
         $imagePath = $s->image ?? null;
         if ($this->imageFile) {

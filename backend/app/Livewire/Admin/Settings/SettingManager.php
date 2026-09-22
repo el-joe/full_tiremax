@@ -47,7 +47,7 @@ class SettingManager extends Component
     public function save(int $id): void
     {
         $this->authorizePermission('settings.update');
-        $setting = Setting::findOrFail($id);
+        $setting = Setting::with('translations')->findOrFail($id);
         $data = $this->form[$id];
 
         if ($setting->cast === 'image') {
