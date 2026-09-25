@@ -17,6 +17,8 @@ class Brand extends Model implements TranslatableContract
 
     protected $casts = ['is_active' => 'boolean'];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['name', 'description'];
 
     public function products(): HasMany

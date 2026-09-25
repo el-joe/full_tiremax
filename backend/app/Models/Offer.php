@@ -32,6 +32,8 @@ class Offer extends Model implements TranslatableContract
         'min_subtotal' => 'decimal:2',
     ];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['title', 'description'];
 
     public function products(): BelongsToMany

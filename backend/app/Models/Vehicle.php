@@ -26,6 +26,8 @@ class Vehicle extends Model implements TranslatableContract
 
     protected $casts = ['is_active' => 'boolean'];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['trim_name', 'notes'];
 
     public function model(): BelongsTo

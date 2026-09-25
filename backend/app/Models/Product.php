@@ -58,6 +58,8 @@ class Product extends Model implements TranslatableContract
         'is_featured' => 'boolean',
     ];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = [
         'name',
         'short_description',

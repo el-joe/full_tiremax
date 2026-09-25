@@ -35,6 +35,8 @@ class Branch extends Model implements TranslatableContract
         'longitude' => 'decimal:7',
     ];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['name', 'address', 'description'];
 
     public function schedules(): HasMany

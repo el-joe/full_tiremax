@@ -28,6 +28,8 @@ class Fitment extends Model implements TranslatableContract
         'is_oem' => 'boolean',
     ];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['notes'];
 
     public function vehicle(): BelongsTo

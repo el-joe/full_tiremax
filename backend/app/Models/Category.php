@@ -14,5 +14,7 @@ class Category extends Model implements TranslatableContract
     protected $fillable = ['daftra_id', 'slug', 'product_type', 'icon', 'is_active', 'sort_order'];
     protected $casts = ['is_active' => 'boolean'];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['name', 'description'];
 }

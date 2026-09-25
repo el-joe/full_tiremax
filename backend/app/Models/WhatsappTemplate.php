@@ -17,5 +17,7 @@ class WhatsappTemplate extends Model implements TranslatableContract
         'variables' => 'array',
     ];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['subject', 'body'];
 }

@@ -19,5 +19,7 @@ class Governorate extends Model implements TranslatableContract
         'shipping_fee' => 'decimal:2',
     ];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['name'];
 }

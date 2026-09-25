@@ -13,6 +13,8 @@ class Setting extends Model implements TranslatableContract
     protected $fillable = ['group', 'key', 'value', 'cast', 'is_translatable'];
     protected $casts = ['is_translatable' => 'boolean'];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['value'];
 
     protected static function booted(): void

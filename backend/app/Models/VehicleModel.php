@@ -18,6 +18,8 @@ class VehicleModel extends Model implements TranslatableContract
     protected $fillable = ['vehicle_make_id', 'slug', 'is_active', 'sort_order'];
     protected $casts = ['is_active' => 'boolean'];
 
+    protected $with = ['translations'];
+
     public array $translatedAttributes = ['name'];
 
     public function make(): BelongsTo
