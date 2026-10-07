@@ -68,16 +68,21 @@ const HeroSection = async () => {
           )}
         </Text>
         <HStack gap={{ base: "8px", md: "12px", xl: "16px" }}>
-          <Button
-            variant={"outline"}
-            fontSize={{ base: "14px", xl: "18px" }}
-            py={{ base: "15px", xl: "20pxx" }}
-            px={{ base: "6px", md: "15px", xl: "" }}
-            h={"auto"}
+          <Link
+            href={"https://www.facebook.com/share/r/1JqGzYrFZD/"}
+            target={"_blank"}
           >
-            {t("watchVideo")}
-            <PlayCircleIcon />
-          </Button>
+            <Button
+              variant={"outline"}
+              fontSize={{ base: "14px", xl: "18px" }}
+              py={{ base: "15px", xl: "20pxx" }}
+              px={{ base: "6px", md: "15px", xl: "" }}
+              h={"auto"}
+            >
+              {t("watchVideo")}
+              <PlayCircleIcon />
+            </Button>
+          </Link>
           <Link href={"/store"}>
             <Button
               fontSize={{ base: "14px", xl: "18px" }}

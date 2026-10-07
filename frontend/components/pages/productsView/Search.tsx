@@ -70,7 +70,7 @@ const Search = () => {
             query: v.value[0],
           });
         }}
-        placeholder="select option"
+        placeholder={t("filterBy")}
         name=""
         containerProps={{ w: { base: "110px", md: "190px" } }}
         triggerProps={{

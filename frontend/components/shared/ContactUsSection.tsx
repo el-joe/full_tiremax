@@ -8,9 +8,11 @@ import { getTranslations } from "next-intl/server";
 import React from "react";
 import ContactUsForm from "./ContactUsForm";
 import Container from "../ui/Container";
+import { getPublicSettings } from "@/helpers/getPublicSettings";
 
 const ContactUsSection = async () => {
   const t = await getTranslations("home");
+  const settings = await getPublicSettings();
   return (
     <Container id="contact-area">
       <VStack
@@ -47,24 +49,26 @@ const ContactUsSection = async () => {
           <ContactCardInfo
             Icon={PhoneSignalIcon}
             heading={t("customerServiceNumber")}
-            contactInfo={"6622"}
+            contactInfo={settings?.site_phone ?? "????"}
             contactInfoFontSize="36px"
+            contactAtt={{ dir: "ltr" }}
           />
           <ContactCardInfo
             Icon={EmailFastIcon}
             heading={t("email")}
-            contactInfo={"support@tiremax.iq"}
+            contactInfo={settings?.site_email ?? "????"}
+            contactAtt={{ dir: "ltr" }}
           />
           <ContactCardInfo
             Icon={LocationPinIcon}
             heading={t("headOffice")}
-            contactInfo={t("headOfficeAddress")}
+            contactInfo={settings?.address ?? "????"}
           />
-          <ContactCardInfo
+          {/* <ContactCardInfo
             Icon={LocationPinIcon}
             heading={t("branch2")}
-            contactInfo={t("branch2Address")}
-          />
+            contactInfo={settings?.branch2_address ?? "????"}
+          /> */}
         </VStack>
         <ContactUsForm />
       </HStack>
@@ -79,11 +83,13 @@ const ContactCardInfo = ({
   heading,
   contactInfo,
   contactInfoFontSize,
+  contactAtt,
 }: {
   Icon: React.ElementType;
   heading: string;
   contactInfo: string;
   contactInfoFontSize?: string;
+  contactAtt?: React.HTMLAttributes<HTMLDivElement>;
 }) => (
   <HStack
     gap={{ base: "8px", md: "12px", lg: "16px" }}
@@ -112,6 +118,7 @@ const ContactCardInfo = ({
           lg: contactInfoFontSize || "20px",
         }}
         fontWeight={"bold"}
+        {...contactAtt}
       >
         {contactInfo}
       </Text>

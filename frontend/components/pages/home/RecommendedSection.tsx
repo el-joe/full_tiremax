@@ -28,7 +28,7 @@ const RecommendedSection = async ({ data }: props) => {
         >
           {t("recommendedTiresForYou")}
         </Heading>
-        <Link href={"/store"}>
+        <Link href={"/store?filter_products_type=tire"}>
           <HStack>
             {t("showAll")}
             <ChevronLeftIcon

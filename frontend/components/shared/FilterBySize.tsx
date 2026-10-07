@@ -1,6 +1,7 @@
 "use client";
 import { SearchIcon } from "@/components/Icons";
 import DropSelectList from "@/components/ui/DropSelectList";
+import { Link } from "@/i18n/navigation";
 import { useProductFilterContext } from "@/providers/ProductFilterProvider";
 import { ITyreSize } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
@@ -11,9 +12,9 @@ import { useTranslations } from "next-intl";
 
 const FoundBySize = ({ showButton }: { showButton?: boolean }) => {
   const t = useTranslations("home");
-  const { applyFilter } = useProductFilterContext();
+  const { applyFilter, getFiltersString } = useProductFilterContext();
 
-  // make
+  // sizes
   const { data: sizesData, isLoading: sizesIsLoading } = useQuery({
     queryKey: ["tyreSizes"],
     queryFn: async () => {
@@ -59,15 +60,19 @@ const FoundBySize = ({ showButton }: { showButton?: boolean }) => {
         name="rim_diameter"
       />
       {showButton && (
-        <Button
-          rounded={"12px"}
-          type="submit"
-          fontSize={{ base: "12px" }}
-          w={{ base: "full", md: "auto" }}
-          onClick={() => applyFilter()}
-        >
-          {t("findYourTireNow")} <SearchIcon />
-        </Button>
+        <Link href={`/store?${getFiltersString()}`} passHref>
+          <Button
+            rounded={"12px"}
+            type="submit"
+            minW="200px"
+            flex={1}
+            fontSize={{ base: "12px" }}
+            w={{ base: "full", md: "auto" }}
+            onClick={() => applyFilter()}
+          >
+            {t("findYourTireNow")} <SearchIcon />
+          </Button>
+        </Link>
       )}
     </HStack>
   );

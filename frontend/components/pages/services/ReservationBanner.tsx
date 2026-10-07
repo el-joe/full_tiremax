@@ -1,3 +1,4 @@
+import { Link } from "@/i18n/navigation";
 import { Box, Button, Heading, Image, Text, VStack } from "@chakra-ui/react";
 import { getTranslations } from "next-intl/server";
 import React from "react";
@@ -44,15 +45,17 @@ export default async function ReservationBanner() {
       >
         {t("ctaDescription")}
       </Text>
-      <Button
-        h={"72px"}
-        w={"290px"}
-        boxShadow={"0 25px 50px -12px #FFB80066"}
-        fontSize={"18px"}
-        fontWeight={"black"}
-      >
-        {t("bookYourAppointmentNow")}
-      </Button>
+      <Link href={"/services/reservation"}>
+        <Button
+          h={"72px"}
+          w={"290px"}
+          boxShadow={"0 25px 50px -12px #FFB80066"}
+          fontSize={"18px"}
+          fontWeight={"black"}
+        >
+          {t("bookYourAppointmentNow")}
+        </Button>
+      </Link>
     </VStack>
   );
 }

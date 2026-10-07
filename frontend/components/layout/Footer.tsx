@@ -33,17 +33,32 @@ const Footer = async ({ settings }: { settings?: PublicSettings | null }) => {
           </Text>
           <HStack px="24px" gap="24px" py={"10px"}>
             {(settings?.whatsapp_url ?? true) && (
-              <a href={settings?.whatsapp_url ?? "#"} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <a
+                href={settings?.whatsapp_url ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+              >
                 <WhatsappLogoIcon size={"xl"} />
               </a>
             )}
-            {(!settings || settings.social?.facebook) && (
-              <a href={settings?.social?.facebook ?? "#"} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            {!!settings && !!settings.social?.facebook && (
+              <a
+                href={settings?.social?.facebook ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
                 <FacebookLogoIcon size={"xl"} />
               </a>
             )}
-            {(!settings || settings.social?.instagram) && (
-              <a href={settings?.social?.instagram ?? "#"} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            {!!settings && !!settings?.social?.instagram && (
+              <a
+                href={settings?.social?.instagram ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
                 <InstagramLogoIcon size={"xl"} />
               </a>
             )}
@@ -104,7 +119,9 @@ const Footer = async ({ settings }: { settings?: PublicSettings | null }) => {
           <Link href={`tel:${settings?.site_phone ?? "+964 770 000 0000"}`}>
             <HStack gap={"12px"} color={"#CBCBCB"} my={"16px"}>
               <PhoneSignalIcon color={"primary"} size={"sm"} />
-              <Text dir="ltr">{settings?.site_phone ?? "+964 770 000 0000"}</Text>
+              <Text dir="ltr">
+                {settings?.site_phone ?? "+964 770 000 0000"}
+              </Text>
             </HStack>
           </Link>
           <HStack gap={"12px"} color={"#CBCBCB"}>

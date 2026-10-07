@@ -118,6 +118,7 @@
     },
     "store": {
         "store": "Product Catalog",
+        "filterBy": "Filter by",
         "offers": "Offers",
         "productCatalogDescription": "Easily find the right tires and batteries for your vehicle.",
         "filters": "Filters",

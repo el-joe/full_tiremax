@@ -59,7 +59,7 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   const dir = await getDir();
-  const settings = await getPublicSettings(locale);
+  const settings = await getPublicSettings();
   return (
     <html
       lang={locale}

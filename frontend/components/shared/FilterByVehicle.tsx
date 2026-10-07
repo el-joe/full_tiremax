@@ -146,6 +146,17 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
    * Load years when model changes
    */
   useEffect(() => {
+    if (!selectedModelId) return;
+    const currentModelId = yearData?.[0]?.vehicle_model_id?.toString();
+    if (currentModelId && selectedModelId !== currentModelId) {
+      setFilter({
+        filterBy: "year",
+        query: "",
+        targetEndpoint: "v",
+      });
+      reset();
+    }
+
     if (selectedModelId) {
       yearMutate(selectedModelId);
     }
@@ -156,6 +167,11 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
    */
   useEffect(() => {
     if (!selectedMakeId || !selectedModelId || !selectedYear) {
+      setFilter({
+        filterBy: "vehicle_id",
+        query: "",
+        targetEndpoint: "products",
+      });
       reset();
       return;
     }

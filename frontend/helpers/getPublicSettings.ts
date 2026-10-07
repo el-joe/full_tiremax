@@ -1,3 +1,5 @@
+import axiosInstance from "@/utils/axiosInstance";
+
 export type PublicSettings = {
   site_name: string | null;
   site_tagline: string | null;
@@ -12,21 +14,31 @@ export type PublicSettings = {
   social: Record<string, string | null>;
 };
 
-export async function getPublicSettings(
-  locale: string,
-): Promise<PublicSettings | null> {
+export async function getPublicSettings(): Promise<PublicSettings | null> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/public`,
-      {
-        headers: { "x-locale": locale, Accept: "application/json" },
-        next: { revalidate: 60 },
-      },
+    const res = await axiosInstance<{ data: PublicSettings }>(
+      "settings/public",
     );
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data ?? null;
+    return res?.data.data ?? null;
   } catch {
     return null;
   }
 }
+// export async function getPublicSettings(
+//   locale: string,
+// ): Promise<PublicSettings | null> {
+//   try {
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/public`,
+//       {
+//         headers: { "x-locale": locale, Accept: "application/json" },
+//         next: { revalidate: 60 },
+//       },
+//     );
+//     if (!res.ok) return null;
+//     const json = await res.json();
+//     return json.data ?? null;
+//   } catch {
+//     return null;
+//   }
+// }

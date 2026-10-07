@@ -16,9 +16,15 @@ import Textarea from "../ui/Textarea";
 import { Link } from "@/i18n/navigation";
 import { useForm } from "react-hook-form";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import { getPublicSettings } from "@/helpers/getPublicSettings";
 
 const ContactUsForm = () => {
   const t = useTranslations("home");
+  const { data, isLoading } = useQuery({
+    queryKey: ["settings"],
+    queryFn: getPublicSettings,
+  });
   const { handleSubmit } = useForm();
   const onSubmit = handleSubmit((data) => {
     console.log(data);
@@ -63,7 +69,7 @@ const ContactUsForm = () => {
             <Text fontSize={{ base: "10px", md: "16px" }}>
               {t("orContactImmediatelyVia")}
             </Text>
-            <Link href="/">
+            <Link href={data?.whatsapp_url ?? "#"} target="_blank">
               <Center
                 bg="#41C452"
                 rounded={"8px"}
