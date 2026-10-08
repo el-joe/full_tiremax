@@ -7,6 +7,7 @@ const PROTECTED_ROUTES = [
   "/profile",
   "/favorites",
   "/notifications",
+  "/checkout",
 ];
 
 function isAuthenticated(request: NextRequest): boolean {

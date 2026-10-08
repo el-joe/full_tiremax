@@ -37,7 +37,8 @@ const ProductCard = ({ product }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
   const { isFavorite, toggleFavorite, isToggling } = useFavContext();
-  const { addOrUpdateItem, isAdding } = useCartContext();
+  const { addOrUpdateItem, isAdding, existsInCart, targetedCartItem } =
+    useCartContext();
   const { protectedWithAuth } = useAuthContext();
   return (
     <Link
@@ -222,9 +223,10 @@ const ProductCard = ({ product }: Props) => {
             minW={"auto"}
             minH={"auto"}
             h={"auto"}
-            disabled={isAdding}
+            disabled={isAdding && targetedCartItem === product?.id}
             onClick={(e) => {
               e.preventDefault();
+              if (existsInCart(product?.id)) return;
               addOrUpdateItem(product, 1);
             }}
           >

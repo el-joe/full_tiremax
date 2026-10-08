@@ -439,6 +439,11 @@
         "logoutCancel": "Cancel",
         "linkedItems": "{orders} previous orders and {bookings} bookings were linked to your account"
     },
+    "cart": {
+        "cart": "Cart",
+        "emptyCart": "Your cart is empty",
+        "goToShopping": "Go to shopping"
+    },
     "profile": {
         "profile": "Profile",
         "orders": "My Orders",

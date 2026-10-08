@@ -59,7 +59,3 @@ export default async function ReservationBanner() {
     </VStack>
   );
 }
-
-// "": "Ready to Keep Your Vehicle in Top Condition?",
-// "": "Don't wait for a breakdown. Book your service appointment today and enjoy peace of mind and safer driving on the road.",
-//  "": "Book Your Appointment Now"

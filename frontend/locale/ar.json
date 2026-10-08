@@ -439,6 +439,11 @@
         "logoutCancel": "إلغاء",
         "linkedItems": "تم ربط {orders} طلبات سابقة و{bookings} حجوزات بحسابك"
     },
+    "cart": {
+        "cart": "السلة",
+        "emptyCart": "السلة فارغة",
+        "goToShopping": "الذهاب للتسوق"
+    },
     "profile": {
         "profile": "الملف الشخصي",
         "orders": "طلباتي",

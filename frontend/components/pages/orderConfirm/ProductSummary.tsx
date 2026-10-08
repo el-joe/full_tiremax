@@ -55,7 +55,7 @@ export default async function ProductSummary({ data }: Props) {
         {t("productSummary")}
       </Text>
       {data.items.map((item) => (
-        <Link key={item.id} href={`store/${item.product_id}`}>
+        <Link key={item.id} href={`/store/${item.product_id}`}>
           <HStack gap="16px" align={"stretch"} justify={"stretch"}>
             <Image
               src={"/images/product-image.jpg"}

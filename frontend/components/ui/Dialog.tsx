@@ -13,6 +13,7 @@ type Props = DialogRootProviderProps & {
   trigger?: ReactNode;
   dialogTitle?: string;
   closeIconButton?: boolean;
+  contentProps?: React.ComponentProps<typeof ChakraDialog.Content>;
 };
 
 export default function Dialog({
@@ -20,6 +21,7 @@ export default function Dialog({
   children,
   dialogTitle,
   closeIconButton,
+  contentProps,
   ...rest
 }: Props) {
   const dir = useDir();
@@ -33,7 +35,12 @@ export default function Dialog({
       <Portal>
         <ChakraDialog.Backdrop />
         <ChakraDialog.Positioner>
-          <ChakraDialog.Content w={"unset"} maxW={"unset"} minW={"320px"}>
+          <ChakraDialog.Content
+            w={"unset"}
+            maxW={"unset"}
+            minW={"320px"}
+            {...contentProps}
+          >
             {dialogTitle ||
               (closeIconButton && (
                 <ChakraDialog.Header>

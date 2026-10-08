@@ -174,7 +174,7 @@ const BranchCard = ({ data }: { data: IBranch }) => {
               goToNextStep();
             }}
           >
-            {t("chooseThisService")}{" "}
+            {t("chooseThisBranch")}{" "}
             <Icon size={"sm"}>
               {locale === "ar" ? <FaChevronLeft /> : <FaChevronRight />}
             </Icon>

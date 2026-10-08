@@ -11,6 +11,7 @@ interface IAppliedOffer {
 
 interface ICartContext {
   cart: ICustomerCart;
+  existsInCart: (productId: number) => boolean;
   addOrUpdateItem: (product: IProduct | ICartProduct, quantity: number) => void;
   removeItem: (productId: number) => void;
   clearCart: () => void;
@@ -19,6 +20,7 @@ interface ICartContext {
   appliedOffer: IAppliedOffer | null;
   applyOfferError: string | null;
   totalQuantity: number;
+  targetedCartItem: number | null;
   cartIsLoading: boolean;
   isAdding: boolean;
   isUpdating: boolean;
@@ -36,6 +38,7 @@ const initialState: ICartContext = {
     governorate_id: null,
     governorate: null,
   },
+  existsInCart: () => false,
   addOrUpdateItem() {},
   removeItem() {},
   clearCart() {},
@@ -44,6 +47,7 @@ const initialState: ICartContext = {
   appliedOffer: null,
   applyOfferError: null,
   totalQuantity: 0,
+  targetedCartItem: null,
   cartIsLoading: true,
   isAdding: false,
   isUpdating: false,
@@ -57,6 +61,7 @@ const cartContext = createContext<ICartContext>(initialState);
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const {
     cart,
+    existsInCart,
     totalQuantity,
     addOrUpdateItem,
     removeItem,
@@ -66,6 +71,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     appliedOffer,
     applyOfferError,
     cartIsLoading,
+    targetedCartItem,
     isAdding,
     isUpdating,
     isRemoving,
@@ -76,6 +82,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     <cartContext.Provider
       value={{
         cart,
+        existsInCart,
         addOrUpdateItem,
         removeItem,
         clearCart,
@@ -85,6 +92,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         applyOfferError,
         totalQuantity,
         cartIsLoading,
+        targetedCartItem,
         isAdding,
         isUpdating,
         isRemoving,

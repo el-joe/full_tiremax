@@ -17,11 +17,13 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 const ItemsList = () => {
   const { cart, cartIsLoading = true, totalQuantity } = useCartContext();
+  const t = useTranslations("cart");
   if (cartIsLoading) {
     return (
       <Center h="full">
@@ -34,10 +36,10 @@ const ItemsList = () => {
     return (
       <VStack gap={"24px"}>
         <Heading fontSize={"24px"} fontWeight={"extrabold"}>
-          your cart is empty
+          {t("emptyCart")}
         </Heading>
         <Link href={"store"}>
-          <Button>Go to shopping</Button>
+          <Button>{t("goToShopping")}</Button>
         </Link>
       </VStack>
     );

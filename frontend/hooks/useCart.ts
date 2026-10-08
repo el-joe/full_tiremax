@@ -54,7 +54,11 @@ export const useCart = () => {
     toast.error("Something went wrong.");
   };
 
-  const { mutate: addToCart, isPending: isAdding } = useMutation({
+  const {
+    mutate: addToCart,
+    isPending: isAdding,
+    variables: addToCartVariables,
+  } = useMutation({
     mutationFn: async (body: { product_id: number; quantity: number }) => {
       const { data } = await axiosInstance.post<{ data: ICustomerCart }>(
         "cart/items",
@@ -62,14 +66,21 @@ export const useCart = () => {
       );
       return data.data;
     },
-    onSuccess: (res) => {
+    onSuccess: (res, { product_id }) => {
       setCart(res);
       setAppliedOffer(null);
+      toast.success(
+        `"${res.items.find((item) => item.product_id === product_id)?.product.name}". ${t("addedToTheCart")}`,
+      );
     },
     onError,
   });
 
-  const { mutate: updateCart, isPending: isUpdating } = useMutation({
+  const {
+    mutate: updateCart,
+    isPending: isUpdating,
+    variables: updateCartVariables,
+  } = useMutation({
     mutationFn: async (body: { itemId: number; quantity: number }) => {
       const { data } = await axiosInstance.put<{ data: ICustomerCart }>(
         `cart/items/${body.itemId}`,
@@ -84,7 +95,11 @@ export const useCart = () => {
     onError,
   });
 
-  const { mutate: removeItem, isPending: isRemoving } = useMutation({
+  const {
+    mutate: removeItem,
+    isPending: isRemoving,
+    variables: removeItemVariables,
+  } = useMutation({
     mutationFn: async (product_id: number) => {
       const cartItem = cart?.items.find((i) => i.product_id === product_id);
       const { data } = await axiosInstance.delete<{
@@ -150,13 +165,15 @@ export const useCart = () => {
       } else {
         addToCart({ product_id: product.id, quantity });
       }
-      toast.success(`"${product.name}". ${t("addedToTheCart")}`);
+      // toast.success(`"${product.name}". ${t("addedToTheCart")}`);
     },
-    [addToCart, cart?.items, t, updateCart],
+    [addToCart, cart?.items, updateCart],
   );
 
   return {
     cart,
+    existsInCart: (productId: number) =>
+      cart?.items.some((item) => item.product_id === productId),
     refetchCart: getCart,
     totalQuantity: cart?.items_count,
     addOrUpdateItem,
@@ -166,6 +183,11 @@ export const useCart = () => {
     appliedOffer,
     applyOfferError,
     cartIsLoading,
+    targetedCartItem:
+      (isUpdating && updateCartVariables?.itemId) ||
+      (isAdding && addToCartVariables?.product_id) ||
+      (isRemoving && removeItemVariables) ||
+      null,
     isAdding,
     isUpdating,
     isRemoving,

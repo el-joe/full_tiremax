@@ -21,6 +21,7 @@ export default function AuthDialog() {
       value={authDialog}
       closeIconButton
       onExitComplete={() => setAuthDialogPram(null)}
+      contentProps={{ maxW: "lg" }}
     >
       <Tabs.Root defaultValue={hasPhone ? "register" : "login"}>
         <Tabs.List dir={dir}>
