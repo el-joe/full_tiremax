@@ -50,8 +50,12 @@ export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
   const router = useRouter();
   const locale = useLocale();
-  const { customer, isLogged, register: registerUser, authDialog } =
-    useAuthContext();
+  const {
+    customer,
+    isLogged,
+    register: registerUser,
+    authDialog,
+  } = useAuthContext();
   const { appliedOffer, refetchCart } = useCartContext();
   const dir = useDir();
   const [isRedirectingToPayment, setIsRedirectingToPayment] = useState(false);
@@ -149,19 +153,28 @@ export default function CheckoutForm() {
       const form = getValues();
       // optional: create an account with this order (server links the guest order via X-Guest-Token)
       if (!isLogged && form.create_account && form.password) {
-        registerUser({
-          name: form.customer_name,
-          phone: form.customer_phone,
-          email: form.customer_email || undefined,
-          password: form.password,
-          password_confirmation: form.password,
-          locale,
-        }, {
-          onError: (err: unknown) => {
-            const msg = (err as AxiosError<{ message?: string }>)?.response?.data?.message;
-            toast(msg ? `${t("accountNotCreated")} ${msg}` : t("accountNotCreated"), { icon: "ℹ️" });
+        registerUser(
+          {
+            name: form.customer_name,
+            phone: form.customer_phone,
+            email: form.customer_email || undefined,
+            password: form.password,
+            password_confirmation: form.password,
+            locale,
           },
-        });
+          {
+            onError: (err: unknown) => {
+              const msg = (err as AxiosError<{ message?: string }>)?.response
+                ?.data?.message;
+              toast(
+                msg
+                  ? `${t("accountNotCreated")} ${msg}`
+                  : t("accountNotCreated"),
+                { icon: "ℹ️" },
+              );
+            },
+          },
+        );
       }
 
       try {
@@ -294,7 +307,10 @@ export default function CheckoutForm() {
                     e.preventDefault();
                     authDialog.setOpen(true);
                   }}
-                  style={{ color: "var(--chakra-colors-primary)", fontWeight: 700 }}
+                  style={{
+                    color: "var(--chakra-colors-primary)",
+                    fontWeight: 700,
+                  }}
                 >
                   {t("logIn")}
                 </Link>
@@ -486,72 +502,72 @@ export default function CheckoutForm() {
           {/* shipping details */}
           {orderType !== "basra" && (
             <GroupContainer>
-            {watch("governorate_id") ? (
-              // if governorate selected
-              <VStack gap={"40px"} align={"stretch"}>
-                <Box>
-                  <Heading fontSize={"24px"} fontWeight={"extrabold"}>
-                    <Icon color={"primary"} size={"xl"} me={"8px"}>
-                      <MdOutlineLocalShipping />
-                    </Icon>
-                    {t("deliveryService")}
-                  </Heading>
-                  <Text mt={"8px"} fontSize={"14px"} color={"gray-2"}>
-                    {t("deliveryDescription")}
-                  </Text>
-                </Box>
-                <VStack gap={"16px"} align={"stretch"}>
-                  {/* estimated delivery */}
-                  <HStack
-                    justify={"space-between"}
-                    bg={"#F9FAFB"}
-                    p={"16px"}
-                    rounded={"12px"}
-                    border={"1px solid #D1D5DC"}
-                  >
-                    <Text color={"gray-2"}>{t("estimatedDeliveryTime")}</Text>
-                    <Text>(Unknown) {t("businessDays")}</Text>
-                  </HStack>
-                  {/* shipping fee */}
-                  <HStack
-                    justify={"space-between"}
-                    bg={"#F9FAFB"}
-                    p={"16px"}
-                    rounded={"12px"}
-                    border={"1px solid #D1D5DC"}
-                  >
-                    <Text color={"gray-2"}>{t("deliveryFee")}</Text>
-                    <Text fontWeight={"bold"} color={"primary"}>
-                      {(governorateData?.find(
-                        // eslint-disable-next-line react-hooks/incompatible-library
-                        (e) => e.id === +(watch("governorate_id") ?? 0),
-                      )?.shipping_fee ?? 0) < 1 ? (
-                        t("freeDelivery")
-                      ) : (
-                        <>
-                          {
-                            governorateData?.find(
-                              (e) => e.id === +(watch("governorate_id") ?? 0),
-                            )?.shipping_fee
-                          }
-                          <CurrencySymbol />
-                        </>
-                      )}
+              {watch("governorate_id") ? (
+                // if governorate selected
+                <VStack gap={"40px"} align={"stretch"}>
+                  <Box>
+                    <Heading fontSize={"24px"} fontWeight={"extrabold"}>
+                      <Icon color={"primary"} size={"xl"} me={"8px"}>
+                        <MdOutlineLocalShipping />
+                      </Icon>
+                      {t("deliveryService")}
+                    </Heading>
+                    <Text mt={"8px"} fontSize={"14px"} color={"gray-2"}>
+                      {t("deliveryDescription")}
                     </Text>
-                  </HStack>
+                  </Box>
+                  <VStack gap={"16px"} align={"stretch"}>
+                    {/* estimated delivery */}
+                    <HStack
+                      justify={"space-between"}
+                      bg={"#F9FAFB"}
+                      p={"16px"}
+                      rounded={"12px"}
+                      border={"1px solid #D1D5DC"}
+                    >
+                      <Text color={"gray-2"}>{t("estimatedDeliveryTime")}</Text>
+                      <Text>(Unknown) {t("businessDays")}</Text>
+                    </HStack>
+                    {/* shipping fee */}
+                    <HStack
+                      justify={"space-between"}
+                      bg={"#F9FAFB"}
+                      p={"16px"}
+                      rounded={"12px"}
+                      border={"1px solid #D1D5DC"}
+                    >
+                      <Text color={"gray-2"}>{t("deliveryFee")}</Text>
+                      <Text fontWeight={"bold"} color={"primary"}>
+                        {(governorateData?.find(
+                          // eslint-disable-next-line react-hooks/incompatible-library
+                          (e) => e.id === +(watch("governorate_id") ?? 0),
+                        )?.shipping_fee ?? 0) < 1 ? (
+                          t("freeDelivery")
+                        ) : (
+                          <>
+                            {
+                              governorateData?.find(
+                                (e) => e.id === +(watch("governorate_id") ?? 0),
+                              )?.shipping_fee
+                            }
+                            <CurrencySymbol />
+                          </>
+                        )}
+                      </Text>
+                    </HStack>
+                  </VStack>
                 </VStack>
-              </VStack>
-            ) : (
-              // if no selected governorate
-              <VStack>
-                <Icon color={"#4A5565"} size={"2xl"}>
-                  <LuMapPin />
-                </Icon>
-                <Text color={"#99A1AF"}>
-                  {t("selectYourAddressToShowTheAvailableServices")}
-                </Text>
-              </VStack>
-            )}
+              ) : (
+                // if no selected governorate
+                <VStack>
+                  <Icon color={"#4A5565"} size={"2xl"}>
+                    <LuMapPin />
+                  </Icon>
+                  <Text color={"#99A1AF"}>
+                    {t("selectYourAddressToShowTheAvailableServices")}
+                  </Text>
+                </VStack>
+              )}
             </GroupContainer>
           )}
           {/* payment methods */}

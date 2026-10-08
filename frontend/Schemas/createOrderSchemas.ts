@@ -8,10 +8,7 @@ export const createOrderSchema = z
     governorate_id: z.string("selectGovernorateIsRequired").optional(),
     shipping_address: z
       .string("theAddressIsRequired")
-      .min(12, "theAddressMustBeMoreThen12Character")
-      .max(255, "theAddressMustBeLessThen12Character")
-      .optional(),
-
+      .max(255, "theAddressMustBeLessThen12Character"),
     payment_method: z.string("selectPaymentMethodIsRequired"),
     customer_name: z
       .string("fullNameRequired")
@@ -35,7 +32,19 @@ export const createOrderSchema = z
     password: z.string().optional(),
     notes: z.string().max(500).optional(),
   })
+  .refine(
+    (data) =>
+      data.type === "basra" ||
+      (data.type === "delivery" && data?.shipping_address?.trim()?.length > 12),
+    {
+      path: ["shipping_address"],
+      message: "theAddressMustBeMoreThen12Character",
+    },
+  )
   .superRefine((data, ctx) => {
+    if (data.type === "basra") {
+      ctx.value.shipping_address = "";
+    }
     if (data.create_account && (data.password ?? "").length < 6) {
       ctx.addIssue({
         code: "custom",
