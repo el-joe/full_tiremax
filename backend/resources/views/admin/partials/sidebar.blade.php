@@ -17,6 +17,7 @@
         ['can' => 'offers.view', 'route' => 'admin.offers.index', 'label' => __('messages.admin.offers'), 'icon' => 'M7 7h.01M7 3h5l9 9-9 9-9-9V3z'],
         ['can' => 'flash_sales.view', 'route' => 'admin.flash-sales.index', 'label' => __('messages.admin.flash_sales'), 'icon' => 'M13 10V3L4 14h7v7l9-11h-7z'],
         ['can' => 'reviews.view', 'route' => 'admin.reviews.index', 'label' => __('messages.admin.reviews'), 'icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.914c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
+        ['can' => 'contact_messages.view', 'route' => 'admin.contact-messages.index', 'label' => __('messages.admin.contact_messages'), 'icon' => 'M3 8l9 6 9-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z', 'badge' => \App\Models\ContactMessage::where('status', 'new')->count()],
         ['can' => 'daftra_logs.view', 'route' => 'admin.daftra-logs.index', 'label' => __('messages.admin.daftra_logs'), 'icon' => 'M4 4v16h16M8 16l3-4 3 3 4-6'],
         ['can' => 'whatsapp.view', 'route' => 'admin.whatsapp-templates.index', 'label' => __('messages.admin.whatsapp'), 'icon' => 'M20 12a8 8 0 11-15.5-3M4 4l1.5 5L11 8'],
         ['can' => 'whatsapp.view', 'route' => 'admin.whatsapp-logs.index', 'label' => __('messages.admin.whatsapp_logs'), 'icon' => 'M20 12a8 8 0 11-15.5-3M4 4l1.5 5L11 8'],
@@ -50,7 +51,10 @@
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}" />
                 </svg>
-                <span>{{ $item['label'] }}</span>
+                <span class="flex-1">{{ $item['label'] }}</span>
+                @if (!empty($item['badge']))
+                    <span class="px-1.5 min-w-5 text-center rounded-full text-[10px] font-bold bg-red-500 text-white">{{ $item['badge'] }}</span>
+                @endif
             </a>
         @endforeach
     </nav>

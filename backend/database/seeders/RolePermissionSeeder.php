@@ -39,6 +39,7 @@ class RolePermissionSeeder extends Seeder
             'bookings.view', 'bookings.update', 'bookings.change_status',
             'customers.view', 'customers.update',
             'reviews.view', 'reviews.moderate',
+            'contact_messages.view', 'contact_messages.manage', 'contact_messages.delete',
         ]);
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();

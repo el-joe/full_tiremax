@@ -29,6 +29,7 @@ class AdminPermissions
             'offers' => $crud,
             'flash_sales' => $crud,
             'reviews' => [...$crud, 'moderate'],
+            'contact_messages' => ['view', 'manage', 'delete'],
             'daftra_logs' => ['view'],
             'whatsapp' => $crud,
             'payment_gateways' => $crud,

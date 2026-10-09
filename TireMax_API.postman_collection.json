@@ -1474,6 +1474,77 @@
       ]
     },
     {
+      "name": "Contact",
+      "description": "Public contact form. No authentication required (an optional Bearer token links the message to the customer). Throttled to 5 requests per minute.",
+      "item": [
+        {
+          "name": "Send Contact Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/contact-messages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contact-messages"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"name\": \"Ahmed Ali\",\n  \"phone\": \"+9647701234567\",\n  \"subject\": \"Question about tyre sizes\",\n  \"message\": \"Hello, do you have 225/45R17 in stock?\"\n}"
+            },
+            "description": "Submit a message from the contact form.\n\n**Auth:** none (optional Bearer token attaches the customer).\n\n**Body params:**\n- `name` *(required, string, max:120)*\n- `phone` *(required, string, max:30)*\n- `subject` *(required, string, max:190)*\n- `message` *(required, string, max:5000)*"
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Your message has been sent. We will contact you soon.\"\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "422 Validation Error",
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"message\": \"The given data was invalid.\",\n  \"errors\": { \"name\": [\"The name field is required.\"] }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Cart",
       "description": "Shopping cart management. All endpoints require authentication.",
       "item": [

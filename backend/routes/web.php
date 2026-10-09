@@ -15,6 +15,7 @@ use App\Livewire\Admin\Orders\OrderManager;
 use App\Livewire\Admin\PaymentGateways\PaymentGatewayManager;
 use App\Livewire\Admin\Products\ProductForm;
 use App\Livewire\Admin\Products\ProductManager;
+use App\Livewire\Admin\ContactMessages\ContactMessageManager;
 use App\Livewire\Admin\Reviews\ReviewManager;
 use App\Livewire\Admin\Services\ServiceManager;
 use App\Livewire\Admin\Settings\SettingManager;
@@ -62,6 +63,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('offers', OfferManager::class)->name('offers.index')->middleware('can:offers.view');
         Route::get('flash-sales', FlashSaleManager::class)->name('flash-sales.index')->middleware('can:flash_sales.view');
         Route::get('reviews', ReviewManager::class)->name('reviews.index')->middleware('can:reviews.view');
+        Route::get('contact-messages', ContactMessageManager::class)->name('contact-messages.index')->middleware('can:contact_messages.view');
         Route::get('daftra-logs', DaftraLogManager::class)->name('daftra-logs.index')->middleware('can:daftra_logs.view');
 
         Route::get('payment-gateways', PaymentGatewayManager::class)->name('payment-gateways.index')->middleware('can:payment_gateways.view');

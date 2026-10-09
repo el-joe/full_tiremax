@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ContactMessageController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\VehicleController;
@@ -85,6 +86,9 @@ Route::prefix('v1')->group(function () {
         Route::get('orders/{orderRef}', [OrderController::class, 'show'])->middleware('throttle:60,1')->where('orderRef', '[A-Za-z0-9\-]+');
         Route::post('orders/{order}/cancel', [OrderController::class, 'cancel']);
         Route::get('orders/{order}/payment', [PaymentController::class, 'show']);
+
+        // Contact form
+        Route::post('contact-messages', [ContactMessageController::class, 'store'])->middleware('throttle:5,1');
 
         // Bookings
         Route::post('bookings', [BookingController::class, 'store'])->middleware('throttle:10,1');
