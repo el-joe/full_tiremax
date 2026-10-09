@@ -1,7 +1,7 @@
 import ProductCard from "@/components/shared/ProductCard";
 import Pagination from "@/components/ui/Pagination";
 import { IApiMetaRes, IProduct } from "@/types";
-import { Box, Center, HStack, Text } from "@chakra-ui/react";
+import { Box, Center, HStack, Image, Text } from "@chakra-ui/react";
 
 type Props = {
   data: IProduct[];
@@ -13,7 +13,12 @@ const ProductListView = ({ data, paginationInfo }: Props) => {
     <Box>
       {!data.length && (
         <Center>
-          <Text fontSize={"80px"}>Oops! No Data here</Text>
+          <Image
+            src="/images/no_products.webp"
+            alt="No Products Available"
+            maxW={"400px"}
+          />
+          {/* <Text fontSize={"80px"}>Oops! No Data here</Text> */}
         </Center>
       )}
       <HStack
