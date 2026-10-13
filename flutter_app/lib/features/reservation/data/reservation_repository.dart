@@ -13,9 +13,9 @@ class TimeSlot {
   const TimeSlot({required this.time, required this.available});
 
   factory TimeSlot.fromJson(Map<String, dynamic> json) => TimeSlot(
-        time: json['time'] as String,
-        available: json['available'] as bool? ?? false,
-      );
+    time: json['time'] as String,
+    available: json['available'] as bool? ?? false,
+  );
 
   final String time;
   final bool available;
@@ -34,14 +34,16 @@ class BookingResult {
   });
 
   factory BookingResult.fromJson(Map<String, dynamic> json) => BookingResult(
-        id: json['id'] as int,
-        status: json['status'] as String? ?? 'pending',
-        scheduledAt: DateTime.parse(json['scheduled_at'] as String),
-        branchName: (json['branch'] as Map<String, dynamic>?)?['name'] as String? ?? '',
-        serviceName: (json['service'] as Map<String, dynamic>?)?['name'] as String? ?? '',
-        reference: json['reference'] as String?,
-        customerNotes: json['customer_notes'] as String?,
-      );
+    id: json['id'] as int,
+    status: json['status'] as String? ?? 'pending',
+    scheduledAt: DateTime.parse(json['scheduled_at'] as String),
+    branchName:
+        (json['branch'] as Map<String, dynamic>?)?['name'] as String? ?? '',
+    serviceName:
+        (json['service'] as Map<String, dynamic>?)?['name'] as String? ?? '',
+    reference: json['reference'] as String?,
+    customerNotes: json['customer_notes'] as String?,
+  );
 
   final int id;
   final String status;
@@ -61,13 +63,17 @@ class ReservationRepository {
 
   Future<List<Service>> fetchServices() async {
     final response = await _dio.get('services');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => Service.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => Service.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<Branch>> fetchBranches() async {
     final response = await _dio.get('branches');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
     return data.map((e) => Branch.fromJson(e as Map<String, dynamic>)).toList();
   }
 
@@ -79,8 +85,11 @@ class ReservationRepository {
       'bookings/branch/$branchId/slots',
       queryParameters: {'date': date},
     );
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => TimeSlot.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => TimeSlot.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<BookingResult> createBooking({
@@ -114,11 +123,15 @@ class ReservationRepository {
     return BookingResult.fromJson(body['data'] as Map<String, dynamic>);
   }
 
-  Future<List<Reservation>> fetchBookings() async => (await fetchBookingsPage()).items;
+  Future<List<Reservation>> fetchBookings() async =>
+      (await fetchBookingsPage()).items;
 
   /// Web `bookings?page=` with `meta.pagination`.
   Future<PagedResult<Reservation>> fetchBookingsPage({int page = 1}) async {
-    final response = await _dio.get('bookings', queryParameters: {if (page > 1) 'page': page});
+    final response = await _dio.get(
+      'bookings',
+      queryParameters: {if (page > 1) 'page': page},
+    );
     final body = response.data as Map<String, dynamic>;
     final data = body['data'] as List<dynamic>;
     return PagedResult(
@@ -155,7 +168,8 @@ class ReservationRepository {
 }
 
 /// Mirrors `BookingService::cancel`'s disallowed source statuses.
-bool isBookingCancellable(String status) => status != 'completed' && status != 'cancelled';
+bool isBookingCancellable(String status) =>
+    status != 'completed' && status != 'cancelled';
 
 final reservationRepositoryProvider = Provider<ReservationRepository>((ref) {
   return ReservationRepository(ref.watch(apiClientProvider));
@@ -170,10 +184,14 @@ final reservationBranchesProvider = FutureProvider<List<Branch>>((ref) {
 });
 
 /// GET /bookings?page= — the customer's reservation history.
-final bookingsListProvider = FutureProvider.autoDispose.family<PagedResult<Reservation>, int>((ref, page) {
-  return ref.watch(reservationRepositoryProvider).fetchBookingsPage(page: page);
-});
+final bookingsListProvider = FutureProvider.autoDispose
+    .family<PagedResult<Reservation>, int>((ref, page) {
+      return ref
+          .watch(reservationRepositoryProvider)
+          .fetchBookingsPage(page: page);
+    });
 
-final bookingDetailProvider = FutureProvider.autoDispose.family<Reservation, int>((ref, id) {
-  return ref.watch(reservationRepositoryProvider).fetchBooking(id);
-});
+final bookingDetailProvider = FutureProvider.autoDispose
+    .family<Reservation, int>((ref, id) {
+      return ref.watch(reservationRepositoryProvider).fetchBooking(id);
+    });

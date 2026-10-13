@@ -21,10 +21,8 @@ abstract class ApplyOfferResult with _$ApplyOfferResult {
 /// Mirrors the inline `offer` object in `IApplyOfferResult`.
 @freezed
 abstract class AppliedOffer with _$AppliedOffer {
-  const factory AppliedOffer({
-    required String code,
-    required String title,
-  }) = _AppliedOffer;
+  const factory AppliedOffer({required String code, required String title}) =
+      _AppliedOffer;
 
   factory AppliedOffer.fromJson(Map<String, dynamic> json) =>
       _$AppliedOfferFromJson(json);

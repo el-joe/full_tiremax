@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 Map<String, dynamic> _load(String name) =>
-    jsonDecode(File('lib/l10n/$name').readAsStringSync()) as Map<String, dynamic>;
+    jsonDecode(File('lib/l10n/$name').readAsStringSync())
+        as Map<String, dynamic>;
 
 Set<String> _messageKeys(Map<String, dynamic> arb) =>
     arb.keys.where((k) => !k.startsWith('@')).toSet();

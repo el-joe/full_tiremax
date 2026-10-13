@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_client.dart';
-import '../../../core/network/api_exception.dart';
 import '../../profile/models/customer_profile.dart';
 import '../data/auth_repository.dart';
 
@@ -52,18 +51,14 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     }
   }
 
-  Future<AuthResult> login({required String login, required String password}) async {
-    final previous = state.value ?? const AuthState();
-    state = const AsyncLoading();
+  Future<AuthResult> login({
+    required String login,
+    required String password,
+  }) async {
     final repository = ref.read(authRepositoryProvider);
-    try {
-      final result = await repository.login(login: login, password: password);
-      state = AsyncData(AuthState(customer: result.customer));
-      return result;
-    } on ApiException {
-      state = AsyncData(previous);
-      rethrow;
-    }
+    final result = await repository.login(login: login, password: password);
+    state = AsyncData(AuthState(customer: result.customer));
+    return result;
   }
 
   Future<AuthResult> register({
@@ -75,25 +70,18 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     String? address,
     String? locale,
   }) async {
-    final previous = state.value ?? const AuthState();
-    state = const AsyncLoading();
     final repository = ref.read(authRepositoryProvider);
-    try {
-      final result = await repository.register(
-        name: name,
-        phone: phone,
-        email: email,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
-        address: address,
-        locale: locale,
-      );
-      state = AsyncData(AuthState(customer: result.customer));
-      return result;
-    } on ApiException {
-      state = AsyncData(previous);
-      rethrow;
-    }
+    final result = await repository.register(
+      name: name,
+      phone: phone,
+      email: email,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
+      address: address,
+      locale: locale,
+    );
+    state = AsyncData(AuthState(customer: result.customer));
+    return result;
   }
 
   Future<void> updateProfile({

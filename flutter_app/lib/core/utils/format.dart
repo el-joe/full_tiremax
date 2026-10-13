@@ -6,9 +6,10 @@ import '../../l10n/l10n.dart';
 /// Current UI language code. Kept in sync with the app locale by
 /// `TireMaxApp` so non-widget helpers (price/time formatting, status labels)
 /// follow the same language as `x-locale`.
-String appLanguageCode = 'en';
+String appLanguageCode = 'ar';
 
-AppLocalizations get currentL10n => lookupAppLocalizations(Locale(appLanguageCode));
+AppLocalizations get currentL10n =>
+    lookupAppLocalizations(Locale(appLanguageCode));
 
 final _grouped = NumberFormat('#,##0.##', 'en');
 
@@ -19,7 +20,8 @@ String formatNumber(num value) => _grouped.format(value);
 String formatIqd(num value) => '${formatNumber(value)} ${currentL10n.iqdLabel}';
 
 /// Date/time pattern formatted in the active UI language (web `Intl` / `toLocale*`).
-String formatDateLocalized(String pattern, DateTime date) => DateFormat(pattern, appLanguageCode).format(date);
+String formatDateLocalized(String pattern, DateTime date) =>
+    DateFormat(pattern, appLanguageCode).format(date);
 
 /// Localized label for a raw API order/booking status (falls back to the raw value).
 String statusLabel(String status) {
@@ -63,7 +65,8 @@ String normalizeIraqiPhone(String phone) {
 }
 
 /// Web `isValidIraqiPhone`.
-bool isValidIraqiPhone(String phone) => RegExp(r'^9647\d{9}$').hasMatch(normalizeIraqiPhone(phone));
+bool isValidIraqiPhone(String phone) =>
+    RegExp(r'^9647\d{9}$').hasMatch(normalizeIraqiPhone(phone));
 
 String _formatClock(String time) {
   final parts = time.split(':');
@@ -71,13 +74,21 @@ String _formatClock(String time) {
   final m = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
   final h12 = h % 12 == 0 ? 12 : h % 12;
   final l = currentL10n;
-  final digits = appLanguageCode == 'ar' ? NumberFormat('00', 'ar') : NumberFormat('00', 'en');
-  final hh = appLanguageCode == 'ar' ? NumberFormat('0', 'ar').format(h12) : '$h12';
+  final digits = appLanguageCode == 'ar'
+      ? NumberFormat('00', 'ar')
+      : NumberFormat('00', 'en');
+  final hh = appLanguageCode == 'ar'
+      ? NumberFormat('0', 'ar').format(h12)
+      : '$h12';
   return '$hh:${digits.format(m)} ${h >= 12 ? l.timePm : l.timeAm}';
 }
 
 /// Web `helpers/formatTimeRange`: `9:00 AM - 10:00 PM` (null when missing).
 String? formatTimeRange(String? opensAt, String? closesAt) {
-  if (opensAt == null || closesAt == null || opensAt.isEmpty || closesAt.isEmpty) return null;
+  if (opensAt == null ||
+      closesAt == null ||
+      opensAt.isEmpty ||
+      closesAt.isEmpty)
+    return null;
   return '${_formatClock(opensAt)} - ${_formatClock(closesAt)}';
 }

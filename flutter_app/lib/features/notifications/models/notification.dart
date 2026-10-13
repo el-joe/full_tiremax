@@ -18,7 +18,10 @@ abstract class AppNotification with _$AppNotification {
   const factory AppNotification({
     required String id,
     required String type,
-    @JsonKey(fromJson: _notificationDataFromJson, toJson: _notificationDataToJson)
+    @JsonKey(
+      fromJson: _notificationDataFromJson,
+      toJson: _notificationDataToJson,
+    )
     required NotificationData data,
     String? read_at,
     required DateTime created_at,

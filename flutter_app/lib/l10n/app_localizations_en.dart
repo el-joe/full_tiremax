@@ -1758,4 +1758,111 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trafficAccidents => 'Traffic Accidents';
+
+  @override
+  String get viewCart => 'View cart';
+
+  @override
+  String get addToFavoritesLabel => 'Add to favorites';
+
+  @override
+  String get removeFromFavoritesLabel => 'Remove from favorites';
+
+  @override
+  String get emptyStateDefaultTitle => 'Nothing here yet';
+
+  @override
+  String resultsCount(int count) {
+    return '$count results';
+  }
+
+  @override
+  String get sectionDescription => 'Description';
+
+  @override
+  String get sectionSpecs => 'Specifications';
+
+  @override
+  String get sectionWarranty => 'Warranty';
+
+  @override
+  String get noReviews => 'No reviews yet';
+
+  @override
+  String get productCopied => 'Product details copied';
+
+  @override
+  String get shareProduct => 'Share';
+
+  @override
+  String durationMinutes(int n) {
+    return '$n min';
+  }
+
+  @override
+  String get loadMoreFailed => 'Could not load more products';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get copyReference => 'Copy';
+
+  @override
+  String get referenceCopied => 'Reference copied';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get itemRemoved => 'Item removed';
+
+  @override
+  String get haveOfferCode => 'Have an offer code?';
+
+  @override
+  String itemsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String stepProgress(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get viewOrder => 'View order';
+
+  @override
+  String get profileSectionActivity => 'Activity';
+
+  @override
+  String get profileSectionAccount => 'Account';
+
+  @override
+  String get profileSectionSupport => 'Support & legal';
+
+  @override
+  String get notificationsToday => 'Today';
+
+  @override
+  String get notificationsEarlier => 'Earlier';
+
+  @override
+  String get filterUpcoming => 'Upcoming';
+
+  @override
+  String get orderProgress => 'Order progress';
+
+  @override
+  String get bookingProgress => 'Booking progress';
+
+  @override
+  String get orderStepPlaced => 'Placed';
 }

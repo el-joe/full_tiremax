@@ -15,17 +15,14 @@ abstract class Review with _$Review {
     required ReviewCustomer customer,
   }) = _Review;
 
-  factory Review.fromJson(Map<String, dynamic> json) =>
-      _$ReviewFromJson(json);
+  factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
 }
 
 /// Mirrors `Customer` nested in `review.type.ts`.
 @freezed
 abstract class ReviewCustomer with _$ReviewCustomer {
-  const factory ReviewCustomer({
-    required int id,
-    required String name,
-  }) = _ReviewCustomer;
+  const factory ReviewCustomer({required int id, required String name}) =
+      _ReviewCustomer;
 
   factory ReviewCustomer.fromJson(Map<String, dynamic> json) =>
       _$ReviewCustomerFromJson(json);

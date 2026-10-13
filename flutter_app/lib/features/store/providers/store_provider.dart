@@ -57,7 +57,11 @@ class StoreListNotifier extends AsyncNotifier<StoreListState> {
   /// Numbered pagination (web `Pagination` -> `paginate_page`).
   Future<void> goToPage(int page) async {
     final current = state.value;
-    if (current == null || page == current.page || page < 1 || page > current.lastPage) return;
+    if (current == null ||
+        page == current.page ||
+        page < 1 ||
+        page > current.lastPage)
+      return;
     state = await AsyncValue.guard(() => _loadPage(current.filters, page));
   }
 
@@ -108,6 +112,7 @@ class StoreListNotifier extends AsyncNotifier<StoreListState> {
   }
 }
 
-final storeListProvider = AsyncNotifierProvider<StoreListNotifier, StoreListState>(
-  StoreListNotifier.new,
-);
+final storeListProvider =
+    AsyncNotifierProvider<StoreListNotifier, StoreListState>(
+      StoreListNotifier.new,
+    );

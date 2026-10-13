@@ -1,10 +1,14 @@
 import '../../../l10n/l10n.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_radii.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/utils/format.dart';
+import '../../../shared/widgets/status_badge.dart';
+import '../../../shared/widgets/widgets.dart';
 import '../../reservation/data/reservation_repository.dart';
 import '../../reservation/models/reservation.dart';
 import '../data/orders_repository.dart';
@@ -35,7 +39,8 @@ class _TrackOrderScreenState extends ConsumerState<TrackOrderScreen> {
   @override
   void initState() {
     super.initState();
-    if ((widget.reference ?? '').isNotEmpty && (widget.phone ?? '').isNotEmpty) {
+    if ((widget.reference ?? '').isNotEmpty &&
+        (widget.phone ?? '').isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _search());
     }
   }
@@ -60,15 +65,21 @@ class _TrackOrderScreenState extends ConsumerState<TrackOrderScreen> {
       return;
     }
     setState(() => _loading = true);
-    final kinds = widget.type == 'booking' ? ['booking', 'order'] : ['order', 'booking'];
+    final kinds = widget.type == 'booking'
+        ? ['booking', 'order']
+        : ['order', 'booking'];
     try {
       for (final kind in kinds) {
         try {
           if (kind == 'order') {
-            final o = await ref.read(ordersRepositoryProvider).trackOrder(reference, phone);
+            final o = await ref
+                .read(ordersRepositoryProvider)
+                .trackOrder(reference, phone);
             if (mounted) setState(() => _order = o);
           } else {
-            final b = await ref.read(reservationRepositoryProvider).trackBooking(reference, phone);
+            final b = await ref
+                .read(reservationRepositoryProvider)
+                .trackBooking(reference, phone);
             if (mounted) setState(() => _booking = b);
           }
           return;
@@ -86,124 +97,168 @@ class _TrackOrderScreenState extends ConsumerState<TrackOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(backgroundColor: AppColors.background, title: Text(context.l10n.trackOrder)),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            Text(context.l10n.title,
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
-            const SizedBox(height: 8),
-            Text(context.l10n.description,
-                style: TextStyle(color: AppColors.gray2)),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _reference,
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: context.l10n.reference),
-            ),
-            const SizedBox(height: 14),
-            TextField(
-              controller: _phone,
-              keyboardType: TextInputType.phone,
-              onSubmitted: (_) => _search(),
-              decoration: InputDecoration(labelText: context.l10n.authPhoneNumber),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.onPrimary,
-                shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusFull),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-              onPressed: _loading ? null : _search,
-              child: _loading
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.onPrimary),
-                    )
-                  : Text(context.l10n.track, style: TextStyle(fontWeight: FontWeight.w700)),
-            ),
-            if (_error != null) ...[
-              const SizedBox(height: 14),
-              Text(_error!, style: const TextStyle(color: AppColors.error)),
-            ],
-            if (_order != null) _ResultCard(reference: _order!.reference, status: _order!.status, children: [
-              for (final i in _order!.items)
-                _Row('${i.product_name} x${i.quantity}', '${i.total}'),
-              _Row(context.l10n.cartTotal, '${_order!.total}', bold: true),
-            ]),
-            if (_booking != null) _ResultCard(reference: _booking!.reference, status: _booking!.status, children: [
-              _Row(_booking!.service.name, ''),
-              _Row(_booking!.branch.name, ''),
-              _Row(_booking!.scheduled_at.toLocal().toString().split('.').first, ''),
-            ]),
-          ],
+    final l = context.l10n;
+    return AppScaffold(
+      title: l.trackOrder,
+      bottomBar: StickyBottomBar(
+        action: PrimaryButton(
+          label: l.track,
+          icon: Icons.search,
+          loading: _loading,
+          onPressed: _loading ? null : _search,
         ),
       ),
-    );
-  }
-}
-
-class _ResultCard extends StatelessWidget {
-  const _ResultCard({required this.reference, required this.status, required this.children});
-
-  final String reference;
-  final String status;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusXxl),
-      child: Column(
+      body: ListView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        padding: const EdgeInsets.all(AppSpacing.gutter),
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(reference,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.2), borderRadius: AppRadii.radiusFull),
-                child: Text(status,
-                    style: const TextStyle(
-                        color: AppColors.primary, fontSize: 12, fontWeight: FontWeight.w700)),
-              ),
-            ],
+          Text(
+            l.description,
+            style: const TextStyle(fontSize: 14, color: AppColors.gray2),
           ),
-          const SizedBox(height: 12),
-          ...children,
+          const SizedBox(height: AppSpacing.lg),
+          AppCard(
+            child: Column(
+              children: [
+                AppTextField(
+                  label: l.reference,
+                  controller: _reference,
+                  textInputAction: TextInputAction.next,
+                  prefixIcon: const Icon(Icons.confirmation_number_outlined),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                AppTextField(
+                  label: l.authPhoneNumber,
+                  controller: _phone,
+                  keyboardType: TextInputType.phone,
+                  textInputAction: TextInputAction.search,
+                  onFieldSubmitted: (_) => _search(),
+                  prefixIcon: const Icon(Icons.phone_outlined),
+                ),
+              ],
+            ),
+          ),
+          if (_error != null) ...[
+            const SizedBox(height: AppSpacing.md),
+            Row(
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  size: 18,
+                  color: AppColors.error,
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Text(
+                    _error!,
+                    style: const TextStyle(
+                      color: AppColors.error,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (_loading) ...[
+            const SizedBox(height: AppSpacing.lg),
+            const ShimmerBox(height: 140),
+          ],
+          if (_order != null)
+            _ResultCard(
+              reference: _order!.reference,
+              status: _order!.status,
+              kind: StatusBadgeKind.orderDetail,
+              children: [
+                for (final i in _order!.items)
+                  SummaryRow(
+                    label: '${i.product_name} x${i.quantity}',
+                    value: formatIqd(i.total),
+                  ),
+                const Divider(color: AppColors.gray),
+                SummaryRow(
+                  label: l.cartTotal,
+                  value: formatIqd(_order!.total),
+                  bold: true,
+                ),
+              ],
+            ),
+          if (_booking != null)
+            _ResultCard(
+              reference: _booking!.reference,
+              status: _booking!.status,
+              kind: StatusBadgeKind.bookingDetail,
+              children: [
+                InfoLine(
+                  icon: Icons.build_outlined,
+                  label: l.service,
+                  value: _booking!.service.name,
+                ),
+                InfoLine(
+                  icon: Icons.location_on_outlined,
+                  label: l.branch,
+                  value: _booking!.branch.name,
+                ),
+                InfoLine(
+                  icon: Icons.calendar_today_outlined,
+                  label: '${l.date} / ${l.time}',
+                  value: formatDateLocalized(
+                    'EEE, MMM d, yyyy • h:mm a',
+                    _booking!.scheduled_at.toLocal(),
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );
   }
 }
 
-class _Row extends StatelessWidget {
-  const _Row(this.left, this.right, {this.bold = false});
+class _ResultCard extends StatelessWidget {
+  const _ResultCard({
+    required this.reference,
+    required this.status,
+    required this.kind,
+    required this.children,
+  });
 
-  final String left;
-  final String right;
-  final bool bold;
+  final String reference;
+  final String status;
+  final StatusBadgeKind kind;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    final style = TextStyle(
-        color: Colors.white, fontWeight: bold ? FontWeight.w800 : FontWeight.w400);
+    final (fg, _) = statusBadgeColors(kind, status);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Expanded(child: Text(left, style: style)), Text(right, style: style)],
+      padding: const EdgeInsets.only(top: AppSpacing.lg),
+      child: AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    reference,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.foregroundLight,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                StatusPill(label: statusLabel(status), color: fg),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
+            ...children,
+          ],
+        ),
       ),
     );
   }

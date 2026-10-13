@@ -12,7 +12,8 @@ class WhatsappFab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(publicSettingsProvider).value;
-    if (settings == null || !settings.showWhatsapp) return const SizedBox.shrink();
+    if (settings == null || !settings.showWhatsapp)
+      return const SizedBox.shrink();
     final uri = Uri.tryParse(settings.whatsappUrl);
     if (uri == null) return const SizedBox.shrink();
     final tooltip = AppLocalizations.of(context).whatsappChat;
@@ -27,8 +28,8 @@ class WhatsappFab extends ConsumerWidget {
           customBorder: const CircleBorder(),
           onTap: () => launchUrl(uri, mode: LaunchMode.externalApplication),
           child: const Padding(
-            padding: EdgeInsets.all(14),
-            child: Icon(Icons.chat, color: Colors.white, size: 28),
+            padding: EdgeInsets.all(10),
+            child: Icon(Icons.chat, color: Colors.white, size: 22),
           ),
         ),
       ),

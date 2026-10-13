@@ -25,20 +25,27 @@ class CheckoutRepository {
 
   Future<List<Governorate>> fetchGovernorates() async {
     final response = await _dio.get('governorates');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => Governorate.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => Governorate.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<Branch>> fetchBranches() async {
     final response = await _dio.get('branches');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
     return data.map((e) => Branch.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<List<PaymentMethod>> fetchPaymentMethods() async {
     final response = await _dio.get('payment-gateways');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => PaymentMethod.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => PaymentMethod.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Order> createOrder({
@@ -57,15 +64,20 @@ class CheckoutRepository {
     final body = <String, dynamic>{
       'type': type,
       'payment_method': paymentMethod,
-      if (customerName != null && customerName.isNotEmpty) 'customer_name': customerName,
-      if (customerPhone != null && customerPhone.isNotEmpty) 'customer_phone': customerPhone,
-      if (customerEmail != null && customerEmail.isNotEmpty) 'customer_email': customerEmail,
+      if (customerName != null && customerName.isNotEmpty)
+        'customer_name': customerName,
+      if (customerPhone != null && customerPhone.isNotEmpty)
+        'customer_phone': customerPhone,
+      if (customerEmail != null && customerEmail.isNotEmpty)
+        'customer_email': customerEmail,
       'locale': ?locale,
       if (offerCode != null && offerCode.isNotEmpty) 'offer_code': offerCode,
       if (notes != null && notes.isNotEmpty) 'notes': notes,
       if (type == 'basra' && branchId != null) 'branch_id': branchId,
-      if (type != 'basra' && governorateId != null) 'governorate_id': governorateId,
-      if (type != 'basra' && shippingAddress != null) 'shipping_address': shippingAddress,
+      if (type != 'basra' && governorateId != null)
+        'governorate_id': governorateId,
+      if (type != 'basra' && shippingAddress != null)
+        'shipping_address': shippingAddress,
     };
     final response = await _dio.post('orders', data: body);
     final res = response.data as Map<String, dynamic>;
@@ -78,8 +90,13 @@ class CheckoutRepository {
     try {
       final response = await _dio.get('orders/$orderId/payment');
       final body = response.data as Map<String, dynamic>;
-      return Payment.fromJson(body['data'] as Map<String, dynamic>);
-    } on DioException {
+      final data = Map<String, dynamic>.from(body['data'] as Map);
+      // Laravel serialises decimals as strings ("49000.00").
+      final amount = data['amount'];
+      if (amount is String) data['amount'] = num.tryParse(amount) ?? 0;
+      return Payment.fromJson(data);
+    } catch (_) {
+      // COD / missing / unparseable payment record: proceed to confirmation.
       return null;
     }
   }

@@ -7,9 +7,19 @@ import '../models/order.dart';
 /// A page of results plus `meta.pagination` (shared by orders and bookings).
 class PagedResult<T> {
   PagedResult(this.items, Map<String, dynamic>? meta)
-      : total = ((meta?['pagination'] as Map<String, dynamic>?)?['total'] as num?)?.toInt() ?? items.length,
-        currentPage = ((meta?['pagination'] as Map<String, dynamic>?)?['current_page'] as num?)?.toInt() ?? 1,
-        lastPage = ((meta?['pagination'] as Map<String, dynamic>?)?['last_page'] as num?)?.toInt() ?? 1;
+    : total =
+          ((meta?['pagination'] as Map<String, dynamic>?)?['total'] as num?)
+              ?.toInt() ??
+          items.length,
+      currentPage =
+          ((meta?['pagination'] as Map<String, dynamic>?)?['current_page']
+                  as num?)
+              ?.toInt() ??
+          1,
+      lastPage =
+          ((meta?['pagination'] as Map<String, dynamic>?)?['last_page'] as num?)
+              ?.toInt() ??
+          1;
 
   final List<T> items;
   final int total;
@@ -44,11 +54,17 @@ class OrdersRepository {
   Future<List<Order>> fetchOrders() async => (await fetchOrdersPage()).items;
 
   /// Web `orders?status=&page=` (status tabs + `meta.pagination`).
-  Future<PagedResult<Order>> fetchOrdersPage({int page = 1, String? status}) async {
-    final response = await _dio.get('orders', queryParameters: {
-      if (page > 1) 'page': page,
-      if (status != null && status.isNotEmpty) 'status': status,
-    });
+  Future<PagedResult<Order>> fetchOrdersPage({
+    int page = 1,
+    String? status,
+  }) async {
+    final response = await _dio.get(
+      'orders',
+      queryParameters: {
+        if (page > 1) 'page': page,
+        if (status != null && status.isNotEmpty) 'status': status,
+      },
+    );
     final body = response.data as Map<String, dynamic>;
     final data = body['data'] as List<dynamic>;
     return PagedResult(
@@ -69,7 +85,8 @@ class OrdersRepository {
 }
 
 /// Mirrors `OrderService::cancel`'s allowed source statuses.
-bool isOrderCancellable(String status) => status == 'pending' || status == 'confirmed';
+bool isOrderCancellable(String status) =>
+    status == 'pending' || status == 'confirmed';
 
 final ordersRepositoryProvider = Provider<OrdersRepository>((ref) {
   return OrdersRepository(ref.watch(apiClientProvider));

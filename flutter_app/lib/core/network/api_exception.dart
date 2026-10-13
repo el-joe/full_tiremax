@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+
 import '../utils/format.dart';
 
 /// A typed exception wrapping a [DioException] with a human-readable

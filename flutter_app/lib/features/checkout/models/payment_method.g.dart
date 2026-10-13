@@ -12,7 +12,7 @@ _PaymentMethod _$PaymentMethodFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       display_name: json['display_name'] as String,
       driver: json['driver'] as String,
-      is_active: json['is_active'] as bool,
+      is_active: json['is_active'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$PaymentMethodToJson(_PaymentMethod instance) =>

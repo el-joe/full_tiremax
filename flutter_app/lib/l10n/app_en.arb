@@ -572,5 +572,67 @@
   "timeAm": "AM",
   "timePm": "PM",
   "bookingNotesHint": "e.g. Please check wheel balance too",
-  "trafficAccidents": "Traffic Accidents"
+  "trafficAccidents": "Traffic Accidents",
+  "viewCart": "View cart",
+  "addToFavoritesLabel": "Add to favorites",
+  "removeFromFavoritesLabel": "Remove from favorites",
+  "emptyStateDefaultTitle": "Nothing here yet",
+  "resultsCount": "{count} results",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sectionDescription": "Description",
+  "sectionSpecs": "Specifications",
+  "sectionWarranty": "Warranty",
+  "noReviews": "No reviews yet",
+  "productCopied": "Product details copied",
+  "shareProduct": "Share",
+  "durationMinutes": "{n} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "loadMoreFailed": "Could not load more products",
+  "next": "Next",
+  "copyReference": "Copy",
+  "referenceCopied": "Reference copied",
+  "undo": "Undo",
+  "itemRemoved": "Item removed",
+  "haveOfferCode": "Have an offer code?",
+  "itemsCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stepProgress": "Step {current} of {total}",
+  "@stepProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "viewOrder": "View order",
+  "profileSectionActivity": "Activity",
+  "profileSectionAccount": "Account",
+  "profileSectionSupport": "Support & legal",
+  "notificationsToday": "Today",
+  "notificationsEarlier": "Earlier",
+  "filterUpcoming": "Upcoming",
+  "orderProgress": "Order progress",
+  "bookingProgress": "Booking progress",
+  "orderStepPlaced": "Placed"
 }

@@ -43,7 +43,9 @@ class AuthRepository {
       );
       return await _handleAuthResponse(response);
     } on DioException catch (e) {
-      throw e.error is ApiException ? e.error as ApiException : ApiException.fromDioException(e);
+      throw e.error is ApiException
+          ? e.error as ApiException
+          : ApiException.fromDioException(e);
     }
   }
 
@@ -71,7 +73,9 @@ class AuthRepository {
       );
       return await _handleAuthResponse(response);
     } on DioException catch (e) {
-      throw e.error is ApiException ? e.error as ApiException : ApiException.fromDioException(e);
+      throw e.error is ApiException
+          ? e.error as ApiException
+          : ApiException.fromDioException(e);
     }
   }
 
@@ -98,7 +102,9 @@ class AuthRepository {
       await _tokenStorage.saveCustomerInfo(customer.toJson());
       return customer;
     } on DioException catch (e) {
-      throw e.error is ApiException ? e.error as ApiException : ApiException.fromDioException(e);
+      throw e.error is ApiException
+          ? e.error as ApiException
+          : ApiException.fromDioException(e);
     }
   }
 
@@ -106,8 +112,9 @@ class AuthRepository {
     Response<Map<String, dynamic>> response,
   ) async {
     final data = response.data?['data'] as Map<String, dynamic>;
-    final customer =
-        CustomerProfile.fromJson(data['customer'] as Map<String, dynamic>);
+    final customer = CustomerProfile.fromJson(
+      data['customer'] as Map<String, dynamic>,
+    );
     final accessToken = data['access_token'] as String;
     final expiresIn = data['expires_in'] as int?;
     final meta = response.data?['meta'];

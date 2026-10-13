@@ -5,7 +5,12 @@ import '../../core/theme/app_colors.dart';
 /// Numbered pagination mirroring web `components/ui/Pagination.tsx`
 /// (40x40 gray-4 buttons, selected = primary, prev/next arrows).
 class WebPagination extends StatelessWidget {
-  const WebPagination({super.key, required this.current, required this.last, required this.onPage});
+  const WebPagination({
+    super.key,
+    required this.current,
+    required this.last,
+    required this.onPage,
+  });
 
   final int current;
   final int last;
@@ -13,7 +18,8 @@ class WebPagination extends StatelessWidget {
 
   List<int?> _pages() {
     // 1 ... c-1 c c+1 ... last  (null = ellipsis)
-    final set = <int>{1, last, current - 1, current, current + 1}..removeWhere((p) => p < 1 || p > last);
+    final set = <int>{1, last, current - 1, current, current + 1}
+      ..removeWhere((p) => p < 1 || p > last);
     final sorted = set.toList()..sort();
     final out = <int?>[];
     for (var i = 0; i < sorted.length; i++) {
@@ -50,16 +56,28 @@ class WebPagination extends StatelessWidget {
       alignment: WrapAlignment.center,
       runSpacing: 6,
       children: [
-        _btn(const Icon(Icons.arrow_back, size: 18, color: Colors.black), onTap: current > 1 ? () => onPage(current - 1) : null),
+        _btn(
+          const Icon(Icons.arrow_back, size: 18, color: Colors.black),
+          onTap: current > 1 ? () => onPage(current - 1) : null,
+        ),
         for (final p in _pages())
           p == null
               ? _btn(const Text('…', style: TextStyle(color: Colors.black)))
               : _btn(
-                  Text('$p', style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
+                  Text(
+                    '$p',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
                   selected: p == current,
                   onTap: () => onPage(p),
                 ),
-        _btn(const Icon(Icons.arrow_forward, size: 18, color: Colors.black), onTap: current < last ? () => onPage(current + 1) : null),
+        _btn(
+          const Icon(Icons.arrow_forward, size: 18, color: Colors.black),
+          onTap: current < last ? () => onPage(current + 1) : null,
+        ),
       ],
     );
   }

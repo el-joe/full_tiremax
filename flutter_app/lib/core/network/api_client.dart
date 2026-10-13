@@ -28,11 +28,18 @@ final tokenStorageProvider = Provider<TokenStorage>((ref) => TokenStorage());
 /// Mirror of `frontend/utils/axiosInstance.ts`'s `isProtectedEndpoint`: only
 /// these calls need a signed-in customer; everything else is guest-capable and
 /// must never bounce a guest to the login sheet on a 401.
-const List<String> _protectedSegments = ['addresses', 'favorites', 'notifications', 'reviews', 'auth/me'];
+const List<String> _protectedSegments = [
+  'addresses',
+  'favorites',
+  'notifications',
+  'reviews',
+  'auth/me',
+];
 
 bool isProtectedEndpoint(String? url, [String? method]) {
   final path = (url ?? '').split('?').first.replaceAll(RegExp(r'^/+|/+$'), '');
-  if ((method ?? 'get').toLowerCase() == 'get' && (path == 'orders' || path == 'bookings')) {
+  if ((method ?? 'get').toLowerCase() == 'get' &&
+      (path == 'orders' || path == 'bookings')) {
     return true;
   }
   return _protectedSegments.any((s) => path == s || path.startsWith('$s/'));
@@ -73,8 +80,8 @@ final apiClientProvider = Provider<Dio>((ref) {
           options.headers['Authorization'] = 'Bearer $token';
         }
 
-        options.headers['X-Guest-Token'] =
-            await tokenStorage.getOrCreateGuestToken();
+        options.headers['X-Guest-Token'] = await tokenStorage
+            .getOrCreateGuestToken();
 
         final locale = ref.read(localeProvider);
         options.headers['x-locale'] = locale.languageCode;
@@ -88,9 +95,13 @@ final apiClientProvider = Provider<Dio>((ref) {
           // We only drop the session when the call needs auth, or when a
           // stored token was rejected (expired/revoked) - otherwise a stale
           // token would leave the app "logged in" with every call failing.
-          final hadToken = (error.requestOptions.headers['Authorization'] as String?)?.isNotEmpty ?? false;
+          final hadToken =
+              (error.requestOptions.headers['Authorization'] as String?)
+                  ?.isNotEmpty ??
+              false;
           final path = error.requestOptions.path.replaceFirst(apiBaseUrl, '');
-          if (hadToken || isProtectedEndpoint(path, error.requestOptions.method)) {
+          if (hadToken ||
+              isProtectedEndpoint(path, error.requestOptions.method)) {
             await tokenStorage.clearAll();
             ref.read(unauthorizedNotifierProvider.notifier).notify();
           }

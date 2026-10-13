@@ -26,7 +26,10 @@ class PublicSettings {
     return PublicSettings(
       whatsappUrl: (json['whatsapp_url'] as String?)?.trim() ?? '',
       whatsappButtonEnabled:
-          enabled == true || enabled == 1 || enabled == '1' || enabled == 'true',
+          enabled == true ||
+          enabled == 1 ||
+          enabled == '1' ||
+          enabled == 'true',
       sitePhone: (json['site_phone'] as String?)?.trim() ?? '',
       siteEmail: (json['site_email'] as String?)?.trim() ?? '',
       address: (json['address'] as String?)?.trim() ?? '',
@@ -38,7 +41,8 @@ final publicSettingsProvider = FutureProvider<PublicSettings>((ref) async {
   try {
     final response = await ref.watch(apiClientProvider).get('settings/public');
     final body = response.data;
-    final data = body is Map<String, dynamic> && body['data'] is Map<String, dynamic>
+    final data =
+        body is Map<String, dynamic> && body['data'] is Map<String, dynamic>
         ? body['data'] as Map<String, dynamic>
         : (body is Map<String, dynamic> ? body : <String, dynamic>{});
     return PublicSettings.fromJson(data);

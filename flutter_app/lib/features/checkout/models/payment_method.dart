@@ -11,7 +11,7 @@ abstract class PaymentMethod with _$PaymentMethod {
     required String name,
     required String display_name,
     required String driver,
-    required bool is_active,
+    @Default(true) bool is_active,
   }) = _PaymentMethod;
 
   factory PaymentMethod.fromJson(Map<String, dynamic> json) =>

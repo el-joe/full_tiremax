@@ -1730,4 +1730,111 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get trafficAccidents => 'الحوادث المرورية';
+
+  @override
+  String get viewCart => 'عرض السلة';
+
+  @override
+  String get addToFavoritesLabel => 'أضف إلى المفضلة';
+
+  @override
+  String get removeFromFavoritesLabel => 'إزالة من المفضلة';
+
+  @override
+  String get emptyStateDefaultTitle => 'لا يوجد شيء هنا بعد';
+
+  @override
+  String resultsCount(int count) {
+    return '$count نتيجة';
+  }
+
+  @override
+  String get sectionDescription => 'الوصف';
+
+  @override
+  String get sectionSpecs => 'المواصفات';
+
+  @override
+  String get sectionWarranty => 'الضمان';
+
+  @override
+  String get noReviews => 'لا توجد تقييمات بعد';
+
+  @override
+  String get productCopied => 'تم نسخ تفاصيل المنتج';
+
+  @override
+  String get shareProduct => 'مشاركة';
+
+  @override
+  String durationMinutes(int n) {
+    return '$n دقيقة';
+  }
+
+  @override
+  String get loadMoreFailed => 'تعذر تحميل المزيد من المنتجات';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get copyReference => 'نسخ';
+
+  @override
+  String get referenceCopied => 'تم نسخ الرقم المرجعي';
+
+  @override
+  String get undo => 'تراجع';
+
+  @override
+  String get itemRemoved => 'تمت إزالة المنتج';
+
+  @override
+  String get haveOfferCode => 'لديك رمز عرض؟';
+
+  @override
+  String itemsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count منتجات',
+      one: 'منتج واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String stepProgress(int current, int total) {
+    return 'الخطوة $current من $total';
+  }
+
+  @override
+  String get viewOrder => 'عرض الطلب';
+
+  @override
+  String get profileSectionActivity => 'نشاطي';
+
+  @override
+  String get profileSectionAccount => 'الحساب';
+
+  @override
+  String get profileSectionSupport => 'الدعم والمعلومات القانونية';
+
+  @override
+  String get notificationsToday => 'اليوم';
+
+  @override
+  String get notificationsEarlier => 'سابقاً';
+
+  @override
+  String get filterUpcoming => 'القادمة';
+
+  @override
+  String get orderProgress => 'تقدّم الطلب';
+
+  @override
+  String get bookingProgress => 'تقدّم الحجز';
+
+  @override
+  String get orderStepPlaced => 'تم الطلب';
 }

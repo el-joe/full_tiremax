@@ -20,19 +20,26 @@ class AddressesRepository {
 
   Future<List<Address>> fetchAddresses() async {
     final response = await _dio.get('addresses');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => Address.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<Governorate>> fetchGovernorates() async {
     final response = await _dio.get('governorates');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => Governorate.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => Governorate.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<City>> fetchCities(int governorateId) async {
     final response = await _dio.get('governorates/$governorateId/cities');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
     return data.map((e) => City.fromJson(e as Map<String, dynamic>)).toList();
   }
 
@@ -43,13 +50,16 @@ class AddressesRepository {
     required int cityId,
     required String address,
   }) async {
-    final response = await _dio.post('addresses', data: {
-      'full_name': ?fullName,
-      'phone': ?phone,
-      'governorate_id': governorateId,
-      'city_id': cityId,
-      'address': address,
-    });
+    final response = await _dio.post(
+      'addresses',
+      data: {
+        'full_name': ?fullName,
+        'phone': ?phone,
+        'governorate_id': governorateId,
+        'city_id': cityId,
+        'address': address,
+      },
+    );
     final body = response.data as Map<String, dynamic>;
     return Address.fromJson(body['data'] as Map<String, dynamic>);
   }
@@ -62,13 +72,16 @@ class AddressesRepository {
     required int cityId,
     required String address,
   }) async {
-    final response = await _dio.put('addresses/$id', data: {
-      'full_name': ?fullName,
-      'phone': ?phone,
-      'governorate_id': governorateId,
-      'city_id': cityId,
-      'address': address,
-    });
+    final response = await _dio.put(
+      'addresses/$id',
+      data: {
+        'full_name': ?fullName,
+        'phone': ?phone,
+        'governorate_id': governorateId,
+        'city_id': cityId,
+        'address': address,
+      },
+    );
     final body = response.data as Map<String, dynamic>;
     return Address.fromJson(body['data'] as Map<String, dynamic>);
   }

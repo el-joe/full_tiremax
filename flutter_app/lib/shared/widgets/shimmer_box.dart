@@ -11,7 +11,11 @@ class ShimmerBox extends StatelessWidget {
     this.width,
     this.height,
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+    this.light = false,
   });
+
+  /// Light-surface palette (for [AppColors.page] backgrounds).
+  final bool light;
 
   final double? width;
   final double? height;
@@ -19,14 +23,16 @@ class ShimmerBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final light =
+        this.light || Theme.of(context).brightness == Brightness.light;
     return Shimmer.fromColors(
-      baseColor: AppColors.gray3,
-      highlightColor: const Color(0xFF4A4A4A),
+      baseColor: light ? AppColors.gray : AppColors.gray3,
+      highlightColor: light ? const Color(0xFFF7F7F7) : const Color(0xFF4A4A4A),
       child: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: AppColors.gray3,
+          color: light ? AppColors.gray : AppColors.gray3,
           borderRadius: borderRadius,
         ),
       ),
@@ -48,7 +54,8 @@ class AppNetworkImage extends StatelessWidget {
     this.borderRadius = BorderRadius.zero,
   });
 
-  static const String placeholderAsset = 'assets/images/product-placeholder.jpg';
+  static const String placeholderAsset =
+      'assets/images/product-placeholder.jpg';
 
   final String? url;
   final double? width;
@@ -60,7 +67,11 @@ class AppNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final placeholder = ClipRRect(
       borderRadius: borderRadius,
-      child: ShimmerBox(width: width, height: height, borderRadius: borderRadius),
+      child: ShimmerBox(
+        width: width,
+        height: height,
+        borderRadius: borderRadius,
+      ),
     );
 
     if (url == null || url!.isEmpty) {

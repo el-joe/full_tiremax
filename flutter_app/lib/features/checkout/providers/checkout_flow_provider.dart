@@ -74,12 +74,15 @@ class CheckoutFormState {
         e['email'] = 'Email must be 120 characters or fewer';
       }
     }
-    if (notes.length > 500) e['notes'] = 'Notes must be 500 characters or fewer';
-    if (paymentMethod == null || paymentMethod!.isEmpty) e['payment'] = 'Payment method selection is required';
+    if (notes.length > 500)
+      e['notes'] = 'Notes must be 500 characters or fewer';
+    if (paymentMethod == null || paymentMethod!.isEmpty)
+      e['payment'] = 'Payment method selection is required';
     if (type == OrderType.basra) {
       if (branchId == null) e['branch'] = 'Please select a branch';
     } else {
-      if (governorateId == null) e['governorate'] = 'Select governorate is required';
+      if (governorateId == null)
+        e['governorate'] = 'Select governorate is required';
       final addr = shippingAddress.trim();
       if (addr.isEmpty) {
         e['address'] = 'The address is required';
@@ -89,7 +92,8 @@ class CheckoutFormState {
         e['address'] = 'The address must be more then 12 character';
       }
     }
-    if (createAccount && password.length < 6) e['password'] = 'Password must be at least 6 characters';
+    if (createAccount && password.length < 6)
+      e['password'] = 'Password must be at least 6 characters';
     return e;
   }
 
@@ -116,7 +120,9 @@ class CheckoutFormState {
   }) {
     return CheckoutFormState(
       type: type ?? this.type,
-      governorateId: clearGovernorateId ? null : (governorateId ?? this.governorateId),
+      governorateId: clearGovernorateId
+          ? null
+          : (governorateId ?? this.governorateId),
       shippingAddress: shippingAddress ?? this.shippingAddress,
       branchId: clearBranchId ? null : (branchId ?? this.branchId),
       paymentMethod: paymentMethod ?? this.paymentMethod,
@@ -141,14 +147,20 @@ class CheckoutFlowNotifier extends Notifier<CheckoutFormState> {
 
   void setType(OrderType type) => state = state.copyWith(type: type);
   void setGovernorate(int id) => state = state.copyWith(governorateId: id);
-  void setShippingAddress(String value) => state = state.copyWith(shippingAddress: value);
+  void setShippingAddress(String value) =>
+      state = state.copyWith(shippingAddress: value);
   void setBranch(int id) => state = state.copyWith(branchId: id);
-  void setPaymentMethod(String driver) => state = state.copyWith(paymentMethod: driver);
-  void setCustomerName(String value) => state = state.copyWith(customerName: value);
-  void setCustomerPhone(String value) => state = state.copyWith(customerPhone: value);
-  void setCustomerEmail(String value) => state = state.copyWith(customerEmail: value);
+  void setPaymentMethod(String driver) =>
+      state = state.copyWith(paymentMethod: driver);
+  void setCustomerName(String value) =>
+      state = state.copyWith(customerName: value);
+  void setCustomerPhone(String value) =>
+      state = state.copyWith(customerPhone: value);
+  void setCustomerEmail(String value) =>
+      state = state.copyWith(customerEmail: value);
   void setNotes(String value) => state = state.copyWith(notes: value);
-  void setCreateAccount(bool value) => state = state.copyWith(createAccount: value);
+  void setCreateAccount(bool value) =>
+      state = state.copyWith(createAccount: value);
   void setPassword(String value) => state = state.copyWith(password: value);
 
   /// Submits the order. Returns the created [Order] id on success, or null
@@ -178,7 +190,9 @@ class CheckoutFlowNotifier extends Notifier<CheckoutFormState> {
       return order.id;
     } on DioException catch (e) {
       final error = e.error;
-      final message = error is ApiException ? error.message : e.message ?? currentL10n.couldNotPlaceOrder;
+      final message = error is ApiException
+          ? error.message
+          : e.message ?? currentL10n.couldNotPlaceOrder;
       state = state.copyWith(isSubmitting: false, submitError: message);
       return null;
     } catch (e) {
@@ -188,6 +202,7 @@ class CheckoutFlowNotifier extends Notifier<CheckoutFormState> {
   }
 }
 
-final checkoutFlowProvider = NotifierProvider<CheckoutFlowNotifier, CheckoutFormState>(
-  CheckoutFlowNotifier.new,
-);
+final checkoutFlowProvider =
+    NotifierProvider<CheckoutFlowNotifier, CheckoutFormState>(
+      CheckoutFlowNotifier.new,
+    );

@@ -219,14 +219,14 @@ return $default(_that.id,_that.name,_that.display_name,_that.driver,_that.is_act
 @JsonSerializable()
 
 class _PaymentMethod implements PaymentMethod {
-  const _PaymentMethod({required this.id, required this.name, required this.display_name, required this.driver, required this.is_active});
+  const _PaymentMethod({required this.id, required this.name, required this.display_name, required this.driver, this.is_active = true});
   factory _PaymentMethod.fromJson(Map<String, dynamic> json) => _$PaymentMethodFromJson(json);
 
 @override final  int id;
 @override final  String name;
 @override final  String display_name;
 @override final  String driver;
-@override final  bool is_active;
+@override@JsonKey() final  bool is_active;
 
 /// Create a copy of PaymentMethod
 /// with the given fields replaced by the non-null parameter values.

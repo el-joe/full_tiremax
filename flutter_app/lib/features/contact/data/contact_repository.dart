@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+
 import '../../../core/utils/format.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_client.dart';
@@ -48,12 +50,15 @@ class ContactRepository {
     required String subject,
     required String message,
   }) async {
-    await _dio.post('contact-messages', data: {
-      'name': name.trim(),
-      'phone': phone.trim(),
-      'subject': subject.trim(),
-      'message': message.trim(),
-    });
+    await _dio.post(
+      'contact-messages',
+      data: {
+        'name': name.trim(),
+        'phone': phone.trim(),
+        'subject': subject.trim(),
+        'message': message.trim(),
+      },
+    );
   }
 }
 

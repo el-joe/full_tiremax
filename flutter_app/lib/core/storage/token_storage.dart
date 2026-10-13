@@ -13,8 +13,8 @@ class TokenStorage {
   TokenStorage({
     FlutterSecureStorage? secureStorage,
     SharedPreferencesAsync? preferences,
-  })  : _secureStorage = secureStorage ?? const FlutterSecureStorage(),
-        _preferences = preferences ?? SharedPreferencesAsync();
+  }) : _secureStorage = secureStorage ?? const FlutterSecureStorage(),
+       _preferences = preferences ?? SharedPreferencesAsync();
 
   static const String _tokenKey = 'tiremax_token';
   static const String _customerInfoKey = 'customerInfo';

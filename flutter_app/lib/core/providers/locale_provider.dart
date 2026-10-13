@@ -6,7 +6,7 @@ const _localeStorageKey = 'tiremax_locale';
 
 /// Holds the app's current locale (mirrors the web's `useToggleLang`).
 ///
-/// Defaults to English, then hydrates from `shared_preferences` on startup
+/// Defaults to Arabic, then hydrates from `shared_preferences` on startup
 /// (mirroring the hydration pattern in `TokenStorage`) so the user's choice
 /// survives app restarts. Feature code (settings screen, locale toggle)
 /// should call [setLocale]; `apiClientProvider` reads this provider to set
@@ -15,7 +15,7 @@ class LocaleNotifier extends Notifier<Locale> {
   @override
   Locale build() {
     _hydrate();
-    return const Locale('en');
+    return const Locale('ar');
   }
 
   Future<void> _hydrate() async {
@@ -33,7 +33,10 @@ class LocaleNotifier extends Notifier<Locale> {
   Future<void> setLocale(Locale locale) async {
     state = locale;
     try {
-      await SharedPreferencesAsync().setString(_localeStorageKey, locale.languageCode);
+      await SharedPreferencesAsync().setString(
+        _localeStorageKey,
+        locale.languageCode,
+      );
     } catch (_) {
       // Best-effort persistence; in-memory state already updated.
     }

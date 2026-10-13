@@ -11,8 +11,11 @@ class ServicesRepository {
 
   Future<List<Service>> fetchServices() async {
     final response = await _dio.get('services');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => Service.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => Service.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }
 

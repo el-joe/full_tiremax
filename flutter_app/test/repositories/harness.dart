@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+
 import 'dart:ui' show Locale;
 
 import 'package:flutter_app/core/network/api_client.dart';
@@ -48,18 +49,28 @@ dynamic fixture(String name) =>
 
 class Harness {
   Harness({String? token}) {
-    SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.empty();
     storage = FakeTokenStorage(token: token);
-    container = ProviderContainer(overrides: [
-      tokenStorageProvider.overrideWithValue(storage),
-    ]);
+    container = ProviderContainer(
+      overrides: [tokenStorageProvider.overrideWithValue(storage)],
+    );
+    // The app defaults to Arabic; contract tests assert English headers.
+    container.read(localeProvider.notifier).setLocale(const Locale('en'));
     dio = container.read(apiClientProvider);
-    adapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher(matchMethod: true));
+    adapter = DioAdapter(
+      dio: dio,
+      matcher: const UrlRequestMatcher(matchMethod: true),
+    );
     // Added after the app interceptor, so it observes the final headers.
-    dio.interceptors.add(InterceptorsWrapper(onRequest: (o, h) {
-      requests.add(o);
-      h.next(o);
-    }));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (o, h) {
+          requests.add(o);
+          h.next(o);
+        },
+      ),
+    );
   }
 
   late final FakeTokenStorage storage;

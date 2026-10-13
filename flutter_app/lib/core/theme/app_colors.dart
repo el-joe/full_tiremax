@@ -44,4 +44,13 @@ class AppColors {
   /// On-primary text (dark yellow), used for text/icons placed on top of
   /// [primary]-colored surfaces.
   static const Color onPrimary = Color(0xFF6B4C00);
+
+  /// Mobile page background (light content surface).
+  static const Color page = Color(0xFFF6F6F7);
+
+  /// Card surface on [page].
+  static const Color card = Colors.white;
+
+  /// Dark chrome (app bar / bottom bar).
+  static const Color chrome = Color(0xFF0E0E0E);
 }

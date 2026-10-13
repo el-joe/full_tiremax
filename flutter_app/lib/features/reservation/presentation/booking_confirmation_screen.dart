@@ -1,18 +1,18 @@
-import '../../../l10n/l10n.dart';
-import '../../../core/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_radii.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/utils/format.dart';
+import '../../../l10n/l10n.dart';
+import '../../../shared/widgets/widgets.dart';
 import '../../auth/presentation/auth_sheet.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../data/reservation_repository.dart';
 
 /// Shown after a successful `POST /bookings`. Pushed via `Navigator.push`
-/// from the reservation flow, mirroring how Step 4's flash-sale detail
-/// screen is pushed (no dedicated go_router route).
+/// from the reservation flow (no dedicated go_router route).
 class BookingConfirmationScreen extends ConsumerWidget {
   const BookingConfirmationScreen({super.key, required this.booking});
 
@@ -20,110 +20,127 @@ class BookingConfirmationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
     final isLogged = ref.watch(isLoggedInProvider);
-    final formatted = formatDateLocalized('EEE, MMM d, yyyy • h:mm a', booking.scheduledAt.toLocal());
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(backgroundColor: AppColors.background, title: Text(context.l10n.bookingConfirmation)),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const SizedBox(height: 24),
-              Container(
-                width: 88,
-                height: 88,
-                decoration: const BoxDecoration(color: AppColors.green, shape: BoxShape.circle),
-                child: const Icon(Icons.check, color: Colors.white, size: 48),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                context.l10n.bookingSuccess,
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w800),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              if (booking.reference != null)
-                Text(
-                  '${context.l10n.bookingReference}: ${booking.reference}',
-                  style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700),
-                ),
-              const SizedBox(height: 12),
-              if (isLogged)
-                TextButton(
-                  onPressed: () => context.go('/profile/reservations/${booking.id}'),
-                  child: Text(context.l10n.viewBooking, style: TextStyle(color: AppColors.primary)),
-                )
-              else ...[
-                Text(context.l10n.createAccountToTrackBookings,
-                    textAlign: TextAlign.center, style: TextStyle(color: AppColors.gray2, fontSize: 13)),
-                TextButton(
-                  onPressed: () => showAuthSheet(context),
-                  child: Text(context.l10n.createAccountCta, style: TextStyle(color: AppColors.primary)),
-                ),
-              ],
-              const SizedBox(height: 12),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusXl),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _row(Icons.build, context.l10n.service, booking.serviceName),
-                    const SizedBox(height: 14),
-                    _row(Icons.location_on_outlined, context.l10n.branch, booking.branchName),
-                    const SizedBox(height: 14),
-                    _row(Icons.calendar_today_outlined, '${context.l10n.date} / ${context.l10n.time}', formatted),
-                    const SizedBox(height: 14),
-                    _row(Icons.info_outline, context.l10n.status, statusLabel(booking.status)),
-                    if (booking.customerNotes != null && booking.customerNotes!.isNotEmpty) ...[
-                      const SizedBox(height: 14),
-                      _row(Icons.notes, context.l10n.notes, booking.customerNotes!),
-                    ],
-                  ],
-                ),
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.onPrimary,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusLg),
-                  ),
-                  onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-                  child: Text(context.l10n.backToHome, style: TextStyle(fontWeight: FontWeight.w800)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    final formatted = formatDateLocalized(
+      'EEE, MMM d, yyyy • h:mm a',
+      booking.scheduledAt.toLocal(),
     );
-  }
 
-  Widget _row(IconData icon, String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: AppColors.primary, size: 20),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
-              const SizedBox(height: 2),
-              Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-            ],
+    void goTo(String path) {
+      final router = GoRouter.of(context);
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      router.go(path);
+    }
+
+    return AppScaffold(
+      title: l.bookingConfirmation,
+      bottomBar: StickyBottomBar(
+        action: isLogged
+            ? PrimaryButton(
+                label: l.viewBooking,
+                onPressed: () => goTo('/profile/reservations/${booking.id}'),
+              )
+            : PrimaryButton(label: l.backToHome, onPressed: () => goTo('/')),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(AppSpacing.gutter),
+        children: [
+          const SizedBox(height: AppSpacing.md),
+          const Center(child: SuccessCheck()),
+          const SizedBox(height: AppSpacing.lg),
+          Text(
+            l.bookingSuccess,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: AppColors.foregroundLight,
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: AppSpacing.xl),
+          if (booking.reference != null)
+            CopyReference(
+              label: l.bookingReference,
+              reference: booking.reference!,
+            ),
+          const SizedBox(height: AppSpacing.md),
+          AppCard(
+            child: Column(
+              children: [
+                InfoLine(
+                  icon: Icons.build_outlined,
+                  label: l.service,
+                  value: booking.serviceName,
+                ),
+                InfoLine(
+                  icon: Icons.location_on_outlined,
+                  label: l.branch,
+                  value: booking.branchName,
+                ),
+                InfoLine(
+                  icon: Icons.calendar_today_outlined,
+                  label: '${l.date} / ${l.time}',
+                  value: formatted,
+                ),
+                InfoLine(
+                  icon: Icons.info_outline,
+                  label: l.status,
+                  value: statusLabel(booking.status),
+                ),
+                if (booking.customerNotes != null &&
+                    booking.customerNotes!.isNotEmpty)
+                  InfoLine(
+                    icon: Icons.notes,
+                    label: l.notes,
+                    value: booking.customerNotes!,
+                  ),
+              ],
+            ),
+          ),
+          if (!isLogged) ...[
+            const SizedBox(height: AppSpacing.md),
+            AppCard(
+              onTap: () => showAuthSheet(context),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.person_add_alt_1_outlined,
+                    color: AppColors.primary,
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l.createAccountToTrackBookings,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: AppColors.gray2,
+                          ),
+                        ),
+                        Text(
+                          l.createAccountCta,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.onPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          if (isLogged) ...[
+            const SizedBox(height: AppSpacing.md),
+            SecondaryButton(label: l.backToHome, onPressed: () => goTo('/')),
+          ],
+          const SizedBox(height: AppSpacing.lg),
+        ],
+      ),
     );
   }
 }

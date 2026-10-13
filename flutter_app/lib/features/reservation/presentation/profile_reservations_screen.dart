@@ -1,86 +1,120 @@
-import '../../../l10n/l10n.dart';
-import '../../../core/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_radii.dart';
-import '../../../shared/widgets/web_pagination.dart';
-import '../../../shared/widgets/status_badge.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/utils/format.dart';
+import '../../../l10n/l10n.dart';
+import '../../../shared/widgets/widgets.dart';
 import '../data/reservation_repository.dart';
 import '../models/reservation.dart';
-import 'profile_reservation_detail_screen.dart';
 
-/// GET /bookings list (paginated) with reschedule / cancel / details actions.
-/// Mirrors `frontend/app/[locale]/profile/reservation/page.tsx` +
-/// `components/pages/profile/reservation/ReservationList.tsx`.
+enum _BookingFilter { all, upcoming, completed, cancelled }
+
+/// GET /bookings list (paginated) with status chips. Mirrors
+/// `frontend/app/[locale]/profile/reservation/page.tsx`. Chips filter the
+/// loaded page client-side (the endpoint has no status filter).
 class ProfileReservationsScreen extends ConsumerStatefulWidget {
   const ProfileReservationsScreen({super.key});
 
   @override
-  ConsumerState<ProfileReservationsScreen> createState() => _ProfileReservationsScreenState();
+  ConsumerState<ProfileReservationsScreen> createState() =>
+      _ProfileReservationsScreenState();
 }
 
-class _ProfileReservationsScreenState extends ConsumerState<ProfileReservationsScreen> {
+class _ProfileReservationsScreenState
+    extends ConsumerState<ProfileReservationsScreen> {
   int _page = 1;
+  _BookingFilter _filter = _BookingFilter.all;
+
+  bool _matches(Reservation r) => switch (_filter) {
+    _BookingFilter.all => true,
+    _BookingFilter.upcoming =>
+      r.status != 'completed' &&
+          r.status != 'complete' &&
+          r.status != 'cancelled',
+    _BookingFilter.completed =>
+      r.status == 'completed' || r.status == 'complete',
+    _BookingFilter.cancelled => r.status == 'cancelled',
+  };
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final bookingsAsync = ref.watch(bookingsListProvider(_page));
+    final labels = {
+      _BookingFilter.all: l.all,
+      _BookingFilter.upcoming: l.filterUpcoming,
+      _BookingFilter.completed: l.statusComplete,
+      _BookingFilter.cancelled: l.cancelled,
+    };
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(backgroundColor: AppColors.background, title: Text(context.l10n.myBookings)),
-      body: SafeArea(
-        child: RefreshIndicator(
-          color: AppColors.primary,
-          onRefresh: () async {
-            ref.invalidate(bookingsListProvider(_page));
-            await ref.read(bookingsListProvider(_page).future);
-          },
-          child: ListView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
+    return AppScaffold(
+      title: l.myBookings,
+      body: Column(
+        children: [
+          const SizedBox(height: AppSpacing.sm),
+          ChipRow(
             children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusXl),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              for (final f in _BookingFilter.values)
+                AppChip(
+                  label: labels[f]!,
+                  selected: _filter == f,
+                  onTap: () => setState(() => _filter = f),
+                ),
+            ],
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              color: AppColors.primary,
+              onRefresh: () async {
+                ref.invalidate(bookingsListProvider(_page));
+                await ref.read(bookingsListProvider(_page).future);
+              },
+              child: bookingsAsync.when(
+                loading: () => const SkeletonList(itemHeight: 112),
+                error: (error, _) => ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   children: [
-                    Text(context.l10n.myBookings,
-                        style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
-                    SizedBox(height: 6),
-                    Text(context.l10n.manageBookingsDescription, style: TextStyle(color: AppColors.gray2, fontSize: 13)),
+                    SizedBox(
+                      height: 360,
+                      child: ErrorState(
+                        message: l.unexpectedError,
+                        onRetry: () =>
+                            ref.invalidate(bookingsListProvider(_page)),
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 16),
-              bookingsAsync.when(
-                loading: () => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 40),
-                  child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
-                ),
-                error: (error, _) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 40),
-                  child: Center(child: Text(context.l10n.unexpectedError, style: TextStyle(color: AppColors.gray2))),
-                ),
                 data: (page) {
-                  if (page.items.isEmpty) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 40),
-                      child: Center(
-                        child: Text(context.l10n.noBookingYet,
-                            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
-                      ),
+                  final items = page.items.where(_matches).toList();
+                  if (items.isEmpty) {
+                    return ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: 360,
+                          child: EmptyState(
+                            icon: Icons.event_busy_outlined,
+                            title: l.noBookingYet,
+                            actionLabel: l.bookNewService,
+                            onAction: () => context.push('/reservation'),
+                          ),
+                        ),
+                      ],
                     );
                   }
-                  return Column(
+                  return ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(AppSpacing.gutter),
                     children: [
-                      for (final r in page.items) ...[_BookingTile(reservation: r), const SizedBox(height: 16)],
+                      for (final r in items) ...[
+                        _BookingCard(reservation: r),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
                       if (page.lastPage > 1)
-                        WebPagination(
+                        PagerBar(
                           current: page.currentPage,
                           last: page.lastPage,
                           onPage: (p) => setState(() => _page = p),
@@ -89,124 +123,103 @@ class _ProfileReservationsScreenState extends ConsumerState<ProfileReservationsS
                   );
                 },
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _BookingTile extends ConsumerWidget {
-  const _BookingTile({required this.reservation});
-
-  final Reservation reservation;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final done = reservation.status == 'completed' || reservation.status == 'cancelled';
-    final when = reservation.scheduled_at.toLocal();
-    Widget meta(IconData icon, String text) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 14, color: AppColors.primary),
-            const SizedBox(width: 6),
-            Flexible(child: Text(text, style: const TextStyle(color: AppColors.gray2, fontSize: 12))),
-          ],
-        );
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.gray3,
-        borderRadius: AppRadii.radiusXl,
-        border: Border(top: BorderSide(color: done ? Colors.transparent : AppColors.primary, width: 5)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: done ? AppColors.gray4 : AppColors.primary,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.build_outlined, color: Colors.black),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(reservation.service.name,
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16)),
-                          Text('${context.l10n.bookingNumber}: ${reservation.reference}',
-                              style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
-                        ],
-                      ),
-                    ),
-                    StatusBadge(status: reservation.status, kind: StatusBadgeKind.bookingList),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Wrap(
-                  spacing: 16,
-                  runSpacing: 6,
-                  children: [
-                    meta(Icons.calendar_today_outlined, formatDateLocalized('EEE MMM dd yyyy', when)),
-                    meta(Icons.access_time, formatDateLocalized('hh:mm a', when)),
-                    meta(Icons.place_outlined, reservation.branch.address),
-                  ],
-                ),
-                if (!done) ...[
-                  const Divider(height: 24, color: Color(0x22FFFFFF)),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      _btn(Icons.history, context.l10n.reschedule, AppColors.gray2, AppColors.gray4, null,
-                          () => ProfileReservationDetailScreen.confirmReschedule(context, ref, reservation)),
-                      _btn(Icons.close, context.l10n.cancelBooking, const Color(0xFFE7000B), Colors.transparent,
-                          const Color(0xFFFFC9C9), () => ProfileReservationDetailScreen.confirmCancel(context, ref, reservation.id)),
-                      _btn(null, context.l10n.viewDetails, Colors.black, AppColors.primary, null,
-                          () => context.push('/profile/reservations/${reservation.id}')),
-                    ],
-                  ),
-                ],
-              ],
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _btn(IconData? icon, String label, Color fg, Color bg, Color? border, VoidCallback onTap) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(12),
-          border: border == null ? null : Border.all(color: border),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[Icon(icon, size: 16, color: fg), const SizedBox(width: 6)],
-            Text(label, style: TextStyle(color: fg, fontWeight: FontWeight.w700, fontSize: 13)),
-          ],
-        ),
+class _BookingCard extends StatelessWidget {
+  const _BookingCard({required this.reservation});
+
+  final Reservation reservation;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final when = reservation.scheduled_at.toLocal();
+    final done =
+        reservation.status == 'completed' || reservation.status == 'cancelled';
+    return AppCard(
+      onTap: () => context.push('/profile/reservations/${reservation.id}'),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 56,
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+            decoration: BoxDecoration(
+              color: done ? AppColors.gray4 : AppColors.primary,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${when.day}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.chrome,
+                  ),
+                ),
+                Text(
+                  formatDateLocalized('MMM', when),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.chrome,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        reservation.service.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.foregroundLight,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    StatusPill(
+                      label: statusLabel(reservation.status),
+                      color: statusColor(reservation.status),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${l.bookingNumber}: ${reservation.reference}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12, color: AppColors.gray2),
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  '${formatDateLocalized('hh:mm a', when)} • ${reservation.branch.name}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12, color: AppColors.gray2),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

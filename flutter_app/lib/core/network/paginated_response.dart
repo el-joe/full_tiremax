@@ -9,11 +9,11 @@ class ApiPagination {
   });
 
   factory ApiPagination.fromJson(Map<String, dynamic> json) => ApiPagination(
-        total: json['total'] as int,
-        perPage: json['per_page'] as int,
-        currentPage: json['current_page'] as int,
-        lastPage: json['last_page'] as int,
-      );
+    total: json['total'] as int,
+    perPage: json['per_page'] as int,
+    currentPage: json['current_page'] as int,
+    lastPage: json['last_page'] as int,
+  );
 
   final int total;
   final int perPage;
@@ -21,11 +21,11 @@ class ApiPagination {
   final int lastPage;
 
   Map<String, dynamic> toJson() => {
-        'total': total,
-        'per_page': perPage,
-        'current_page': currentPage,
-        'last_page': lastPage,
-      };
+    'total': total,
+    'per_page': perPage,
+    'current_page': currentPage,
+    'last_page': lastPage,
+  };
 }
 
 /// The real API nests pagination (and review rating aggregates) under a

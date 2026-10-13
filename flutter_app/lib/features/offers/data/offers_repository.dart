@@ -12,14 +12,20 @@ class OffersRepository {
 
   Future<List<FlashSale>> fetchFlashSales() async {
     final response = await _dio.get('flash-sales');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => FlashSale.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => FlashSale.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<Product>> fetchFlashSaleProducts(int flashSaleId) async {
     final response = await _dio.get('flash-sales/$flashSaleId/products');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => Product.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => Product.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }
 
@@ -31,7 +37,11 @@ final flashSalesProvider = FutureProvider<List<FlashSale>>((ref) {
   return ref.watch(offersRepositoryProvider).fetchFlashSales();
 });
 
-final flashSaleProductsProvider =
-    FutureProvider.family<List<Product>, int>((ref, flashSaleId) {
-  return ref.watch(offersRepositoryProvider).fetchFlashSaleProducts(flashSaleId);
+final flashSaleProductsProvider = FutureProvider.family<List<Product>, int>((
+  ref,
+  flashSaleId,
+) {
+  return ref
+      .watch(offersRepositoryProvider)
+      .fetchFlashSaleProducts(flashSaleId);
 });

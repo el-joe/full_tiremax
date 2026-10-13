@@ -1,4 +1,5 @@
 import '../../../../l10n/l10n.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -55,9 +56,16 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
       _vehicleLabel = null;
     });
     // Drop the other mode's selections so hidden filters never apply silently.
-    widget.onChanged(bySize
-        ? f.copyWith(clearMake: true, clearModel: true, clearYear: true, clearVehicle: true)
-        : f.copyWith(clearSize: true, clearBrand: true));
+    widget.onChanged(
+      bySize
+          ? f.copyWith(
+              clearMake: true,
+              clearModel: true,
+              clearYear: true,
+              clearVehicle: true,
+            )
+          : f.copyWith(clearSize: true, clearBrand: true),
+    );
   }
 
   Future<void> _resolveVehicle(ProductFilters next) async {
@@ -68,7 +76,9 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
     }
     setState(() => _vehicleLoading = true);
     try {
-      final match = await ref.read(storeRepositoryProvider).fetchVehicleMatch(
+      final match = await ref
+          .read(storeRepositoryProvider)
+          .fetchVehicleMatch(
             makeId: next.makeId!,
             modelId: next.modelId!,
             year: next.year!,
@@ -78,7 +88,11 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
         _vehicleLabel = match?.label;
         _vehicleLoading = false;
       });
-      widget.onChanged(match == null ? next.copyWith(clearVehicle: true) : next.copyWith(vehicleId: match.id));
+      widget.onChanged(
+        match == null
+            ? next.copyWith(clearVehicle: true)
+            : next.copyWith(vehicleId: match.id),
+      );
     } catch (_) {
       if (!mounted) return;
       setState(() => _vehicleLoading = false);
@@ -99,8 +113,16 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
               padding: const EdgeInsets.only(top: 3),
               child: Row(
                 children: [
-                  _TabButton(label: context.l10n.searchByVehicle, selected: !_bySize, onTap: () => _setTab(false)),
-                  _TabButton(label: context.l10n.searchBySize, selected: _bySize, onTap: () => _setTab(true)),
+                  _TabButton(
+                    label: context.l10n.searchByVehicle,
+                    selected: !_bySize,
+                    onTap: () => _setTab(false),
+                  ),
+                  _TabButton(
+                    label: context.l10n.searchBySize,
+                    selected: _bySize,
+                    onTap: () => _setTab(true),
+                  ),
                 ],
               ),
             ),
@@ -116,8 +138,12 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
 
   Widget _vehicleTab() {
     final makes = ref.watch(vehicleMakesProvider);
-    final models = f.makeId == null ? null : ref.watch(vehicleModelsProvider(f.makeId!));
-    final years = f.modelId == null ? null : ref.watch(vehicleYearsProvider(f.modelId!));
+    final models = f.makeId == null
+        ? null
+        : ref.watch(vehicleModelsProvider(f.makeId!));
+    final years = f.modelId == null
+        ? null
+        : ref.watch(vehicleYearsProvider(f.modelId!));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -126,10 +152,20 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
           placeholder: context.l10n.selectMake,
           isLoading: makes.isLoading,
           value: f.makeId,
-          items: [for (final m in makes.value ?? const <VehicleOption>[]) DropdownMenuItem(value: m.id, child: Text(m.name))],
+          items: [
+            for (final m in makes.value ?? const <VehicleOption>[])
+              DropdownMenuItem(value: m.id, child: Text(m.name)),
+          ],
           onChanged: (v) {
             setState(() => _vehicleLabel = null);
-            widget.onChanged(f.copyWith(makeId: v, clearModel: true, clearYear: true, clearVehicle: true));
+            widget.onChanged(
+              f.copyWith(
+                makeId: v,
+                clearModel: true,
+                clearYear: true,
+                clearVehicle: true,
+              ),
+            );
           },
         ),
         const SizedBox(height: 12),
@@ -138,10 +174,15 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
           placeholder: context.l10n.selectModel,
           isLoading: models?.isLoading ?? false,
           value: f.modelId,
-          items: [for (final m in models?.value ?? const <VehicleOption>[]) DropdownMenuItem(value: m.id, child: Text(m.name))],
+          items: [
+            for (final m in models?.value ?? const <VehicleOption>[])
+              DropdownMenuItem(value: m.id, child: Text(m.name)),
+          ],
           onChanged: (v) {
             setState(() => _vehicleLabel = null);
-            widget.onChanged(f.copyWith(modelId: v, clearYear: true, clearVehicle: true));
+            widget.onChanged(
+              f.copyWith(modelId: v, clearYear: true, clearVehicle: true),
+            );
           },
         ),
         const SizedBox(height: 12),
@@ -150,12 +191,19 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
           placeholder: context.l10n.selectYear,
           isLoading: years?.isLoading ?? false,
           value: f.year,
-          items: [for (final y in years?.value ?? const <int>[]) DropdownMenuItem(value: y, child: Text('$y'))],
-          onChanged: (v) => _resolveVehicle(f.copyWith(year: v, clearVehicle: true)),
+          items: [
+            for (final y in years?.value ?? const <int>[])
+              DropdownMenuItem(value: y, child: Text('$y')),
+          ],
+          onChanged: (v) =>
+              _resolveVehicle(f.copyWith(year: v, clearVehicle: true)),
         ),
         if (_vehicleLoading) ...[
           const SizedBox(height: 12),
-          const LinearProgressIndicator(minHeight: 44, borderRadius: BorderRadius.all(Radius.circular(14))),
+          const LinearProgressIndicator(
+            minHeight: 44,
+            borderRadius: BorderRadius.all(Radius.circular(14)),
+          ),
         ],
         if (_vehicleLabel != null && !_vehicleLoading) ...[
           const SizedBox(height: 12),
@@ -168,9 +216,21 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.directions_car_outlined, size: 20, color: Color(0xFF008236)),
+                const Icon(
+                  Icons.directions_car_outlined,
+                  size: 20,
+                  color: Color(0xFF008236),
+                ),
                 const SizedBox(width: 14),
-                Expanded(child: Text(_vehicleLabel!, style: const TextStyle(fontSize: 14, color: Color(0xFF008236)))),
+                Expanded(
+                  child: Text(
+                    _vehicleLabel!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF008236),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -184,8 +244,9 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
     final sizes = ref.watch(tyreSizesProvider);
     final list = sizes.value ?? const [];
     List<DropdownMenuItem<num>> opts(Iterable<num> values) => [
-          for (final v in values.toSet()) DropdownMenuItem(value: v, child: Text('$v')),
-        ];
+      for (final v in values.toSet())
+        DropdownMenuItem(value: v, child: Text('$v')),
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -227,7 +288,9 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
       const SizedBox(height: 16),
       ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           padding: const EdgeInsets.symmetric(vertical: 14),
         ),
         onPressed: widget.onSubmit,
@@ -239,7 +302,11 @@ class _TabsFilterByState extends ConsumerState<TabsFilterBy> {
 }
 
 class _TabButton extends StatelessWidget {
-  const _TabButton({required this.label, required this.selected, required this.onTap});
+  const _TabButton({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   final String label;
   final bool selected;

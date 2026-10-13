@@ -26,14 +26,17 @@ void main() {
     expect(h.last.headers.containsKey('Authorization'), isFalse);
   }
 
-  test('home: GET home parses sections and sends guest/locale headers', () async {
-    h.reply('GET', 'home', fixture('home'));
-    final res = await h.container.read(homeRepositoryProvider).fetchHome();
-    expect(h.last.method, 'GET');
-    expect(h.last.path, 'home');
-    expectCommonHeaders();
-    expect(res, isNotNull);
-  });
+  test(
+    'home: GET home parses sections and sends guest/locale headers',
+    () async {
+      h.reply('GET', 'home', fixture('home'));
+      final res = await h.container.read(homeRepositoryProvider).fetchHome();
+      expect(h.last.method, 'GET');
+      expect(h.last.path, 'home');
+      expectCommonHeaders();
+      expect(res, isNotNull);
+    },
+  );
 
   test('x-locale follows the locale provider; Authorization sent when token exists', () async {
     final authed = Harness(token: 'jwt-abc');
@@ -46,20 +49,28 @@ void main() {
     expect(authed.last.headers['X-Guest-Token'], FakeTokenStorage.guest);
   });
 
-  test('products: GET products with filters -> paginated Product list', () async {
-    h.reply('GET', 'products', fixture('products'));
-    final repo = h.container.read(storeRepositoryProvider);
-    final page = await repo.fetchProducts(
-      page: 2,
-      filters: const ProductFilters(search: 'x', brandId: 3, minPrice: 10, width: 205),
-    );
-    expect(h.last.path, 'products');
-    expect(h.last.queryParameters, containsPair('page', 2));
-    expect(h.last.queryParameters, containsPair('brand_id', 3));
-    expect(h.last.queryParameters, containsPair('search', 'x'));
-    expect(h.last.queryParameters, containsPair('width', 205));
-    expect(page.data, isNotEmpty);
-  });
+  test(
+    'products: GET products with filters -> paginated Product list',
+    () async {
+      h.reply('GET', 'products', fixture('products'));
+      final repo = h.container.read(storeRepositoryProvider);
+      final page = await repo.fetchProducts(
+        page: 2,
+        filters: const ProductFilters(
+          search: 'x',
+          brandId: 3,
+          minPrice: 10,
+          width: 205,
+        ),
+      );
+      expect(h.last.path, 'products');
+      expect(h.last.queryParameters, containsPair('page', 2));
+      expect(h.last.queryParameters, containsPair('brand_id', 3));
+      expect(h.last.queryParameters, containsPair('search', 'x'));
+      expect(h.last.queryParameters, containsPair('width', 205));
+      expect(page.data, isNotEmpty);
+    },
+  );
 
   test('brands / tyre sizes parse', () async {
     h.reply('GET', 'brands', fixture('brands'));
@@ -102,7 +113,10 @@ void main() {
     expect(h.last.queryParameters, {'make_id': 1, 'model_id': 1, 'year': 2019});
 
     h.reply('GET', 'products', fixture('products'));
-    await repo.fetchProducts(page: 1, filters: const ProductFilters(vehicleId: 42));
+    await repo.fetchProducts(
+      page: 1,
+      filters: const ProductFilters(vehicleId: 42),
+    );
     expect(h.last.queryParameters, containsPair('vehicle_id', 42));
     expect(h.last.queryParameters.containsKey('make'), isFalse);
   });
@@ -121,10 +135,19 @@ void main() {
   });
 
   test('product 404 surfaces as DioException with status 404', () async {
-    h.reply('GET', 'products/99999', {'success': false, 'message': 'Not found'}, status: 404);
+    h.reply('GET', 'products/99999', {
+      'success': false,
+      'message': 'Not found',
+    }, status: 404);
     expect(
       h.container.read(productRepositoryProvider).fetchProduct(99999),
-      throwsA(isA<DioException>().having((e) => e.response?.statusCode, 'status', 404)),
+      throwsA(
+        isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status',
+          404,
+        ),
+      ),
     );
   });
 
@@ -143,8 +166,15 @@ void main() {
     h.reply('GET', 'flash-sales', {
       'success': true,
       'data': [
-        {'id': 1, 'title': 'Sale', 'discount_percent': 10.0, 'starts_at': '2026-01-01T00:00:00+00:00', 'ends_at': '2026-12-31T00:00:00+00:00', 'is_active': true}
-      ]
+        {
+          'id': 1,
+          'title': 'Sale',
+          'discount_percent': 10.0,
+          'starts_at': '2026-01-01T00:00:00+00:00',
+          'ends_at': '2026-12-31T00:00:00+00:00',
+          'is_active': true,
+        },
+      ],
     });
     h.reply('GET', 'flash-sales/1/products', fixture('related'));
     final repo = h.container.read(offersRepositoryProvider);
@@ -159,11 +189,17 @@ void main() {
     h.reply('GET', 'governorates', fixture('governorates'));
     h.reply('GET', 'governorates/1/cities', fixture('cities'));
     h.reply('GET', 'payment-gateways', fixture('gateways'));
-    expect(await h.container.read(servicesRepositoryProvider).fetchServices(), isNotEmpty);
+    expect(
+      await h.container.read(servicesRepositoryProvider).fetchServices(),
+      isNotEmpty,
+    );
     final checkout = h.container.read(checkoutRepositoryProvider);
     expect(await checkout.fetchBranches(), isNotEmpty);
     expect(await checkout.fetchGovernorates(), isNotEmpty);
-    expect(await h.container.read(addressesRepositoryProvider).fetchCities(1), isNotEmpty);
+    expect(
+      await h.container.read(addressesRepositoryProvider).fetchCities(1),
+      isNotEmpty,
+    );
     // payment-gateways has no `is_active` key in the API payload
     expect(await checkout.fetchPaymentMethods(), isNotEmpty);
   });
@@ -181,10 +217,13 @@ void main() {
       'data': [
         {'time': '09:00', 'available': true, 'capacity': 2, 'booked': 0},
         {'time': '09:30', 'available': false, 'capacity': 2, 'booked': 2},
-      ]
+      ],
     });
     final repo = h.container.read(reservationRepositoryProvider);
-    final slots = await repo.fetchAvailableSlots(branchId: 1, date: '2026-12-01');
+    final slots = await repo.fetchAvailableSlots(
+      branchId: 1,
+      date: '2026-12-01',
+    );
     expect(h.last.queryParameters, {'date': '2026-12-01'});
     expect(slots.map((s) => s.available), [true, false]);
   });

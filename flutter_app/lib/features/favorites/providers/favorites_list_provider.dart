@@ -50,5 +50,5 @@ class FavoritesListNotifier extends AsyncNotifier<List<CustomerFav>> {
 
 final favoritesListProvider =
     AsyncNotifierProvider<FavoritesListNotifier, List<CustomerFav>>(
-  FavoritesListNotifier.new,
-);
+      FavoritesListNotifier.new,
+    );

@@ -1,10 +1,13 @@
 import '../../../l10n/l10n.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_exception.dart';
+import '../../../core/utils/format.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_radii.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../shared/widgets/widgets.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../../orders/providers/orders_provider.dart';
@@ -15,12 +18,7 @@ import '../providers/auth_provider.dart';
 /// Opens the login/register modal bottom sheet, mirroring the web's
 /// `AuthDialog` (opened via `protectedWithAuth` / `?authDialog=on`).
 Future<void> showAuthSheet(BuildContext context) {
-  return showModalBottomSheet<void>(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (context) => const AuthSheet(),
-  );
+  return showAppBottomSheet<void>(context, (context) => const AuthSheet());
 }
 
 /// After login/register: refresh guest-linked data and tell the user how many
@@ -31,7 +29,9 @@ void _afterAuth(
   ScaffoldMessengerState messenger,
   AppLocalizations l10n,
 ) {
-  messenger.showSnackBar(SnackBar(content: Text('${l10n.authWelcome} ${result.customer.name}')));
+  messenger.showSnackBar(
+    SnackBar(content: Text('${l10n.authWelcome} ${result.customer.name}')),
+  );
   ref.invalidate(cartProvider);
   ref.invalidate(ordersListProvider);
   ref.invalidate(bookingsListProvider);
@@ -58,111 +58,80 @@ class _AuthSheetState extends ConsumerState<AuthSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.75,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
-      expand: false,
-      builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: AppColors.background,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(AppRadii.xxl),
-            ),
-          ),
-          child: SingleChildScrollView(
-            controller: scrollController,
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    margin: const EdgeInsets.only(bottom: 16),
-                    decoration: BoxDecoration(
-                      color: AppColors.gray2,
-                      borderRadius: AppRadii.radiusFull,
-                    ),
-                  ),
-                ),
-                _TabToggle(
-                  showLogin: _showLogin,
-                  onChanged: (v) => setState(() => _showLogin = v),
-                ),
-                const SizedBox(height: 24),
-                if (_showLogin)
-                  const _LoginForm()
-                else
-                  const _RegisterForm(),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _TabToggle extends StatelessWidget {
-  const _TabToggle({required this.showLogin, required this.onChanged});
-
-  final bool showLogin;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: AppColors.gray3,
-        borderRadius: AppRadii.radiusFull,
-      ),
-      child: Row(
+    return BottomSheetScaffold(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: _TabButton(icon: Icons.login, label: context.l10n.authLogin, active: showLogin, onTap: () => onChanged(true))),
-          Expanded(child: _TabButton(icon: Icons.person_add_alt, label: context.l10n.authRegister, active: !showLogin, onTap: () => onChanged(false))),
+          Row(
+            children: [
+              Expanded(
+                child: _Segment(
+                  label: context.l10n.authLogin,
+                  active: _showLogin,
+                  onTap: () => setState(() => _showLogin = true),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: _Segment(
+                  label: context.l10n.authRegister,
+                  active: !_showLogin,
+                  onTap: () => setState(() => _showLogin = false),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: _showLogin
+                ? const _LoginForm(key: ValueKey('login'))
+                : const _RegisterForm(key: ValueKey('register')),
+          ),
         ],
       ),
     );
   }
 }
 
-class _TabButton extends StatelessWidget {
-  const _TabButton({required this.icon, required this.label, required this.active, required this.onTap});
+/// Segmented Login/Register control (44px+ tap target).
+class _Segment extends StatelessWidget {
+  const _Segment({
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
 
-  final IconData icon;
   final String label;
   final bool active;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: active ? AppColors.primary : Colors.transparent,
-          borderRadius: AppRadii.radiusFull,
-        ),
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 18, color: active ? AppColors.onPrimary : AppColors.foregroundDark),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                color: active ? AppColors.onPrimary : AppColors.foregroundDark,
-                fontWeight: FontWeight.w700,
-              ),
+    return Semantics(
+      button: true,
+      selected: active,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          constraints: const BoxConstraints(minHeight: AppSpacing.minTap),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          decoration: BoxDecoration(
+            color: active ? AppColors.primary : AppColors.gray4,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: active ? AppColors.chrome : AppColors.gray2,
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -171,7 +140,7 @@ class _TabButton extends StatelessWidget {
 
 /// Mirrors `Schemas/authSchemas.ts`'s `loginSchema`.
 class _LoginForm extends ConsumerStatefulWidget {
-  const _LoginForm();
+  const _LoginForm({super.key});
 
   @override
   ConsumerState<_LoginForm> createState() => _LoginFormState();
@@ -183,6 +152,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
   final _passwordController = TextEditingController();
   bool _submitting = false;
   String? _apiError;
+  Map<String, String> _serverErrors = {};
 
   @override
   void dispose() {
@@ -191,21 +161,39 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
     super.dispose();
   }
 
+  void _clearServerError(String key) {
+    if (_serverErrors.containsKey(key)) {
+      setState(() => _serverErrors = {..._serverErrors}..remove(key));
+    }
+  }
+
   Future<void> _submit() async {
-    setState(() => _apiError = null);
+    setState(() {
+      _apiError = null;
+      _serverErrors = {};
+    });
     if (!_formKey.currentState!.validate()) return;
     setState(() => _submitting = true);
     try {
       final messenger = ScaffoldMessenger.of(context);
       final l10n = AppLocalizations.of(context);
-      final result = await ref.read(authProvider.notifier).login(
+      final result = await ref
+          .read(authProvider.notifier)
+          .login(
             login: _identifierController.text.trim(),
             password: _passwordController.text,
           );
       _afterAuth(ref, result, messenger, l10n);
       if (mounted) Navigator.of(context).pop();
     } on ApiException catch (e) {
-      setState(() => _apiError = e.message);
+      if (!mounted) return;
+      final fields = _fieldErrors(e, const {'login', 'password'});
+      setState(() {
+        _serverErrors = fields;
+        _apiError = fields.isEmpty ? e.message : null;
+      });
+    } catch (_) {
+      if (mounted) setState(() => _apiError = currentL10n.errUnexpected);
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -219,42 +207,44 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextFormField(
+          AppTextField(
             controller: _identifierController,
-            decoration: InputDecoration(labelText: l10n.authEmailOrPhone, hintText: context.l10n.enterEmailOrPhoneNumber),
+            textInputAction: TextInputAction.next,
+            prefixIcon: const Icon(Icons.person_outline),
+            onChanged: (_) => _clearServerError('login'),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return l10n.authEmailOrPhoneRequired;
               }
               return null;
             },
+            label: l10n.authEmailOrPhone,
+            errorText: _serverErrors['login'],
           ),
-          const SizedBox(height: 16),
-          TextFormField(
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
             controller: _passwordController,
             obscureText: true,
-            decoration: InputDecoration(labelText: l10n.authPassword, hintText: context.l10n.enterPassword),
+            prefixIcon: const Icon(Icons.lock_outline),
+            onChanged: (_) => _clearServerError('password'),
             validator: (value) {
               if (value == null || value.length < 6) {
                 return l10n.authPasswordMinLength;
               }
               return null;
             },
+            label: l10n.authPassword,
+            errorText: _serverErrors['password'],
           ),
           if (_apiError != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             _ErrorBadge(message: _apiError!),
           ],
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: _submitting ? null : _submit,
-            child: _submitting
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Text(l10n.authSignIn),
+          const SizedBox(height: AppSpacing.xl),
+          PrimaryButton(
+            label: l10n.authSignIn,
+            loading: _submitting,
+            onPressed: _submit,
           ),
         ],
       ),
@@ -264,7 +254,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
 
 /// Mirrors `Schemas/authSchemas.ts`'s `registerSchema`.
 class _RegisterForm extends ConsumerStatefulWidget {
-  const _RegisterForm();
+  const _RegisterForm({super.key});
 
   @override
   ConsumerState<_RegisterForm> createState() => _RegisterFormState();
@@ -281,6 +271,12 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
   bool _submitting = false;
   String? _apiError;
   Map<String, String> _serverErrors = {};
+
+  void _clearServerError(String key) {
+    if (_serverErrors.containsKey(key)) {
+      setState(() => _serverErrors = {..._serverErrors}..remove(key));
+    }
+  }
 
   static final _emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
@@ -305,7 +301,9 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
     try {
       final messenger = ScaffoldMessenger.of(context);
       final l10n = AppLocalizations.of(context);
-      final result = await ref.read(authProvider.notifier).register(
+      final result = await ref
+          .read(authProvider.notifier)
+          .register(
             name: _nameController.text.trim(),
             phone: _phoneController.text.trim(),
             email: _emailController.text.trim().isEmpty
@@ -323,16 +321,21 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
     } on ApiException catch (e) {
       // Per-field API errors land on the matching input (the banner is only
       // shown when there are none), like the web's `setError(..., "server")`.
-      final fields = <String, String>{
-        for (final entry in (e.errors ?? const <String, List<String>>{}).entries)
-          if (const {'name', 'phone', 'email', 'password', 'password_confirmation', 'address'}.contains(entry.key) &&
-              entry.value.isNotEmpty)
-            entry.key: entry.value.first,
-      };
+      if (!mounted) return;
+      final fields = _fieldErrors(e, const {
+        'name',
+        'phone',
+        'email',
+        'password',
+        'password_confirmation',
+        'address',
+      });
       setState(() {
         _serverErrors = fields;
         _apiError = fields.isEmpty ? e.message : null;
       });
+    } catch (_) {
+      if (mounted) setState(() => _apiError = currentL10n.errUnexpected);
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -346,22 +349,10 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextFormField(
-            controller: _nameController,
-            decoration: InputDecoration(errorText: _serverErrors['name'], labelText: l10n.authFullName, hintText: context.l10n.enterFullName),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return l10n.authFullNameRequired;
-              }
-              if (value.length > 120) return l10n.authNameTooLong;
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
+          AppTextField(
             controller: _phoneController,
+            onChanged: (_) => _clearServerError('phone'),
             keyboardType: TextInputType.phone,
-            decoration: InputDecoration(errorText: _serverErrors['phone'], labelText: l10n.authPhoneNumber, hintText: context.l10n.enterPhoneNumber),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return l10n.authPhoneNumberRequired;
@@ -369,12 +360,28 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
               if (value.length > 20) return l10n.authPhoneTooLong;
               return null;
             },
+            label: l10n.authPhoneNumber,
+            errorText: _serverErrors['phone'],
           ),
-          const SizedBox(height: 16),
-          TextFormField(
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
+            controller: _nameController,
+            onChanged: (_) => _clearServerError('name'),
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return l10n.authFullNameRequired;
+              }
+              if (value.length > 120) return l10n.authNameTooLong;
+              return null;
+            },
+            label: l10n.authFullName,
+            errorText: _serverErrors['name'],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
             controller: _emailController,
+            onChanged: (_) => _clearServerError('email'),
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(errorText: _serverErrors['email'], labelText: l10n.authEmailOptional, hintText: context.l10n.enterEmail),
             validator: (value) {
               if (value == null || value.trim().isEmpty) return null;
               if (value.length > 120) return l10n.authEmailTooLong;
@@ -383,24 +390,28 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
               }
               return null;
             },
+            label: l10n.authEmailOptional,
+            errorText: _serverErrors['email'],
           ),
-          const SizedBox(height: 16),
-          TextFormField(
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
             controller: _passwordController,
+            onChanged: (_) => _clearServerError('password'),
             obscureText: true,
-            decoration: InputDecoration(errorText: _serverErrors['password'], labelText: l10n.authPassword, hintText: context.l10n.enterPassword),
             validator: (value) {
               if (value == null || value.length < 6) {
                 return l10n.authPasswordMinLength;
               }
               return null;
             },
+            label: l10n.authPassword,
+            errorText: _serverErrors['password'],
           ),
-          const SizedBox(height: 16),
-          TextFormField(
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
             controller: _confirmController,
+            onChanged: (_) => _clearServerError('password_confirmation'),
             obscureText: true,
-            decoration: InputDecoration(errorText: _serverErrors['password_confirmation'], labelText: l10n.authConfirmPassword, hintText: context.l10n.confirmYourPassword),
             validator: (value) {
               if (value == null || value.length < 6) {
                 return l10n.authConfirmPasswordRequired;
@@ -410,38 +421,43 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
               }
               return null;
             },
+            label: l10n.authConfirmPassword,
+            errorText: _serverErrors['password_confirmation'],
           ),
-          const SizedBox(height: 16),
-          TextFormField(
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
             controller: _addressController,
-            decoration: InputDecoration(errorText: _serverErrors['address'], labelText: l10n.authAddressOptional, hintText: context.l10n.enterAddress),
+            onChanged: (_) => _clearServerError('address'),
             validator: (value) {
               if (value != null && value.length > 255) {
                 return l10n.authAddressTooLong;
               }
               return null;
             },
+            label: l10n.authAddressOptional,
+            errorText: _serverErrors['address'],
           ),
           if (_apiError != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             _ErrorBadge(message: _apiError!),
           ],
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: _submitting ? null : _submit,
-            child: _submitting
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Text(l10n.authCreateAccount),
+          const SizedBox(height: AppSpacing.xl),
+          PrimaryButton(
+            label: l10n.authCreateAccount,
+            loading: _submitting,
+            onPressed: _submit,
           ),
         ],
       ),
     );
   }
 }
+
+Map<String, String> _fieldErrors(ApiException e, Set<String> allowed) => {
+  for (final entry in (e.errors ?? const <String, List<String>>{}).entries)
+    if (allowed.contains(entry.key) && entry.value.isNotEmpty)
+      entry.key: entry.value.first,
+};
 
 class _ErrorBadge extends StatelessWidget {
   const _ErrorBadge({required this.message});
@@ -450,17 +466,22 @@ class _ErrorBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.error.withValues(alpha: 0.15),
-        borderRadius: AppRadii.radiusLg,
-      ),
-      child: Text(
-        message,
-        style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600),
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Icon(Icons.error_outline, size: 18, color: AppColors.error),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: Text(
+            message,
+            style: const TextStyle(
+              color: AppColors.error,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

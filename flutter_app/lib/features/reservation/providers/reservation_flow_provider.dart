@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+
 import '../../../core/utils/format.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/models/branch.dart';
@@ -10,7 +12,12 @@ import '../data/reservation_repository.dart';
 
 /// The 4 steps of the reservation flow, mirroring
 /// `frontend/providers/ReservationProvider.tsx`'s `steps`.
-enum ReservationStep { chooseService, chooseBranch, chooseAppointment, confirmBooking }
+enum ReservationStep {
+  chooseService,
+  chooseBranch,
+  chooseAppointment,
+  confirmBooking,
+}
 
 class ReservationFlowState {
   const ReservationFlowState({
@@ -30,8 +37,10 @@ class ReservationFlowState {
   final ReservationStep step;
   final Service? service;
   final Branch? branch;
+
   /// ISO `yyyy-MM-dd` date string.
   final String? date;
+
   /// `HH:mm` time string.
   final String? time;
   final String notes;
@@ -93,12 +102,17 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
     state = state.copyWith(
       service: service,
       branch: branch,
-      step: branch != null ? ReservationStep.chooseAppointment : ReservationStep.chooseBranch,
+      step: branch != null
+          ? ReservationStep.chooseAppointment
+          : ReservationStep.chooseBranch,
     );
   }
 
   void setService(Service service) {
-    state = ReservationFlowState(service: service, step: ReservationStep.chooseBranch);
+    state = ReservationFlowState(
+      service: service,
+      step: ReservationStep.chooseBranch,
+    );
   }
 
   void setBranch(Branch branch) {
@@ -118,7 +132,10 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
     state = state.copyWith(isSlotsLoading: true, slots: const []);
     try {
       final repository = ref.read(reservationRepositoryProvider);
-      final slots = await repository.fetchAvailableSlots(branchId: branch.id, date: date);
+      final slots = await repository.fetchAvailableSlots(
+        branchId: branch.id,
+        date: date,
+      );
       state = state.copyWith(slots: slots, isSlotsLoading: false);
     } catch (_) {
       state = state.copyWith(isSlotsLoading: false, slots: const []);
@@ -161,7 +178,8 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
     final branch = state.branch;
     final date = state.date;
     final time = state.time;
-    if (service == null || branch == null || date == null || time == null) return null;
+    if (service == null || branch == null || date == null || time == null)
+      return null;
 
     state = state.copyWith(isSubmitting: true, clearSubmitError: true);
     try {
@@ -180,7 +198,9 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
       return result;
     } on DioException catch (e) {
       final error = e.error;
-      final message = error is ApiException ? error.message : e.message ?? currentL10n.bookingFailed;
+      final message = error is ApiException
+          ? error.message
+          : e.message ?? currentL10n.bookingFailed;
       state = state.copyWith(isSubmitting: false, submitError: message);
       return null;
     } catch (e) {
@@ -192,5 +212,5 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
 
 final reservationFlowProvider =
     NotifierProvider<ReservationFlowNotifier, ReservationFlowState>(
-  ReservationFlowNotifier.new,
-);
+      ReservationFlowNotifier.new,
+    );

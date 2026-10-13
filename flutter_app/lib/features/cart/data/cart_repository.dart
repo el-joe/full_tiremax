@@ -17,7 +17,10 @@ class CartRepository {
     return CustomerCart.fromJson(body['data'] as Map<String, dynamic>);
   }
 
-  Future<CustomerCart> addItem({required int productId, required int quantity}) async {
+  Future<CustomerCart> addItem({
+    required int productId,
+    required int quantity,
+  }) async {
     final response = await _dio.post(
       'cart/items',
       data: {'product_id': productId, 'quantity': quantity},
@@ -26,7 +29,10 @@ class CartRepository {
     return CustomerCart.fromJson(body['data'] as Map<String, dynamic>);
   }
 
-  Future<CustomerCart> updateItem({required int itemId, required int quantity}) async {
+  Future<CustomerCart> updateItem({
+    required int itemId,
+    required int quantity,
+  }) async {
     final response = await _dio.put(
       'cart/items/$itemId',
       data: {'quantity': quantity},

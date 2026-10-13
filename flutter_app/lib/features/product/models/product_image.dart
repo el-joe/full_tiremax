@@ -7,10 +7,8 @@ part 'product_image.g.dart';
 /// `{ url: string; is_primary: boolean }`.
 @freezed
 abstract class ProductImage with _$ProductImage {
-  const factory ProductImage({
-    required String url,
-    required bool is_primary,
-  }) = _ProductImage;
+  const factory ProductImage({required String url, required bool is_primary}) =
+      _ProductImage;
 
   factory ProductImage.fromJson(Map<String, dynamic> json) =>
       _$ProductImageFromJson(json);

@@ -3391,6 +3391,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Traffic Accidents'**
   String get trafficAccidents;
+
+  /// No description provided for @viewCart.
+  ///
+  /// In en, this message translates to:
+  /// **'View cart'**
+  String get viewCart;
+
+  /// No description provided for @addToFavoritesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favorites'**
+  String get addToFavoritesLabel;
+
+  /// No description provided for @removeFromFavoritesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get removeFromFavoritesLabel;
+
+  /// No description provided for @emptyStateDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get emptyStateDefaultTitle;
+
+  /// No description provided for @resultsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} results'**
+  String resultsCount(int count);
+
+  /// No description provided for @sectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get sectionDescription;
+
+  /// No description provided for @sectionSpecs.
+  ///
+  /// In en, this message translates to:
+  /// **'Specifications'**
+  String get sectionSpecs;
+
+  /// No description provided for @sectionWarranty.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty'**
+  String get sectionWarranty;
+
+  /// No description provided for @noReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get noReviews;
+
+  /// No description provided for @productCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Product details copied'**
+  String get productCopied;
+
+  /// No description provided for @shareProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get shareProduct;
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} min'**
+  String durationMinutes(int n);
+
+  /// No description provided for @loadMoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load more products'**
+  String get loadMoreFailed;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @copyReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copyReference;
+
+  /// No description provided for @referenceCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference copied'**
+  String get referenceCopied;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @itemRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Item removed'**
+  String get itemRemoved;
+
+  /// No description provided for @haveOfferCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Have an offer code?'**
+  String get haveOfferCode;
+
+  /// No description provided for @itemsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
+  String itemsCount(int count);
+
+  /// No description provided for @stepProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String stepProgress(int current, int total);
+
+  /// No description provided for @viewOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'View order'**
+  String get viewOrder;
+
+  /// No description provided for @profileSectionActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get profileSectionActivity;
+
+  /// No description provided for @profileSectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get profileSectionAccount;
+
+  /// No description provided for @profileSectionSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support & legal'**
+  String get profileSectionSupport;
+
+  /// No description provided for @notificationsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get notificationsToday;
+
+  /// No description provided for @notificationsEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get notificationsEarlier;
+
+  /// No description provided for @filterUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get filterUpcoming;
+
+  /// No description provided for @orderProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Order progress'**
+  String get orderProgress;
+
+  /// No description provided for @bookingProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking progress'**
+  String get bookingProgress;
+
+  /// No description provided for @orderStepPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Placed'**
+  String get orderStepPlaced;
 }
 
 class _AppLocalizationsDelegate

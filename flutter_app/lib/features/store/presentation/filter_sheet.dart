@@ -1,18 +1,32 @@
-import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/utils/format.dart';
+import '../../../l10n/l10n.dart';
+import '../../../shared/widgets/widgets.dart';
 import '../data/store_repository.dart';
 import '../providers/store_provider.dart';
 import 'widgets/tabs_filter_by.dart';
 
 const double _maxRange = 999999;
 
-/// Filter drawer mirroring web `Filters.tsx`: title + context.l10n.clearFilters,
-/// description, vehicle/size tabs (brand grid under the size tab), price
-/// range slider and the context.l10n.findYourTireNow apply button.
+/// Number of active (non search/type) filters, shown on the Store filter button.
+int activeFilterCount(ProductFilters f, {bool ignoreBadge = false}) {
+  var n = 0;
+  if (f.brandId != null) n++;
+  if (f.categoryId != null) n++;
+  if (f.minPrice != null || f.maxPrice != null) n++;
+  if (f.vehicleId != null || f.makeId != null) n++;
+  if (f.width != null || f.aspectRatio != null || f.rimDiameter != null) n++;
+  if (!ignoreBadge && f.badge != null) n++;
+  return n;
+}
+
+/// Filter bottom sheet: badge chips, vehicle/size tabs (brand chips under the
+/// size tab), price range and a sticky apply/clear bar. Same filter semantics
+/// as the web `Filters.tsx`. Show with [showAppBottomSheet].
 class FilterSheet extends ConsumerStatefulWidget {
   const FilterSheet({super.key});
 
@@ -27,46 +41,78 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   @override
   void initState() {
     super.initState();
-    _draft = ref.read(storeListProvider).value?.filters ?? const ProductFilters();
-    _range = RangeValues((_draft.minPrice ?? 0).toDouble(), (_draft.maxPrice ?? _maxRange).toDouble());
+    _draft =
+        ref.read(storeListProvider).value?.filters ?? const ProductFilters();
+    _range = RangeValues(
+      (_draft.minPrice ?? 0).toDouble(),
+      (_draft.maxPrice ?? _maxRange).toDouble(),
+    );
+  }
+
+  Widget _badgeSection() {
+    final l10n = context.l10n;
+    final badges = {
+      'special_offer': l10n.specialOffer,
+      'best_seller': l10n.bestSeller,
+      'new': l10n.newBadge,
+      'best_choice': l10n.bestChoice,
+    };
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.filterBy, style: _titleStyle),
+        const SizedBox(height: AppSpacing.md),
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.sm,
+          children: [
+            for (final e in badges.entries)
+              AppChip(
+                label: e.value,
+                selected: _draft.badge == e.key,
+                onTap: () => setState(
+                  () => _draft = _draft.badge == e.key
+                      ? _draft.copyWith(clearBadge: true)
+                      : _draft.copyWith(badge: e.key),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.xl),
+      ],
+    );
   }
 
   Widget _brandSection() {
     final brandsAsync = ref.watch(brandsProvider);
     return Padding(
-      padding: const EdgeInsets.only(top: 24),
+      padding: const EdgeInsets.only(top: AppSpacing.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(context.l10n.brand, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.foregroundLight)),
-          const SizedBox(height: 16),
+          Text(context.l10n.brand, style: _titleStyle),
+          const SizedBox(height: AppSpacing.md),
           brandsAsync.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, _) => Text('$e', style: const TextStyle(color: AppColors.error)),
-            data: (brands) => LayoutBuilder(
-              builder: (context, c) {
-                final w = (c.maxWidth - 8) / 2;
-                return Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    for (final brand in brands)
-                      SizedBox(
-                        width: w,
-                        child: _draft.brandId == brand.id
-                            ? ElevatedButton(
-                                onPressed: () => setState(() => _draft = _draft.copyWith(clearBrand: true)),
-                                child: Text(brand.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-                              )
-                            : OutlinedButton(
-                                style: OutlinedButton.styleFrom(foregroundColor: AppColors.foregroundLight),
-                                onPressed: () => setState(() => _draft = _draft.copyWith(brandId: brand.id)),
-                                child: Text(brand.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-                              ),
-                      ),
-                  ],
-                );
-              },
+            loading: () => const ShimmerBox(height: 44, width: double.infinity),
+            error: (e, _) => Text(
+              context.l10n.somethingWentWrong,
+              style: const TextStyle(color: AppColors.error),
+            ),
+            data: (brands) => Wrap(
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.sm,
+              children: [
+                for (final brand in brands)
+                  AppChip(
+                    label: brand.name,
+                    selected: _draft.brandId == brand.id,
+                    onTap: () => setState(
+                      () => _draft = _draft.brandId == brand.id
+                          ? _draft.copyWith(clearBrand: true)
+                          : _draft.copyWith(brandId: brand.id),
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
@@ -74,90 +120,87 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     );
   }
 
+  static const _titleStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    color: AppColors.foregroundLight,
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: AppTheme.light,
-      child: DraggableScrollableSheet(
-        initialChildSize: 0.9,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        expand: false,
-        builder: (context, scrollController) {
-          return Material(
-            color: Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            clipBehavior: Clip.antiAlias,
-            child: ListView(
-              controller: scrollController,
-              padding: const EdgeInsets.all(20),
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(context.l10n.filters, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: AppColors.foregroundLight)),
-                    TextButton(
-                      style: TextButton.styleFrom(foregroundColor: AppColors.foregroundLight),
-                      // Web keeps type / search / badge when clearing.
-                      onPressed: () {
-                        final keep = _draft;
-                        ref.read(storeListProvider.notifier).applyFilters(
-                              ProductFilters(search: keep.search, type: keep.type, badge: keep.badge),
-                            );
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(context.l10n.clearFilters, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-                    ),
-                  ],
-                ),
-                Text(context.l10n.filtersDescription, style: TextStyle(fontSize: 10, height: 2.8, color: AppColors.gray3)),
-                const SizedBox(height: 24),
-                TabsFilterBy(
-                  filters: _draft,
-                  onChanged: (next) => setState(() => _draft = next),
-                  sizeTabExtra: _brandSection(),
-                ),
-                const SizedBox(height: 32),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(context.l10n.priceRange, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.foregroundLight)),
-                    Text(
-                      '${_range.start.round()} - ${_range.end.round()}',
-                      style: const TextStyle(fontSize: 12, color: AppColors.gray2),
-                    ),
-                  ],
-                ),
-                RangeSlider(
-                  values: _range,
-                  min: 0,
-                  max: _maxRange,
-                  activeColor: AppColors.primary,
-                  onChanged: (v) => setState(() => _range = v),
-                  onChangeEnd: (v) => setState(() {
-                    final atDefault = v.start == 0 && v.end == _maxRange;
-                    _draft = atDefault
-                        ? _draft.copyWith(clearPrice: true)
-                        : _draft.copyWith(minPrice: v.start.round(), maxPrice: v.end.round());
-                  }),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    padding: const EdgeInsets.all(16),
-                  ),
-                  onPressed: () {
-                    ref.read(storeListProvider.notifier).applyFilters(_draft);
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.search),
-                  label: Text(context.l10n.findYourTireNow, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-                ),
-              ],
+    final l10n = context.l10n;
+    return BottomSheetScaffold(
+      title: l10n.filters,
+      actionBar: Row(
+        children: [
+          Expanded(
+            child: SecondaryButton(
+              label: l10n.clearFilters,
+              // Web keeps type / search / badge when clearing.
+              onPressed: () {
+                final keep = _draft;
+                ref
+                    .read(storeListProvider.notifier)
+                    .applyFilters(
+                      ProductFilters(
+                        search: keep.search,
+                        type: keep.type,
+                        badge: keep.badge,
+                      ),
+                    );
+                Navigator.of(context).pop();
+              },
             ),
-          );
-        },
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            flex: 2,
+            child: PrimaryButton(
+              label: l10n.apply,
+              onPressed: () {
+                ref.read(storeListProvider.notifier).applyFilters(_draft);
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _badgeSection(),
+          TabsFilterBy(
+            filters: _draft,
+            onChanged: (next) => setState(() => _draft = next),
+            sizeTabExtra: _brandSection(),
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          Row(
+            children: [
+              Expanded(child: Text(l10n.priceRange, style: _titleStyle)),
+              Text(
+                '${formatNumber(_range.start.round())} - ${formatNumber(_range.end.round())}',
+                style: const TextStyle(fontSize: 12, color: AppColors.gray2),
+              ),
+            ],
+          ),
+          RangeSlider(
+            values: _range,
+            min: 0,
+            max: _maxRange,
+            activeColor: AppColors.primary,
+            onChanged: (v) => setState(() => _range = v),
+            onChangeEnd: (v) => setState(() {
+              final atDefault = v.start == 0 && v.end == _maxRange;
+              _draft = atDefault
+                  ? _draft.copyWith(clearPrice: true)
+                  : _draft.copyWith(
+                      minPrice: v.start.round(),
+                      maxPrice: v.end.round(),
+                    );
+            }),
+          ),
+        ],
       ),
     );
   }

@@ -48,7 +48,9 @@ bool isProtectedPath(String path) {
 /// `/profile/(orders|bookings|reservation|reservations)[/ref]` land on
 /// `/track-order?type=&reference=&phone=`. Returns null when not applicable.
 String? guestTrackingRedirect(Uri uri) {
-  final m = RegExp(r'^/profile/(orders|bookings|reservations|reservation)(?:/([A-Za-z0-9-]+))?/?$').firstMatch(uri.path);
+  final m = RegExp(
+    r'^/profile/(orders|bookings|reservations|reservation)(?:/([A-Za-z0-9-]+))?/?$',
+  ).firstMatch(uri.path);
   if (m == null) return null;
   final section = m.group(1)!;
   final ref = m.group(2);
@@ -62,13 +64,13 @@ String? guestTrackingRedirect(Uri uri) {
   return Uri(path: '/track-order', queryParameters: query).toString();
 }
 
-final routerRefreshProvider = ChangeNotifierProvider<_RouterRefreshNotifier>(
-  (ref) {
-    final notifier = _RouterRefreshNotifier();
-    ref.listen(authProvider, (previous, next) => notifier.refresh());
-    return notifier;
-  },
-);
+final routerRefreshProvider = ChangeNotifierProvider<_RouterRefreshNotifier>((
+  ref,
+) {
+  final notifier = _RouterRefreshNotifier();
+  ref.listen(authProvider, (previous, next) => notifier.refresh());
+  return notifier;
+});
 
 class _RouterRefreshNotifier extends ChangeNotifier {
   void refresh() => notifyListeners();
@@ -256,7 +258,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   );
 });
 
-/// Shared shell scaffold wrapping the 4 primary tabs with the bottom nav bar.
+/// Shared shell scaffold wrapping the 5 primary tabs (Home, Store, Services, Cart, Profile) with the bottom nav bar.
 class AppShell extends StatelessWidget {
   const AppShell({required this.child, super.key});
 
@@ -268,7 +270,7 @@ class AppShell extends StatelessWidget {
       body: Stack(
         children: [
           child,
-          // Above the floating bottom nav (pill + tabs bar), bottom-end.
+          // Bottom-end, above the bottom bar.
           const PositionedDirectional(
             end: 16,
             bottom: 12,

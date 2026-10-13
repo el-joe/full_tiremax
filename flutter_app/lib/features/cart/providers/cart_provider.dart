@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+
 import '../../../core/utils/format.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_exception.dart';
@@ -29,7 +31,9 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
   }
 
   Future<void> refresh() async {
-    state = await AsyncValue.guard(() => ref.read(cartRepositoryProvider).fetchCart());
+    state = await AsyncValue.guard(
+      () => ref.read(cartRepositoryProvider).fetchCart(),
+    );
   }
 
   /// Adds [productId] to the cart (web `useCartContext().addItem`). Returns
@@ -37,24 +41,32 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
   Future<String?> addProduct(int productId, int quantity) async {
     _appliedOffer = null;
     try {
-      final cart = await ref.read(cartRepositoryProvider).addItem(productId: productId, quantity: quantity);
+      final cart = await ref
+          .read(cartRepositoryProvider)
+          .addItem(productId: productId, quantity: quantity);
       state = AsyncData(cart);
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
+      return error is ApiException
+          ? error.message
+          : currentL10n.somethingWentWrongPeriod;
     }
   }
 
   Future<String?> updateQuantity(int itemId, int quantity) async {
     _appliedOffer = null;
     try {
-      final cart = await ref.read(cartRepositoryProvider).updateItem(itemId: itemId, quantity: quantity);
+      final cart = await ref
+          .read(cartRepositoryProvider)
+          .updateItem(itemId: itemId, quantity: quantity);
       state = AsyncData(cart);
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
+      return error is ApiException
+          ? error.message
+          : currentL10n.somethingWentWrongPeriod;
     }
   }
 
@@ -66,7 +78,9 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
+      return error is ApiException
+          ? error.message
+          : currentL10n.somethingWentWrongPeriod;
     }
   }
 
@@ -78,7 +92,9 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
+      return error is ApiException
+          ? error.message
+          : currentL10n.somethingWentWrongPeriod;
     }
   }
 
@@ -92,7 +108,9 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      final message = error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
+      final message = error is ApiException
+          ? error.message
+          : currentL10n.somethingWentWrongPeriod;
       _applyOfferError = message;
       return message;
     }
@@ -103,7 +121,9 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
   }
 }
 
-final cartProvider = AsyncNotifierProvider<CartNotifier, CustomerCart>(CartNotifier.new);
+final cartProvider = AsyncNotifierProvider<CartNotifier, CustomerCart>(
+  CartNotifier.new,
+);
 
 /// Convenience total item count for badges, defaulting to 0 while loading.
 final cartItemCountProvider = Provider<int>((ref) {

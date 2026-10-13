@@ -21,8 +21,7 @@ abstract class Branch with _$Branch {
     @Default(<Schedule>[]) List<Schedule> schedules,
   }) = _Branch;
 
-  factory Branch.fromJson(Map<String, dynamic> json) =>
-      _$BranchFromJson(json);
+  factory Branch.fromJson(Map<String, dynamic> json) => _$BranchFromJson(json);
 }
 
 /// Mirrors `Schedule` nested in `branch.type.ts`.

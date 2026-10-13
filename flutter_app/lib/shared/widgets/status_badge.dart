@@ -34,10 +34,13 @@ enum StatusBadgeKind {
     case StatusBadgeKind.orderDetail:
       return (AppColors.primary, primaryBg);
     case StatusBadgeKind.bookingList:
-      return status == 'complete' ? (AppColors.gray2, AppColors.gray4) : (blue, blueBg);
+      return status == 'complete'
+          ? (AppColors.gray2, AppColors.gray4)
+          : (blue, blueBg);
     case StatusBadgeKind.bookingDetail:
       if (status == 'complete') return (AppColors.gray2, AppColors.gray4);
-      if (status == 'cancelled') return (const Color(0xFFE7000B), const Color(0xFFFFE2E2));
+      if (status == 'cancelled')
+        return (const Color(0xFFE7000B), const Color(0xFFFFE2E2));
       return (AppColors.primary, primaryBg);
   }
 }
@@ -53,12 +56,17 @@ class StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (fg, bg) = statusBadgeColors(kind, status);
-    final detail = kind == StatusBadgeKind.orderDetail || kind == StatusBadgeKind.bookingDetail;
+    final detail =
+        kind == StatusBadgeKind.orderDetail ||
+        kind == StatusBadgeKind.bookingDetail;
     return Container(
       padding: detail
           ? const EdgeInsets.symmetric(horizontal: 16, vertical: 7)
           : const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(detail ? 12 : 10)),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(detail ? 12 : 10),
+      ),
       child: Text(
         statusLabel(status),
         style: TextStyle(color: fg, fontSize: 12, fontWeight: FontWeight.w500),

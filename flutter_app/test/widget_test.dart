@@ -12,19 +12,24 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: TireMaxApp()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Home'), findsWidgets);
+    // Arabic is the default language.
+    expect(find.text('الرئيسية'), findsWidgets);
   });
 
-  testWidgets('Switching to Arabic localizes the UI and flips to RTL', (WidgetTester tester) async {
+  testWidgets('Defaults to RTL Arabic and switching to English flips to LTR', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const ProviderScope(child: TireMaxApp()));
     await tester.pumpAndSettle();
-    final container = ProviderScope.containerOf(tester.element(find.byType(TireMaxApp)));
-    await container.read(localeProvider.notifier).setLocale(const Locale('ar'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('الرئيسية'), findsWidgets);
-    expect(find.text('Home'), findsNothing);
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(TireMaxApp)),
+    );
     final context = tester.element(find.byType(Scaffold).first);
     expect(Directionality.of(context), TextDirection.rtl);
+    await container.read(localeProvider.notifier).setLocale(const Locale('en'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Home'), findsWidgets);
+    expect(find.text('الرئيسية'), findsNothing);
   });
 }

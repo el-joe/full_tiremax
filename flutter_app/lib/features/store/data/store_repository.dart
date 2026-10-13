@@ -120,8 +120,10 @@ class VehicleOption {
   final int id;
   final String name;
 
-  factory VehicleOption.fromJson(Map<String, dynamic> json) =>
-      VehicleOption(id: (json['id'] as num).toInt(), name: json['name'].toString());
+  factory VehicleOption.fromJson(Map<String, dynamic> json) => VehicleOption(
+    id: (json['id'] as num).toInt(),
+    name: json['name'].toString(),
+  );
 }
 
 class VehicleMatch {
@@ -140,7 +142,10 @@ class StoreRepository {
     required int page,
     required ProductFilters filters,
   }) async {
-    final response = await _dio.get('products', queryParameters: filters.toQuery(page));
+    final response = await _dio.get(
+      'products',
+      queryParameters: filters.toQuery(page),
+    );
     return PaginatedResponse.fromJson(
       response.data as Map<String, dynamic>,
       (json) => Product.fromJson(json),
@@ -149,13 +154,15 @@ class StoreRepository {
 
   Future<List<Brand>> fetchBrands() async {
     final response = await _dio.get('brands');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
     return data.map((e) => Brand.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<List<VehicleOption>> _options(String path) async {
     final response = await _dio.get(path);
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
     return data
         .map((e) => VehicleOption.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -170,7 +177,8 @@ class StoreRepository {
   /// (see web `generateYearsSlots`); flatten to distinct years, newest first.
   Future<List<int>> fetchVehicleYears(int modelId) async {
     final response = await _dio.get('vehicles/models/$modelId/years');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
     final years = <int>{};
     for (final e in data) {
       final m = e as Map<String, dynamic>;
@@ -188,7 +196,11 @@ class StoreRepository {
     required int makeId,
     required int modelId,
     required int year,
-  }) async => (await fetchVehicleMatch(makeId: makeId, modelId: modelId, year: year))?.id;
+  }) async => (await fetchVehicleMatch(
+    makeId: makeId,
+    modelId: modelId,
+    year: year,
+  ))?.id;
 
   /// Same lookup, also returning the "model trim engine" label the web shows
   /// in the green confirmation chip.
@@ -197,25 +209,30 @@ class StoreRepository {
     required int modelId,
     required int year,
   }) async {
-    final response = await _dio.get('vehicles', queryParameters: {
-      'make_id': makeId,
-      'model_id': modelId,
-      'year': year,
-    });
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    final response = await _dio.get(
+      'vehicles',
+      queryParameters: {'make_id': makeId, 'model_id': modelId, 'year': year},
+    );
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
     if (data.isEmpty) return null;
     final v = data.first as Map<String, dynamic>;
     final model = (v['model'] as Map<String, dynamic>?)?['name'];
-    final label = [model, v['trim_name'], v['engine']]
-        .where((e) => e != null && e.toString().isNotEmpty)
-        .join(' ');
+    final label = [
+      model,
+      v['trim_name'],
+      v['engine'],
+    ].where((e) => e != null && e.toString().isNotEmpty).join(' ');
     return VehicleMatch(id: (v['id'] as num).toInt(), label: label);
   }
 
   Future<List<TyreSize>> fetchTyreSizes() async {
     final response = await _dio.get('fitments/sizes');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => TyreSize.fromJson(e as Map<String, dynamic>)).toList();
+    final data =
+        (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
+    return data
+        .map((e) => TyreSize.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }
 
@@ -231,11 +248,17 @@ final vehicleMakesProvider = FutureProvider<List<VehicleOption>>((ref) {
   return ref.watch(storeRepositoryProvider).fetchVehicleMakes();
 });
 
-final vehicleModelsProvider = FutureProvider.family<List<VehicleOption>, int>((ref, makeId) {
+final vehicleModelsProvider = FutureProvider.family<List<VehicleOption>, int>((
+  ref,
+  makeId,
+) {
   return ref.watch(storeRepositoryProvider).fetchVehicleModels(makeId);
 });
 
-final vehicleYearsProvider = FutureProvider.family<List<int>, int>((ref, modelId) {
+final vehicleYearsProvider = FutureProvider.family<List<int>, int>((
+  ref,
+  modelId,
+) {
   return ref.watch(storeRepositoryProvider).fetchVehicleYears(modelId);
 });
 

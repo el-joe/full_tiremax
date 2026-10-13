@@ -32,7 +32,9 @@ class NotificationsListNotifier extends AsyncNotifier<List<AppNotification>> {
     if (index == -1 || previous[index].is_read) return;
 
     final next = [...previous];
-    next[index] = previous[index].copyWith(read_at: DateTime.now().toIso8601String());
+    next[index] = previous[index].copyWith(
+      read_at: DateTime.now().toIso8601String(),
+    );
     state = AsyncData(next);
 
     final repository = ref.read(notificationsRepositoryProvider);
@@ -47,7 +49,11 @@ class NotificationsListNotifier extends AsyncNotifier<List<AppNotification>> {
   Future<void> markAllRead() async {
     final previous = state.value ?? const [];
     final next = previous
-        .map((n) => n.is_read ? n : n.copyWith(read_at: DateTime.now().toIso8601String()))
+        .map(
+          (n) => n.is_read
+              ? n
+              : n.copyWith(read_at: DateTime.now().toIso8601String()),
+        )
         .toList();
     state = AsyncData(next);
 
@@ -63,8 +69,8 @@ class NotificationsListNotifier extends AsyncNotifier<List<AppNotification>> {
 
 final notificationsListProvider =
     AsyncNotifierProvider<NotificationsListNotifier, List<AppNotification>>(
-  NotificationsListNotifier.new,
-);
+      NotificationsListNotifier.new,
+    );
 
 /// Drives the bottom-nav unread badge. Re-fetched whenever it's invalidated
 /// (e.g. after marking read/all-read) and refreshed periodically while the

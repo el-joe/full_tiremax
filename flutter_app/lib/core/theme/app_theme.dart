@@ -63,9 +63,7 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
-          textStyle: GoogleFonts.almarai(
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: GoogleFonts.almarai(fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadii.xl),
           ),
@@ -76,9 +74,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
           side: const BorderSide(color: AppColors.primary),
-          textStyle: GoogleFonts.almarai(
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: GoogleFonts.almarai(fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadii.xl),
           ),
@@ -100,6 +96,7 @@ class AppTheme {
         enabledBorder: _inputBorder(AppColors.gray3),
         focusedBorder: _inputBorder(AppColors.primary),
         errorBorder: _inputBorder(AppColors.error),
+        focusedErrorBorder: _inputBorder(AppColors.error),
         hintStyle: GoogleFonts.almarai(color: AppColors.gray2),
       ),
       chipTheme: ChipThemeData(
@@ -136,13 +133,15 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: AppColors.gray4,
+      scaffoldBackgroundColor: AppColors.page,
       colorScheme: scheme,
       fontFamily: GoogleFonts.almarai().fontFamily,
       textTheme: _textTheme(AppColors.foregroundLight),
+      // Dark chrome over light content surfaces.
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.foregroundLight,
+        backgroundColor: AppColors.chrome,
+        foregroundColor: Colors.white,
+        scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
       ),
@@ -157,12 +156,11 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
-          textStyle: GoogleFonts.almarai(
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: GoogleFonts.almarai(fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadii.xl),
+            borderRadius: BorderRadius.circular(14),
           ),
+          minimumSize: const Size(44, 52),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         ),
       ),
@@ -170,12 +168,11 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.onPrimary,
           side: const BorderSide(color: AppColors.primary),
-          textStyle: GoogleFonts.almarai(
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: GoogleFonts.almarai(fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadii.xl),
+            borderRadius: BorderRadius.circular(14),
           ),
+          minimumSize: const Size(44, 52),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         ),
       ),
@@ -194,6 +191,7 @@ class AppTheme {
         enabledBorder: _inputBorder(AppColors.gray),
         focusedBorder: _inputBorder(AppColors.primary),
         errorBorder: _inputBorder(AppColors.error),
+        focusedErrorBorder: _inputBorder(AppColors.error),
         hintStyle: GoogleFonts.almarai(color: AppColors.gray2),
       ),
       chipTheme: ChipThemeData(
@@ -205,7 +203,7 @@ class AppTheme {
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.chrome,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.gray2,
         type: BottomNavigationBarType.fixed,

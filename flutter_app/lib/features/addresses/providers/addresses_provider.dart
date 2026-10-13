@@ -13,7 +13,9 @@ class AddressesNotifier extends AsyncNotifier<List<Address>> {
 
   Future<void> refresh() async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => ref.read(addressesRepositoryProvider).fetchAddresses());
+    state = await AsyncValue.guard(
+      () => ref.read(addressesRepositoryProvider).fetchAddresses(),
+    );
   }
 
   Future<void> setDefault(int id) async {
@@ -29,6 +31,7 @@ class AddressesNotifier extends AsyncNotifier<List<Address>> {
   }
 }
 
-final addressesProvider = AsyncNotifierProvider<AddressesNotifier, List<Address>>(
-  AddressesNotifier.new,
-);
+final addressesProvider =
+    AsyncNotifierProvider<AddressesNotifier, List<Address>>(
+      AddressesNotifier.new,
+    );
