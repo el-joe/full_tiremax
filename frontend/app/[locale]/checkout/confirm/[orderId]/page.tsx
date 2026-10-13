@@ -136,7 +136,7 @@ export default async function page({ params }: props) {
                   </>
                 ) : (
                   <Text fontSize={"14px"} color={"gray-2"}>
-                    (unknown)
+                    {data.governorate?.delivery_days || 3} {t("businessDays")}
                   </Text>
                 )}
               </Box>

@@ -41,6 +41,7 @@ class Order extends Model
         'payment_status',
         'subtotal',
         'discount',
+        'offer_id',
         'shipping_fee',
         'installation_fee',
         'total',

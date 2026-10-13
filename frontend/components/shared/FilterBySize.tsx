@@ -2,6 +2,7 @@
 import { SearchIcon } from "@/components/Icons";
 import DropSelectList from "@/components/ui/DropSelectList";
 import { Link } from "@/i18n/navigation";
+import { buildStoreHref } from "@/helpers/searchTabs";
 import { useProductFilterContext } from "@/providers/ProductFilterProvider";
 import { ITyreSize } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
@@ -60,7 +61,7 @@ const FoundBySize = ({ showButton }: { showButton?: boolean }) => {
         name="rim_diameter"
       />
       {showButton && (
-        <Link href={`/store?${getFiltersString()}`} passHref>
+        <Link href={buildStoreHref(getFiltersString(), "foundBySize")} passHref>
           <Button
             rounded={"12px"}
             type="submit"
@@ -68,7 +69,6 @@ const FoundBySize = ({ showButton }: { showButton?: boolean }) => {
             flex={1}
             fontSize={{ base: "12px" }}
             w={{ base: "full", md: "auto" }}
-            onClick={() => applyFilter()}
           >
             {t("findYourTireNow")} <SearchIcon />
           </Button>

@@ -29,6 +29,12 @@ class NotificationSettings
     /** Apply from address/name from the general settings (falls back to .env values). */
     public static function applyMailFrom(): void
     {
+        // an explicit mail "from" configured in the admin panel always wins
+        if (Setting::where('group', 'mail')->whereIn('key', ['mail_from_address'])->whereNotNull('value')->where('value', '!=', '')->exists()) {
+            MailSettings::apply();
+            return;
+        }
+
         try {
             $email = Setting::where('group', 'general')->where('key', 'site_email')->value('value');
             $name = Setting::where('group', 'general')->where('key', 'site_name')->first()?->translate('en')?->value

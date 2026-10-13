@@ -128,7 +128,7 @@ export default function RecentOrders() {
           ) : !recentOrdersList?.length ? (
             <Table.Row>
               <Table.Cell colSpan={5}>
-                <Center>No orders yet</Center>
+                <Center>{t("noOrdersYet")}</Center>
               </Table.Cell>
             </Table.Row>
           ) : (

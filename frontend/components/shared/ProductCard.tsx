@@ -37,8 +37,7 @@ const ProductCard = ({ product }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
   const { isFavorite, toggleFavorite, isToggling } = useFavContext();
-  const { addOrUpdateItem, isAdding, existsInCart, targetedCartItem } =
-    useCartContext();
+  const { addItem, isAdding, targetedCartItem } = useCartContext();
   const { protectedWithAuth } = useAuthContext();
   return (
     <Link
@@ -226,8 +225,7 @@ const ProductCard = ({ product }: Props) => {
             disabled={isAdding && targetedCartItem === product?.id}
             onClick={(e) => {
               e.preventDefault();
-              if (existsInCart(product?.id)) return;
-              addOrUpdateItem(product, 1);
+              addItem(product, 1);
             }}
           >
             <CartPlusIcon size={{ base: "xs", md: "sm", xl: "xl" }} />

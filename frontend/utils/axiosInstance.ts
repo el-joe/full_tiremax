@@ -38,7 +38,10 @@ axiosInstance.interceptors.request.use(async (config) => {
   ]);
 
   config.headers = config.headers ?? {};
+  // every API call carries the UI language so validation/messages come back translated
   config.headers["x-locale"] = locale;
+  config.headers["Accept-Language"] = locale;
+  config.headers["Accept"] = "application/json";
   if (token) config.headers.Authorization = `Bearer ${token}`;
   const guestToken =
     typeof window === "undefined" ? guestCookie : getOrCreateGuestToken();

@@ -23,7 +23,7 @@ export default function FavProductSection() {
       </HStack>
       <HStack gap={"12px"} align={"stretch"} flexWrap={"wrap"}>
         {!favorites.length && (
-          <Center w="full">You don&apos;t have favorite protects yet</Center>
+          <Center w="full">{t("noFavoriteProducts")}</Center>
         )}
         {favorites.slice(0, 3).map((e) => (
           <ProductCard key={e.id} product={e} />

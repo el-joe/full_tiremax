@@ -11,34 +11,53 @@ export type QueryParam = {
 };
 
 const FILTER_PREFIX = process.env.NEXT_PUBLIC_FILTER_PREFIX ?? "filter";
+const PAGINATION_PREFIX = process.env.NEXT_PUBLIC_PAGINATION_PREFIX ?? "paginate";
+
+// a changed filter set invalidates the current page number
+const resetPagination = (params: URLSearchParams) =>
+  Array.from(params.keys())
+    .filter((key) => key.startsWith(`${PAGINATION_PREFIX}_`))
+    .forEach((key) => params.delete(key));
+
+const parseFilters = (search: string): QueryParam[] => {
+  const result: QueryParam[] = [];
+
+  for (const [key, value] of new URLSearchParams(search).entries()) {
+    if (!key.startsWith(`${FILTER_PREFIX}_`)) continue;
+
+    const segments = key.replace(`${FILTER_PREFIX}_`, "").split("_");
+
+    if (segments.length < 2) continue;
+
+    const [targetEndpoint, ...filterParts] = segments;
+
+    result.push({
+      targetEndpoint,
+      filterBy: filterParts.join("_"),
+      query: value,
+    });
+  }
+
+  return result;
+};
 
 const useApiFilter = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [filters, setFilters] = useState<QueryParam[]>([
-    ...(() => {
-      const result: QueryParam[] = [];
+  const searchString = searchParams.toString();
+  const [filters, setFilters] = useState<QueryParam[]>(() =>
+    parseFilters(searchString),
+  );
 
-      for (const [key, value] of searchParams.entries()) {
-        if (!key.startsWith(`${FILTER_PREFIX}_`)) continue;
+  // The provider lives in the root layout, so keep local state in sync with the URL
+  // (e.g. arriving on /store from the home page search)
+  const [syncedSearch, setSyncedSearch] = useState(searchString);
+  if (syncedSearch !== searchString) {
+    setSyncedSearch(searchString);
+    setFilters(parseFilters(searchString));
+  }
 
-        const segments = key.replace(`${FILTER_PREFIX}_`, "").split("_");
-
-        if (segments.length < 2) continue;
-
-        const [targetEndpoint, ...filterParts] = segments;
-
-        result.push({
-          targetEndpoint,
-          filterBy: filterParts.join("_"),
-          query: value,
-        });
-      }
-
-      return result;
-    })(),
-  ]);
   const setFilter = (newFilter: QueryParam) => {
     if (filters.find((f) => f.filterBy === newFilter.filterBy)) {
       return setFilters((p) => [
@@ -69,6 +88,7 @@ const useApiFilter = () => {
         params.set(key, value);
       });
 
+    resetPagination(params);
     const queryString = params.toString();
 
     router.push(queryString ? `${pathname}?${queryString}` : pathname);
@@ -111,6 +131,7 @@ const useApiFilter = () => {
         )
         .forEach((key) => params.delete(key));
 
+      resetPagination(params);
       const queryString = params.toString();
 
       router.push(queryString ? `${pathname}?${queryString}` : pathname);

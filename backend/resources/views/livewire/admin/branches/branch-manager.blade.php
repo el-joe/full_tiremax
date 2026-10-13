@@ -59,7 +59,7 @@
     @if ($showForm)
         <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-40 p-4"
             wire:click.self="$set('showForm', false)">
-            <div class="bg-stone-900 border border-stone-800 rounded-2xl w-full max-w-3xl p-6 space-y-4">
+            <div class="bg-stone-900 border border-stone-800 rounded-2xl w-full max-w-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
                 <h3 class="text-lg font-bold">{{ $editingId ? __('messages.admin.edit') : __('messages.admin.add_new') }}
                 </h3>
                 <div class="grid sm:grid-cols-2 gap-3">
@@ -96,6 +96,33 @@
                         <label class="flex items-center gap-2"><input type="checkbox"
                                 wire:model="form.auto_confirm_bookings" class="rounded bg-stone-800 text-yellow-500">
                             {{ __('messages.admin.auto_confirm_bookings') }}</label>
+                    </div>
+                </div>
+
+                {{-- weekly working hours: drives the dates/time slots customers can book --}}
+                <div class="border-t border-stone-800 pt-3">
+                    <h4 class="font-bold text-stone-200 mb-1">{{ __('messages.admin.working_hours') }}</h4>
+                    <p class="text-xs text-stone-500 mb-2">{{ __('messages.admin.working_hours_hint') }}</p>
+                    <div class="space-y-2">
+                        @foreach (range(0, 6) as $dow)
+                            <div class="grid grid-cols-[110px_auto_1fr_1fr_90px] items-center gap-2 text-sm">
+                                <span class="font-bold">{{ __('messages.admin.weekdays.' . $dow) }}</span>
+                                <label class="flex items-center gap-1 text-xs text-stone-400">
+                                    <input type="checkbox" wire:model.live="form.schedule.{{ $dow }}.is_closed"
+                                        class="rounded bg-stone-800 text-yellow-500"> {{ __('messages.admin.closed') }}
+                                </label>
+                                <input type="time" wire:model="form.schedule.{{ $dow }}.opens_at"
+                                    @disabled($form['schedule'][$dow]['is_closed'] ?? false)
+                                    class="bg-stone-800 border border-stone-700 rounded-lg px-2 py-1.5 text-sm disabled:opacity-40">
+                                <input type="time" wire:model="form.schedule.{{ $dow }}.closes_at"
+                                    @disabled($form['schedule'][$dow]['is_closed'] ?? false)
+                                    class="bg-stone-800 border border-stone-700 rounded-lg px-2 py-1.5 text-sm disabled:opacity-40">
+                                <input type="number" min="1" wire:model="form.schedule.{{ $dow }}.capacity"
+                                    title="{{ __('messages.admin.capacity') }}"
+                                    class="bg-stone-800 border border-stone-700 rounded-lg px-2 py-1.5 text-sm">
+                            </div>
+                            @error("form.schedule.$dow.hours") <p class="text-red-400 text-xs">{{ $message }}</p> @enderror
+                        @endforeach
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">

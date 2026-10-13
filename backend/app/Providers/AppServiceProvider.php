@@ -24,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
             return null;
         });
 
+        // Mail transport/from address are admin-managed (settings group "mail"), not .env
+        \App\Support\MailSettings::apply();
+
         // Notification listeners (SendOrder/BookingNotifications) are auto-discovered from app/Listeners.
         Event::listen(OrderPlaced::class, PushOrderToDaftra::class);
         Event::listen(BookingCreated::class, PushBookingToDaftra::class);

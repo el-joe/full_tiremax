@@ -18,10 +18,14 @@ import toast from "react-hot-toast";
 
 type Props = {
   productId: number;
+  // the delivered order this review is written from (required by the API)
+  orderId: number;
+  onSuccess?: () => void;
 };
 
-const WriteReviewForm = ({ productId }: Props) => {
+const WriteReviewForm = ({ productId, orderId, onSuccess }: Props) => {
   const t = useTranslations("productView");
+  const tc = useTranslations();
   const dir = useDir();
   const { protectedWithAuth } = useAuthContext();
   const queryClient = useQueryClient();
@@ -44,17 +48,18 @@ const WriteReviewForm = ({ productId }: Props) => {
         success: boolean;
         message: string;
         data: IReview;
-      }>(`reviews/${productId}`, data);
+      }>(`reviews/${productId}`, { ...data, order_id: orderId });
       return res;
     },
     onSuccess: () => {
       toast.success(t("reviewSubmittedPendingApproval"));
       reset({ rating: 0, comment: "" });
       queryClient.invalidateQueries({ queryKey: ["reviews", productId] });
+      onSuccess?.();
     },
     onError: (err: AxiosError<{ message: string }>) => {
       if (err.status === 401) return;
-      const errMes = err?.response?.data?.message ?? "Oops! something went wrong";
+      const errMes = err?.response?.data?.message ?? tc("somethingWentWrong");
       toast.error(errMes);
     },
   });

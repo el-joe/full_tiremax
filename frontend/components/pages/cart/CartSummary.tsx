@@ -2,6 +2,7 @@
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
 import { Link } from "@/i18n/navigation";
 import { useCartContext } from "@/providers/CartProvider";
+import PriceBreakdown from "@/components/shared/PriceBreakdown";
 import ApplyOfferInput from "./ApplyOfferInput";
 import {
   Box,
@@ -41,40 +42,13 @@ const CartSummary = () => {
       >
         {t("orderSummary")}
       </Heading>
-      <Box>
-        <Heading
-          fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
-          fontWeight={"extrabold"}
-        >
-          {t("subtotal")}
-        </Heading>
-        <Text
-          fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
-          fontWeight={"bold"}
-          color={"primary"}
-          ps={"12px"}
-        >
-          {cart.subtotal.toLocaleString()} <CurrencySymbol />
-        </Text>
-      </Box>
       <ApplyOfferInput />
-      {appliedOffer && (
-        <HStack justify={"space-between"} w={"full"}>
-          <Heading
-            fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
-            fontWeight={"extrabold"}
-          >
-            {t("discount")}
-          </Heading>
-          <Text
-            fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
-            fontWeight={"bold"}
-            color={"red"}
-          >
-            -{appliedOffer.discount.toLocaleString()} <CurrencySymbol />
-          </Text>
-        </HStack>
-      )}
+      <PriceBreakdown
+        subtotal={cart.subtotal}
+        discount={appliedOffer?.discount}
+        discountPercent={appliedOffer?.discountPercent}
+        total={Math.max(0, cart.subtotal - (appliedOffer?.discount ?? 0))}
+      />
       <Link href={"checkout"} className="w-full">
         <Button
           w={"full"}

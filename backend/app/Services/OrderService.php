@@ -8,6 +8,7 @@ use App\Notifications\OrderStatusChangedNotification;
 use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\Governorate;
+use App\Models\Offer;
 use App\Models\Order;
 use App\Models\OrderStatusLog;
 use App\Models\Payment;
@@ -20,6 +21,14 @@ use Illuminate\Support\Str;
 
 class OrderService
 {
+    /** Customer-facing status tabs mapped onto the underlying order statuses. */
+    public const STATUS_GROUPS = [
+        'processing' => [Order::STATUS_PENDING, Order::STATUS_CONFIRMED, Order::STATUS_PROCESSING],
+        'on_the_way' => [Order::STATUS_SHIPPED],
+        'delivered' => [Order::STATUS_DELIVERED, Order::STATUS_COMPLETED],
+        'cancelled' => [Order::STATUS_CANCELLED, Order::STATUS_REFUNDED],
+    ];
+
     public function __construct(
         protected CartService $cartService,
         protected PaymentService $paymentService,
@@ -28,10 +37,15 @@ class OrderService
 
     public function paginateForCustomer(Customer $customer, array $filters = []): LengthAwarePaginator
     {
-        return $customer->orders()
-            ->with(['items.product', 'governorate', 'governorate.translations', 'branch', 'branch.translations'])
-            ->latest()
-            ->paginate((int) ($filters['per_page'] ?? 15));
+        $query = $customer->orders()
+            ->with(['items.product', 'governorate', 'governorate.translations', 'branch', 'branch.translations']);
+
+        if (!empty($filters['status'])) {
+            $statuses = self::STATUS_GROUPS[$filters['status']] ?? (array) $filters['status'];
+            $query->whereIn('status', $statuses);
+        }
+
+        return $query->latest()->paginate((int) ($filters['per_page'] ?? 15));
     }
 
     public function checkout(Actor|Customer $actor, array $data): Order
@@ -91,8 +105,18 @@ class OrderService
             }
 
             $discount = 0.0;
+            $offerId = null;
             if (!empty($data['offer_code'])) {
-                $discount = (float) $this->cartService->computeOfferForSubtotal($data['offer_code'], (float) $subtotal)['discount'];
+                $applied = $this->cartService->computeOfferForSubtotal($data['offer_code'], (float) $subtotal);
+                $discount = (float) $applied['discount'];
+                $offerId = $applied['offer']->id;
+                // atomic usage count (guarded by usage_limit so concurrent checkouts can't oversell a coupon)
+                $consumed = Offer::whereKey($offerId)
+                    ->where(fn($q) => $q->whereNull('usage_limit')->orWhere('usage_limit', 0)->orWhereColumn('used_count', '<', 'usage_limit'))
+                    ->increment('used_count');
+                if (!$consumed) {
+                    throw ApiException::badRequest(__('messages.offer_invalid'));
+                }
             }
             $total = max(0, $subtotal - $discount + $shippingFee + $installationFee);
 
@@ -110,6 +134,7 @@ class OrderService
                 'payment_status' => 'pending',
                 'subtotal' => $subtotal,
                 'discount' => $discount,
+                'offer_id' => $offerId,
                 'shipping_fee' => $shippingFee,
                 'installation_fee' => $installationFee,
                 'total' => $total,
@@ -157,8 +182,11 @@ class OrderService
             $from = $order->status;
             $order->update(['status' => $status]);
 
-            // Restore stock if cancelled
+            // Restore stock (and release the coupon use) if cancelled
             if ($status === Order::STATUS_CANCELLED && in_array($from, [Order::STATUS_PENDING, Order::STATUS_CONFIRMED], true)) {
+                if ($order->offer_id) {
+                    Offer::whereKey($order->offer_id)->where('used_count', '>', 0)->decrement('used_count');
+                }
                 foreach ($order->items as $item) {
                     if ($item->product) {
                         $item->product->increment('stock', $item->quantity);

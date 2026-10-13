@@ -26,6 +26,7 @@ import { getPublicSettings } from "@/helpers/getPublicSettings";
 
 const ContactUsForm = () => {
   const t = useTranslations("home");
+  const tc = useTranslations();
   const { data, isLoading } = useQuery({
     queryKey: ["settings"],
     queryFn: getPublicSettings,
@@ -69,7 +70,7 @@ const ContactUsForm = () => {
         });
       }
       const errMes =
-        err?.response?.data?.message ?? "Oops! something went wrong";
+        err?.response?.data?.message ?? tc("somethingWentWrong");
       toast.error(errMes);
     },
   });

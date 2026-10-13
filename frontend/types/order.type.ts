@@ -34,4 +34,5 @@ export interface Item {
     quantity: number;
     unit_price: number;
     total: number;
+    reviewed?: boolean;
 }

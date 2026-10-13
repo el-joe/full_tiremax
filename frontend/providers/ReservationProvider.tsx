@@ -137,6 +137,7 @@ export const ReservationProvider = ({
   const { customer, isLogged } = useAuthContext();
   const locale = useLocale();
   const t = useTranslations("reservation");
+  const tc = useTranslations();
   const searchParams = useSearchParams();
   // selection kept as ids/values; full objects are derived from the loaded lists
   const [selection, setSelection] = useState<{
@@ -241,7 +242,7 @@ export const ReservationProvider = ({
     onError: (err: AxiosError<{ message?: string }>) => {
       if (err.status === 401) return;
       const errorMessage =
-        err.response?.data?.message ?? "Oops! something went wrong";
+        err.response?.data?.message ?? tc("somethingWentWrong");
       toast.error(errorMessage);
     },
   });

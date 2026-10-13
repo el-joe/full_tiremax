@@ -9,6 +9,13 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+export interface IAppliedOffer {
+  discount: number;
+  discountPercent: number;
+  total: number;
+  offer: IApplyOfferResult["offer"];
+}
+
 const EMPTY_CART: ICustomerCart = {
   id: 0,
   items: [],
@@ -23,10 +30,7 @@ export const useCart = () => {
   const [cart, setCart] = useState<ICustomerCart>(EMPTY_CART);
   const { isLogged } = useAuthContext();
   const [cartIsLoading, setCartIsLoading] = useState(true);
-  const [appliedOffer, setAppliedOffer] = useState<{
-    discount: number;
-    offer: { code: string; title: string };
-  } | null>(null);
+  const [appliedOffer, setAppliedOffer] = useState<IAppliedOffer | null>(null);
 
   // get Cart
   const { mutate: getCart } = useMutation({
@@ -49,9 +53,9 @@ export const useCart = () => {
   }, [isLogged]);
 
   // handle general error
-  const onError = (err: AxiosError) => {
+  const onError = (err: AxiosError<{ message?: string }>) => {
     if (err.status === 401) return;
-    toast.error("Something went wrong.");
+    toast.error(err.response?.data?.message || t("somethingWentWrong"));
   };
 
   const {
@@ -131,14 +135,19 @@ export const useCart = () => {
         ...prev,
         subtotal: res.subtotal,
       }));
-      setAppliedOffer({ discount: res.discount, offer: res.offer });
+      setAppliedOffer({
+        discount: res.discount,
+        discountPercent: res.discount_percent,
+        total: res.total,
+        offer: res.offer,
+      });
       setApplyOfferError(null);
       toast.success(res.offer.title);
     },
     onError: (err: AxiosError<{ message: string }>) => {
       if (err.status === 401) return;
       setApplyOfferError(
-        err?.response?.data?.message ?? "Something went wrong.",
+        err?.response?.data?.message ?? t("somethingWentWrong"),
       );
     },
   });
@@ -156,6 +165,14 @@ export const useCart = () => {
     },
     onError,
   });
+
+  // Adds `quantity` on top of what is already in the cart (the API increments existing lines).
+  const addItem = useCallback(
+    (product: IProduct | ICartProduct, quantity = 1) => {
+      addToCart({ product_id: product.id, quantity });
+    },
+    [addToCart],
+  );
 
   const addOrUpdateItem = useCallback(
     (product: IProduct | ICartProduct, quantity: number) => {
@@ -176,6 +193,7 @@ export const useCart = () => {
       cart?.items.some((item) => item.product_id === productId),
     refetchCart: getCart,
     totalQuantity: cart?.items_count,
+    addItem,
     addOrUpdateItem,
     removeItem,
     clearCart,

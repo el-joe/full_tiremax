@@ -27,7 +27,7 @@ const NeedHelpCard = async () => {
       <Text fontSize={"14px"} color={"gray-2"}>
         {t("supportDescription")}
       </Text>
-      <Link href={"#"}>
+      <Link href={"/contact"}>
         <Text color={"primary"} pt={"12px"} fontWeight={"bold"}>
           {t("chatWithAnExpert")}
           <Icon ms="8px" size={"lg"}>

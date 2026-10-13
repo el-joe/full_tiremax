@@ -46,8 +46,12 @@ import useDir from "@/hooks/useDir";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
+// shown when the governorate has no delivery estimate configured
+const DEFAULT_DELIVERY_DAYS = 3;
+
 export default function CheckoutForm() {
   const t = useTranslations("cartAndPayment");
+  const tc = useTranslations();
   const router = useRouter();
   const locale = useLocale();
   const {
@@ -200,7 +204,7 @@ export default function CheckoutForm() {
     onError: (err: AxiosError<{ message: string }>) => {
       if (err.status === 401) return;
       const errMes =
-        err?.response?.data?.message ?? "Oops! something want wrang";
+        err?.response?.data?.message ?? tc("somethingWentWrong");
       toast.error(errMes);
     },
   });
@@ -226,7 +230,7 @@ export default function CheckoutForm() {
           gap={"16px"}
         >
           <Spinner size={"xl"} />
-          <Text>Redirecting to payment...</Text>
+          <Text>{tc("redirectingToPayment")}</Text>
         </Center>
       )}
       <form id="checkoutForm" onSubmit={handleSubmit(onSubmit)}>
@@ -526,7 +530,12 @@ export default function CheckoutForm() {
                       border={"1px solid #D1D5DC"}
                     >
                       <Text color={"gray-2"}>{t("estimatedDeliveryTime")}</Text>
-                      <Text>(Unknown) {t("businessDays")}</Text>
+                      <Text>
+                        {governorateData?.find(
+                          (e) => e.id === +(watch("governorate_id") ?? 0),
+                        )?.delivery_days || DEFAULT_DELIVERY_DAYS}{" "}
+                        {t("businessDays")}
+                      </Text>
                     </HStack>
                     {/* shipping fee */}
                     <HStack

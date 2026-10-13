@@ -288,7 +288,9 @@ class GuestFlowTest extends TestCase
         $c = Customer::factory()->create();
         $p = Product::factory()->create();
         $token = auth('api')->login($c);
-        $this->postJson("/api/v1/reviews/{$p->id}", ['rating' => 5, 'comment' => 'nice'], ['Authorization' => "Bearer $token"])->assertCreated();
+        $order = Order::factory()->create(['customer_id' => $c->id, 'status' => Order::STATUS_DELIVERED]);
+        $order->items()->create(['product_id' => $p->id, 'product_name' => 'P', 'product_sku' => 'S', 'quantity' => 1, 'unit_price' => 10, 'total' => 10]);
+        $this->postJson("/api/v1/reviews/{$p->id}", ['rating' => 5, 'comment' => 'nice', 'order_id' => $order->id], ['Authorization' => "Bearer $token"])->assertCreated();
         $rev = Review::first();
         $this->assertNull($rev->is_approved);
         $this->getJson("/api/v1/reviews/{$p->id}")->assertJsonPath('meta.rating_count', 0);

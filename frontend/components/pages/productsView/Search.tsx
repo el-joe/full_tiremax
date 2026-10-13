@@ -7,12 +7,14 @@ import { Button, CloseButton, Group, HStack } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 // best_seller | new | sale | featured
-const badges = ["best_seller", "new", "sale", "featured"];
+// must match the product badges stored by the API
+const badges = ["best_seller", "new", "best_choice", "special_offer"];
 
 const Search = () => {
   const t = useTranslations("store");
   const { filters, applyFilter } = useProductFilterContext();
   const searchFilter = filters.find((f) => f.filterBy === "search");
+  const activeBadge = filters.find((f) => f.filterBy === "badge")?.query;
   const [value, setValue] = useState<string>(searchFilter?.query || "");
   return (
     <HStack justify={"space-between"} align={"start"}>
@@ -63,11 +65,12 @@ const Search = () => {
       </Group>
       <DropSelectList
         list={badges.map((b) => ({ label: t(b), value: b }))}
+        value={activeBadge ? [activeBadge] : []}
         onValueChange={(v) => {
           applyFilter({
             targetEndpoint: "products",
             filterBy: "badge",
-            query: v.value[0],
+            query: v.value[0] ?? "",
           });
         }}
         placeholder={t("filterBy")}

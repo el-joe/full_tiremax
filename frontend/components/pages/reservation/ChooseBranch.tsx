@@ -34,6 +34,7 @@ export default function ChooseBranch() {
     isBranchesListLoading,
   } = useReservationContext();
   const t = useTranslations("reservation");
+  const tc = useTranslations();
   const locale = useLocale();
   return (
     <>
@@ -59,7 +60,7 @@ export default function ChooseBranch() {
       </HStack>
       {isBranchesListLoading ? (
         <Center>
-          <Heading>Loading</Heading>
+          <Heading>{tc("loading")}</Heading>
         </Center>
       ) : (
         <HStack flexWrap={"wrap"} gap={{ base: "10px", lg: "16px" }}>

@@ -83,7 +83,7 @@ const Footer = async ({ settings }: { settings?: PublicSettings | null }) => {
             <Link href={"/store"}>
               <Text _hover={{ color: "white" }}> {t("store")}</Text>
             </Link>
-            <Link href={"/offers"}>
+            <Link href={"/store?filter_products_badge=special_offer"}>
               <Text _hover={{ color: "white" }}> {t("offers")}</Text>
             </Link>
             <Link href={"/track-order"}>
@@ -113,9 +113,11 @@ const Footer = async ({ settings }: { settings?: PublicSettings | null }) => {
           </VStack>
         </Box>
         <Box fontSize={"14px"}>
-          <Heading as={"h4"} fontSize={"16px"} fontWeight={"bold"}>
-            {t("contactUs")}
-          </Heading>
+          <Link href={"/contact"}>
+            <Heading as={"h4"} fontSize={"16px"} fontWeight={"bold"}>
+              {t("contactUs")}
+            </Heading>
+          </Link>
           <Link href={`tel:${settings?.site_phone ?? "+964 770 000 0000"}`}>
             <HStack gap={"12px"} color={"#CBCBCB"} my={"16px"}>
               <PhoneSignalIcon color={"primary"} size={"sm"} />

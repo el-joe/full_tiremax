@@ -10,8 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { useLocale, useTranslations } from "next-intl";
 import React from "react";
-import { useAuthContext } from "@/providers/AuthProvider";
-import WriteReviewForm from "./WriteReviewForm";
 
 type Props = {
   productId: number;
@@ -24,7 +22,6 @@ type Props = {
 const ProductReviews = ({ productId, reviews }: Props) => {
   const t = useTranslations("productView");
   const locale = useLocale();
-  const { isLogged } = useAuthContext();
   return (
     <Box>
       <HStack mb={"16px"} justify={"space-between"}>
@@ -49,17 +46,6 @@ const ProductReviews = ({ productId, reviews }: Props) => {
           <Text fontWeight={"bold"}>{reviews?.meta?.rating_count}</Text>
         </HStack>
       </HStack>
-      {/* write a review */}
-      <Box mb={"24px"}>
-        <Text
-          fontSize={{ base: "12px", md: "14px", lg: "16px", xl: "18px" }}
-          fontWeight={"semibold"}
-          mb={"12px"}
-        >
-          {t("writeAReview")}
-        </Text>
-        {isLogged && <WriteReviewForm productId={productId} />}
-      </Box>
       {/* reviews */}
       {!!reviews.reviews?.length && (
         <VStack gap={"8px"}>
@@ -83,7 +69,9 @@ const ReviewCard = ({ review }: { review: IReview }) => {
             {review?.customer?.name}
           </Text>
           <Text fontSize={"12px"} color={"gray-2"}>
-            منذ يومين
+            {review?.created_at
+              ? new Date(review.created_at).toLocaleDateString()
+              : ""}
           </Text>
         </Box>
         <Image

@@ -3,6 +3,7 @@
 import { SearchIcon } from "@/components/Icons";
 import generateYearsSlots from "@/helpers/generateYearsSlots";
 import { Link } from "@/i18n/navigation";
+import { buildStoreHref } from "@/helpers/searchTabs";
 import { useProductFilterContext } from "@/providers/ProductFilterProvider";
 import { IMake, IVehicle, IVehicleModel, IYearVehicleModel } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
@@ -249,7 +250,7 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
         </HStack>
       )}
       {showButton && (
-        <Link href={`/store?${getFiltersString()}`}>
+        <Link href={buildStoreHref(getFiltersString(), "foundByVehicle")}>
           <Button
             rounded={"12px"}
             minW="200px"
@@ -257,7 +258,6 @@ const FoundByVehicle = ({ showButton }: { showButton?: boolean }) => {
             type="submit"
             fontSize={{ base: "12px" }}
             w={{ base: "full", md: "auto" }}
-            onClick={() => applyFilter()}
           >
             {t("findYourTireNow")} <SearchIcon />
           </Button>

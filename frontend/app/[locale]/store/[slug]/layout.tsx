@@ -14,7 +14,7 @@ type Props = {
 const layout = ({ children }: Props) => {
   return (
     <Container>
-      <Suspense fallback={<Text fontSize={"48px"}>Loading</Text>}>
+      <Suspense fallback={<Text fontSize={"48px"}>...</Text>}>
         {children}
       </Suspense>
     </Container>

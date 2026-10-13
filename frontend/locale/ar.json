@@ -160,7 +160,11 @@
         "best_seller": "الأكثر مبيعًا",
         "new": "جديد",
         "sale": "تخفيض",
-        "featured": "مميز"
+        "featured": "مميز",
+        "best_choice": "الاختيار الأفضل",
+        "special_offer": "عرض خاص",
+        "model": "الموديل",
+        "selectModel": "اختر الموديل"
     },
     "productView": {
         "store": "المتجر",
@@ -203,6 +207,8 @@
     "cartAndPayment": {
         "shoppingCart": "سلة التسوق",
         "orderSummary": "ملخص الطلب",
+        "grandTotal": "الإجمالي النهائي",
+        "shippingFee": "رسوم الشحن",
         "subtotal": "الإجمالي الفرعي",
         "discount": "الخصم",
         "offerCode": "كود الخصم",
@@ -407,7 +413,8 @@
         "bookingReference": "رقم الحجز",
         "viewBooking": "عرض الحجز",
         "createAccountToTrackBookings": "أنشئ حساباً لتتبع حجوزاتك وإدارتها.",
-        "createAccountCta": "إنشاء حساب"
+        "createAccountCta": "إنشاء حساب",
+        "allStepsComplete": "تم إكمال جميع الخطوات!"
     },
     "auth": {
         "emailOrPhoneNumber": "البريد الإلكتروني أو رقم الهاتف",
@@ -446,7 +453,8 @@
         "logoutWarning": "هل أنت متأكد أنك تريد تسجيل الخروج؟ ستتم إعادة توجيهك إلى الصفحة الرئيسية.",
         "logoutConfirm": "تسجيل الخروج",
         "logoutCancel": "إلغاء",
-        "linkedItems": "تم ربط {orders} طلبات سابقة و{bookings} حجوزات بحسابك"
+        "linkedItems": "تم ربط {orders} طلبات سابقة و{bookings} حجوزات بحسابك",
+        "profileUpdated": "تم تحديث الملف الشخصي بنجاح"
     },
     "cart": {
         "cart": "السلة",
@@ -482,6 +490,12 @@
         "all": "الكل",
         "delivered": "تم التوصيل",
         "onTheWay": "في الطريق",
+        "cancelled": "ملغي",
+        "rateProduct": "قيّم هذا المنتج",
+        "rateYourProducts": "قيّم منتجاتك",
+        "rateYourProductsDescription": "تم تسليم طلبك. شاركنا رأيك في كل منتج.",
+        "rated": "تم التقييم",
+        "rate": "قيّم",
         "processing": "قيد المعالجة",
         "manageBookingsDescription": "إدارة جميع حجوزات الخدمات الخاصة بك",
         "bookingNumber": "رقم الحجز",
@@ -559,7 +573,12 @@
         "duration": "المدة",
         "price": "السعر",
         "notes": "ملاحظات",
-        "minutes": "دقيقة"
+        "minutes": "دقيقة",
+        "noFavoriteProducts": "ليس لديك منتجات مفضلة بعد",
+        "noOrdersYet": "لا توجد طلبات بعد",
+        "noReservationYet": "لا توجد حجوزات بعد",
+        "noAddressYet": "لم تقم بإضافة عنوان بعد",
+        "noBookingYet": "لا توجد حجوزات بعد"
     },
     "termsAndConditions": {
         "termsAndConditions": "الشروط والأحكام",
@@ -615,12 +634,14 @@
         "chooseYourPerfectTire": "اختر إطارك المناسب لصيف العراق",
         "chooseYourPerfectTireDescription": "اختيارات مدروسة تمنحك قيادة آمنة ومريحة طوال الصيف.",
         "youDontHaveNotifications": "ليس لديك أي إشعارات",
+        "markAsRead": "تعليم كمقروء",
         "markAllAsRead": "تعليم الكل كمقروء"
     },
     "iraqiDinar": "دينار عراقي",
     "iqd": "د.ع",
     "addedToYourFavorites": "تمت الإضافة إلى المفضلة",
     "removedFromYourFavorites": "تمت الإزالة من المفضلة",
+    "somethingWentWrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
     "addedToTheCart": "تمت الإضافة إلى سلة التسوق",
     "removedFromTheCart": "تمت الإزالة من سلة التسوق",
     "trackOrder": {
@@ -633,5 +654,11 @@
         "notFound": "لا يوجد طلب أو حجز بهذه البيانات",
         "error": "حدث خطأ، يرجى المحاولة مرة أخرى",
         "total": "الإجمالي"
-    }
+    },
+    "unexpectedError": "حدث خطأ غير متوقع",
+    "loading": "جارٍ التحميل...",
+    "orderCancelledSuccessfully": "تم إلغاء الطلب بنجاح",
+    "bookingCancelled": "تم إلغاء الحجز بنجاح",
+    "redirectingToPayment": "جارٍ التحويل إلى الدفع...",
+    "noProductsAvailable": "لا توجد منتجات متاحة"
 }

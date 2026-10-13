@@ -129,7 +129,7 @@ class CustomerManager extends Component
 
             $auditLogs = AuditLog::query()
                 ->with('admin')
-                ->where(function ($q) use ($orderIds, $bookingIds) {
+                ->where(function ($q) use ($orderIds, $bookingIds, $viewing) {
                     $q->where(fn($w) => $w->where('subject_type', \App\Models\Order::class)->whereIn('subject_id', $orderIds))
                         ->orWhere(fn($w) => $w->where('subject_type', \App\Models\Booking::class)->whereIn('subject_id', $bookingIds))
                         ->orWhere(fn($w) => $w->where('subject_type', Customer::class)->where('subject_id', $viewing->id));

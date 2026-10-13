@@ -20,6 +20,11 @@ return [
     'registered' => 'Registration successful.',
     'error' => 'Error.',
     'account_disabled' => 'Your account is disabled.',
+    'review_order_not_delivered' => 'The order must be delivered before you can review its products.',
+    'review_product_not_in_order' => 'This product is not part of the order.',
+    'review_already_submitted' => 'You have already reviewed this product for this order.',
+    'notification_marked_read' => 'Notification marked as read.',
+    'notifications_marked_read' => 'All notifications marked as read.',
     'insufficient_stock' => 'Insufficient stock for this product.',
     'cart_empty' => 'Your cart is empty.',
     'product_unavailable' => 'A product is no longer available.',
@@ -386,7 +391,15 @@ return [
         'trim_en' => 'Trim (EN)',
         'year_placeholder' => 'Year',
 
+        'invalid_hours' => 'Opening time must be before closing time.',
+        'working_hours' => 'Working hours',
+        'working_hours_hint' => 'Customers can only book reservations on open days, within these hours. The last number is how many bookings fit in one 30-minute slot.',
+        'closed' => 'Closed',
+        'capacity' => 'Capacity',
+        'weekdays' => [0 => 'Sunday', 1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thursday', 5 => 'Friday', 6 => 'Saturday'],
+
         'setting_groups' => [
+            'mail' => 'Email (SMTP)',
             'notifications' => 'Notifications',
             'general' => 'General',
             'shipping' => 'Shipping',
@@ -399,6 +412,14 @@ return [
         ],
 
         'setting_keys' => [
+            'mail_mailer' => 'Mailer (smtp / log)',
+            'smtp_host' => 'SMTP host',
+            'smtp_port' => 'SMTP port',
+            'smtp_username' => 'SMTP username',
+            'smtp_password' => 'SMTP password',
+            'smtp_encryption' => 'Encryption (tls / ssl / none)',
+            'mail_from_address' => 'From address',
+            'mail_from_name' => 'From name',
             'email_enabled' => 'Email notifications',
             'whatsapp_enabled' => 'WhatsApp notifications',
             'site_name' => 'Site Name',

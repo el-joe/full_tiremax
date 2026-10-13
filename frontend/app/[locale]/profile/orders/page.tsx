@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import OrdersHeader from "@/components/pages/profile/orders/OrdersHeader";
 import OrdersList from "@/components/pages/profile/orders/OrdersList";
 import { IApiMetaRes, IOrder } from "@/types";
@@ -29,6 +30,6 @@ export default async function page() {
         </>
       );
     }
-    return <div>Unexpected error</div>;
+    return <div>{(await getTranslations())("unexpectedError")}</div>;
   }
 }

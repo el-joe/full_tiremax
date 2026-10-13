@@ -9,6 +9,11 @@ class OrderResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        // products of this order the customer has already reviewed
+        $reviewed = $this->relationLoaded('items')
+            ? \App\Models\Review::where('order_id', $this->id)->pluck('product_id')->all()
+            : [];
+
         return [
             'id' => $this->id,
             'reference' => $this->reference,
@@ -39,6 +44,7 @@ class OrderResource extends JsonResource
                 'quantity' => $i->quantity,
                 'unit_price' => (float) $i->unit_price,
                 'total' => (float) $i->total,
+                'reviewed' => in_array($i->product_id, $reviewed, true),
             ])),
         ];
     }

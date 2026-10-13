@@ -20,6 +20,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { IOrder } from "@/types";
 import { redirect } from "next/navigation";
 import OrderSummary from "@/components/pages/profile/orders/OrderSummary";
+import RateOrderItems from "@/components/pages/profile/orders/RateOrderItems";
 import CancelOrderButton from "@/components/pages/profile/orders/CancelOrderButton";
 import { Link } from "@/i18n/navigation";
 import { BiArrowBack, BiArrowToRight } from "react-icons/bi";
@@ -138,6 +139,7 @@ export default async function page({ params }: props) {
                 </Text>
               </Box>
             </HStack>
+            <RateOrderItems order={data} />
             {/*  */}
             {data.type === "delivery" && (
               <HStack

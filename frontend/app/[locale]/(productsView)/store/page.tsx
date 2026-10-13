@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import ProductListView from "@/components/pages/productsView/ProductListView";
 import { IApiMetaRes, IProduct } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
@@ -18,7 +19,7 @@ const page = async () => {
       return <div>{error.message}</div>;
     }
 
-    return <div>Unexpected error</div>;
+    return <div>{(await getTranslations())("unexpectedError")}</div>;
   }
 };
 

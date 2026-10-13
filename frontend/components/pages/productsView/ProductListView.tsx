@@ -15,7 +15,7 @@ const ProductListView = ({ data, paginationInfo }: Props) => {
         <Center>
           <Image
             src="/images/no_products.webp"
-            alt="No Products Available"
+            alt="No products available"
             maxW={"400px"}
           />
           {/* <Text fontSize={"80px"}>Oops! No Data here</Text> */}

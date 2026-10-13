@@ -43,6 +43,6 @@ class OrderNotifier extends BaseNotifier
         $mail = $log->event === 'order_placed'
             ? new OrderPlacedMail($order)
             : new OrderStatusChangedMail($order, $log->meta['from'] ?? null);
-        $this->email($order, $log->event, $mail, $order->customer_email, $order->customer_locale ?: 'ar', $log->meta ?? []);
+        $this->email($order, $log->event, $mail, $order->customer_email, $order->customer_locale ?: 'ar', $log->meta ?? [], true);
     }
 }

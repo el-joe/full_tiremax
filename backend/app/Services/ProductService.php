@@ -36,7 +36,16 @@ class ProductService
         }
 
         if (!empty($filters['badge'])) {
-            $q->whereHas('badges', fn($qb) => $qb->where('badge', $filters['badge']));
+            $badge = $filters['badge'];
+            if ($badge === Product::BADGE_SPECIAL_OFFER) {
+                // "special offers" = explicitly badged products + anything with a sale price
+                // (same definition the home page uses for its offers section)
+                $q->where(fn($qb) => $qb
+                    ->whereHas('badges', fn($b) => $b->where('badge', $badge))
+                    ->orWhereNotNull('sale_price'));
+            } else {
+                $q->whereHas('badges', fn($qb) => $qb->where('badge', $badge));
+            }
         }
 
         if (!empty($filters['min_price'])) {

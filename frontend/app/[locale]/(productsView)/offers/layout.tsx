@@ -13,7 +13,7 @@ type props = {
 
 const page = async ({ allOffersList }: props) => {
   return (
-    <Suspense fallback={<Text fontSize={"48px"}>Loading</Text>}>
+    <Suspense fallback={<Text fontSize={"48px"}>...</Text>}>
       {allOffersList}
     </Suspense>
   );

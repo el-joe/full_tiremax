@@ -20,6 +20,11 @@ return [
     'registered' => 'تم إنشاء الحساب بنجاح.',
     'error' => 'خطأ.',
     'account_disabled' => 'الحساب موقوف.',
+    'review_order_not_delivered' => 'يمكنك تقييم المنتجات بعد تسليم الطلب فقط.',
+    'review_product_not_in_order' => 'هذا المنتج ليس ضمن الطلب.',
+    'review_already_submitted' => 'لقد قمت بتقييم هذا المنتج لهذا الطلب مسبقًا.',
+    'notification_marked_read' => 'تم تعليم الإشعار كمقروء.',
+    'notifications_marked_read' => 'تم تعليم كل الإشعارات كمقروءة.',
     'insufficient_stock' => 'الكمية المتوفرة غير كافية.',
     'cart_empty' => 'السلة فارغة.',
     'product_unavailable' => 'أحد المنتجات لم يعد متاحاً.',
@@ -386,7 +391,15 @@ return [
         'trim_en' => 'الفئة (إنجليزي)',
         'year_placeholder' => 'السنة',
 
+        'invalid_hours' => 'يجب أن يكون وقت الفتح قبل وقت الإغلاق.',
+        'working_hours' => 'ساعات العمل',
+        'working_hours_hint' => 'يمكن للعملاء الحجز فقط في أيام العمل وضمن هذه الساعات. الرقم الأخير هو عدد الحجوزات المتاحة في كل فترة 30 دقيقة.',
+        'closed' => 'مغلق',
+        'capacity' => 'السعة',
+        'weekdays' => [0 => 'الأحد', 1 => 'الاثنين', 2 => 'الثلاثاء', 3 => 'الأربعاء', 4 => 'الخميس', 5 => 'الجمعة', 6 => 'السبت'],
+
         'setting_groups' => [
+            'mail' => 'البريد الإلكتروني (SMTP)',
             'notifications' => 'الإشعارات',
             'general' => 'عام',
             'shipping' => 'الشحن',
@@ -399,6 +412,14 @@ return [
         ],
 
         'setting_keys' => [
+            'mail_mailer' => 'وسيلة الإرسال (smtp / log)',
+            'smtp_host' => 'خادم SMTP',
+            'smtp_port' => 'منفذ SMTP',
+            'smtp_username' => 'اسم مستخدم SMTP',
+            'smtp_password' => 'كلمة مرور SMTP',
+            'smtp_encryption' => 'التشفير (tls / ssl / none)',
+            'mail_from_address' => 'بريد المرسل',
+            'mail_from_name' => 'اسم المرسل',
             'email_enabled' => 'إشعارات البريد الإلكتروني',
             'whatsapp_enabled' => 'إشعارات واتساب',
             'site_name' => 'اسم الموقع',

@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import AddressesList from "@/components/pages/profile/addresses/AddressesList";
 import { IAddress, IApiMetaRes } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
@@ -27,6 +28,6 @@ export default async function page() {
         />
       );
     }
-    return <div>Unexpected error</div>;
+    return <div>{(await getTranslations())("unexpectedError")}</div>;
   }
 }

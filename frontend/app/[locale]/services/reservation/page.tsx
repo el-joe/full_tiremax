@@ -81,7 +81,7 @@ export default function Page() {
             {step.content}
           </Steps.Content>
         ))}
-        <Steps.CompletedContent>All steps are complete!</Steps.CompletedContent>
+        <Steps.CompletedContent>{t("allStepsComplete")}</Steps.CompletedContent>
       </Steps.RootProvider>
     </Container>
   );

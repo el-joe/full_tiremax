@@ -107,9 +107,16 @@
                         <div class="text-xs text-stone-400">{{ $viewing->customer_email }}</div>
                     </div>
                     <div class="bg-stone-800/50 rounded-lg p-3">
-                        <div class="text-xs text-stone-400">{{ __('messages.admin.shipping') }}</div>
-                        <div>{{ optional($viewing->governorate)->name }}</div>
-                        <div class="text-xs text-stone-400">{{ $viewing->shipping_address }}</div>
+                        @if ($viewing->type === \App\Models\Order::TYPE_BASRA)
+                            <div class="text-xs text-stone-400">{{ __('messages.admin.branch') }}</div>
+                            <div class="font-bold">{{ optional($viewing->branch)->name ?? '—' }}</div>
+                            <div class="text-xs text-stone-400">{{ optional($viewing->branch)->address }}</div>
+                            <div class="text-xs">{{ optional($viewing->branch)->phone }}</div>
+                        @else
+                            <div class="text-xs text-stone-400">{{ __('messages.admin.shipping') }}</div>
+                            <div class="font-bold">{{ optional($viewing->governorate)->name ?? '—' }}</div>
+                            <div class="text-xs text-stone-400">{{ $viewing->shipping_address }}</div>
+                        @endif
                     </div>
                 </div>
 
@@ -119,10 +126,10 @@
                         @foreach ($viewing->items as $it)
                             <div class="flex justify-between p-3 text-sm">
                                 <div>
-                                    <div class="font-bold">{{ optional($it->product)->name ?? $it->product_name }}</div>
-                                    <div class="text-xs text-stone-400">{{ __('messages.admin.sku_label') }} {{ $it->sku }} · {{ __('messages.admin.qty_label') }} {{ $it->quantity }}</div>
+                                    <div class="font-bold">{{ $it->product_name ?: optional($it->product)->name }}</div>
+                                    <div class="text-xs text-stone-400">{{ __('messages.admin.sku_label') }} {{ $it->product_sku }} · {{ __('messages.admin.qty_label') }} {{ $it->quantity }} × {{ number_format($it->unit_price) }} IQD</div>
                                 </div>
-                                <div class="font-bold">{{ number_format($it->line_total) }} IQD</div>
+                                <div class="font-bold">{{ number_format($it->total) }} IQD</div>
                             </div>
                         @endforeach
                     </div>

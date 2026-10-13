@@ -37,15 +37,17 @@ class CartService
             $cart = $this->getOrCreate($customer);
             $product = Product::active()->findOrFail($productId);
 
-            if ($product->stock < $quantity) {
-                throw ApiException::badRequest(__('messages.insufficient_stock'));
-            }
-
             $item = CartItem::firstOrNew([
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
             ]);
-            $item->quantity = ($item->exists ? $item->quantity : 0) + $quantity;
+            $newQuantity = ($item->exists ? $item->quantity : 0) + $quantity;
+
+            if ($product->stock < $newQuantity) {
+                throw ApiException::badRequest(__('messages.insufficient_stock'));
+            }
+
+            $item->quantity = $newQuantity;
             $item->unit_price = $product->effective_price;
             $item->save();
 

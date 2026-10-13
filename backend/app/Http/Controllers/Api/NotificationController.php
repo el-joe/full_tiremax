@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Support\NotificationPresenter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -21,8 +22,7 @@ class NotificationController extends Controller
             'data' => $notifications->map(fn($n) => [
                 'id' => $n->id,
                 'type' => $n->data['type'] ?? null,
-                'title' => $n->data['title'] ?? null,
-                'body' => $n->data['body'] ?? null,
+                ...NotificationPresenter::present($n->data),
                 'data' => $n->data,
                 'read_at' => $n->read_at,
                 'created_at' => $n->created_at,
@@ -49,13 +49,13 @@ class NotificationController extends Controller
         $notification = $request->user()->notifications()->findOrFail($id);
         $notification->markAsRead();
 
-        return response()->json(['message' => 'Notification marked as read.']);
+        return response()->json(['message' => __('messages.notification_marked_read')]);
     }
 
     public function markAllAsRead(Request $request): JsonResponse
     {
         $request->user()->unreadNotifications()->update(['read_at' => now()]);
 
-        return response()->json(['message' => 'All notifications marked as read.']);
+        return response()->json(['message' => __('messages.notifications_marked_read')]);
     }
 }

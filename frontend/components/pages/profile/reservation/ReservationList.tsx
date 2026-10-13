@@ -35,7 +35,7 @@ export default function ReservationList({
     return (
       <Center>
         <Text py="40px" fontSize={"28px"} fontWeight={"bold"}>
-          No booking yet
+          {t("noBookingYet")}
         </Text>
       </Center>
     );

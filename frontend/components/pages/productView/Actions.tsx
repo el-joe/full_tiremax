@@ -15,7 +15,7 @@ type Props = {
 
 const Actions = ({ product }: Props) => {
   const t = useTranslations("productView");
-  const { addOrUpdateItem, isAdding: isAddingToCart } = useCartContext();
+  const { addItem, isAdding: isAddingToCart } = useCartContext();
   const { toggleFavorite } = useFavContext();
   const { protectedWithAuth } = useAuthContext();
   return (
@@ -54,7 +54,7 @@ const Actions = ({ product }: Props) => {
           p={{ base: "8px", md: "11px", xl: "16px" }}
           h={"auto"}
           loading={isAddingToCart}
-          onClick={() => addOrUpdateItem(product, 1)}
+          onClick={() => addItem(product, 1)}
         >
           <CartPlusIcon />
           {t("addToCart")}

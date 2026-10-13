@@ -9,6 +9,12 @@ import { RegisterFormValues, registerSchema } from "@/Schemas/authSchemas";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useAuthContext } from "@/providers/AuthProvider";
+import type { AxiosError } from "axios";
+
+type TApiValidationError = {
+  message?: string;
+  errors?: Record<string, string[]>;
+};
 
 export default function RegisterForm() {
   const t = useTranslations("auth");
@@ -25,6 +31,7 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -39,20 +46,48 @@ export default function RegisterForm() {
   });
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
-    registerUser({
-      name: data.name,
-      phone: data.phone,
-      password: data.password,
-      password_confirmation: data.password_confirmation,
-      address: data?.address,
-      email: data?.email,
-      locale,
-    });
+    registerUser(
+      {
+        name: data.name,
+        phone: data.phone,
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+        address: data?.address,
+        email: data?.email,
+        locale,
+      },
+      {
+        // map the API's per-field validation errors onto the matching inputs
+        onError: (err: unknown) => {
+          const fieldErrors = (err as AxiosError<TApiValidationError>)?.response
+            ?.data?.errors;
+          if (!fieldErrors) return;
+          let focused = false;
+          Object.entries(fieldErrors).forEach(([field, messages]) => {
+            if (!(field in data) || !messages?.length) return;
+            setError(
+              field as keyof RegisterFormValues,
+              { type: "server", message: messages[0] },
+              { shouldFocus: !focused },
+            );
+            focused = true;
+          });
+        },
+      },
+    );
   };
 
+  // client (zod) errors are translation keys; server errors are already translated by the API
   const getErrorMessage = React.useCallback(
-    (errorMessage?: string) => (errorMessage ? t(errorMessage) : ""),
+    (error?: { message?: string; type?: string }) => {
+      if (!error?.message) return "";
+      return error.type === "server" ? error.message : t(error.message);
+    },
     [t],
+  );
+  // hide the generic banner when field-level errors already explain the failure
+  const hasFieldErrors = Object.values(errors).some(
+    (e) => (e as { type?: string })?.type === "server",
   );
 
   return (
@@ -64,7 +99,7 @@ export default function RegisterForm() {
             placeholder={t("enterFullName")}
             register={register("name")}
             err={!!errors.name?.message}
-            errMes={getErrorMessage(errors.name?.message?.toString())}
+            errMes={getErrorMessage(errors.name)}
             type="text"
             h="auto"
             p="16px"
@@ -75,7 +110,7 @@ export default function RegisterForm() {
             placeholder={t("enterPhoneNumber")}
             register={register("phone")}
             err={!!errors.phone?.message}
-            errMes={getErrorMessage(errors.phone?.message?.toString())}
+            errMes={getErrorMessage(errors.phone)}
             type="tel"
             h="auto"
             p="16px"
@@ -86,7 +121,7 @@ export default function RegisterForm() {
             placeholder={t("enterEmail")}
             register={register("email")}
             err={!!errors.email?.message}
-            errMes={getErrorMessage(errors.email?.message?.toString())}
+            errMes={getErrorMessage(errors.email)}
             type="email"
             h="auto"
             p="16px"
@@ -97,7 +132,7 @@ export default function RegisterForm() {
             placeholder={t("enterPassword")}
             register={register("password")}
             err={!!errors.password?.message}
-            errMes={getErrorMessage(errors.password?.message?.toString())}
+            errMes={getErrorMessage(errors.password)}
             type="password"
             h="auto"
             p="16px"
@@ -108,9 +143,7 @@ export default function RegisterForm() {
             placeholder={t("confirmYourPassword")}
             register={register("password_confirmation")}
             err={!!errors.password_confirmation?.message}
-            errMes={getErrorMessage(
-              errors.password_confirmation?.message?.toString(),
-            )}
+            errMes={getErrorMessage(errors.password_confirmation)}
             type="password"
             h="auto"
             p="16px"
@@ -121,13 +154,13 @@ export default function RegisterForm() {
             placeholder={t("enterAddress")}
             register={register("address")}
             err={!!errors.address?.message}
-            errMes={getErrorMessage(errors.address?.message?.toString())}
+            errMes={getErrorMessage(errors.address)}
             type="text"
             h="auto"
             p="16px"
           />
 
-          {registerIsError && (
+          {registerIsError && !hasFieldErrors && (
             <Badge
               p="12px"
               rounded="12px"

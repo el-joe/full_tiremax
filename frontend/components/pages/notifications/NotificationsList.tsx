@@ -14,6 +14,7 @@ type Props = { initialNotifications: INotification[] };
 
 const NotificationsList = ({ initialNotifications }: Props) => {
   const t = useTranslations("notifications");
+  const tc = useTranslations();
   const queryClient = useQueryClient();
   const [notifications, setNotifications] = useState(initialNotifications);
   const hasUnread = useMemo(
@@ -23,7 +24,7 @@ const NotificationsList = ({ initialNotifications }: Props) => {
 
   const onError = (err: AxiosError<{ message: string }>) => {
     if (err.status === 401) return;
-    const errMes = err?.response?.data?.message ?? "Something went wrong.";
+    const errMes = err?.response?.data?.message ?? tc("somethingWentWrong");
     toast.error(errMes);
   };
 
@@ -76,6 +77,8 @@ const NotificationsList = ({ initialNotifications }: Props) => {
         <Button
           alignSelf={"flex-end"}
           variant={"ghost"}
+          color={"black"}
+          _hover={{ color: "white" }}
           onClick={() => markAllAsRead()}
           loading={isMarkingAll}
         >
@@ -98,12 +101,26 @@ const NotificationsList = ({ initialNotifications }: Props) => {
               <FaRegBell />
             </Icon>
           </Center>
-          <Box>
+          <Box flex={1}>
             <Heading fontSize="20px" fontWeight={"bold"}>
               {n.title}
             </Heading>
             <Text color="gray">{n.body}</Text>
           </Box>
+          {!n.read_at && (
+            <Button
+              size={"sm"}
+              variant={"ghost"}
+              color={"black"}
+              _hover={{ color: "white" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick(n);
+              }}
+            >
+              {t("markAsRead")}
+            </Button>
+          )}
         </HStack>
       ))}
     </>

@@ -51,6 +51,6 @@ class BookingNotifier extends BaseNotifier
             'booking_reminder' => new BookingReminderMail($b),
             default => new BookingStatusChangedMail($b, $log->meta['from'] ?? null),
         };
-        $this->email($b, $log->event, $mail, $b->customer_email, $b->customer_locale ?: 'ar', $log->meta ?? []);
+        $this->email($b, $log->event, $mail, $b->customer_email, $b->customer_locale ?: 'ar', $log->meta ?? [], true);
     }
 }

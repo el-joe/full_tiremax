@@ -18,7 +18,7 @@ import { useProductFilterContext } from "@/providers/ProductFilterProvider";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
 import { IBrand } from "@/types";
-const maxRange = 200000;
+const maxRange = 999999;
 const Filters = ({ setDialog }: { setDialog?: (state: boolean) => void }) => {
   const t = useTranslations("store");
   const { applyFilter, removeAllFilters, filters, setFilter } =
@@ -30,14 +30,52 @@ const Filters = ({ setDialog }: { setDialog?: (state: boolean) => void }) => {
     filters.find((f) => f.filterBy === "max_price")?.query || maxRange
   );
   const { data: brandData, isLoading: brandIsLoading } = useQuery({
-    queryKey: ["makeList"],
+    queryKey: ["brandList"],
     queryFn: async () => {
-      const { data } = await axiosInstance<{ data: IBrand[] }>(
-        "vehicles/makes",
-      );
+      const { data } = await axiosInstance<{ data: IBrand[] }>("brands");
       return data.data;
     },
   });
+  const selectedBrandId = filters.find((f) => f.filterBy === "brand_id")?.query;
+  const brandSection = (
+    <Box w="full" mt="24px">
+      <Heading fontSize={"14px"} fontWeight={"semibold"} mb={"16px"}>
+        {t("brand")}
+      </Heading>
+      {brandIsLoading ? (
+        <Center>
+          <Spinner size={"lg"} />
+        </Center>
+      ) : (
+        <HStack flexWrap={"wrap"} gap={"8px"}>
+          {brandData?.map((brand) => (
+            <Button
+              key={brand.id}
+              w="calc(100% / 2 - 8px)"
+              variant={
+                selectedBrandId === brand.id.toString() ? "solid" : "outline"
+              }
+              onClick={() =>
+                setFilter({
+                  targetEndpoint: "products",
+                  filterBy: "brand_id",
+                  // clicking the selected brand again clears it
+                  query:
+                    selectedBrandId === brand.id.toString()
+                      ? ""
+                      : brand.id.toString(),
+                })
+              }
+              color={"black"}
+              _hover={{ color: "white" }}
+            >
+              {brand.name}
+            </Button>
+          ))}
+        </HStack>
+      )}
+    </Box>
+  );
   return (
     <VStack
       gap={"32px"}
@@ -89,6 +127,7 @@ const Filters = ({ setDialog }: { setDialog?: (state: boolean) => void }) => {
         }}
         tabsRootProps={{ rounded: "0", minH: "300px" }}
         tabsContentProps={{ p: "0", pt: "32px" }}
+        sizeTabExtra={brandSection}
       />
       {/* price range filter */}
       <RangeSlider
@@ -110,43 +149,6 @@ const Filters = ({ setDialog }: { setDialog?: (state: boolean) => void }) => {
           });
         }}
       />
-      <Box w="full">
-        <Heading fontSize={"14px"} fontWeight={"semibold"} mb={"16px"}>
-          {t("brand")}
-        </Heading>
-        {brandIsLoading ? (
-          <Center>
-            {" "}
-            <Spinner size={"lg"} />
-          </Center>
-        ) : (
-          <HStack flexWrap={"wrap"} gap={"8px"}>
-            {brandData?.map((brand) => (
-              <Button
-                key={brand.id}
-                w="calc(100% / 2 - 8px)"
-                variant={
-                  filters.find((f) => f.filterBy === "brand_id")?.query ===
-                  brand.id.toString()
-                    ? "solid"
-                    : "outline"
-                }
-                onClick={() =>
-                  setFilter({
-                    targetEndpoint: "products",
-                    filterBy: "brand_id",
-                    query: brand.id.toString(),
-                  })
-                }
-                color={"black"}
-                _hover={{ color: "white" }}
-              >
-                {brand.name}
-              </Button>
-            ))}
-          </HStack>
-        )}
-      </Box>
       <Button
         w="full"
         rounded={"16px"}

@@ -28,7 +28,7 @@ export default async function OrdersList({
     return (
       <Center>
         <Text py="40px" fontSize={"28px"} fontWeight={"bold"}>
-          No orders yet
+          {t("noOrdersYet")}
         </Text>
       </Center>
     );

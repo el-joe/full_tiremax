@@ -96,7 +96,7 @@ export default function ReservationComingCard() {
           </Center>
         ) : !upcomingReservation ? (
           <>
-            <Text>No reservation yet</Text>
+            <Text>{t("noReservationYet")}</Text>
           </>
         ) : (
           <>

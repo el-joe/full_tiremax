@@ -20,6 +20,7 @@ export default function RemoveAddressDialog({ trigger, addressId }: props) {
   const dir = useDir();
   const dialog = useDialog();
   const t = useTranslations("profile");
+  const tc = useTranslations();
   const router = useRouter();
   //   mutation booking
   const { mutate: removeAddressMutate, isPending: isRemovingAddress } =
@@ -39,7 +40,7 @@ export default function RemoveAddressDialog({ trigger, addressId }: props) {
       onError: (err: AxiosError<{ message: string }>) => {
         if (err.status === 401) return;
         const errMes =
-          err?.response?.data?.message ?? "Oops! something want wrang";
+          err?.response?.data?.message ?? tc("somethingWentWrong");
         toast.error(errMes);
       },
     });

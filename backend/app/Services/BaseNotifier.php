@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Notification;
  */
 abstract class BaseNotifier
 {
-    protected function email(Model $subject, string $event, TransactionalMail $mail, ?string $email, string $locale, array $meta = []): ?NotificationLog
+    protected function email(Model $subject, string $event, TransactionalMail $mail, ?string $email, string $locale, array $meta = [], bool $now = false): ?NotificationLog
     {
         if (!$email || !NotificationSettings::emailEnabled()) {
             return null;
@@ -29,7 +29,10 @@ abstract class BaseNotifier
                 'channel' => 'email', 'event' => $event, 'subject_type' => $subject::class, 'subject_id' => $subject->getKey(),
                 'recipient' => $email, 'locale' => $locale, 'status' => 'queued', 'meta' => $meta ?: null,
             ]);
-            Mail::to($email)->send($mail->withLog($log->id));
+            // admin-triggered resends go out immediately so the result shows in the log; the rest is queued
+            $now
+                ? Mail::to($email)->sendNow($mail->withLog($log->id))
+                : Mail::to($email)->send($mail->withLog($log->id));
             return $log;
         } catch (\Throwable $e) {
             Log::error('Email notification failed', ['event' => $event, 'error' => $e->getMessage()]);

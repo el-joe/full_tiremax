@@ -36,7 +36,9 @@ class HomeController extends Controller
             ->get();
 
         $offers = Product::active()
-            ->whereNotNull('sale_price')
+            ->where(fn($q) => $q
+                ->whereNotNull('sale_price')
+                ->orWhereHas('badges', fn($b) => $b->where('badge', Product::BADGE_SPECIAL_OFFER)))
             ->with(['brand', 'brand.translations', 'images', 'badges', 'translations'])
             ->limit(8)
             ->get();

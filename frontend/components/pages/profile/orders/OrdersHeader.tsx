@@ -7,7 +7,7 @@ const statusFilter = [
   {
     id: 1,
     label: "processing",
-    value: "pending",
+    value: "processing",
   },
   {
     id: 2,
@@ -19,11 +19,17 @@ const statusFilter = [
     label: "delivered",
     value: "delivered",
   },
+  {
+    id: 4,
+    label: "cancelled",
+    value: "cancelled",
+  },
 ];
 
 export default function OrdersHeader({ ordersCount }: { ordersCount: number }) {
   const t = useTranslations("profile");
   const { applyFilter, filters } = useApiFilter();
+  const activeStatus = filters.find((e) => e.filterBy === "status")?.query;
   return (
     <HStack
       justify={"space-between"}
@@ -76,12 +82,12 @@ export default function OrdersHeader({ ordersCount }: { ordersCount: number }) {
         {statusFilter.map((f) => (
           <Button
             key={f.id}
-            bg={filters.find((e) => e.query === f.value) ? "primary" : "gray-4"}
+            bg={activeStatus === f.value ? "primary" : "gray-4"}
             color={
-              filters.find((e) => e.query === f.value) ? "black" : "gray-2"
+              activeStatus === f.value ? "black" : "gray-2"
             }
             boxShadow={
-              filters.find((e) => e.query === f.value)
+              activeStatus === f.value
                 ? "0 2px 4px -2px #0000001A, 0 4px 6px -1px #0000001A"
                 : "unset"
             }

@@ -73,6 +73,7 @@ class SettingManager extends Component
         }
 
         \App\Services\PublicSettings::flush();
+        \App\Support\MailSettings::flush();
         $this->loadForm();
 
         $this->dispatch('toast', icon: 'success', title: __('messages.admin.save'));

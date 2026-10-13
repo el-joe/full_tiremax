@@ -4,4 +4,5 @@ export interface IGovernorate {
   name: string;
   is_basra: boolean;
   shipping_fee: number;
+  delivery_days?: number | null;
 }

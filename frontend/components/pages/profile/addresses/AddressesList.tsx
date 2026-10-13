@@ -32,7 +32,7 @@ export default function AddressesList({ data }: Props) {
     return (
       <Center>
         <Text py="40px" fontSize={"28px"} fontWeight={"bold"}>
-          No don&apos;t set your address yet
+          {t("noAddressYet")}
         </Text>
       </Center>
     );

@@ -24,6 +24,7 @@ export default function CancelOrderDialog({
   const dir = useDir();
   const dialog = useDialog();
   const t = useTranslations("profile");
+  const tc = useTranslations();
 
   const { mutate: mutateCancelOrder, isPending: isCancelingOrder } =
     useMutation({
@@ -33,13 +34,13 @@ export default function CancelOrderDialog({
         return data;
       },
       onSuccess: () => {
-        toast.success("Order cancelled successfully");
+        toast.success(tc("orderCancelledSuccessfully"));
         dialog.setOpen(false);
         onSuccess?.();
       },
       onError: (err: AxiosError<{ message?: string }>) => {
         if (err.status === 401) return;
-        toast.error(err.response?.data?.message || "Oops! something went wrong");
+        toast.error(err.response?.data?.message || tc("somethingWentWrong"));
       },
     });
   const handleCancel = () => {

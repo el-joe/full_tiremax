@@ -1,17 +1,13 @@
 "use client";
-import { useCart } from "@/hooks/useCart";
+import { IAppliedOffer, useCart } from "@/hooks/useCart";
 import { ICustomerCart, IProduct } from "@/types";
 import { ICartItem, ICartProduct } from "@/types/customerCart.type";
 import { createContext, useContext } from "react";
 
-interface IAppliedOffer {
-  discount: number;
-  offer: { code: string; title: string };
-}
-
 interface ICartContext {
   cart: ICustomerCart;
   existsInCart: (productId: number) => boolean;
+  addItem: (product: IProduct | ICartProduct, quantity?: number) => void;
   addOrUpdateItem: (product: IProduct | ICartProduct, quantity: number) => void;
   removeItem: (productId: number) => void;
   clearCart: () => void;
@@ -39,6 +35,7 @@ const initialState: ICartContext = {
     governorate: null,
   },
   existsInCart: () => false,
+  addItem() {},
   addOrUpdateItem() {},
   removeItem() {},
   clearCart() {},
@@ -63,6 +60,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     cart,
     existsInCart,
     totalQuantity,
+    addItem,
     addOrUpdateItem,
     removeItem,
     clearCart,
@@ -83,6 +81,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         cart,
         existsInCart,
+        addItem,
         addOrUpdateItem,
         removeItem,
         clearCart,

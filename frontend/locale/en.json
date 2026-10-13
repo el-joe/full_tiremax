@@ -160,7 +160,11 @@
         "best_seller": "Best seller",
         "new": "New",
         "sale": "Sale",
-        "featured": "Featured"
+        "featured": "Featured",
+        "best_choice": "Best choice",
+        "special_offer": "Special offer",
+        "category": "Category",
+        "selectCategory": "Select category"
     },
     "productView": {
         "store": "Store",
@@ -203,6 +207,8 @@
     "cartAndPayment": {
         "shoppingCart": "Shopping cart",
         "orderSummary": "Order summary",
+        "grandTotal": "Grand total",
+        "shippingFee": "Shipping fee",
         "subtotal": "Subtotal",
         "discount": "Discount",
         "offerCode": "Offer code",
@@ -407,7 +413,8 @@
         "bookingReference": "Booking reference",
         "viewBooking": "View booking",
         "createAccountToTrackBookings": "Create an account to track and manage your bookings.",
-        "createAccountCta": "Create an account"
+        "createAccountCta": "Create an account",
+        "allStepsComplete": "All steps are complete!"
     },
     "auth": {
         "emailOrPhoneNumber": "Email or phone number",
@@ -446,7 +453,8 @@
         "logoutWarning": "Are you sure you want to log out? You'll be redirected to the home page.",
         "logoutConfirm": "Log out",
         "logoutCancel": "Cancel",
-        "linkedItems": "{orders} previous orders and {bookings} bookings were linked to your account"
+        "linkedItems": "{orders} previous orders and {bookings} bookings were linked to your account",
+        "profileUpdated": "Profile updated successfully"
     },
     "cart": {
         "cart": "Cart",
@@ -482,6 +490,12 @@
         "all": "All",
         "delivered": "Delivered",
         "onTheWay": "On the Way",
+        "cancelled": "Cancelled",
+        "rateProduct": "Rate this product",
+        "rateYourProducts": "Rate your products",
+        "rateYourProductsDescription": "Your order was delivered. Tell us what you think about each product.",
+        "rated": "Rated",
+        "rate": "Rate",
         "processing": "Processing",
         "manageBookingsDescription": "Manage all your service bookings",
         "bookingNumber": "Booking Number",
@@ -558,7 +572,13 @@
         "duration": "Duration",
         "price": "Price",
         "notes": "Notes",
-        "minutes": "minutes"
+        "minutes": "minutes",
+        "noFavoriteProducts": "You don't have favorite products yet",
+        "noOrdersYet": "No orders yet",
+        "noReservationYet": "No reservation yet",
+        "noAddressYet": "You haven't added an address yet",
+        "noBookingYet": "No bookings yet",
+        "emailPlaceholder": "example@example.com"
     },
     "termsAndConditions": {
         "termsAndConditions": "Terms & Conditions",
@@ -614,12 +634,14 @@
         "chooseYourPerfectTire": "Choose the Right Tire for Iraq's Summer",
         "chooseYourPerfectTireDescription": "Carefully selected options that provide a safe and comfortable driving experience throughout the summer.",
         "youDontHaveNotifications": "You don't have any notifications",
+        "markAsRead": "Mark as read",
         "markAllAsRead": "Mark all as read"
     },
     "iraqiDinar": "Iraqi Dinar",
     "iqd": "IQD",
     "addedToYourFavorites": "Added to your favorites",
     "removedFromYourFavorites": "Removed from your favorites",
+    "somethingWentWrong": "Something went wrong. Please try again.",
     "addedToTheCart": "Added to the cart",
     "removedFromTheCart": "Removed from the cart",
     "trackOrder": {
@@ -632,5 +654,11 @@
         "notFound": "No order or booking found for these details",
         "error": "Something went wrong, please try again",
         "total": "Total"
-    }
+    },
+    "unexpectedError": "Unexpected error",
+    "loading": "Loading...",
+    "orderCancelledSuccessfully": "Order cancelled successfully",
+    "bookingCancelled": "Booking cancelled successfully",
+    "redirectingToPayment": "Redirecting to payment...",
+    "noProductsAvailable": "No products available"
 }

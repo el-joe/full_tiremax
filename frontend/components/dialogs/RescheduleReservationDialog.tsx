@@ -25,6 +25,7 @@ export default function RescheduleReservationDialog({
   const dialog = useDialog();
   const router = useRouter();
   const t = useTranslations("profile");
+  const tc = useTranslations();
   const { mutate: mutateCancelBooking, isPending: isRescheduling } =
     useMutation({
       mutationKey: ["cancelBooking", reservation.id],
@@ -41,7 +42,7 @@ export default function RescheduleReservationDialog({
       onError: (err: AxiosError<{ message?: string }>) => {
         if (err.status === 401) return;
         const errorMessage =
-          err.response?.data?.message ?? "Oops! something went wrong";
+          err.response?.data?.message ?? tc("somethingWentWrong");
         toast.error(errorMessage);
       },
     });

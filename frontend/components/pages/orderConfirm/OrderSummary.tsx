@@ -1,5 +1,6 @@
 "use client";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
+import PriceBreakdown from "@/components/shared/PriceBreakdown";
 import { Link } from "@/i18n/navigation";
 import { useCartContext } from "@/providers/CartProvider";
 import { IOrder } from "@/types";
@@ -71,7 +72,7 @@ const OrderSummary = ({ data }: props) => {
                   fontWeight={"bold"}
                   textAlign={"end"}
                 >
-                  {item.unit_price.toLocaleString()}
+                  {item.quantity} × {item.unit_price.toLocaleString()} = {item.total.toLocaleString()}
                   <CurrencySymbol />
                 </Text>
               </VStack>
@@ -79,23 +80,15 @@ const OrderSummary = ({ data }: props) => {
           </Link>
         ))}
       </VStack>
-      {/* total */}
-      <HStack justify={"space-between"}>
-        <Heading
-          fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
-          fontWeight={"extrabold"}
-        >
-          {t("total")}
-        </Heading>
-        <Text
-          fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
-          fontWeight={"bold"}
-          color={"primary"}
-          ps={"12px"}
-        >
-          {data.total.toLocaleString()} <CurrencySymbol />
-        </Text>
-      </HStack>
+      <PriceBreakdown
+        subtotal={data.subtotal}
+        discount={data.discount}
+        discountPercent={
+          data.subtotal > 0 ? (data.discount / data.subtotal) * 100 : undefined
+        }
+        shippingFee={data.shipping_fee + (data.installation_fee ?? 0)}
+        total={data.total}
+      />
       {/* track button */}
       {/* <Button
         shadow={"0px 15px 30px 0px #FFB80040"}

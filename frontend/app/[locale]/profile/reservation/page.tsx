@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import ReservationList from "@/components/pages/profile/reservation/ReservationList";
 import { IApiMetaRes, IReservation } from "@/types";
 import axiosInstance from "@/utils/axiosInstance";
@@ -96,6 +97,6 @@ export default async function page() {
     if (error instanceof AxiosError) {
       return <ReservationList data={[]} />;
     }
-    return <div>Unexpected error</div>;
+    return <div>{(await getTranslations())("unexpectedError")}</div>;
   }
 }

@@ -13,9 +13,12 @@ export interface IApplyOfferResult {
   discount: number;
   subtotal: number;
   total: number;
+  discount_percent: number;
   offer: {
     code: string;
     title: string;
+    discount_type: "percent" | "fixed";
+    discount_value: number;
   };
 }
 

@@ -28,6 +28,19 @@ class BranchAndServiceSeeder extends Seeder
         $branch->translateOrNew('en')->fill(['name' => 'Basra Main Branch', 'address' => 'Basra - Corniche St.']);
         $branch->save();
 
+        // weekly working hours (Friday closed) - what the reservation calendar offers
+        foreach (range(0, 6) as $dow) {
+            \App\Models\BranchSchedule::updateOrCreate(
+                ['branch_id' => $branch->id, 'day_of_week' => $dow],
+                [
+                    'opens_at' => $dow === 5 ? null : '09:00',
+                    'closes_at' => $dow === 5 ? null : '18:00',
+                    'capacity' => $branch->default_capacity,
+                    'is_closed' => $dow === 5,
+                ]
+            );
+        }
+
         $services = [
             ['en' => 'Tire Installation', 'ar' => 'تركيب الإطارات', 'duration' => 30, 'price' => 5000],
             ['en' => 'Wheel Balancing', 'ar' => 'موازنة العجلات', 'duration' => 30, 'price' => 7000],

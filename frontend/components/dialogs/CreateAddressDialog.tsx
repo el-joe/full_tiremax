@@ -34,6 +34,7 @@ type Props = {
 export default function CreateAddressDialog({ trigger }: Props) {
   const dialog = useDialog();
   const t = useTranslations("profile");
+  const tc = useTranslations();
   const locale = useLocale();
   const router = useRouter();
 
@@ -79,7 +80,7 @@ export default function CreateAddressDialog({ trigger }: Props) {
     },
     onError: (err: AxiosError<{ message?: string }>) => {
       const apiMessage =
-        err.response?.data?.message ?? "Oops! something want wrang!";
+        err.response?.data?.message ?? tc("somethingWentWrong");
       toast.error(apiMessage);
     },
   });

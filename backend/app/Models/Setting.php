@@ -19,8 +19,14 @@ class Setting extends Model implements TranslatableContract
 
     protected static function booted(): void
     {
-        static::saved(fn () => \App\Services\PublicSettings::flush());
-        static::deleted(fn () => \App\Services\PublicSettings::flush());
+        static::saved(function () {
+            \App\Services\PublicSettings::flush();
+            \App\Support\MailSettings::flush();
+        });
+        static::deleted(function () {
+            \App\Services\PublicSettings::flush();
+            \App\Support\MailSettings::flush();
+        });
     }
 
     public function getTypedValue(?string $locale = null): mixed

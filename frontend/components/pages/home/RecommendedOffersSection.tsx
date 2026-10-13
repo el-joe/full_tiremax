@@ -27,7 +27,7 @@ const RecommendedOffersSection = async ({ data }: props) => {
         >
           {t("recommendedOffersForYou")}
         </Heading>
-        <Link href={"/offers"}>
+        <Link href={"/store?filter_products_badge=special_offer"}>
           <HStack>
             {t("showAll")}
             <ChevronLeftIcon

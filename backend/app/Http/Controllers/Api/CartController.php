@@ -55,9 +55,14 @@ class CartController extends Controller
             'discount' => $result['discount'],
             'subtotal' => $result['subtotal'],
             'total' => $result['total'],
+            'discount_percent' => $result['subtotal'] > 0
+                ? round($result['discount'] / $result['subtotal'] * 100, 2)
+                : 0,
             'offer' => [
                 'code' => $result['offer']->code,
                 'title' => $result['offer']->title,
+                'discount_type' => $result['offer']->discount_type,
+                'discount_value' => (float) $result['offer']->discount_value,
             ],
         ]);
     }

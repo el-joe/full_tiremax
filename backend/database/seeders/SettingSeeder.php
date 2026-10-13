@@ -243,6 +243,16 @@ class SettingSeeder extends Seeder
             ['group' => 'notifications', 'key' => 'email_enabled', 'cast' => 'bool', 'translatable' => false, 'value' => '1'],
             ['group' => 'notifications', 'key' => 'whatsapp_enabled', 'cast' => 'bool', 'translatable' => false, 'value' => '1'],
 
+            // ── Mail (SMTP) ───────────────────────────────────────────────
+            ['group' => 'mail', 'key' => 'mail_mailer', 'cast' => 'string', 'translatable' => false, 'value' => 'smtp'],
+            ['group' => 'mail', 'key' => 'smtp_host', 'cast' => 'string', 'translatable' => false, 'value' => null],
+            ['group' => 'mail', 'key' => 'smtp_port', 'cast' => 'int', 'translatable' => false, 'value' => '587'],
+            ['group' => 'mail', 'key' => 'smtp_username', 'cast' => 'string', 'translatable' => false, 'value' => null],
+            ['group' => 'mail', 'key' => 'smtp_password', 'cast' => 'string', 'translatable' => false, 'value' => null],
+            ['group' => 'mail', 'key' => 'smtp_encryption', 'cast' => 'string', 'translatable' => false, 'value' => 'tls'],
+            ['group' => 'mail', 'key' => 'mail_from_address', 'cast' => 'string', 'translatable' => false, 'value' => null],
+            ['group' => 'mail', 'key' => 'mail_from_name', 'cast' => 'string', 'translatable' => false, 'value' => null],
+
             // ── Daftra ERP ────────────────────────────────────────────────
             [
                 'group' => 'daftra',

@@ -1,5 +1,6 @@
 "use client";
 import CurrencySymbol from "@/components/ui/CurrencySymbol";
+import PriceBreakdown from "@/components/shared/PriceBreakdown";
 import { Link } from "@/i18n/navigation";
 import { useCartContext } from "@/providers/CartProvider";
 import {
@@ -72,45 +73,12 @@ const CheckoutSummary = () => {
           </Link>
         ))}
       </VStack>
-      {/* discount */}
-      {appliedOffer && (
-        <HStack justify={"space-between"}>
-          <Heading
-            fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
-            fontWeight={"extrabold"}
-          >
-            {t("discount")}
-          </Heading>
-          <Text
-            fontSize={{ base: "14px", lg: "16px", "2xl": "18px" }}
-            fontWeight={"bold"}
-            color={"red"}
-          >
-            -{appliedOffer.discount.toLocaleString()} <CurrencySymbol />
-          </Text>
-        </HStack>
-      )}
-      {/* total */}
-      <HStack justify={"space-between"}>
-        <Heading
-          fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
-          fontWeight={"extrabold"}
-        >
-          {t("total")}
-        </Heading>
-        <Text
-          fontSize={{ base: "18px", lg: "20px", "2xl": "24px" }}
-          fontWeight={"bold"}
-          color={"primary"}
-          ps={"12px"}
-        >
-          {(appliedOffer
-            ? cart.subtotal - appliedOffer.discount
-            : cart.subtotal
-          ).toLocaleString()}{" "}
-          <CurrencySymbol />
-        </Text>
-      </HStack>
+      <PriceBreakdown
+        subtotal={cart.subtotal}
+        discount={appliedOffer?.discount}
+        discountPercent={appliedOffer?.discountPercent}
+        total={Math.max(0, cart.subtotal - (appliedOffer?.discount ?? 0))}
+      />
       {/* processed button */}
       <Button
         shadow={"0px 15px 30px 0px #FFB80040"}

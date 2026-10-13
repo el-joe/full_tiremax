@@ -24,6 +24,7 @@ export default function CancelReservationDialog({
   const dir = useDir();
   const dialog = useDialog();
   const t = useTranslations("profile");
+  const tc = useTranslations();
   //   mutation booking
   const { mutate: mutateCancelBooking, isPending: isCancelingBooking } =
     useMutation({
@@ -33,13 +34,13 @@ export default function CancelReservationDialog({
         return data;
       },
       onSuccess: () => {
-        toast.success("booking canceled");
+        toast.success(tc("bookingCancelled"));
         dialog.setOpen(false);
         onSuccess?.();
       },
       onError: (err: AxiosError) => {
         if (err.status === 401) return;
-        toast.error("Oops! something want wrang");
+        toast.error(tc("somethingWentWrong"));
       },
     });
   const handleCancel = () => {
