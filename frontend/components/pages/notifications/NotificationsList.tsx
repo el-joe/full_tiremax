@@ -77,8 +77,9 @@ const NotificationsList = ({ initialNotifications }: Props) => {
         <Button
           alignSelf={"flex-end"}
           variant={"ghost"}
-          color={"black"}
-          _hover={{ color: "white" }}
+          bg={"primary"}
+          color={"white"}
+          _hover={{ bg: "primary", filter: "brightness(1.15)" }}
           onClick={() => markAllAsRead()}
           loading={isMarkingAll}
         >
@@ -111,8 +112,9 @@ const NotificationsList = ({ initialNotifications }: Props) => {
             <Button
               size={"sm"}
               variant={"ghost"}
-              color={"black"}
-              _hover={{ color: "white" }}
+              bg={"primary"}
+              color={"white"}
+              _hover={{ bg: "primary", filter: "brightness(1.15)" }}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick(n);

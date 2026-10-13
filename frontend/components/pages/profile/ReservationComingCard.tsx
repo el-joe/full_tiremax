@@ -54,7 +54,7 @@ export default function ReservationComingCard() {
         "bookings",
       );
       const upcomingR = data.data.findLast((r) => r.status === "confirmed");
-      return upcomingR;
+      return upcomingR ?? null;
     },
   });
   return (

@@ -35,4 +35,5 @@ export interface Item {
     unit_price: number;
     total: number;
     reviewed?: boolean;
+    image?: string | null;
 }

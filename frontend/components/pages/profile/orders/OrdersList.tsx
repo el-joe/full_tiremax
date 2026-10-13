@@ -44,7 +44,7 @@ export default async function OrdersList({
           align={"stretch"}
         >
           <Image
-            src={"/images/noImage.jpg"}
+            src={order.items[0]?.image || "/images/product-image.jpg"}
             alt="image"
             w={{ base: "28px", md: "42px", lg: "80px" }}
             h={{ base: "28px", md: "42px", lg: "80px" }}

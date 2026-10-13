@@ -11,7 +11,7 @@ import {
 import React from "react";
 import Input from "../ui/Input";
 import { useTranslations } from "next-intl";
-import { PhoneSignalIcon, SendMessageIcon, WhatsappLogoIcon } from "../Icons";
+import { PhoneSignalIcon, SendMessageIcon } from "../Icons";
 import Textarea from "../ui/Textarea";
 import { Link } from "@/i18n/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -20,17 +20,26 @@ import { ContactInput, contactSchema } from "@/Schemas/contactSchema";
 import axiosInstance from "@/utils/axiosInstance";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegUserCircle, FaWhatsapp } from "react-icons/fa";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getPublicSettings } from "@/helpers/getPublicSettings";
+import {
+  getPublicSettings,
+  type PublicSettings,
+} from "@/helpers/getPublicSettings";
 
-const ContactUsForm = () => {
+const ContactUsForm = ({
+  settings,
+}: {
+  settings?: PublicSettings | null;
+}) => {
   const t = useTranslations("home");
   const tc = useTranslations();
-  const { data, isLoading } = useQuery({
+  const { data: fetched, isLoading } = useQuery({
     queryKey: ["settings"],
     queryFn: getPublicSettings,
+    enabled: !settings,
   });
+  const data = settings ?? fetched;
   const {
     register,
     handleSubmit,
@@ -133,13 +142,13 @@ const ContactUsForm = () => {
             </Text>
             <Link href={data?.whatsapp_url ?? "#"} target="_blank">
               <Center
-                bg="#41C452"
+                bg="#25D366"
                 rounded={"8px"}
                 color={"white"}
                 w={{ base: "24px", md: "38px", xl: "48px" }}
                 h={{ base: "24px", md: "38px", xl: "48px" }}
               >
-                <WhatsappLogoIcon size={{ base: "sm", md: "lg", xl: "xl" }} />
+                <FaWhatsapp size={30} />
               </Center>
             </Link>
           </HStack>

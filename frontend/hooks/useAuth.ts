@@ -36,19 +36,10 @@ export const useAuth = () => {
   const authDialog = useDialog();
   const [authDialogParam, setAuthDialogParam] = useQueryState("authDialog");
 
-  const [customer, setCustomer] = useState<ICustomerProfile | null>(() => {
-    if (typeof window === "undefined") return null;
-    const storedUser = localStorage.getItem("customerInfo");
-    const token = getCookie("tiremax_token");
-    return !!storedUser && !!token ? JSON.parse(storedUser) : null;
-  });
-
-  const [isLogged, setIsLogged] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    const storedUser = localStorage.getItem("customerInfo");
-    const token = getCookie("tiremax_token");
-    return !!storedUser && !!token;
-  });
+  // Start empty so the first client render matches the server HTML;
+  // the stored session is loaded after hydration (see effect below).
+  const [customer, setCustomer] = useState<ICustomerProfile | null>(null);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
 
   // login mutation
   const {
@@ -212,6 +203,13 @@ export const useAuth = () => {
     if (!storedUser || !token) {
       localStorage.removeItem("customerInfo");
       deleteCookie("tiremax_token");
+      return;
+    }
+    try {
+      setCustomer(JSON.parse(storedUser));
+      setIsLogged(true);
+    } catch {
+      localStorage.removeItem("customerInfo");
     }
   }, []);
 

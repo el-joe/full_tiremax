@@ -94,9 +94,9 @@ const useApiFilter = () => {
     router.push(queryString ? `${pathname}?${queryString}` : pathname);
   };
 
+  // Pure: called during render (e.g. for link hrefs), so it must not set state
   const getFiltersString = (newFilter?: QueryParam) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (!!newFilter) setFilter(newFilter);
     [...filters, newFilter]
       .filter((f) => f !== undefined)
       .forEach(({ targetEndpoint, filterBy, query }) => {
@@ -105,14 +105,12 @@ const useApiFilter = () => {
 
         if (!value) {
           params.delete(key);
-          setFilters((p) => [...p.filter((f) => f.filterBy !== filterBy)]);
           return;
         }
 
         params.set(key, value);
       });
-    const queryString = params.toString();
-    return queryString;
+    return params.toString();
   };
 
   const removeAllFilters = useCallback(

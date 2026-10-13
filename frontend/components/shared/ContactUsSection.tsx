@@ -49,20 +49,20 @@ const ContactUsSection = async () => {
           <ContactCardInfo
             Icon={PhoneSignalIcon}
             heading={t("customerServiceNumber")}
-            contactInfo={settings?.site_phone ?? "????"}
+            contactInfo={settings?.site_phone || "+964 770 000 0000"}
             contactInfoFontSize="36px"
             contactAtt={{ dir: "ltr" }}
           />
           <ContactCardInfo
             Icon={EmailFastIcon}
             heading={t("email")}
-            contactInfo={settings?.site_email ?? "????"}
+            contactInfo={settings?.site_email || "info@iraqmaxtire.iq"}
             contactAtt={{ dir: "ltr" }}
           />
           <ContactCardInfo
             Icon={LocationPinIcon}
             heading={t("headOffice")}
-            contactInfo={settings?.address ?? "????"}
+            contactInfo={settings?.address || "????"}
           />
           {/* <ContactCardInfo
             Icon={LocationPinIcon}
@@ -70,7 +70,7 @@ const ContactUsSection = async () => {
             contactInfo={settings?.branch2_address ?? "????"}
           /> */}
         </VStack>
-        <ContactUsForm />
+        <ContactUsForm settings={settings} />
       </HStack>
     </Container>
   );
