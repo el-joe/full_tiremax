@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers/locale_provider.dart';
 
 import '../../../core/network/api_exception.dart';
+import '../../../core/utils/format.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../../orders/models/order.dart';
 import '../data/checkout_repository.dart';
@@ -27,6 +28,8 @@ class CheckoutFormState {
     this.customerPhone = '',
     this.customerEmail = '',
     this.notes = '',
+    this.createAccount = false,
+    this.password = '',
     this.isSubmitting = false,
     this.submitError,
     this.order,
@@ -41,16 +44,56 @@ class CheckoutFormState {
   final String customerPhone;
   final String customerEmail;
   final String notes;
+  final bool createAccount;
+  final String password;
   final bool isSubmitting;
   final String? submitError;
   final Order? order;
 
-  bool get isValid {
-    if (paymentMethod == null || paymentMethod!.isEmpty) return false;
-    if (customerName.trim().length < 2 || customerPhone.trim().isEmpty) return false;
-    if (type == OrderType.basra) return branchId != null;
-    return governorateId != null && shippingAddress.trim().length >= 12;
+  /// Field -> error message, mirroring `createOrderSchemas.ts`
+  /// (`isLogged` skips the account-creation password rule).
+  Map<String, String> validate() {
+    final e = <String, String>{};
+    if (customerName.trim().isEmpty) {
+      e['name'] = 'Full name is required';
+    } else if (customerName.trim().length > 120) {
+      e['name'] = 'Name must be 120 characters or fewer';
+    }
+    if (customerPhone.trim().isEmpty) {
+      e['phone'] = 'Phone number is required';
+    } else if (customerPhone.trim().length > 20) {
+      e['phone'] = 'Phone number must be 20 characters or fewer';
+    } else if (!isValidIraqiPhone(customerPhone.trim())) {
+      e['phone'] = 'Enter a valid Iraqi phone number (e.g. 07701234567)';
+    }
+    final email = customerEmail.trim();
+    if (email.isNotEmpty) {
+      if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email)) {
+        e['email'] = 'Invalid email address';
+      } else if (email.length > 120) {
+        e['email'] = 'Email must be 120 characters or fewer';
+      }
+    }
+    if (notes.length > 500) e['notes'] = 'Notes must be 500 characters or fewer';
+    if (paymentMethod == null || paymentMethod!.isEmpty) e['payment'] = 'Payment method selection is required';
+    if (type == OrderType.basra) {
+      if (branchId == null) e['branch'] = 'Please select a branch';
+    } else {
+      if (governorateId == null) e['governorate'] = 'Select governorate is required';
+      final addr = shippingAddress.trim();
+      if (addr.isEmpty) {
+        e['address'] = 'The address is required';
+      } else if (addr.length > 255) {
+        e['address'] = 'The address must be less than 255 characters';
+      } else if (addr.length <= 12) {
+        e['address'] = 'The address must be more then 12 character';
+      }
+    }
+    if (createAccount && password.length < 6) e['password'] = 'Password must be at least 6 characters';
+    return e;
   }
+
+  bool get isValid => validate().isEmpty;
 
   CheckoutFormState copyWith({
     OrderType? type,
@@ -64,6 +107,8 @@ class CheckoutFormState {
     String? customerPhone,
     String? customerEmail,
     String? notes,
+    bool? createAccount,
+    String? password,
     bool? isSubmitting,
     String? submitError,
     bool clearSubmitError = false,
@@ -79,6 +124,8 @@ class CheckoutFormState {
       customerPhone: customerPhone ?? this.customerPhone,
       customerEmail: customerEmail ?? this.customerEmail,
       notes: notes ?? this.notes,
+      createAccount: createAccount ?? this.createAccount,
+      password: password ?? this.password,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       submitError: clearSubmitError ? null : (submitError ?? this.submitError),
       order: order ?? this.order,
@@ -101,12 +148,14 @@ class CheckoutFlowNotifier extends Notifier<CheckoutFormState> {
   void setCustomerPhone(String value) => state = state.copyWith(customerPhone: value);
   void setCustomerEmail(String value) => state = state.copyWith(customerEmail: value);
   void setNotes(String value) => state = state.copyWith(notes: value);
+  void setCreateAccount(bool value) => state = state.copyWith(createAccount: value);
+  void setPassword(String value) => state = state.copyWith(password: value);
 
   /// Submits the order. Returns the created [Order] id on success, or null
   /// on failure (with [CheckoutFormState.submitError] set).
   Future<int?> submit() async {
     if (!state.isValid) {
-      state = state.copyWith(submitError: 'Please fill in all required fields.');
+      state = state.copyWith(submitError: currentL10n.pleaseFillRequiredFields);
       return null;
     }
     state = state.copyWith(isSubmitting: true, clearSubmitError: true);
@@ -129,7 +178,7 @@ class CheckoutFlowNotifier extends Notifier<CheckoutFormState> {
       return order.id;
     } on DioException catch (e) {
       final error = e.error;
-      final message = error is ApiException ? error.message : e.message ?? 'Could not place order.';
+      final message = error is ApiException ? error.message : e.message ?? currentL10n.couldNotPlaceOrder;
       state = state.copyWith(isSubmitting: false, submitError: message);
       return null;
     } catch (e) {

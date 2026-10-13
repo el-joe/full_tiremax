@@ -1,12 +1,19 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/providers/locale_provider.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/format.dart';
+import '../../../shared/widgets/status_badge.dart';
+import '../../../shared/widgets/web_sheet.dart';
+import '../../favorites/presentation/favorites_screen.dart' show customerFavToProduct;
+import '../../favorites/providers/favorites_list_provider.dart';
+import '../../orders/providers/orders_provider.dart';
+import '../../reservation/data/reservation_repository.dart';
 import '../../../core/theme/app_radii.dart';
 import '../../auth/providers/auth_provider.dart';
-import '../../../l10n/app_localizations.dart';
 
 /// Account summary card + navigation to Settings/Addresses/Orders/
 /// Reservations + Logout (confirm dialog) + language toggle + Privacy
@@ -27,31 +34,41 @@ class ProfileHomeScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(color: AppColors.primary, borderRadius: AppRadii.radiusXl),
-              child: Row(
+            Text('${context.l10n.webProfileWelcome} ${customer?.name ?? ''}',
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 24)),
+            const SizedBox(height: 16),
+            _InfoCard(
+              title: context.l10n.profilePersonalInformation,
+              actionLabel: context.l10n.edit,
+              onAction: () => context.push('/profile/settings'),
+              child: Wrap(
+                runSpacing: 14,
                 children: [
-                  const CircleAvatar(
-                    radius: 28,
-                    backgroundColor: AppColors.onPrimary,
-                    child: Icon(Icons.person, color: AppColors.primary, size: 30),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(l10n.profileWelcome(customer?.name ?? ''),
-                            style: const TextStyle(color: AppColors.onPrimary, fontWeight: FontWeight.w800, fontSize: 16)),
-                        const SizedBox(height: 4),
-                        Text(customer?.email ?? '', style: const TextStyle(color: AppColors.onPrimary, fontSize: 12)),
-                        Text(customer?.phone ?? '', style: const TextStyle(color: AppColors.onPrimary, fontSize: 12)),
-                      ],
-                    ),
-                  ),
+                  _field(context.l10n.profileFullName, customer?.name, half: true),
+                  _field(context.l10n.profilePhoneNumber, customer?.phone, half: true),
+                  _field(context.l10n.primaryAddress, customer?.address, icon: Icons.location_on_outlined),
                 ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            const _UpcomingBookingCard(),
+            const SizedBox(height: 16),
+            const _FavoritesSection(),
+            const SizedBox(height: 16),
+            const _RecentOrdersCard(),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                onPressed: () => context.push('/reservation'),
+                icon: const Icon(Icons.add_circle_outline),
+                label: Text(context.l10n.bookNewService, style: TextStyle(fontWeight: FontWeight.w700)),
               ),
             ),
             const SizedBox(height: 20),
@@ -81,6 +98,8 @@ class ProfileHomeScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 12),
+            _NavTile(icon: Icons.local_shipping_outlined, label: context.l10n.trackOrder, onTap: () => context.push('/track-order')),
+            _NavTile(icon: Icons.support_agent_outlined, label: context.l10n.contactUs, onTap: () => context.push('/contact')),
             _NavTile(icon: Icons.privacy_tip_outlined, label: l10n.profilePrivacyPolicy, onTap: () => context.push('/privacy-policy')),
             _NavTile(icon: Icons.description_outlined, label: l10n.profileTerms, onTap: () => context.push('/terms')),
             const SizedBox(height: 20),
@@ -104,23 +123,46 @@ class ProfileHomeScreen extends ConsumerWidget {
     );
   }
 
+  Widget _field(String label, String? value, {bool half = false, IconData? icon}) {
+    return LayoutBuilder(builder: (context, c) {
+      return SizedBox(
+        width: half ? (c.maxWidth - 12) / 2 : double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: const TextStyle(color: AppColors.gray2, fontSize: 10, fontWeight: FontWeight.w700)),
+            const SizedBox(height: 3),
+            Row(
+              children: [
+                if (icon != null) ...[Icon(icon, color: AppColors.primary, size: 18), const SizedBox(width: 4)],
+                Expanded(
+                  child: Text(value ?? '',
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14)),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
   void _confirmLogout(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
     showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: AppColors.gray3,
-        title: Text(l10n.profileLogOut, style: const TextStyle(color: Colors.white)),
-        content: Text(l10n.profileLogOutConfirm, style: const TextStyle(color: AppColors.gray2)),
+        title: Text(context.l10n.logoutTitle, style: TextStyle(color: Colors.white)),
+        content: Text(context.l10n.logoutWarning, style: const TextStyle(color: AppColors.gray2)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(l10n.commonCancel)),
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(context.l10n.logoutCancel)),
           TextButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
               await ref.read(authProvider.notifier).logout();
               if (context.mounted) context.go('/');
             },
-            child: Text(l10n.profileLogOut, style: const TextStyle(color: AppColors.red)),
+            child: Text(context.l10n.logoutConfirm, style: TextStyle(color: AppColors.red)),
           ),
         ],
       ),
@@ -157,6 +199,210 @@ class _NavTile extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Web dashboard card: gray-4 panel, 4px primary start border, title and a
+/// context.l10n.viewAll/context.l10n.commonEdit link.
+class _InfoCard extends StatelessWidget {
+  const _InfoCard({required this.title, required this.actionLabel, required this.onAction, required this.child});
+
+  final String title;
+  final String actionLabel;
+  final VoidCallback onAction;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.gray3,
+        borderRadius: BorderRadius.circular(16),
+        border: const BorderDirectional(start: BorderSide(color: AppColors.primary, width: 4)),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(title,
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18)),
+              ),
+              InkWell(
+                onTap: onAction,
+                child: Text(actionLabel,
+                    style: const TextStyle(color: AppColors.gray2, fontWeight: FontWeight.w700)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+/// Web `ReservationComingCard`: the last confirmed booking.
+class _UpcomingBookingCard extends ConsumerWidget {
+  const _UpcomingBookingCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(bookingsListProvider(1));
+    return _InfoCard(
+      title: context.l10n.upcomingBookings,
+      actionLabel: context.l10n.viewAll,
+      onAction: () => context.push('/profile/reservations'),
+      child: async.when(
+        loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+        error: (_, _) => Text(context.l10n.noReservationYet, style: TextStyle(color: AppColors.gray2)),
+        data: (page) {
+          final confirmed = page.items.where((r) => r.status == 'confirmed').toList();
+          if (confirmed.isEmpty) {
+            return Text(context.l10n.noReservationYet, style: TextStyle(color: AppColors.gray2));
+          }
+          final r = confirmed.last;
+          final at = r.scheduled_at.toLocal();
+          return InkWell(
+            onTap: () => context.push('/profile/reservations/${r.id}'),
+            child: Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 62,
+                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('${at.day}',
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 20)),
+                      Text(formatDateLocalized('MMM', at),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 10)),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(r.service.name,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+                      const SizedBox(height: 2),
+                      Text('${formatDateLocalized('HH:mm', at)} • ${r.branch.name}',
+                          style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Web `FavProductSection`: first three favourites.
+class _FavoritesSection extends ConsumerWidget {
+  const _FavoritesSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(favoritesListProvider);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(context.l10n.favorites,
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 20)),
+            ),
+            InkWell(
+              onTap: () => context.push('/favorites'),
+              child: Text(context.l10n.viewAll, style: TextStyle(color: AppColors.gray2, fontWeight: FontWeight.w700)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        async.when(
+          loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+          error: (_, _) => Text(context.l10n.noFavoriteProducts, style: TextStyle(color: AppColors.gray2)),
+          data: (favs) {
+            if (favs.isEmpty) {
+              return Center(
+                child: Text(context.l10n.noFavoriteProducts, style: TextStyle(color: AppColors.gray2)),
+              );
+            }
+            return ProductGrid(products: favs.take(3).map(customerFavToProduct).toList());
+          },
+        ),
+      ],
+    );
+  }
+}
+
+/// Web `RecentOrders`: five most recent orders.
+class _RecentOrdersCard extends ConsumerWidget {
+  const _RecentOrdersCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(ordersListProvider((status: null, page: 1)));
+    return _InfoCard(
+      title: context.l10n.recentOrders,
+      actionLabel: context.l10n.viewAll,
+      onAction: () => context.push('/profile/orders'),
+      child: async.when(
+        loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+        error: (_, _) => Text(context.l10n.noOrdersYet, style: TextStyle(color: AppColors.gray2)),
+        data: (page) {
+          if (page.items.isEmpty) {
+            return Center(child: Text(context.l10n.noOrdersYet, style: TextStyle(color: AppColors.gray2)));
+          }
+          return Column(
+            children: [
+              for (final o in page.items.take(5))
+                InkWell(
+                  onTap: () => context.push('/profile/orders/${o.id}'),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('#${o.reference}',
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                              Text(formatDateLocalized('EEE MMM dd yyyy', DateTime.tryParse(o.placed_at)?.toLocal() ?? DateTime.now()),
+                                  style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(formatIqd(o.total),
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                            const SizedBox(height: 4),
+                            StatusBadge(status: o.status, kind: StatusBadgeKind.recentOrder),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

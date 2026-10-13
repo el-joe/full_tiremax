@@ -1,13 +1,18 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_radii.dart';
+import '../../../core/theme/app_theme.dart';
 import '../data/store_repository.dart';
 import '../providers/store_provider.dart';
+import 'widgets/tabs_filter_by.dart';
 
-/// Filter bottom sheet: brand, tire size, and vehicle make/model/year,
-/// mirroring the web store's filter drawer.
+const double _maxRange = 999999;
+
+/// Filter drawer mirroring web `Filters.tsx`: title + context.l10n.clearFilters,
+/// description, vehicle/size tabs (brand grid under the size tab), price
+/// range slider and the context.l10n.findYourTireNow apply button.
 class FilterSheet extends ConsumerStatefulWidget {
   const FilterSheet({super.key});
 
@@ -17,180 +22,143 @@ class FilterSheet extends ConsumerStatefulWidget {
 
 class _FilterSheetState extends ConsumerState<FilterSheet> {
   late ProductFilters _draft;
-  String? _selectedMake;
-  String? _selectedModel;
+  late RangeValues _range;
 
   @override
   void initState() {
     super.initState();
     _draft = ref.read(storeListProvider).value?.filters ?? const ProductFilters();
-    _selectedMake = _draft.make;
-    _selectedModel = _draft.model;
+    _range = RangeValues((_draft.minPrice ?? 0).toDouble(), (_draft.maxPrice ?? _maxRange).toDouble());
+  }
+
+  Widget _brandSection() {
+    final brandsAsync = ref.watch(brandsProvider);
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(context.l10n.brand, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.foregroundLight)),
+          const SizedBox(height: 16),
+          brandsAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, _) => Text('$e', style: const TextStyle(color: AppColors.error)),
+            data: (brands) => LayoutBuilder(
+              builder: (context, c) {
+                final w = (c.maxWidth - 8) / 2;
+                return Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final brand in brands)
+                      SizedBox(
+                        width: w,
+                        child: _draft.brandId == brand.id
+                            ? ElevatedButton(
+                                onPressed: () => setState(() => _draft = _draft.copyWith(clearBrand: true)),
+                                child: Text(brand.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+                              )
+                            : OutlinedButton(
+                                style: OutlinedButton.styleFrom(foregroundColor: AppColors.foregroundLight),
+                                onPressed: () => setState(() => _draft = _draft.copyWith(brandId: brand.id)),
+                                child: Text(brand.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+                              ),
+                      ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final brandsAsync = ref.watch(brandsProvider);
-    final sizesAsync = ref.watch(tyreSizesProvider);
-    final makesAsync = ref.watch(vehicleMakesProvider);
-
-    return DraggableScrollableSheet(
-      initialChildSize: 0.85,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
-      expand: false,
-      builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: AppColors.gray3,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: ListView(
-            controller: scrollController,
-            padding: const EdgeInsets.all(20),
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Filters', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
-                  TextButton(
-                    onPressed: () => setState(() {
-                      _draft = const ProductFilters();
-                      _selectedMake = null;
-                      _selectedModel = null;
-                    }),
-                    child: const Text('Clear'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              const Text('Brand', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 8),
-              brandsAsync.when(
-                data: (brands) => Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: brands.map((brand) {
-                    final selected = _draft.brandId == brand.id;
-                    return ChoiceChip(
-                      label: Text(brand.name),
-                      selected: selected,
-                      selectedColor: AppColors.primary,
-                      onSelected: (value) => setState(() {
-                        _draft = _draft.copyWith(brandId: value ? brand.id : null, clearBrand: !value);
-                      }),
-                    );
-                  }).toList(),
+    return Theme(
+      data: AppTheme.light,
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.9,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) {
+          return Material(
+            color: Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            clipBehavior: Clip.antiAlias,
+            child: ListView(
+              controller: scrollController,
+              padding: const EdgeInsets.all(20),
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(context.l10n.filters, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: AppColors.foregroundLight)),
+                    TextButton(
+                      style: TextButton.styleFrom(foregroundColor: AppColors.foregroundLight),
+                      // Web keeps type / search / badge when clearing.
+                      onPressed: () {
+                        final keep = _draft;
+                        ref.read(storeListProvider.notifier).applyFilters(
+                              ProductFilters(search: keep.search, type: keep.type, badge: keep.badge),
+                            );
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(context.l10n.clearFilters, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                    ),
+                  ],
                 ),
-                loading: () => const LinearProgressIndicator(),
-                error: (e, _) => Text('Failed to load brands', style: TextStyle(color: AppColors.error.withValues(alpha: 0.9))),
-              ),
-              const SizedBox(height: 20),
-              const Text('Tire size', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 8),
-              sizesAsync.when(
-                data: (sizes) => Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: sizes.map((size) {
-                    final selected = _draft.width == size.width &&
-                        _draft.aspectRatio == size.aspect_ratio &&
-                        _draft.rimDiameter == size.rim_diameter;
-                    return ChoiceChip(
-                      label: Text('${size.width}/${size.aspect_ratio}R${size.rim_diameter}'),
-                      selected: selected,
-                      selectedColor: AppColors.primary,
-                      onSelected: (value) => setState(() {
-                        _draft = value
-                            ? _draft.copyWith(
-                                width: size.width,
-                                aspectRatio: size.aspect_ratio,
-                                rimDiameter: size.rim_diameter,
-                              )
-                            : _draft.copyWith(clearSize: true);
-                      }),
-                    );
-                  }).toList(),
+                Text(context.l10n.filtersDescription, style: TextStyle(fontSize: 10, height: 2.8, color: AppColors.gray3)),
+                const SizedBox(height: 24),
+                TabsFilterBy(
+                  filters: _draft,
+                  onChanged: (next) => setState(() => _draft = next),
+                  sizeTabExtra: _brandSection(),
                 ),
-                loading: () => const LinearProgressIndicator(),
-                error: (e, _) => const Text('Failed to load sizes', style: TextStyle(color: AppColors.error)),
-              ),
-              const SizedBox(height: 20),
-              const Text('Vehicle', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 8),
-              makesAsync.when(
-                data: (makes) => DropdownButtonFormField<String>(
-                  initialValue: _selectedMake,
-                  dropdownColor: AppColors.gray3,
-                  decoration: const InputDecoration(labelText: 'Make'),
-                  items: makes.map((m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
-                  onChanged: (value) => setState(() {
-                    _selectedMake = value;
-                    _selectedModel = null;
-                    _draft = _draft.copyWith(make: value, clearModel: true, clearYear: true);
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(context.l10n.priceRange, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.foregroundLight)),
+                    Text(
+                      '${_range.start.round()} - ${_range.end.round()}',
+                      style: const TextStyle(fontSize: 12, color: AppColors.gray2),
+                    ),
+                  ],
+                ),
+                RangeSlider(
+                  values: _range,
+                  min: 0,
+                  max: _maxRange,
+                  activeColor: AppColors.primary,
+                  onChanged: (v) => setState(() => _range = v),
+                  onChangeEnd: (v) => setState(() {
+                    final atDefault = v.start == 0 && v.end == _maxRange;
+                    _draft = atDefault
+                        ? _draft.copyWith(clearPrice: true)
+                        : _draft.copyWith(minPrice: v.start.round(), maxPrice: v.end.round());
                   }),
                 ),
-                loading: () => const LinearProgressIndicator(),
-                error: (e, _) => const Text('Failed to load makes', style: TextStyle(color: AppColors.error)),
-              ),
-              if (_selectedMake != null) ...[
-                const SizedBox(height: 12),
-                Consumer(builder: (context, ref, _) {
-                  final modelsAsync = ref.watch(vehicleModelsProvider(_selectedMake!));
-                  return modelsAsync.when(
-                    data: (models) => DropdownButtonFormField<String>(
-                      initialValue: _selectedModel,
-                      dropdownColor: AppColors.gray3,
-                      decoration: const InputDecoration(labelText: 'Model'),
-                      items: models.map((m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
-                      onChanged: (value) => setState(() {
-                        _selectedModel = value;
-                        _draft = _draft.copyWith(model: value, clearYear: true);
-                      }),
-                    ),
-                    loading: () => const LinearProgressIndicator(),
-                    error: (e, _) => const Text('Failed to load models', style: TextStyle(color: AppColors.error)),
-                  );
-                }),
-              ],
-              if (_selectedModel != null) ...[
-                const SizedBox(height: 12),
-                Consumer(builder: (context, ref, _) {
-                  final yearsAsync = ref.watch(vehicleYearsProvider(_selectedModel!));
-                  return yearsAsync.when(
-                    data: (years) => DropdownButtonFormField<int>(
-                      initialValue: _draft.year,
-                      dropdownColor: AppColors.gray3,
-                      decoration: const InputDecoration(labelText: 'Year'),
-                      items: years.map((y) => DropdownMenuItem(value: y, child: Text('$y'))).toList(),
-                      onChanged: (value) => setState(() => _draft = _draft.copyWith(year: value)),
-                    ),
-                    loading: () => const LinearProgressIndicator(),
-                    error: (e, _) => const Text('Failed to load years', style: TextStyle(color: AppColors.error)),
-                  );
-                }),
-              ],
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.onPrimary,
-                    shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusFull),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    padding: const EdgeInsets.all(16),
                   ),
                   onPressed: () {
                     ref.read(storeListProvider.notifier).applyFilters(_draft);
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Apply Filters'),
+                  icon: const Icon(Icons.search),
+                  label: Text(context.l10n.findYourTireNow, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

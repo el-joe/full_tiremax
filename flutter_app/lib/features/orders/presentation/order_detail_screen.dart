@@ -1,3 +1,4 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,10 +7,10 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
 import '../data/orders_repository.dart';
 import '../providers/orders_provider.dart';
-import 'orders_screen.dart';
+import 'order_widgets.dart';
 
-/// GET /orders/{id} detail: items/totals/shipping/tracking, "Cancel order"
-/// (POST /orders/{id}/cancel) shown only while `isOrderCancellable(status)`.
+/// GET /orders/{id}. Mirrors `frontend/app/[locale]/profile/orders/[orderId]/page.tsx`;
+/// cancel (POST /orders/{id}/cancel) only while pending/confirmed.
 class OrderDetailScreen extends ConsumerWidget {
   const OrderDetailScreen({super.key, required this.orderId});
 
@@ -21,91 +22,53 @@ class OrderDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(backgroundColor: AppColors.background, title: const Text('Order Detail')),
+      appBar: AppBar(backgroundColor: AppColors.background, title: Text(context.l10n.orderDetails)),
       body: SafeArea(
         child: orderAsync.when(
           loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
-          error: (error, _) => Center(child: Text('$error', style: const TextStyle(color: AppColors.gray2))),
+          error: (error, _) => Center(
+            child: Text(context.l10n.unexpectedError, style: TextStyle(color: AppColors.gray2)),
+          ),
           data: (order) {
+            final basra = order.type == 'basra';
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text('#${order.reference}',
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
-                    ),
-                    StatusChip(status: order.status),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text('Placed ${order.placed_at}', style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
-                const SizedBox(height: 20),
-                _SectionCard(
-                  title: 'Items',
-                  child: Column(
-                    children: [
-                      for (final item in order.items)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(item.product_name,
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                                    Text('SKU ${item.product_sku} × ${item.quantity}',
-                                        style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
-                                  ],
-                                ),
-                              ),
-                              Text('${item.total.toStringAsFixed(0)} EGP',
-                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
+                Text(context.l10n.orderDetails,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 10),
+                Text(context.l10n.orderDetailsDescription,
+                    textAlign: TextAlign.center, style: TextStyle(color: AppColors.gray2, fontSize: 15)),
+                const SizedBox(height: 24),
+                OrderSummaryCard(order: order),
+                const SizedBox(height: 16),
+                OrderInfoCard(
+                  icon: basra ? Icons.storefront_outlined : Icons.local_shipping_outlined,
+                  title: basra ? context.l10n.branchPickup : context.l10n.deliveryStatus,
+                  lines: basra
+                      ? [
+                          order.branch?.name ?? '',
+                          order.branch?.address ?? '',
+                          order.branch?.phone ?? '',
+                          context.l10n.readyForPickup,
+                        ]
+                      : [order.status, if ((order.tracking_number ?? '').isNotEmpty) order.tracking_number!],
                 ),
                 const SizedBox(height: 16),
-                _SectionCard(
-                  title: 'Totals',
-                  child: Column(
-                    children: [
-                      _row('Subtotal', order.subtotal),
-                      _row('Discount', -order.discount),
-                      _row('Shipping', order.shipping_fee),
-                      if (order.installation_fee > 0) _row('Installation', order.installation_fee),
-                      const Divider(color: AppColors.gray),
-                      _row('Total', order.total, bold: true),
-                    ],
-                  ),
+                OrderInfoCard(
+                  icon: Icons.account_balance_outlined,
+                  title: context.l10n.paymentMethod,
+                  lines: [order.payment_method],
                 ),
-                const SizedBox(height: 16),
-                _SectionCard(
-                  title: 'Shipping & Payment',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(order.customer_name, style: const TextStyle(color: Colors.white)),
-                      Text(order.customer_phone, style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
-                      Text(order.customer_email, style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
-                      const SizedBox(height: 8),
-                      Text(order.shipping_address, style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
-                      if (order.governorate != null)
-                        Text(order.governorate!.name, style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
-                      const SizedBox(height: 8),
-                      Text('Payment: ${order.payment_method} (${order.payment_status})',
-                          style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
-                      if (order.tracking_number.isNotEmpty)
-                        Text('Tracking: ${order.tracking_number}',
-                            style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
-                    ],
+                if (!basra) ...[
+                  const SizedBox(height: 16),
+                  OrderInfoCard(
+                    icon: Icons.place_outlined,
+                    title: context.l10n.deliveryAddress,
+                    lines: [order.shipping_address ?? '', order.customer_phone],
                   ),
-                ),
+                ],
                 if (isOrderCancellable(order.status)) ...[
                   const SizedBox(height: 24),
                   SizedBox(
@@ -118,31 +81,16 @@ class OrderDetailScreen extends ConsumerWidget {
                         shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusLg),
                       ),
                       onPressed: () => _confirmCancel(context, ref, order.id),
-                      child: const Text('Cancel Order', style: TextStyle(fontWeight: FontWeight.w700)),
+                      child: Text(context.l10n.cancelOrder, style: TextStyle(fontWeight: FontWeight.w700)),
                     ),
                   ),
                 ],
+                const SizedBox(height: 16),
+                const NeedHelpCard(),
               ],
             );
           },
         ),
-      ),
-    );
-  }
-
-  Widget _row(String label, num value, {bool bold = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: TextStyle(color: bold ? Colors.white : AppColors.gray2, fontWeight: bold ? FontWeight.w700 : FontWeight.w400)),
-          Text('${value.toStringAsFixed(0)} EGP',
-              style: TextStyle(
-                color: bold ? AppColors.primary : Colors.white,
-                fontWeight: bold ? FontWeight.w800 : FontWeight.w600,
-              )),
-        ],
       ),
     );
   }
@@ -152,13 +100,13 @@ class OrderDetailScreen extends ConsumerWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: AppColors.gray3,
-        title: const Text('Cancel Order', style: TextStyle(color: Colors.white)),
-        content: const Text(
-          "You won't be able to restore the order once it has been cancelled.",
+        title: Text(context.l10n.cancelOrder, style: TextStyle(color: Colors.white)),
+        content: Text(
+          context.l10n.cancelOrderWarning,
           style: TextStyle(color: AppColors.gray2),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Keep Order')),
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(context.l10n.keepOrder)),
           TextButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
@@ -168,37 +116,13 @@ class OrderDetailScreen extends ConsumerWidget {
                 ref.invalidate(ordersListProvider);
               } catch (e) {
                 if (context.mounted) {
-                  final message = e is ApiException ? e.message : 'Could not cancel the order.';
+                  final message = e is ApiException ? e.message : context.l10n.couldNotCancelOrder;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
                 }
               }
             },
-            child: const Text('Cancel Order', style: TextStyle(color: AppColors.red)),
+            child: Text(context.l10n.cancelOrder, style: TextStyle(color: AppColors.red)),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SectionCard extends StatelessWidget {
-  const _SectionCard({required this.title, required this.child});
-
-  final String title;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusXl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 15)),
-          const SizedBox(height: 12),
-          child,
         ],
       ),
     );

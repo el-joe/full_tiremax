@@ -10,6 +10,7 @@ abstract class ApplyOfferResult with _$ApplyOfferResult {
     required num discount,
     required num subtotal,
     required num total,
+    num? discount_percent,
     required AppliedOffer offer,
   }) = _ApplyOfferResult;
 

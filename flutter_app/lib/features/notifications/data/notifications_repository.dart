@@ -23,6 +23,9 @@ class NotificationsRepository {
   Future<int> fetchUnreadCount() async {
     final response = await _dio.get('notifications/unread-count');
     final body = response.data as Map<String, dynamic>;
+    // The API replies `{"unread_count": N}` (top level, no `data` envelope).
+    final top = body['unread_count'];
+    if (top is num) return top.toInt();
     final data = body['data'];
     if (data is Map<String, dynamic>) {
       return (data['count'] as num?)?.toInt() ?? 0;

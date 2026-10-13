@@ -11,6 +11,7 @@ _ApplyOfferResult _$ApplyOfferResultFromJson(Map<String, dynamic> json) =>
       discount: json['discount'] as num,
       subtotal: json['subtotal'] as num,
       total: json['total'] as num,
+      discount_percent: json['discount_percent'] as num?,
       offer: AppliedOffer.fromJson(json['offer'] as Map<String, dynamic>),
     );
 
@@ -19,6 +20,7 @@ Map<String, dynamic> _$ApplyOfferResultToJson(_ApplyOfferResult instance) =>
       'discount': instance.discount,
       'subtotal': instance.subtotal,
       'total': instance.total,
+      'discount_percent': instance.discount_percent,
       'offer': instance.offer,
     };
 

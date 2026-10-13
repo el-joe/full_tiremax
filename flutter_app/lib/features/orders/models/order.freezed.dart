@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Order {
 
- int get id; String get reference; String get type; String get status; String get payment_method; String get payment_status; num get subtotal; num get discount; num get shipping_fee; num get installation_fee; num get total; String get customer_name; String get customer_phone; String get customer_email; String get shipping_address; String get tracking_number; String get placed_at; Governorate? get governorate; Branch? get branch; List<OrderItem> get items;
+ int get id; String get reference; String get type; String get status; String get payment_method; String get payment_status; num get subtotal; num get discount; num get shipping_fee; num get installation_fee; num get total; String get customer_name; String get customer_phone; String? get customer_email; String? get shipping_address; String? get tracking_number; String get placed_at; bool get is_guest; Governorate? get governorate; Branch? get branch; List<OrderItem> get items;
 /// Create a copy of Order
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $OrderCopyWith<Order> get copyWith => _$OrderCopyWithImpl<Order>(this as Order, 
 @override
 bool operator ==(Object other) {
   final _this = this as Order;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Order&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.reference, _this.reference) || other.reference == _this.reference)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.payment_method, _this.payment_method) || other.payment_method == _this.payment_method)&&(identical(other.payment_status, _this.payment_status) || other.payment_status == _this.payment_status)&&(identical(other.subtotal, _this.subtotal) || other.subtotal == _this.subtotal)&&(identical(other.discount, _this.discount) || other.discount == _this.discount)&&(identical(other.shipping_fee, _this.shipping_fee) || other.shipping_fee == _this.shipping_fee)&&(identical(other.installation_fee, _this.installation_fee) || other.installation_fee == _this.installation_fee)&&(identical(other.total, _this.total) || other.total == _this.total)&&(identical(other.customer_name, _this.customer_name) || other.customer_name == _this.customer_name)&&(identical(other.customer_phone, _this.customer_phone) || other.customer_phone == _this.customer_phone)&&(identical(other.customer_email, _this.customer_email) || other.customer_email == _this.customer_email)&&(identical(other.shipping_address, _this.shipping_address) || other.shipping_address == _this.shipping_address)&&(identical(other.tracking_number, _this.tracking_number) || other.tracking_number == _this.tracking_number)&&(identical(other.placed_at, _this.placed_at) || other.placed_at == _this.placed_at)&&(identical(other.governorate, _this.governorate) || other.governorate == _this.governorate)&&(identical(other.branch, _this.branch) || other.branch == _this.branch)&&const DeepCollectionEquality().equals(other.items, _this.items));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Order&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.reference, _this.reference) || other.reference == _this.reference)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.payment_method, _this.payment_method) || other.payment_method == _this.payment_method)&&(identical(other.payment_status, _this.payment_status) || other.payment_status == _this.payment_status)&&(identical(other.subtotal, _this.subtotal) || other.subtotal == _this.subtotal)&&(identical(other.discount, _this.discount) || other.discount == _this.discount)&&(identical(other.shipping_fee, _this.shipping_fee) || other.shipping_fee == _this.shipping_fee)&&(identical(other.installation_fee, _this.installation_fee) || other.installation_fee == _this.installation_fee)&&(identical(other.total, _this.total) || other.total == _this.total)&&(identical(other.customer_name, _this.customer_name) || other.customer_name == _this.customer_name)&&(identical(other.customer_phone, _this.customer_phone) || other.customer_phone == _this.customer_phone)&&(identical(other.customer_email, _this.customer_email) || other.customer_email == _this.customer_email)&&(identical(other.shipping_address, _this.shipping_address) || other.shipping_address == _this.shipping_address)&&(identical(other.tracking_number, _this.tracking_number) || other.tracking_number == _this.tracking_number)&&(identical(other.placed_at, _this.placed_at) || other.placed_at == _this.placed_at)&&(identical(other.is_guest, _this.is_guest) || other.is_guest == _this.is_guest)&&(identical(other.governorate, _this.governorate) || other.governorate == _this.governorate)&&(identical(other.branch, _this.branch) || other.branch == _this.branch)&&const DeepCollectionEquality().equals(other.items, _this.items));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Order;
-  return Object.hashAll([runtimeType,_this.id,_this.reference,_this.type,_this.status,_this.payment_method,_this.payment_status,_this.subtotal,_this.discount,_this.shipping_fee,_this.installation_fee,_this.total,_this.customer_name,_this.customer_phone,_this.customer_email,_this.shipping_address,_this.tracking_number,_this.placed_at,_this.governorate,_this.branch,const DeepCollectionEquality().hash(_this.items)]);
+  return Object.hashAll([runtimeType,_this.id,_this.reference,_this.type,_this.status,_this.payment_method,_this.payment_status,_this.subtotal,_this.discount,_this.shipping_fee,_this.installation_fee,_this.total,_this.customer_name,_this.customer_phone,_this.customer_email,_this.shipping_address,_this.tracking_number,_this.placed_at,_this.is_guest,_this.governorate,_this.branch,const DeepCollectionEquality().hash(_this.items)]);
 }
 
 @override
 String toString() {
   final _this = this as Order;
-  return 'Order(id: ${_this.id}, reference: ${_this.reference}, type: ${_this.type}, status: ${_this.status}, payment_method: ${_this.payment_method}, payment_status: ${_this.payment_status}, subtotal: ${_this.subtotal}, discount: ${_this.discount}, shipping_fee: ${_this.shipping_fee}, installation_fee: ${_this.installation_fee}, total: ${_this.total}, customer_name: ${_this.customer_name}, customer_phone: ${_this.customer_phone}, customer_email: ${_this.customer_email}, shipping_address: ${_this.shipping_address}, tracking_number: ${_this.tracking_number}, placed_at: ${_this.placed_at}, governorate: ${_this.governorate}, branch: ${_this.branch}, items: ${_this.items})';
+  return 'Order(id: ${_this.id}, reference: ${_this.reference}, type: ${_this.type}, status: ${_this.status}, payment_method: ${_this.payment_method}, payment_status: ${_this.payment_status}, subtotal: ${_this.subtotal}, discount: ${_this.discount}, shipping_fee: ${_this.shipping_fee}, installation_fee: ${_this.installation_fee}, total: ${_this.total}, customer_name: ${_this.customer_name}, customer_phone: ${_this.customer_phone}, customer_email: ${_this.customer_email}, shipping_address: ${_this.shipping_address}, tracking_number: ${_this.tracking_number}, placed_at: ${_this.placed_at}, is_guest: ${_this.is_guest}, governorate: ${_this.governorate}, branch: ${_this.branch}, items: ${_this.items})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $OrderCopyWith<$Res>  {
   factory $OrderCopyWith(Order value, $Res Function(Order) _then) = _$OrderCopyWithImpl;
 @useResult
 $Res call({
- int id, String reference, String type, String status, String payment_method, String payment_status, num subtotal, num discount, num shipping_fee, num installation_fee, num total, String customer_name, String customer_phone, String customer_email, String shipping_address, String tracking_number, String placed_at, Governorate? governorate, Branch? branch, List<OrderItem> items
+ int id, String reference, String type, String status, String payment_method, String payment_status, num subtotal, num discount, num shipping_fee, num installation_fee, num total, String customer_name, String customer_phone, String? customer_email, String? shipping_address, String? tracking_number, String placed_at, bool is_guest, Governorate? governorate, Branch? branch, List<OrderItem> items
 });
 
 
@@ -71,7 +71,7 @@ class _$OrderCopyWithImpl<$Res>
 
 /// Create a copy of Order
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? reference = null,Object? type = null,Object? status = null,Object? payment_method = null,Object? payment_status = null,Object? subtotal = null,Object? discount = null,Object? shipping_fee = null,Object? installation_fee = null,Object? total = null,Object? customer_name = null,Object? customer_phone = null,Object? customer_email = null,Object? shipping_address = null,Object? tracking_number = null,Object? placed_at = null,Object? governorate = freezed,Object? branch = freezed,Object? items = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? reference = null,Object? type = null,Object? status = null,Object? payment_method = null,Object? payment_status = null,Object? subtotal = null,Object? discount = null,Object? shipping_fee = null,Object? installation_fee = null,Object? total = null,Object? customer_name = null,Object? customer_phone = null,Object? customer_email = freezed,Object? shipping_address = freezed,Object? tracking_number = freezed,Object? placed_at = null,Object? is_guest = null,Object? governorate = freezed,Object? branch = freezed,Object? items = null,}) {
   return _then(Order(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,reference: null == reference ? _self.reference : reference // ignore: cast_nullable_to_non_nullable
@@ -86,11 +86,12 @@ as num,installation_fee: null == installation_fee ? _self.installation_fee : ins
 as num,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
 as num,customer_name: null == customer_name ? _self.customer_name : customer_name // ignore: cast_nullable_to_non_nullable
 as String,customer_phone: null == customer_phone ? _self.customer_phone : customer_phone // ignore: cast_nullable_to_non_nullable
-as String,customer_email: null == customer_email ? _self.customer_email : customer_email // ignore: cast_nullable_to_non_nullable
-as String,shipping_address: null == shipping_address ? _self.shipping_address : shipping_address // ignore: cast_nullable_to_non_nullable
-as String,tracking_number: null == tracking_number ? _self.tracking_number : tracking_number // ignore: cast_nullable_to_non_nullable
-as String,placed_at: null == placed_at ? _self.placed_at : placed_at // ignore: cast_nullable_to_non_nullable
-as String,governorate: freezed == governorate ? _self.governorate : governorate // ignore: cast_nullable_to_non_nullable
+as String,customer_email: freezed == customer_email ? _self.customer_email : customer_email // ignore: cast_nullable_to_non_nullable
+as String?,shipping_address: freezed == shipping_address ? _self.shipping_address : shipping_address // ignore: cast_nullable_to_non_nullable
+as String?,tracking_number: freezed == tracking_number ? _self.tracking_number : tracking_number // ignore: cast_nullable_to_non_nullable
+as String?,placed_at: null == placed_at ? _self.placed_at : placed_at // ignore: cast_nullable_to_non_nullable
+as String,is_guest: null == is_guest ? _self.is_guest : is_guest // ignore: cast_nullable_to_non_nullable
+as bool,governorate: freezed == governorate ? _self.governorate : governorate // ignore: cast_nullable_to_non_nullable
 as Governorate?,branch: freezed == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
 as Branch?,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<OrderItem>,
@@ -202,10 +203,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String reference,  String type,  String status,  String payment_method,  String payment_status,  num subtotal,  num discount,  num shipping_fee,  num installation_fee,  num total,  String customer_name,  String customer_phone,  String customer_email,  String shipping_address,  String tracking_number,  String placed_at,  Governorate? governorate,  Branch? branch,  List<OrderItem> items)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String reference,  String type,  String status,  String payment_method,  String payment_status,  num subtotal,  num discount,  num shipping_fee,  num installation_fee,  num total,  String customer_name,  String customer_phone,  String? customer_email,  String? shipping_address,  String? tracking_number,  String placed_at,  bool is_guest,  Governorate? governorate,  Branch? branch,  List<OrderItem> items)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Order() when $default != null:
-return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_method,_that.payment_status,_that.subtotal,_that.discount,_that.shipping_fee,_that.installation_fee,_that.total,_that.customer_name,_that.customer_phone,_that.customer_email,_that.shipping_address,_that.tracking_number,_that.placed_at,_that.governorate,_that.branch,_that.items);case _:
+return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_method,_that.payment_status,_that.subtotal,_that.discount,_that.shipping_fee,_that.installation_fee,_that.total,_that.customer_name,_that.customer_phone,_that.customer_email,_that.shipping_address,_that.tracking_number,_that.placed_at,_that.is_guest,_that.governorate,_that.branch,_that.items);case _:
   return orElse();
 
 }
@@ -223,10 +224,10 @@ return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_m
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String reference,  String type,  String status,  String payment_method,  String payment_status,  num subtotal,  num discount,  num shipping_fee,  num installation_fee,  num total,  String customer_name,  String customer_phone,  String customer_email,  String shipping_address,  String tracking_number,  String placed_at,  Governorate? governorate,  Branch? branch,  List<OrderItem> items)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String reference,  String type,  String status,  String payment_method,  String payment_status,  num subtotal,  num discount,  num shipping_fee,  num installation_fee,  num total,  String customer_name,  String customer_phone,  String? customer_email,  String? shipping_address,  String? tracking_number,  String placed_at,  bool is_guest,  Governorate? governorate,  Branch? branch,  List<OrderItem> items)  $default,) {final _that = this;
 switch (_that) {
 case _Order():
-return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_method,_that.payment_status,_that.subtotal,_that.discount,_that.shipping_fee,_that.installation_fee,_that.total,_that.customer_name,_that.customer_phone,_that.customer_email,_that.shipping_address,_that.tracking_number,_that.placed_at,_that.governorate,_that.branch,_that.items);case _:
+return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_method,_that.payment_status,_that.subtotal,_that.discount,_that.shipping_fee,_that.installation_fee,_that.total,_that.customer_name,_that.customer_phone,_that.customer_email,_that.shipping_address,_that.tracking_number,_that.placed_at,_that.is_guest,_that.governorate,_that.branch,_that.items);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -243,10 +244,10 @@ return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_m
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String reference,  String type,  String status,  String payment_method,  String payment_status,  num subtotal,  num discount,  num shipping_fee,  num installation_fee,  num total,  String customer_name,  String customer_phone,  String customer_email,  String shipping_address,  String tracking_number,  String placed_at,  Governorate? governorate,  Branch? branch,  List<OrderItem> items)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String reference,  String type,  String status,  String payment_method,  String payment_status,  num subtotal,  num discount,  num shipping_fee,  num installation_fee,  num total,  String customer_name,  String customer_phone,  String? customer_email,  String? shipping_address,  String? tracking_number,  String placed_at,  bool is_guest,  Governorate? governorate,  Branch? branch,  List<OrderItem> items)?  $default,) {final _that = this;
 switch (_that) {
 case _Order() when $default != null:
-return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_method,_that.payment_status,_that.subtotal,_that.discount,_that.shipping_fee,_that.installation_fee,_that.total,_that.customer_name,_that.customer_phone,_that.customer_email,_that.shipping_address,_that.tracking_number,_that.placed_at,_that.governorate,_that.branch,_that.items);case _:
+return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_method,_that.payment_status,_that.subtotal,_that.discount,_that.shipping_fee,_that.installation_fee,_that.total,_that.customer_name,_that.customer_phone,_that.customer_email,_that.shipping_address,_that.tracking_number,_that.placed_at,_that.is_guest,_that.governorate,_that.branch,_that.items);case _:
   return null;
 
 }
@@ -258,7 +259,7 @@ return $default(_that.id,_that.reference,_that.type,_that.status,_that.payment_m
 @JsonSerializable()
 
 class _Order implements Order {
-  const _Order({required this.id, required this.reference, required this.type, required this.status, required this.payment_method, required this.payment_status, required this.subtotal, required this.discount, required this.shipping_fee, required this.installation_fee, required this.total, required this.customer_name, required this.customer_phone, required this.customer_email, required this.shipping_address, required this.tracking_number, required this.placed_at, this.governorate, this.branch,  List<OrderItem> items = const <OrderItem>[]}): _items = items;
+  const _Order({required this.id, required this.reference, required this.type, required this.status, required this.payment_method, required this.payment_status, required this.subtotal, required this.discount, required this.shipping_fee, required this.installation_fee, required this.total, required this.customer_name, required this.customer_phone, this.customer_email, this.shipping_address, this.tracking_number, required this.placed_at, this.is_guest = false, this.governorate, this.branch,  List<OrderItem> items = const <OrderItem>[]}): _items = items;
   factory _Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
 @override final  int id;
@@ -274,10 +275,11 @@ class _Order implements Order {
 @override final  num total;
 @override final  String customer_name;
 @override final  String customer_phone;
-@override final  String customer_email;
-@override final  String shipping_address;
-@override final  String tracking_number;
+@override final  String? customer_email;
+@override final  String? shipping_address;
+@override final  String? tracking_number;
 @override final  String placed_at;
+@override@JsonKey() final  bool is_guest;
 @override final  Governorate? governorate;
 @override final  Branch? branch;
  final  List<OrderItem> _items;
@@ -301,18 +303,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Order&&(identical(other.id, id) || other.id == id)&&(identical(other.reference, reference) || other.reference == reference)&&(identical(other.type, type) || other.type == type)&&(identical(other.status, status) || other.status == status)&&(identical(other.payment_method, payment_method) || other.payment_method == payment_method)&&(identical(other.payment_status, payment_status) || other.payment_status == payment_status)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.shipping_fee, shipping_fee) || other.shipping_fee == shipping_fee)&&(identical(other.installation_fee, installation_fee) || other.installation_fee == installation_fee)&&(identical(other.total, total) || other.total == total)&&(identical(other.customer_name, customer_name) || other.customer_name == customer_name)&&(identical(other.customer_phone, customer_phone) || other.customer_phone == customer_phone)&&(identical(other.customer_email, customer_email) || other.customer_email == customer_email)&&(identical(other.shipping_address, shipping_address) || other.shipping_address == shipping_address)&&(identical(other.tracking_number, tracking_number) || other.tracking_number == tracking_number)&&(identical(other.placed_at, placed_at) || other.placed_at == placed_at)&&(identical(other.governorate, governorate) || other.governorate == governorate)&&(identical(other.branch, branch) || other.branch == branch)&&const DeepCollectionEquality().equals(other.items, _items));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Order&&(identical(other.id, id) || other.id == id)&&(identical(other.reference, reference) || other.reference == reference)&&(identical(other.type, type) || other.type == type)&&(identical(other.status, status) || other.status == status)&&(identical(other.payment_method, payment_method) || other.payment_method == payment_method)&&(identical(other.payment_status, payment_status) || other.payment_status == payment_status)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.shipping_fee, shipping_fee) || other.shipping_fee == shipping_fee)&&(identical(other.installation_fee, installation_fee) || other.installation_fee == installation_fee)&&(identical(other.total, total) || other.total == total)&&(identical(other.customer_name, customer_name) || other.customer_name == customer_name)&&(identical(other.customer_phone, customer_phone) || other.customer_phone == customer_phone)&&(identical(other.customer_email, customer_email) || other.customer_email == customer_email)&&(identical(other.shipping_address, shipping_address) || other.shipping_address == shipping_address)&&(identical(other.tracking_number, tracking_number) || other.tracking_number == tracking_number)&&(identical(other.placed_at, placed_at) || other.placed_at == placed_at)&&(identical(other.is_guest, is_guest) || other.is_guest == is_guest)&&(identical(other.governorate, governorate) || other.governorate == governorate)&&(identical(other.branch, branch) || other.branch == branch)&&const DeepCollectionEquality().equals(other.items, _items));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,id,reference,type,status,payment_method,payment_status,subtotal,discount,shipping_fee,installation_fee,total,customer_name,customer_phone,customer_email,shipping_address,tracking_number,placed_at,governorate,branch,const DeepCollectionEquality().hash(_items)]);
+    return Object.hashAll([runtimeType,id,reference,type,status,payment_method,payment_status,subtotal,discount,shipping_fee,installation_fee,total,customer_name,customer_phone,customer_email,shipping_address,tracking_number,placed_at,is_guest,governorate,branch,const DeepCollectionEquality().hash(_items)]);
 }
 
 @override
 String toString() {
-    return 'Order(id: $id, reference: $reference, type: $type, status: $status, payment_method: $payment_method, payment_status: $payment_status, subtotal: $subtotal, discount: $discount, shipping_fee: $shipping_fee, installation_fee: $installation_fee, total: $total, customer_name: $customer_name, customer_phone: $customer_phone, customer_email: $customer_email, shipping_address: $shipping_address, tracking_number: $tracking_number, placed_at: $placed_at, governorate: $governorate, branch: $branch, items: $items)';
+    return 'Order(id: $id, reference: $reference, type: $type, status: $status, payment_method: $payment_method, payment_status: $payment_status, subtotal: $subtotal, discount: $discount, shipping_fee: $shipping_fee, installation_fee: $installation_fee, total: $total, customer_name: $customer_name, customer_phone: $customer_phone, customer_email: $customer_email, shipping_address: $shipping_address, tracking_number: $tracking_number, placed_at: $placed_at, is_guest: $is_guest, governorate: $governorate, branch: $branch, items: $items)';
 }
 
 
@@ -323,7 +325,7 @@ abstract mixin class _$OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
   factory _$OrderCopyWith(_Order value, $Res Function(_Order) _then) = __$OrderCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String reference, String type, String status, String payment_method, String payment_status, num subtotal, num discount, num shipping_fee, num installation_fee, num total, String customer_name, String customer_phone, String customer_email, String shipping_address, String tracking_number, String placed_at, Governorate? governorate, Branch? branch, List<OrderItem> items
+ int id, String reference, String type, String status, String payment_method, String payment_status, num subtotal, num discount, num shipping_fee, num installation_fee, num total, String customer_name, String customer_phone, String? customer_email, String? shipping_address, String? tracking_number, String placed_at, bool is_guest, Governorate? governorate, Branch? branch, List<OrderItem> items
 });
 
 
@@ -340,7 +342,7 @@ class __$OrderCopyWithImpl<$Res>
 
 /// Create a copy of Order
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? reference = null,Object? type = null,Object? status = null,Object? payment_method = null,Object? payment_status = null,Object? subtotal = null,Object? discount = null,Object? shipping_fee = null,Object? installation_fee = null,Object? total = null,Object? customer_name = null,Object? customer_phone = null,Object? customer_email = null,Object? shipping_address = null,Object? tracking_number = null,Object? placed_at = null,Object? governorate = freezed,Object? branch = freezed,Object? items = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? reference = null,Object? type = null,Object? status = null,Object? payment_method = null,Object? payment_status = null,Object? subtotal = null,Object? discount = null,Object? shipping_fee = null,Object? installation_fee = null,Object? total = null,Object? customer_name = null,Object? customer_phone = null,Object? customer_email = freezed,Object? shipping_address = freezed,Object? tracking_number = freezed,Object? placed_at = null,Object? is_guest = null,Object? governorate = freezed,Object? branch = freezed,Object? items = null,}) {
   return _then(_Order(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,reference: null == reference ? _self.reference : reference // ignore: cast_nullable_to_non_nullable
@@ -355,11 +357,12 @@ as num,installation_fee: null == installation_fee ? _self.installation_fee : ins
 as num,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
 as num,customer_name: null == customer_name ? _self.customer_name : customer_name // ignore: cast_nullable_to_non_nullable
 as String,customer_phone: null == customer_phone ? _self.customer_phone : customer_phone // ignore: cast_nullable_to_non_nullable
-as String,customer_email: null == customer_email ? _self.customer_email : customer_email // ignore: cast_nullable_to_non_nullable
-as String,shipping_address: null == shipping_address ? _self.shipping_address : shipping_address // ignore: cast_nullable_to_non_nullable
-as String,tracking_number: null == tracking_number ? _self.tracking_number : tracking_number // ignore: cast_nullable_to_non_nullable
-as String,placed_at: null == placed_at ? _self.placed_at : placed_at // ignore: cast_nullable_to_non_nullable
-as String,governorate: freezed == governorate ? _self.governorate : governorate // ignore: cast_nullable_to_non_nullable
+as String,customer_email: freezed == customer_email ? _self.customer_email : customer_email // ignore: cast_nullable_to_non_nullable
+as String?,shipping_address: freezed == shipping_address ? _self.shipping_address : shipping_address // ignore: cast_nullable_to_non_nullable
+as String?,tracking_number: freezed == tracking_number ? _self.tracking_number : tracking_number // ignore: cast_nullable_to_non_nullable
+as String?,placed_at: null == placed_at ? _self.placed_at : placed_at // ignore: cast_nullable_to_non_nullable
+as String,is_guest: null == is_guest ? _self.is_guest : is_guest // ignore: cast_nullable_to_non_nullable
+as bool,governorate: freezed == governorate ? _self.governorate : governorate // ignore: cast_nullable_to_non_nullable
 as Governorate?,branch: freezed == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
 as Branch?,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<OrderItem>,
@@ -397,7 +400,7 @@ $BranchCopyWith<$Res>? get branch {
 /// @nodoc
 mixin _$OrderItem {
 
- int get id; int get product_id; String get product_name; String get product_sku; int get quantity; num get unit_price; num get total;
+ int get id; int get product_id; String get product_name; String get product_sku; int get quantity; num get unit_price; num get total; String? get image;
 /// Create a copy of OrderItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -411,20 +414,20 @@ $OrderItemCopyWith<OrderItem> get copyWith => _$OrderItemCopyWithImpl<OrderItem>
 @override
 bool operator ==(Object other) {
   final _this = this as OrderItem;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.product_id, _this.product_id) || other.product_id == _this.product_id)&&(identical(other.product_name, _this.product_name) || other.product_name == _this.product_name)&&(identical(other.product_sku, _this.product_sku) || other.product_sku == _this.product_sku)&&(identical(other.quantity, _this.quantity) || other.quantity == _this.quantity)&&(identical(other.unit_price, _this.unit_price) || other.unit_price == _this.unit_price)&&(identical(other.total, _this.total) || other.total == _this.total));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.product_id, _this.product_id) || other.product_id == _this.product_id)&&(identical(other.product_name, _this.product_name) || other.product_name == _this.product_name)&&(identical(other.product_sku, _this.product_sku) || other.product_sku == _this.product_sku)&&(identical(other.quantity, _this.quantity) || other.quantity == _this.quantity)&&(identical(other.unit_price, _this.unit_price) || other.unit_price == _this.unit_price)&&(identical(other.total, _this.total) || other.total == _this.total)&&(identical(other.image, _this.image) || other.image == _this.image));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as OrderItem;
-  return Object.hash(runtimeType,_this.id,_this.product_id,_this.product_name,_this.product_sku,_this.quantity,_this.unit_price,_this.total);
+  return Object.hash(runtimeType,_this.id,_this.product_id,_this.product_name,_this.product_sku,_this.quantity,_this.unit_price,_this.total,_this.image);
 }
 
 @override
 String toString() {
   final _this = this as OrderItem;
-  return 'OrderItem(id: ${_this.id}, product_id: ${_this.product_id}, product_name: ${_this.product_name}, product_sku: ${_this.product_sku}, quantity: ${_this.quantity}, unit_price: ${_this.unit_price}, total: ${_this.total})';
+  return 'OrderItem(id: ${_this.id}, product_id: ${_this.product_id}, product_name: ${_this.product_name}, product_sku: ${_this.product_sku}, quantity: ${_this.quantity}, unit_price: ${_this.unit_price}, total: ${_this.total}, image: ${_this.image})';
 }
 
 
@@ -435,7 +438,7 @@ abstract mixin class $OrderItemCopyWith<$Res>  {
   factory $OrderItemCopyWith(OrderItem value, $Res Function(OrderItem) _then) = _$OrderItemCopyWithImpl;
 @useResult
 $Res call({
- int id, int product_id, String product_name, String product_sku, int quantity, num unit_price, num total
+ int id, int product_id, String product_name, String product_sku, int quantity, num unit_price, num total, String? image
 });
 
 
@@ -452,7 +455,7 @@ class _$OrderItemCopyWithImpl<$Res>
 
 /// Create a copy of OrderItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? product_id = null,Object? product_name = null,Object? product_sku = null,Object? quantity = null,Object? unit_price = null,Object? total = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? product_id = null,Object? product_name = null,Object? product_sku = null,Object? quantity = null,Object? unit_price = null,Object? total = null,Object? image = freezed,}) {
   return _then(OrderItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,product_id: null == product_id ? _self.product_id : product_id // ignore: cast_nullable_to_non_nullable
@@ -461,7 +464,8 @@ as String,product_sku: null == product_sku ? _self.product_sku : product_sku // 
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,unit_price: null == unit_price ? _self.unit_price : unit_price // ignore: cast_nullable_to_non_nullable
 as num,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as num,
+as num,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -546,10 +550,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int product_id,  String product_name,  String product_sku,  int quantity,  num unit_price,  num total)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int product_id,  String product_name,  String product_sku,  int quantity,  num unit_price,  num total,  String? image)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderItem() when $default != null:
-return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_that.quantity,_that.unit_price,_that.total);case _:
+return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_that.quantity,_that.unit_price,_that.total,_that.image);case _:
   return orElse();
 
 }
@@ -567,10 +571,10 @@ return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int product_id,  String product_name,  String product_sku,  int quantity,  num unit_price,  num total)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int product_id,  String product_name,  String product_sku,  int quantity,  num unit_price,  num total,  String? image)  $default,) {final _that = this;
 switch (_that) {
 case _OrderItem():
-return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_that.quantity,_that.unit_price,_that.total);case _:
+return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_that.quantity,_that.unit_price,_that.total,_that.image);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -587,10 +591,10 @@ return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int product_id,  String product_name,  String product_sku,  int quantity,  num unit_price,  num total)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int product_id,  String product_name,  String product_sku,  int quantity,  num unit_price,  num total,  String? image)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderItem() when $default != null:
-return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_that.quantity,_that.unit_price,_that.total);case _:
+return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_that.quantity,_that.unit_price,_that.total,_that.image);case _:
   return null;
 
 }
@@ -602,7 +606,7 @@ return $default(_that.id,_that.product_id,_that.product_name,_that.product_sku,_
 @JsonSerializable()
 
 class _OrderItem implements OrderItem {
-  const _OrderItem({required this.id, required this.product_id, required this.product_name, required this.product_sku, required this.quantity, required this.unit_price, required this.total});
+  const _OrderItem({required this.id, required this.product_id, required this.product_name, required this.product_sku, required this.quantity, required this.unit_price, required this.total, this.image});
   factory _OrderItem.fromJson(Map<String, dynamic> json) => _$OrderItemFromJson(json);
 
 @override final  int id;
@@ -612,6 +616,7 @@ class _OrderItem implements OrderItem {
 @override final  int quantity;
 @override final  num unit_price;
 @override final  num total;
+@override final  String? image;
 
 /// Create a copy of OrderItem
 /// with the given fields replaced by the non-null parameter values.
@@ -626,18 +631,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderItem&&(identical(other.id, id) || other.id == id)&&(identical(other.product_id, product_id) || other.product_id == product_id)&&(identical(other.product_name, product_name) || other.product_name == product_name)&&(identical(other.product_sku, product_sku) || other.product_sku == product_sku)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit_price, unit_price) || other.unit_price == unit_price)&&(identical(other.total, total) || other.total == total));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderItem&&(identical(other.id, id) || other.id == id)&&(identical(other.product_id, product_id) || other.product_id == product_id)&&(identical(other.product_name, product_name) || other.product_name == product_name)&&(identical(other.product_sku, product_sku) || other.product_sku == product_sku)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit_price, unit_price) || other.unit_price == unit_price)&&(identical(other.total, total) || other.total == total)&&(identical(other.image, image) || other.image == image));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,product_id,product_name,product_sku,quantity,unit_price,total);
+    return Object.hash(runtimeType,id,product_id,product_name,product_sku,quantity,unit_price,total,image);
 }
 
 @override
 String toString() {
-    return 'OrderItem(id: $id, product_id: $product_id, product_name: $product_name, product_sku: $product_sku, quantity: $quantity, unit_price: $unit_price, total: $total)';
+    return 'OrderItem(id: $id, product_id: $product_id, product_name: $product_name, product_sku: $product_sku, quantity: $quantity, unit_price: $unit_price, total: $total, image: $image)';
 }
 
 
@@ -648,7 +653,7 @@ abstract mixin class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Re
   factory _$OrderItemCopyWith(_OrderItem value, $Res Function(_OrderItem) _then) = __$OrderItemCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int product_id, String product_name, String product_sku, int quantity, num unit_price, num total
+ int id, int product_id, String product_name, String product_sku, int quantity, num unit_price, num total, String? image
 });
 
 
@@ -665,7 +670,7 @@ class __$OrderItemCopyWithImpl<$Res>
 
 /// Create a copy of OrderItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? product_id = null,Object? product_name = null,Object? product_sku = null,Object? quantity = null,Object? unit_price = null,Object? total = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? product_id = null,Object? product_name = null,Object? product_sku = null,Object? quantity = null,Object? unit_price = null,Object? total = null,Object? image = freezed,}) {
   return _then(_OrderItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,product_id: null == product_id ? _self.product_id : product_id // ignore: cast_nullable_to_non_nullable
@@ -674,7 +679,8 @@ as String,product_sku: null == product_sku ? _self.product_sku : product_sku // 
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,unit_price: null == unit_price ? _self.unit_price : unit_price // ignore: cast_nullable_to_non_nullable
 as num,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as num,
+as num,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

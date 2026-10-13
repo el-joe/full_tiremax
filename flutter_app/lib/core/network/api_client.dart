@@ -25,6 +25,19 @@ final String apiBaseUrl = _rawApiBaseUrl.endsWith('/')
 
 final tokenStorageProvider = Provider<TokenStorage>((ref) => TokenStorage());
 
+/// Mirror of `frontend/utils/axiosInstance.ts`'s `isProtectedEndpoint`: only
+/// these calls need a signed-in customer; everything else is guest-capable and
+/// must never bounce a guest to the login sheet on a 401.
+const List<String> _protectedSegments = ['addresses', 'favorites', 'notifications', 'reviews', 'auth/me'];
+
+bool isProtectedEndpoint(String? url, [String? method]) {
+  final path = (url ?? '').split('?').first.replaceAll(RegExp(r'^/+|/+$'), '');
+  if ((method ?? 'get').toLowerCase() == 'get' && (path == 'orders' || path == 'bookings')) {
+    return true;
+  }
+  return _protectedSegments.any((s) => path == s || path.startsWith('$s/'));
+}
+
 /// Broadcasts whenever the API client receives a 401 response, so the
 /// app-level router (or any listener) can react by redirecting to Home and
 /// opening the auth sheet.
@@ -65,13 +78,22 @@ final apiClientProvider = Provider<Dio>((ref) {
 
         final locale = ref.read(localeProvider);
         options.headers['x-locale'] = locale.languageCode;
+        options.headers['Accept-Language'] = locale.languageCode;
 
         handler.next(options);
       },
       onError: (DioException error, handler) async {
         if (error.response?.statusCode == 401) {
-          await tokenStorage.clearAll();
-          ref.read(unauthorizedNotifierProvider.notifier).notify();
+          // Web: guests hitting guest-capable endpoints are never bounced.
+          // We only drop the session when the call needs auth, or when a
+          // stored token was rejected (expired/revoked) - otherwise a stale
+          // token would leave the app "logged in" with every call failing.
+          final hadToken = (error.requestOptions.headers['Authorization'] as String?)?.isNotEmpty ?? false;
+          final path = error.requestOptions.path.replaceFirst(apiBaseUrl, '');
+          if (hadToken || isProtectedEndpoint(path, error.requestOptions.method)) {
+            await tokenStorage.clearAll();
+            ref.read(unauthorizedNotifierProvider.notifier).notify();
+          }
         }
         handler.next(
           error.copyWith(error: ApiException.fromDioException(error)),

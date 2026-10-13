@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../utils/format.dart';
 
 /// A typed exception wrapping a [DioException] with a human-readable
 /// message, mirroring Laravel's standard validation error shape:
@@ -67,19 +68,19 @@ class ApiException implements Exception {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return 'The connection timed out. Please try again.';
+        return currentL10n.errTimeout;
       case DioExceptionType.connectionError:
-        return 'Could not connect to the server. Check your internet connection.';
+        return currentL10n.errConnection;
       case DioExceptionType.cancel:
-        return 'The request was cancelled.';
+        return currentL10n.errCancelled;
       case DioExceptionType.badCertificate:
-        return 'A secure connection could not be established.';
+        return currentL10n.errBadCertificate;
       case DioExceptionType.badResponse:
-        return 'Something went wrong. Please try again.';
+        return currentL10n.errSomethingWrongTryAgain;
       case DioExceptionType.unknown:
-        return error.message ?? 'An unexpected error occurred.';
+        return error.message ?? currentL10n.errUnexpected;
       default:
-        return error.message ?? 'An unexpected error occurred.';
+        return error.message ?? currentL10n.errUnexpected;
     }
   }
 

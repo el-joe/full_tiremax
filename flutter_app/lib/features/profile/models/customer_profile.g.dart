@@ -10,9 +10,9 @@ _CustomerProfile _$CustomerProfileFromJson(Map<String, dynamic> json) =>
     _CustomerProfile(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
-      email: json['email'] as String,
+      email: json['email'] as String?,
       phone: json['phone'] as String,
-      address: json['address'] as String,
+      address: json['address'] as String?,
       locale: json['locale'] as String,
     );
 

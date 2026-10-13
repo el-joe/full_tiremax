@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/models/branch.dart';
 import '../../../core/network/api_client.dart';
+import '../../orders/data/orders_repository.dart' show PagedResult;
 import '../../services/models/service.dart';
 import '../models/reservation.dart';
 
@@ -113,10 +114,27 @@ class ReservationRepository {
     return BookingResult.fromJson(body['data'] as Map<String, dynamic>);
   }
 
-  Future<List<Reservation>> fetchBookings() async {
-    final response = await _dio.get('bookings');
-    final data = (response.data as Map<String, dynamic>)['data'] as List<dynamic>;
-    return data.map((e) => Reservation.fromJson(e as Map<String, dynamic>)).toList();
+  Future<List<Reservation>> fetchBookings() async => (await fetchBookingsPage()).items;
+
+  /// Web `bookings?page=` with `meta.pagination`.
+  Future<PagedResult<Reservation>> fetchBookingsPage({int page = 1}) async {
+    final response = await _dio.get('bookings', queryParameters: {if (page > 1) 'page': page});
+    final body = response.data as Map<String, dynamic>;
+    final data = body['data'] as List<dynamic>;
+    return PagedResult(
+      data.map((e) => Reservation.fromJson(e as Map<String, dynamic>)).toList(),
+      body['meta'] as Map<String, dynamic>?,
+    );
+  }
+
+  /// Guest lookup by reference + phone (web `TrackForm`: `bookings/{ref}?phone=`).
+  Future<Reservation> trackBooking(String reference, String phone) async {
+    final response = await _dio.get(
+      'bookings/${Uri.encodeComponent(reference.trim())}',
+      queryParameters: {'phone': phone.trim()},
+    );
+    final body = response.data as Map<String, dynamic>;
+    return Reservation.fromJson(body['data'] as Map<String, dynamic>);
   }
 
   Future<Reservation> fetchBooking(int id) async {
@@ -151,23 +169,10 @@ final reservationBranchesProvider = FutureProvider<List<Branch>>((ref) {
   return ref.watch(reservationRepositoryProvider).fetchBranches();
 });
 
-/// GET /bookings — the customer's reservation history, used by the
-/// Profile > Reservations screen.
-class BookingsListNotifier extends AsyncNotifier<List<Reservation>> {
-  @override
-  Future<List<Reservation>> build() async {
-    return ref.read(reservationRepositoryProvider).fetchBookings();
-  }
-
-  Future<void> refresh() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() => ref.read(reservationRepositoryProvider).fetchBookings());
-  }
-}
-
-final bookingsListProvider = AsyncNotifierProvider<BookingsListNotifier, List<Reservation>>(
-  BookingsListNotifier.new,
-);
+/// GET /bookings?page= — the customer's reservation history.
+final bookingsListProvider = FutureProvider.autoDispose.family<PagedResult<Reservation>, int>((ref, page) {
+  return ref.watch(reservationRepositoryProvider).fetchBookingsPage(page: page);
+});
 
 final bookingDetailProvider = FutureProvider.autoDispose.family<Reservation, int>((ref, id) {
   return ref.watch(reservationRepositoryProvider).fetchBooking(id);

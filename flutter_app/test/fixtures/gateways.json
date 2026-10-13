@@ -1,0 +1,1 @@
+{"data": [{"id": 1, "name": "cod", "display_name": "Cash on Delivery", "driver": "cod", "settings": {"currency": "IQD"}, "is_active": true}, {"id": 2, "name": "bank_transfer", "display_name": "Bank Transfer", "driver": "bank_transfer", "settings": {"currency": "IQD"}, "is_active": true}]}

@@ -1,3 +1,4 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,7 +6,6 @@ import '../../../core/network/api_exception.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
 import '../../../core/providers/locale_provider.dart';
-import '../../../l10n/app_localizations.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../../orders/providers/orders_provider.dart';
 import '../../reservation/data/reservation_repository.dart';
@@ -31,6 +31,7 @@ void _afterAuth(
   ScaffoldMessengerState messenger,
   AppLocalizations l10n,
 ) {
+  messenger.showSnackBar(SnackBar(content: Text('${l10n.authWelcome} ${result.customer.name}')));
   ref.invalidate(cartProvider);
   ref.invalidate(ordersListProvider);
   ref.invalidate(bookingsListProvider);
@@ -121,8 +122,8 @@ class _TabToggle extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Expanded(child: _TabButton(label: AppLocalizations.of(context).authSignIn, active: showLogin, onTap: () => onChanged(true))),
-          Expanded(child: _TabButton(label: AppLocalizations.of(context).authCreateAccount, active: !showLogin, onTap: () => onChanged(false))),
+          Expanded(child: _TabButton(icon: Icons.login, label: context.l10n.authLogin, active: showLogin, onTap: () => onChanged(true))),
+          Expanded(child: _TabButton(icon: Icons.person_add_alt, label: context.l10n.authRegister, active: !showLogin, onTap: () => onChanged(false))),
         ],
       ),
     );
@@ -130,8 +131,9 @@ class _TabToggle extends StatelessWidget {
 }
 
 class _TabButton extends StatelessWidget {
-  const _TabButton({required this.label, required this.active, required this.onTap});
+  const _TabButton({required this.icon, required this.label, required this.active, required this.onTap});
 
+  final IconData icon;
   final String label;
   final bool active;
   final VoidCallback onTap;
@@ -148,12 +150,19 @@ class _TabButton extends StatelessWidget {
           borderRadius: AppRadii.radiusFull,
         ),
         alignment: Alignment.center,
-        child: Text(
-          label,
-          style: TextStyle(
-            color: active ? AppColors.onPrimary : AppColors.foregroundDark,
-            fontWeight: FontWeight.w700,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 18, color: active ? AppColors.onPrimary : AppColors.foregroundDark),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                color: active ? AppColors.onPrimary : AppColors.foregroundDark,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -212,7 +221,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
         children: [
           TextFormField(
             controller: _identifierController,
-            decoration: InputDecoration(labelText: l10n.authEmailOrPhone),
+            decoration: InputDecoration(labelText: l10n.authEmailOrPhone, hintText: context.l10n.enterEmailOrPhoneNumber),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return l10n.authEmailOrPhoneRequired;
@@ -224,7 +233,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
           TextFormField(
             controller: _passwordController,
             obscureText: true,
-            decoration: InputDecoration(labelText: l10n.authPassword),
+            decoration: InputDecoration(labelText: l10n.authPassword, hintText: context.l10n.enterPassword),
             validator: (value) {
               if (value == null || value.length < 6) {
                 return l10n.authPasswordMinLength;
@@ -271,6 +280,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
   final _addressController = TextEditingController();
   bool _submitting = false;
   String? _apiError;
+  Map<String, String> _serverErrors = {};
 
   static final _emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
@@ -286,7 +296,10 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
   }
 
   Future<void> _submit() async {
-    setState(() => _apiError = null);
+    setState(() {
+      _apiError = null;
+      _serverErrors = {};
+    });
     if (!_formKey.currentState!.validate()) return;
     setState(() => _submitting = true);
     try {
@@ -308,7 +321,18 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
       _afterAuth(ref, result, messenger, l10n);
       if (mounted) Navigator.of(context).pop();
     } on ApiException catch (e) {
-      setState(() => _apiError = e.message);
+      // Per-field API errors land on the matching input (the banner is only
+      // shown when there are none), like the web's `setError(..., "server")`.
+      final fields = <String, String>{
+        for (final entry in (e.errors ?? const <String, List<String>>{}).entries)
+          if (const {'name', 'phone', 'email', 'password', 'password_confirmation', 'address'}.contains(entry.key) &&
+              entry.value.isNotEmpty)
+            entry.key: entry.value.first,
+      };
+      setState(() {
+        _serverErrors = fields;
+        _apiError = fields.isEmpty ? e.message : null;
+      });
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -324,7 +348,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
         children: [
           TextFormField(
             controller: _nameController,
-            decoration: InputDecoration(labelText: l10n.authFullName),
+            decoration: InputDecoration(errorText: _serverErrors['name'], labelText: l10n.authFullName, hintText: context.l10n.enterFullName),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return l10n.authFullNameRequired;
@@ -337,7 +361,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
           TextFormField(
             controller: _phoneController,
             keyboardType: TextInputType.phone,
-            decoration: InputDecoration(labelText: l10n.authPhoneNumber),
+            decoration: InputDecoration(errorText: _serverErrors['phone'], labelText: l10n.authPhoneNumber, hintText: context.l10n.enterPhoneNumber),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return l10n.authPhoneNumberRequired;
@@ -350,7 +374,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(labelText: l10n.authEmailOptional),
+            decoration: InputDecoration(errorText: _serverErrors['email'], labelText: l10n.authEmailOptional, hintText: context.l10n.enterEmail),
             validator: (value) {
               if (value == null || value.trim().isEmpty) return null;
               if (value.length > 120) return l10n.authEmailTooLong;
@@ -364,7 +388,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
           TextFormField(
             controller: _passwordController,
             obscureText: true,
-            decoration: InputDecoration(labelText: l10n.authPassword),
+            decoration: InputDecoration(errorText: _serverErrors['password'], labelText: l10n.authPassword, hintText: context.l10n.enterPassword),
             validator: (value) {
               if (value == null || value.length < 6) {
                 return l10n.authPasswordMinLength;
@@ -376,7 +400,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
           TextFormField(
             controller: _confirmController,
             obscureText: true,
-            decoration: InputDecoration(labelText: l10n.authConfirmPassword),
+            decoration: InputDecoration(errorText: _serverErrors['password_confirmation'], labelText: l10n.authConfirmPassword, hintText: context.l10n.confirmYourPassword),
             validator: (value) {
               if (value == null || value.length < 6) {
                 return l10n.authConfirmPasswordRequired;
@@ -390,7 +414,7 @@ class _RegisterFormState extends ConsumerState<_RegisterForm> {
           const SizedBox(height: 16),
           TextFormField(
             controller: _addressController,
-            decoration: InputDecoration(labelText: l10n.authAddressOptional),
+            decoration: InputDecoration(errorText: _serverErrors['address'], labelText: l10n.authAddressOptional, hintText: context.l10n.enterAddress),
             validator: (value) {
               if (value != null && value.length > 255) {
                 return l10n.authAddressTooLong;

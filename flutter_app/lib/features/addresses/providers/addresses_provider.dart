@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../auth/providers/auth_provider.dart';
 import '../data/addresses_repository.dart';
 import '../models/address.dart';
 
 class AddressesNotifier extends AsyncNotifier<List<Address>> {
   @override
   Future<List<Address>> build() async {
+    ref.watch(isLoggedInProvider);
     return ref.read(addressesRepositoryProvider).fetchAddresses();
   }
 

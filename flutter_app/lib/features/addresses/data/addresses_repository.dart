@@ -37,15 +37,15 @@ class AddressesRepository {
   }
 
   Future<Address> createAddress({
-    required String fullName,
-    required String phone,
+    String? fullName,
+    String? phone,
     required int governorateId,
     required int cityId,
     required String address,
   }) async {
     final response = await _dio.post('addresses', data: {
-      'full_name': fullName,
-      'phone': phone,
+      'full_name': ?fullName,
+      'phone': ?phone,
       'governorate_id': governorateId,
       'city_id': cityId,
       'address': address,
@@ -56,15 +56,15 @@ class AddressesRepository {
 
   Future<Address> updateAddress({
     required int id,
-    required String fullName,
-    required String phone,
+    String? fullName,
+    String? phone,
     required int governorateId,
     required int cityId,
     required String address,
   }) async {
     final response = await _dio.put('addresses/$id', data: {
-      'full_name': fullName,
-      'phone': phone,
+      'full_name': ?fullName,
+      'phone': ?phone,
       'governorate_id': governorateId,
       'city_id': cityId,
       'address': address,

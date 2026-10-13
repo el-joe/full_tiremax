@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../auth/providers/auth_provider.dart';
 import '../data/favorites_repository.dart';
 
 /// Tracks which product ids are currently favorited, hydrated from
@@ -14,6 +15,9 @@ import '../data/favorites_repository.dart';
 class FavoritesNotifier extends Notifier<Set<int>> {
   @override
   Set<int> build() {
+    // Guests have no favourites (`GET /favorites` is auth-only); re-hydrate on
+    // login and clear on logout/401.
+    if (!ref.watch(isLoggedInProvider)) return <int>{};
     // Hydrate asynchronously from the server on first use (app start / first
     // time any widget reads this provider) without blocking the initial
     // (empty) state.

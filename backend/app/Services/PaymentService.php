@@ -75,7 +75,7 @@ class PaymentService
     public function activeGateways(): \Illuminate\Database\Eloquent\Collection
     {
         return PaymentGateway::where('is_active', true)
-            ->select(['id', 'name', 'display_name', 'driver', 'settings'])
+            ->select(['id', 'name', 'display_name', 'driver', 'is_active', 'settings'])
             ->get();
     }
 }

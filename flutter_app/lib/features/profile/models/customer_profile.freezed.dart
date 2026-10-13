@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CustomerProfile {
 
- int get id; String get name; String get email; String get phone; String get address; String get locale;
+ int get id; String get name; String? get email; String get phone; String? get address; String get locale;
 /// Create a copy of CustomerProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $CustomerProfileCopyWith<$Res>  {
   factory $CustomerProfileCopyWith(CustomerProfile value, $Res Function(CustomerProfile) _then) = _$CustomerProfileCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String email, String phone, String address, String locale
+ int id, String name, String? email, String phone, String? address, String locale
 });
 
 
@@ -71,14 +71,14 @@ class _$CustomerProfileCopyWithImpl<$Res>
 
 /// Create a copy of CustomerProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? email = null,Object? phone = null,Object? address = null,Object? locale = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? email = freezed,Object? phone = null,Object? address = freezed,Object? locale = null,}) {
   return _then(CustomerProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String,locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String?,locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -164,7 +164,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String email,  String phone,  String address,  String locale)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String? email,  String phone,  String? address,  String locale)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CustomerProfile() when $default != null:
 return $default(_that.id,_that.name,_that.email,_that.phone,_that.address,_that.locale);case _:
@@ -185,7 +185,7 @@ return $default(_that.id,_that.name,_that.email,_that.phone,_that.address,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String email,  String phone,  String address,  String locale)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String? email,  String phone,  String? address,  String locale)  $default,) {final _that = this;
 switch (_that) {
 case _CustomerProfile():
 return $default(_that.id,_that.name,_that.email,_that.phone,_that.address,_that.locale);case _:
@@ -205,7 +205,7 @@ return $default(_that.id,_that.name,_that.email,_that.phone,_that.address,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String email,  String phone,  String address,  String locale)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String? email,  String phone,  String? address,  String locale)?  $default,) {final _that = this;
 switch (_that) {
 case _CustomerProfile() when $default != null:
 return $default(_that.id,_that.name,_that.email,_that.phone,_that.address,_that.locale);case _:
@@ -220,14 +220,14 @@ return $default(_that.id,_that.name,_that.email,_that.phone,_that.address,_that.
 @JsonSerializable()
 
 class _CustomerProfile implements CustomerProfile {
-  const _CustomerProfile({required this.id, required this.name, required this.email, required this.phone, required this.address, required this.locale});
+  const _CustomerProfile({required this.id, required this.name, this.email, required this.phone, this.address, required this.locale});
   factory _CustomerProfile.fromJson(Map<String, dynamic> json) => _$CustomerProfileFromJson(json);
 
 @override final  int id;
 @override final  String name;
-@override final  String email;
+@override final  String? email;
 @override final  String phone;
-@override final  String address;
+@override final  String? address;
 @override final  String locale;
 
 /// Create a copy of CustomerProfile
@@ -265,7 +265,7 @@ abstract mixin class _$CustomerProfileCopyWith<$Res> implements $CustomerProfile
   factory _$CustomerProfileCopyWith(_CustomerProfile value, $Res Function(_CustomerProfile) _then) = __$CustomerProfileCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String email, String phone, String address, String locale
+ int id, String name, String? email, String phone, String? address, String locale
 });
 
 
@@ -282,14 +282,14 @@ class __$CustomerProfileCopyWithImpl<$Res>
 
 /// Create a copy of CustomerProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? email = null,Object? phone = null,Object? address = null,Object? locale = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? email = freezed,Object? phone = null,Object? address = freezed,Object? locale = null,}) {
   return _then(_CustomerProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String,locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String?,locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

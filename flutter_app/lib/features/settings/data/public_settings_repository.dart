@@ -5,10 +5,19 @@ import '../../../core/network/api_client.dart';
 
 /// Mirrors `frontend/helpers/getPublicSettings.ts` (`GET /settings/public`).
 class PublicSettings {
-  const PublicSettings({this.whatsappUrl = '', this.whatsappButtonEnabled = false});
+  const PublicSettings({
+    this.whatsappUrl = '',
+    this.whatsappButtonEnabled = false,
+    this.sitePhone = '',
+    this.siteEmail = '',
+    this.address = '',
+  });
 
   final String whatsappUrl;
   final bool whatsappButtonEnabled;
+  final String sitePhone;
+  final String siteEmail;
+  final String address;
 
   bool get showWhatsapp => whatsappButtonEnabled && whatsappUrl.isNotEmpty;
 
@@ -18,6 +27,9 @@ class PublicSettings {
       whatsappUrl: (json['whatsapp_url'] as String?)?.trim() ?? '',
       whatsappButtonEnabled:
           enabled == true || enabled == 1 || enabled == '1' || enabled == 'true',
+      sitePhone: (json['site_phone'] as String?)?.trim() ?? '',
+      siteEmail: (json['site_email'] as String?)?.trim() ?? '',
+      address: (json['address'] as String?)?.trim() ?? '',
     );
   }
 }

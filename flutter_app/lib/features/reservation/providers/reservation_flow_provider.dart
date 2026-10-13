@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../../core/utils/format.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/models/branch.dart';
@@ -168,7 +169,7 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
       final result = await repository.createBooking(
         serviceId: service.id,
         branchId: branch.id,
-        scheduledAt: '${date}T$time:00',
+        scheduledAt: '${date}T$time',
         customerNotes: state.notes,
         customerName: customerName,
         customerPhone: customerPhone,
@@ -179,7 +180,7 @@ class ReservationFlowNotifier extends Notifier<ReservationFlowState> {
       return result;
     } on DioException catch (e) {
       final error = e.error;
-      final message = error is ApiException ? error.message : e.message ?? 'Booking failed.';
+      final message = error is ApiException ? error.message : e.message ?? currentL10n.bookingFailed;
       state = state.copyWith(isSubmitting: false, submitError: message);
       return null;
     } catch (e) {

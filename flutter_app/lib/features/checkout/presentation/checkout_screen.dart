@@ -1,30 +1,32 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/models/branch.dart';
 import '../../../core/models/governorate.dart';
+import '../../../core/network/api_exception.dart';
+import '../../../core/providers/locale_provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
+import '../../../core/utils/format.dart';
+import '../../../shared/widgets/shimmer_box.dart';
+import '../../../shared/widgets/web_dropdown.dart';
+import '../../auth/presentation/auth_sheet.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../../orders/presentation/order_confirmation_screen.dart';
+import '../../orders/presentation/order_widgets.dart' show PriceBreakdown;
 import '../data/checkout_repository.dart';
 import '../models/payment_method.dart';
 import '../providers/checkout_flow_provider.dart';
 
-/// The checkout screen: order type (delivery/branch pickup), address details,
-/// payment method selection, order summary and "Place order" CTA. Mirrors
-/// `frontend/components/pages/checkout/CheckoutForm.tsx`.
-///
-/// IMPORTANT deviation from the task brief: the real checkout flow (per
-/// `createOrderSchemas.ts` + the Postman `POST /orders` body) does NOT read
-/// or write the saved `/addresses` CRUD endpoints at all. It takes a
-/// freeform `shipping_address` text field plus a `governorate_id` select
-/// directly on the order (or a `branch_id` for in-store pickup) — there is
-/// no `address_id` concept on `Order`. So this screen has no address
-/// picker/CRUD; it reproduces the web form's inline governorate + address
-/// fields instead.
+/// Checkout form: order type, personal info (+ optional account creation),
+/// branch / governorate + address, notes, payment method, order summary and
+/// context.l10n.confirmOrder. Mirrors `frontend/components/pages/checkout/CheckoutForm.tsx`
+/// + `CheckoutSummary.tsx` and `Schemas/createOrderSchemas.ts`. The web form
+/// takes a freeform `shipping_address` (no saved-address CRUD).
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
 
@@ -38,7 +40,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   final _emailController = TextEditingController();
   final _addressController = TextEditingController();
   final _notesController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _isRedirecting = false;
+  bool _showErrors = false;
 
   @override
   void initState() {
@@ -47,13 +51,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     if (customer != null) {
       _nameController.text = customer.name;
       _phoneController.text = customer.phone;
-      _emailController.text = customer.email;
-      final notifier = ref.read(checkoutFlowProvider.notifier);
-      Future.microtask(() => notifier
-        ..setCustomerName(customer.name)
-        ..setCustomerPhone(customer.phone)
-        ..setCustomerEmail(customer.email));
+      _emailController.text = customer.email ?? '';
     }
+    Future.microtask(() {
+      if (!mounted) return;
+      ref.invalidate(checkoutFlowProvider);
+      if (customer != null) {
+        ref.read(checkoutFlowProvider.notifier)
+          ..setCustomerName(customer.name)
+          ..setCustomerPhone(customer.phone)
+          ..setCustomerEmail(customer.email ?? '');
+      }
+    });
   }
 
   @override
@@ -63,6 +72,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     _emailController.dispose();
     _addressController.dispose();
     _notesController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -73,21 +83,46 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ..setCustomerPhone(_phoneController.text.trim())
       ..setCustomerEmail(_emailController.text.trim())
       ..setShippingAddress(_addressController.text.trim())
-      ..setNotes(_notesController.text.trim());
+      ..setNotes(_notesController.text.trim())
+      ..setPassword(_passwordController.text);
+    setState(() => _showErrors = true);
+    if (!ref.read(checkoutFlowProvider).isValid) return;
 
+    final isLogged = ref.read(isLoggedInProvider);
+    final form = ref.read(checkoutFlowProvider);
     final orderId = await notifier.submit();
     if (!mounted) return;
     if (orderId == null) {
       final error = ref.read(checkoutFlowProvider).submitError;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error ?? 'Could not place order.')),
+        SnackBar(content: Text(error ?? context.l10n.somethingWentWrong)),
       );
       return;
     }
 
-    // Clear the local cart state (the backend clears it server-side on order
-    // creation) and refresh so other screens don't show stale items.
+    // Server cart is emptied by the order; reset the local cart.
     ref.read(cartProvider.notifier).refresh();
+
+    // Optional: create an account with this order (server links the guest order).
+    if (!isLogged && form.createAccount && form.password.isNotEmpty) {
+      try {
+        await ref.read(authProvider.notifier).register(
+              name: form.customerName,
+              phone: form.customerPhone,
+              email: form.customerEmail.isEmpty ? null : form.customerEmail,
+              password: form.password,
+              passwordConfirmation: form.password,
+              locale: ref.read(localeProvider).languageCode,
+            );
+      } catch (e) {
+        if (mounted) {
+          final msg = e is ApiException ? e.message : null;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(msg == null ? context.l10n.accountNotCreated : '${context.l10n.accountNotCreated} $msg')));
+        }
+      }
+    }
+    if (!mounted) return;
 
     setState(() => _isRedirecting = true);
     final payment = await ref.read(checkoutRepositoryProvider).fetchPayment(orderId);
@@ -110,125 +145,260 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final flow = ref.watch(checkoutFlowProvider);
+    final notifier = ref.read(checkoutFlowProvider.notifier);
     final governoratesAsync = ref.watch(governoratesProvider);
     final branchesAsync = ref.watch(checkoutBranchesProvider);
     final paymentMethodsAsync = ref.watch(paymentMethodsProvider);
+    final cartNotifier = ref.read(cartProvider.notifier);
     final cart = ref.watch(cartProvider).value;
+    final isLogged = ref.watch(isLoggedInProvider);
+    final errors = _showErrors ? flow.validate() : const <String, String>{};
+    final offer = cartNotifier.appliedOffer;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(backgroundColor: AppColors.background, title: const Text('Checkout')),
+      appBar: AppBar(backgroundColor: AppColors.background, title: Text(context.l10n.checkout)),
       body: SafeArea(
         child: (flow.isSubmitting || _isRedirecting)
             ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
             : ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  _SectionTitle('Order type'),
+                  _SectionTitle(context.l10n.orderType),
                   Row(
                     children: [
                       Expanded(
                         child: _OrderTypeCard(
-                          label: 'Delivery',
+                          label: context.l10n.delivery,
                           selected: flow.type == OrderType.delivery,
-                          onTap: () => ref.read(checkoutFlowProvider.notifier).setType(OrderType.delivery),
+                          onTap: () => notifier.setType(OrderType.delivery),
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: _OrderTypeCard(
-                          label: 'Branch pickup',
+                          label: context.l10n.branchPickup,
                           selected: flow.type == OrderType.basra,
-                          onTap: () => ref.read(checkoutFlowProvider.notifier).setType(OrderType.basra),
+                          onTap: () => notifier.setType(OrderType.basra),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  _SectionTitle('Personal information'),
-                  _TextField(controller: _nameController, hint: 'Full name', onChanged: ref.read(checkoutFlowProvider.notifier).setCustomerName),
-                  const SizedBox(height: 10),
-                  _TextField(controller: _phoneController, hint: 'Phone number', keyboardType: TextInputType.phone, onChanged: ref.read(checkoutFlowProvider.notifier).setCustomerPhone),
-                  const SizedBox(height: 10),
-                  _TextField(controller: _emailController, hint: 'Email (optional)', keyboardType: TextInputType.emailAddress),
-                  const SizedBox(height: 20),
-                  if (flow.type == OrderType.basra) ...[
-                    _SectionTitle('Pickup branch'),
-                    branchesAsync.when(
-                      loading: () => const CircularProgressIndicator(color: AppColors.primary),
-                      error: (_, _) => const Text('Could not load branches.', style: TextStyle(color: AppColors.gray2)),
-                      data: (branches) => _BranchDropdown(
-                        branches: branches,
-                        selectedId: flow.branchId,
-                        onChanged: (id) => ref.read(checkoutFlowProvider.notifier).setBranch(id),
-                      ),
-                    ),
-                  ] else ...[
-                    _SectionTitle('Delivery details'),
-                    governoratesAsync.when(
-                      loading: () => const CircularProgressIndicator(color: AppColors.primary),
-                      error: (_, _) => const Text('Could not load governorates.', style: TextStyle(color: AppColors.gray2)),
-                      data: (governorates) => _GovernorateDropdown(
-                        governorates: governorates,
-                        selectedId: flow.governorateId,
-                        onChanged: (id) => ref.read(checkoutFlowProvider.notifier).setGovernorate(id),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    _TextField(controller: _addressController, hint: 'Full address', maxLines: 3, onChanged: ref.read(checkoutFlowProvider.notifier).setShippingAddress),
-                  ],
-                  const SizedBox(height: 10),
-                  _TextField(controller: _notesController, hint: 'Notes (optional)', maxLines: 2),
-                  const SizedBox(height: 20),
-                  _SectionTitle('Payment method'),
-                  paymentMethodsAsync.when(
-                    loading: () => const CircularProgressIndicator(color: AppColors.primary),
-                    error: (_, _) => const Text('Could not load payment methods.', style: TextStyle(color: AppColors.gray2)),
-                    data: (methods) => Column(
-                      children: [
-                        for (final method in methods)
-                          _PaymentMethodCard(
-                            method: method,
-                            selected: flow.paymentMethod == method.driver,
-                            onTap: () => ref.read(checkoutFlowProvider.notifier).setPaymentMethod(method.driver),
-                          ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Expanded(child: _SectionTitle(context.l10n.personalInformation)),
+                      if (!isLogged)
+                        GestureDetector(
+                          onTap: () => showAuthSheet(context),
+                          child: Text.rich(TextSpan(children: [
+                            TextSpan(text: '${context.l10n.haveAnAccount} ', style: TextStyle(color: AppColors.gray2)),
+                            TextSpan(
+                                text: context.l10n.logIn,
+                                style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700)),
+                          ])),
+                        ),
+                    ],
                   ),
+                  _TextField(
+                    controller: _nameController,
+                    label: context.l10n.fullName,
+                    hint: context.l10n.enterYourFullName,
+                    error: errors['name'],
+                    onChanged: notifier.setCustomerName,
+                  ),
+                  _TextField(
+                    controller: _phoneController,
+                    label: context.l10n.phoneNumber,
+                    hint: context.l10n.phoneNumberPlaceholder,
+                    keyboardType: TextInputType.phone,
+                    error: errors['phone'],
+                    onChanged: notifier.setCustomerPhone,
+                  ),
+                  _TextField(
+                    controller: _emailController,
+                    label: context.l10n.emailOptional,
+                    hint: context.l10n.emailPlaceholder,
+                    keyboardType: TextInputType.emailAddress,
+                    error: errors['email'],
+                    onChanged: notifier.setCustomerEmail,
+                  ),
+                  if (!isLogged) ...[
+                    CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      activeColor: AppColors.primary,
+                      value: flow.createAccount,
+                      onChanged: (v) => notifier.setCreateAccount(v ?? false),
+                      title: Text(context.l10n.createAccountWithOrder, style: TextStyle(color: Colors.white)),
+                    ),
+                    if (flow.createAccount)
+                      _TextField(
+                        controller: _passwordController,
+                        label: context.l10n.password,
+                        hint: context.l10n.passwordPlaceholder,
+                        obscure: true,
+                        error: errors['password'],
+                        onChanged: notifier.setPassword,
+                      ),
+                  ],
+                  const SizedBox(height: 8),
+                  if (flow.type == OrderType.basra) ...[
+                    _dropdownLabel(context.l10n.branchLabel),
+                    branchesAsync.when(
+                      loading: () => const ShimmerBox(height: 48),
+                      error: (_, _) => Text(context.l10n.unexpectedError, style: TextStyle(color: AppColors.gray2)),
+                      data: (List<Branch> branches) => WebDropdown<int>(
+                        label: null,
+                        placeholder: context.l10n.selectBranch,
+                        value: flow.branchId,
+                        items: [for (final b in branches) DropdownMenuItem(value: b.id, child: Text(b.name))],
+                        onChanged: (id) {
+                          if (id != null) notifier.setBranch(id);
+                        },
+                      ),
+                    ),
+                    _err(errors['branch']),
+                  ] else ...[
+                    _dropdownLabel(context.l10n.governorate),
+                    governoratesAsync.when(
+                      loading: () => const ShimmerBox(height: 48),
+                      error: (_, _) => Text(context.l10n.unexpectedError, style: TextStyle(color: AppColors.gray2)),
+                      data: (List<Governorate> governorates) => WebDropdown<int>(
+                        label: null,
+                        placeholder: context.l10n.selectGovernorate,
+                        value: flow.governorateId,
+                        items: [for (final g in governorates) DropdownMenuItem(value: g.id, child: Text(g.name))],
+                        onChanged: (id) {
+                          if (id != null) notifier.setGovernorate(id);
+                        },
+                      ),
+                    ),
+                    _err(errors['governorate']),
+                    const SizedBox(height: 12),
+                    _TextField(
+                      controller: _addressController,
+                      label: context.l10n.fullAddress,
+                      hint: context.l10n.fullAddressPlaceholder,
+                      maxLines: 3,
+                      error: errors['address'],
+                      onChanged: notifier.setShippingAddress,
+                    ),
+                  ],
+                  const SizedBox(height: 4),
+                  _TextField(
+                    controller: _notesController,
+                    label: context.l10n.notes,
+                    hint: context.l10n.notesPlaceholder,
+                    maxLines: 2,
+                    error: errors['notes'],
+                    onChanged: notifier.setNotes,
+                  ),
+                  const SizedBox(height: 8),
+                  _SectionTitle(context.l10n.paymentMethod),
+                  paymentMethodsAsync.when(
+                    loading: () => const ShimmerBox(height: 56),
+                    error: (_, _) => Text(context.l10n.unexpectedError, style: TextStyle(color: AppColors.gray2)),
+                    data: (methods) => methods.isEmpty
+                        ? Text(context.l10n.noPaymentMethodsAvailable, style: TextStyle(color: AppColors.gray2))
+                        : Column(
+                            children: [
+                              for (final method in methods)
+                                _PaymentMethodCard(
+                                  method: method,
+                                  selected: flow.paymentMethod == method.driver,
+                                  onTap: () => notifier.setPaymentMethod(method.driver),
+                                ),
+                            ],
+                          ),
+                  ),
+                  _err(errors['payment']),
                   const SizedBox(height: 20),
                   if (cart != null)
                     Container(
                       padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusLg),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      decoration: BoxDecoration(
+                        color: AppColors.gray3,
+                        borderRadius: AppRadii.radiusXl,
+                        border: const Border(top: BorderSide(color: AppColors.primary, width: 3)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Order total', style: TextStyle(color: AppColors.gray2)),
-                          Text(
-                            cart.subtotal.toStringAsFixed(2),
-                            style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: 18),
+                          Text(context.l10n.orderSummary,
+                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w800)),
+                          const SizedBox(height: 12),
+                          for (final item in cart.items)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: InkWell(
+                                onTap: () => context.push('/product/${item.product.id}'),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(4),
+                                      child: AppNetworkImage(
+                                        url: item.product.primary_image ??
+                                            (item.product.images.isNotEmpty ? item.product.images.first : null),
+                                        width: 62,
+                                        height: 62,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(item.product.name,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                                    ),
+                                    Text(formatIqd(item.product.effective_price),
+                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          const Divider(color: Color(0x33FFFFFF)),
+                          PriceBreakdown(
+                            subtotal: cart.subtotal,
+                            discount: offer?.discount ?? 0,
+                            discountPercent: offer?.discount_percent,
+                            total: (cart.subtotal - (offer?.discount ?? 0)).clamp(0, double.infinity),
                           ),
                         ],
                       ),
                     ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: flow.isValid ? _placeOrder : null,
+                    onPressed: _placeOrder,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.onPrimary,
-                      disabledBackgroundColor: AppColors.gray3,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusLg),
                     ),
-                    child: const Text('Place order', style: TextStyle(fontWeight: FontWeight.w800)),
+                    child: Text(context.l10n.confirmOrder, style: TextStyle(fontWeight: FontWeight.w800)),
                   ),
+                  const SizedBox(height: 8),
+                  Text(context.l10n.confirmOrderDisclaimer,
+                      textAlign: TextAlign.center, style: TextStyle(color: AppColors.gray2, fontSize: 12)),
                   const SizedBox(height: 24),
                 ],
               ),
       ),
     );
   }
+
+  Widget _dropdownLabel(String text) => Padding(
+        padding: const EdgeInsets.only(bottom: 6),
+        child: Text(text, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+      );
+
+  Widget _err(String? text) => text == null
+      ? const SizedBox.shrink()
+      : Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Text(text, style: const TextStyle(color: AppColors.error, fontSize: 12)),
+        );
 }
 
 class _SectionTitle extends StatelessWidget {
@@ -272,91 +442,51 @@ class _OrderTypeCard extends StatelessWidget {
 }
 
 class _TextField extends StatelessWidget {
-  const _TextField({required this.controller, required this.hint, this.keyboardType, this.maxLines = 1, this.onChanged});
+  const _TextField({
+    required this.controller,
+    required this.label,
+    required this.hint,
+    this.keyboardType,
+    this.maxLines = 1,
+    this.onChanged,
+    this.error,
+    this.obscure = false,
+  });
 
   final TextEditingController controller;
+  final String label;
   final String hint;
   final TextInputType? keyboardType;
   final int maxLines;
   final ValueChanged<String>? onChanged;
+  final String? error;
+  final bool obscure;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      onChanged: onChanged,
-      keyboardType: keyboardType,
-      maxLines: maxLines,
-      style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: const TextStyle(color: AppColors.gray2),
-        filled: true,
-        fillColor: AppColors.gray3,
-        border: OutlineInputBorder(borderRadius: AppRadii.radiusLg, borderSide: BorderSide.none),
-      ),
-    );
-  }
-}
-
-class _GovernorateDropdown extends StatelessWidget {
-  const _GovernorateDropdown({required this.governorates, required this.selectedId, required this.onChanged});
-
-  final List<Governorate> governorates;
-  final int? selectedId;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusLg),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<int>(
-          isExpanded: true,
-          value: selectedId,
-          hint: const Text('Select governorate', style: TextStyle(color: AppColors.gray2)),
-          dropdownColor: AppColors.gray3,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 6),
+        TextField(
+          controller: controller,
+          onChanged: onChanged,
+          keyboardType: keyboardType,
+          maxLines: maxLines,
+          obscureText: obscure,
           style: const TextStyle(color: Colors.white),
-          items: [
-            for (final g in governorates) DropdownMenuItem(value: g.id, child: Text(g.name)),
-          ],
-          onChanged: (value) {
-            if (value != null) onChanged(value);
-          },
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: const TextStyle(color: AppColors.gray2),
+            errorText: error,
+            filled: true,
+            fillColor: AppColors.gray3,
+            border: OutlineInputBorder(borderRadius: AppRadii.radiusLg, borderSide: BorderSide.none),
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class _BranchDropdown extends StatelessWidget {
-  const _BranchDropdown({required this.branches, required this.selectedId, required this.onChanged});
-
-  final List<Branch> branches;
-  final int? selectedId;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusLg),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<int>(
-          isExpanded: true,
-          value: selectedId,
-          hint: const Text('Select branch', style: TextStyle(color: AppColors.gray2)),
-          dropdownColor: AppColors.gray3,
-          style: const TextStyle(color: Colors.white),
-          items: [
-            for (final b in branches) DropdownMenuItem(value: b.id, child: Text(b.name)),
-          ],
-          onChanged: (value) {
-            if (value != null) onChanged(value);
-          },
-        ),
-      ),
+        const SizedBox(height: 12),
+      ],
     );
   }
 }

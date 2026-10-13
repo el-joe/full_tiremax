@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../../core/utils/format.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_exception.dart';
@@ -31,6 +32,20 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
     state = await AsyncValue.guard(() => ref.read(cartRepositoryProvider).fetchCart());
   }
 
+  /// Adds [productId] to the cart (web `useCartContext().addItem`). Returns
+  /// an error message, or null on success.
+  Future<String?> addProduct(int productId, int quantity) async {
+    _appliedOffer = null;
+    try {
+      final cart = await ref.read(cartRepositoryProvider).addItem(productId: productId, quantity: quantity);
+      state = AsyncData(cart);
+      return null;
+    } on DioException catch (e) {
+      final error = e.error;
+      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
+    }
+  }
+
   Future<String?> updateQuantity(int itemId, int quantity) async {
     _appliedOffer = null;
     try {
@@ -39,7 +54,7 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      return error is ApiException ? error.message : 'Something went wrong.';
+      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
     }
   }
 
@@ -51,7 +66,7 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      return error is ApiException ? error.message : 'Something went wrong.';
+      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
     }
   }
 
@@ -63,7 +78,7 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      return error is ApiException ? error.message : 'Something went wrong.';
+      return error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
     }
   }
 
@@ -77,7 +92,7 @@ class CartNotifier extends AsyncNotifier<CustomerCart> {
       return null;
     } on DioException catch (e) {
       final error = e.error;
-      final message = error is ApiException ? error.message : 'Something went wrong.';
+      final message = error is ApiException ? error.message : currentL10n.somethingWentWrongPeriod;
       _applyOfferError = message;
       return message;
     }

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../auth/providers/auth_provider.dart';
 import '../data/favorites_repository.dart';
 import '../models/customer_fav.dart';
 import 'favorites_provider.dart';
@@ -10,6 +11,7 @@ import 'favorites_provider.dart';
 class FavoritesListNotifier extends AsyncNotifier<List<CustomerFav>> {
   @override
   Future<List<CustomerFav>> build() async {
+    ref.watch(isLoggedInProvider);
     final repository = ref.read(favoritesRepositoryProvider);
     final favorites = await repository.fetchFavorites();
     ref.read(favoritesProvider.notifier).syncIds(favorites.map((f) => f.id));

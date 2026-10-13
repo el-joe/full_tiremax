@@ -1,175 +1,290 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_radii.dart';
 
-/// Static copy pulled from `frontend/locale/en.json`'s `privacyPolicy` key.
-class PrivacyPolicyScreen extends StatelessWidget {
-  const PrivacyPolicyScreen({super.key});
+// Copy is verbatim from `frontend/locale/en.json` (`privacyPolicy` and
+// `termsAndConditions`), laid out like the web pages.
 
-  @override
-  Widget build(BuildContext context) {
-    return _LegalScreen(
-      title: 'Privacy Policy',
-      description:
-          'At Tire Max Iraq, we are committed to protecting your privacy and ensuring the security of your personal data. This policy explains how we handle your information with transparency and care.',
-      sections: const [
-        _LegalSection(
-          title: 'Data Collection',
-          paragraphs: [
-            'We collect information that you provide directly to us when using our services, including:',
-            '• Personal Information: Name, email address, and phone number.',
-            '• Vehicle Data: Vehicle type, tire size, and maintenance history.',
-            '• Payment Information: Financial transaction details (processed through encrypted channels).',
-            '• Location Data: To provide roadside assistance services and locate the nearest branch.',
-          ],
-        ),
-        _LegalSection(
-          title: 'How We Use Information',
-          paragraphs: [
-            'We use your data to improve your driving experience, personalize technical offers, and ensure tire safety through regular maintenance reminders. We do not sell your data to third parties for marketing purposes.',
-          ],
-        ),
-        _LegalSection(
-          title: 'Data Protection',
-          paragraphs: [
-            'We implement military-grade encryption protocols (AES-256) to protect our databases. Access to personal information is restricted to employees who need it to serve you.',
-          ],
-        ),
-        _LegalSection(
-          title: 'User Rights',
-          paragraphs: [
-            'You have the full right to access your data, correct it, or request its permanent deletion from our systems. You may also object to the processing of your data at any time.',
-          ],
-        ),
-        _LegalSection(
-          title: 'Have Questions About Privacy?',
-          paragraphs: [
-            'Our legal and technical teams are ready to answer all your questions.',
-          ],
-        ),
+const _privacyEmail = 'privacy@tiremax-iq.com';
+const _privacyPhone = '+964 000 000 0000';
+
+
+Widget _title(String t, String d) => Column(
+      children: [
+        Text(t,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 22)),
+        const SizedBox(height: 12),
+        Text(d, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.gray2, fontSize: 14, height: 1.5)),
+        const SizedBox(height: 32),
       ],
     );
-  }
-}
 
-/// Static copy pulled from `frontend/locale/en.json`'s `termsAndConditions` key.
-class TermsAndConditionsScreen extends StatelessWidget {
-  const TermsAndConditionsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return _LegalScreen(
-      title: 'Terms & Conditions',
-      description:
-          'Welcome to Tire Max Iraq. These Terms and Conditions govern your use of our website and services. By accessing our services, you agree to be bound by these terms in full.',
-      sections: const [
-        _LegalSection(
-          title: 'Introduction',
-          paragraphs: [
-            'This agreement is entered into between you and Tire Max Iraq. These terms apply to all visitors, users, and others who access or use the service.',
-            'Please read these terms carefully before using the website. If you do not agree to any part of these terms, you may not access the service.',
-          ],
-        ),
-        _LegalSection(
-          title: 'User Obligations',
-          paragraphs: [
-            'Information Accuracy: All information provided during registration must be accurate, current, and complete.',
-            'Account Security: You are responsible for maintaining the confidentiality of your password and for all activities that occur under your account.',
-          ],
-        ),
-        _LegalSection(
-          title: 'Purchases & Payments',
-          paragraphs: [
-            'We reserve the right to refuse or cancel your order at any time for certain reasons, including but not limited to product availability, errors in product descriptions or pricing, or errors in your order.',
-            'Payments are made in Iraqi Dinar according to the exchange rate announced by the store.',
-            'We use secure and encrypted payment gateways to protect your financial information.',
-          ],
-        ),
-        _LegalSection(
-          title: 'Warranties',
-          paragraphs: [
-            "All tires sold through Tire Max Iraq come with a manufacturer's warranty against manufacturing defects. Warranty periods and conditions vary by brand and model. The warranty does not cover damage resulting from:",
-            '• Traffic Accidents',
-            '• Misuse',
-            '• Incorrect Installation Outside Our Centers',
-            '• Improper Storage',
-          ],
-        ),
-        _LegalSection(
-          title: 'Limitation of Liability',
-          paragraphs: [
-            'Under no circumstances shall Tire Max Iraq, its directors, employees, or partners be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, use, or goodwill.',
-            'We strive to provide the most accurate information, but we do not guarantee that the website will be free from technical or typographical errors.',
-          ],
-        ),
-      ],
-      footer: 'Last Updated: May 20, 2024',
+Widget _iconTile(IconData icon) => Container(
+      width: 54,
+      height: 54,
+      decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(12)),
+      child: Icon(icon, color: Colors.white, size: 26),
     );
-  }
-}
 
-class _LegalSection {
-  const _LegalSection({required this.title, required this.paragraphs});
-
-  final String title;
-  final List<String> paragraphs;
-}
-
-class _LegalScreen extends StatelessWidget {
-  const _LegalScreen({
-    required this.title,
-    required this.description,
-    required this.sections,
-    this.footer,
-  });
-
-  final String title;
-  final String description;
-  final List<_LegalSection> sections;
-  final String? footer;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+Widget _scaffold(String title, List<Widget> children) => Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(backgroundColor: AppColors.background, title: Text(title)),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+        child: ListView(padding: const EdgeInsets.all(16), children: children),
+      ),
+    );
+
+class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({super.key});
+
+  Widget _card(IconData icon, String heading, String body) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(color: AppColors.gray3, borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 20)),
+            Icon(icon, color: AppColors.primary, size: 32),
+            const SizedBox(height: 12),
+            Text(heading, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
             const SizedBox(height: 8),
-            Text(description, style: const TextStyle(color: AppColors.gray2, fontSize: 13, height: 1.5)),
-            const SizedBox(height: 20),
-            for (final section in sections)
-              Container(
-                margin: const EdgeInsets.only(bottom: 14),
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusXl),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(section.title,
-                        style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 15)),
-                    const SizedBox(height: 8),
-                    for (final paragraph in section.paragraphs)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Text(paragraph, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5)),
-                      ),
-                  ],
-                ),
+            Text(body, style: const TextStyle(color: Colors.white, fontSize: 14, height: 1.5)),
+          ],
+        ),
+      );
+
+  Widget _contactButton(IconData icon, String label, Uri uri) => Expanded(
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => launchUrl(uri),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+            decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+            child: Column(
+              children: [
+                Icon(icon, color: AppColors.primary, size: 28),
+                const SizedBox(height: 6),
+                Text(label,
+                    textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 12)),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return _scaffold(context.l10n.profilePrivacyPolicy, [
+      _title(context.l10n.profilePrivacyPolicy, context.l10n.privacyPolicyDescription),
+      Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(color: AppColors.gray3, borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _iconTile(Icons.storage_outlined),
+            const SizedBox(height: 14),
+            Text(context.l10n.dataCollection,
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 24)),
+            const SizedBox(height: 12),
+            Text(context.l10n.dataCollectionDescription,
+                style: TextStyle(color: AppColors.gray2, fontSize: 15, height: 1.5)),
+            const SizedBox(height: 14),
+            Container(
+              padding: const EdgeInsetsDirectional.only(start: 16),
+              decoration: const BoxDecoration(
+                border: BorderDirectional(start: BorderSide(color: AppColors.primary, width: 4)),
               ),
-            if (footer != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(footer!, style: const TextStyle(color: AppColors.gray2, fontSize: 11)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final item in [context.l10n.privacyPersonalInformation,context.l10n.vehicleData,context.l10n.paymentInformation,context.l10n.locationData,])
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 7),
+                      child: Text(item, style: const TextStyle(color: AppColors.gray2, fontSize: 15, height: 1.4)),
+                    ),
+                ],
               ),
+            ),
           ],
         ),
       ),
-    );
+      const SizedBox(height: 20),
+      ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: SizedBox(
+          height: 180,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset('assets/images/privacyPolicyBannerBg.png', fit: BoxFit.cover),
+              const ColoredBox(color: Color(0x66000000)),
+            ],
+          ),
+        ),
+      ),
+      const SizedBox(height: 20),
+      _card(Icons.insert_chart_outlined, context.l10n.howWeUseInformation, context.l10n.howWeUseInformationDescription),
+      const SizedBox(height: 20),
+      _card(Icons.shield_outlined, context.l10n.dataProtection, context.l10n.dataProtectionDescription),
+      const SizedBox(height: 20),
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(context.l10n.userRights, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 24)),
+            const SizedBox(height: 10),
+            Text(context.l10n.userRightsDescription, style: TextStyle(color: Colors.white, fontSize: 14, height: 1.5)),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              onPressed: () => context.push('/contact'),
+              child: Text(context.l10n.contactUs, style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 20),
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(color: AppColors.gray3, borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          children: [
+            Text(context.l10n.havePrivacyQuestions,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 22)),
+            const SizedBox(height: 8),
+            Text(context.l10n.havePrivacyQuestionsDescription,
+                textAlign: TextAlign.center, style: TextStyle(color: AppColors.gray2)),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                _contactButton(Icons.mail_outline, _privacyEmail, Uri(scheme: 'mailto', path: _privacyEmail)),
+                const SizedBox(width: 12),
+                _contactButton(Icons.phone_outlined, _privacyPhone, Uri(scheme: 'tel', path: _privacyPhone)),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ]);
+  }
+}
+
+class TermsAndConditionsScreen extends StatelessWidget {
+  const TermsAndConditionsScreen({super.key});
+
+  Widget _section(String heading, List<Widget> body, {Color bg = AppColors.gray3, Color fg = Colors.white}) =>
+      Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(heading, style: TextStyle(color: fg, fontWeight: FontWeight.w700, fontSize: 22)),
+            const SizedBox(height: 12),
+            ...body,
+          ],
+        ),
+      );
+
+  Widget _p(String t, {Color color = Colors.white}) => Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Text(t, style: TextStyle(color: color, fontSize: 14, height: 1.5)),
+      );
+
+  Widget _bullet(String t) => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.check_circle_outline, color: AppColors.primary, size: 18),
+            const SizedBox(width: 8),
+            Expanded(child: Text(t, style: const TextStyle(color: AppColors.gray2, fontSize: 14, height: 1.4))),
+          ],
+        ),
+      );
+
+  Widget _obligation(String title, String body) => Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(10)),
+              child: const Icon(Icons.check, color: Colors.white),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16)),
+                  SizedBox(height: 4),
+                  Text(body, style: TextStyle(color: AppColors.gray2, fontSize: 13, height: 1.4)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return _scaffold(context.l10n.profileTerms, [
+      _title(context.l10n.profileTerms, context.l10n.termsAndConditionsDescription),
+      _section('1. ${context.l10n.legalSectionIntroduction}', [
+        _p(context.l10n.introductionParagraph1),
+        _p(context.l10n.introductionParagraph2),
+      ]),
+      _section('2. ${context.l10n.legalSectionUserObligations}', [
+        _obligation(context.l10n.informationAccuracy, context.l10n.informationAccuracyDescription),
+        _obligation(context.l10n.accountSecurity, context.l10n.accountSecurityDescription),
+      ]),
+      _section('3. ${context.l10n.legalSectionPurchasesAndPayments}', [
+        _p(context.l10n.purchasesAndPaymentsParagraph1),
+        _bullet(context.l10n.purchasesAndPaymentsParagraph2),
+        _bullet(context.l10n.purchasesAndPaymentsParagraph3),
+      ]),
+      _section('4. ${context.l10n.legalSectionWarranties}', [
+        _p(context.l10n.warrantiesDescription),
+        for (final item in [context.l10n.trafficAccidents, context.l10n.misuse, context.l10n.incorrectInstallation, context.l10n.improperStorage])
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(8)),
+            child: Text(item, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+          ),
+      ]),
+      _section('5. ${context.l10n.legalSectionLimitationOfLiability}', [
+        _p(context.l10n.limitationOfLiabilityParagraph1),
+        _p(context.l10n.limitationOfLiabilityParagraph2),
+      ], bg: Colors.black),
+      Padding(
+        padding: EdgeInsets.only(top: 4),
+        child: Text(context.l10n.lastUpdated,
+            textAlign: TextAlign.center, style: TextStyle(color: AppColors.gray2)),
+      ),
+    ]);
   }
 }

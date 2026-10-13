@@ -36,8 +36,8 @@ _ReservationBranch _$ReservationBranchFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       address: json['address'] as String,
       phone: json['phone'] as String,
-      latitude: json['latitude'] as num,
-      longitude: json['longitude'] as num,
+      latitude: json['latitude'] as num?,
+      longitude: json['longitude'] as num?,
     );
 
 Map<String, dynamic> _$ReservationBranchToJson(_ReservationBranch instance) =>
@@ -56,7 +56,7 @@ _ReservationService _$ReservationServiceFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       slug: json['slug'] as String,
       name: json['name'] as String,
-      description: json['description'] as String,
+      description: json['description'] as String?,
       duration_minutes: (json['duration_minutes'] as num).toInt(),
       price: json['price'] as num,
     );

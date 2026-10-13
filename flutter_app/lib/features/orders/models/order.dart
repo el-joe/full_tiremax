@@ -23,10 +23,11 @@ abstract class Order with _$Order {
     required num total,
     required String customer_name,
     required String customer_phone,
-    required String customer_email,
-    required String shipping_address,
-    required String tracking_number,
+    String? customer_email,
+    String? shipping_address,
+    String? tracking_number,
     required String placed_at,
+    @Default(false) bool is_guest,
     Governorate? governorate,
     Branch? branch,
     @Default(<OrderItem>[]) List<OrderItem> items,
@@ -46,6 +47,7 @@ abstract class OrderItem with _$OrderItem {
     required int quantity,
     required num unit_price,
     required num total,
+    String? image,
   }) = _OrderItem;
 
   factory OrderItem.fromJson(Map<String, dynamic> json) =>

@@ -7,11 +7,13 @@ import '../../features/addresses/presentation/addresses_screen.dart';
 import '../../features/auth/presentation/auth_sheet.dart';
 import '../../features/auth/providers/auth_provider.dart';
 import '../../features/cart/presentation/cart_screen.dart';
+import '../../features/contact/presentation/contact_screen.dart';
+import '../../features/orders/presentation/track_order_screen.dart';
 import '../../features/checkout/presentation/checkout_screen.dart';
 import '../../features/favorites/presentation/favorites_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
-import '../../features/offers/presentation/offers_screen.dart';
+import '../../features/store/data/store_repository.dart';
 import '../../features/orders/presentation/order_detail_screen.dart';
 import '../../features/orders/presentation/orders_screen.dart';
 import '../../features/product/presentation/product_detail_screen.dart';
@@ -20,6 +22,7 @@ import '../../features/profile/presentation/profile_home_screen.dart';
 import '../../features/profile/presentation/profile_settings_screen.dart';
 import '../../features/reservation/presentation/profile_reservation_detail_screen.dart';
 import '../../features/reservation/presentation/profile_reservations_screen.dart';
+import '../../features/orders/presentation/order_confirmation_screen.dart';
 import '../../features/reservation/presentation/reservation_screen.dart';
 import '../../features/services/presentation/services_screen.dart';
 import '../../features/store/presentation/store_screen.dart';
@@ -32,12 +35,31 @@ const List<String> protectedRoutes = [
   '/profile',
   '/favorites',
   '/notifications',
+  '/checkout',
 ];
 
 bool isProtectedPath(String path) {
   return protectedRoutes.any(
     (route) => path == route || path.startsWith('$route/'),
   );
+}
+
+/// Mirrors the first block of `middleware.ts`: guests opening
+/// `/profile/(orders|bookings|reservation|reservations)[/ref]` land on
+/// `/track-order?type=&reference=&phone=`. Returns null when not applicable.
+String? guestTrackingRedirect(Uri uri) {
+  final m = RegExp(r'^/profile/(orders|bookings|reservations|reservation)(?:/([A-Za-z0-9-]+))?/?$').firstMatch(uri.path);
+  if (m == null) return null;
+  final section = m.group(1)!;
+  final ref = m.group(2);
+  if (ref == null && section == 'orders') return null;
+  final query = <String, String>{
+    'type': section == 'orders' ? 'order' : 'booking',
+    'reference': ?ref,
+  };
+  final phone = uri.queryParameters['phone'];
+  if (phone != null && phone.isNotEmpty) query['phone'] = phone;
+  return Uri(path: '/track-order', queryParameters: query).toString();
 }
 
 final routerRefreshProvider = ChangeNotifierProvider<_RouterRefreshNotifier>(
@@ -63,6 +85,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       final authState = ref.read(authProvider);
       final isLoggedIn = authState.value?.isLoggedIn ?? false;
 
+      // Email links (`/profile/orders/{ref}?phone=`, `/profile/bookings[/ref]`)
+      // send guests to the tracking page instead of the login sheet.
+      if (!isLoggedIn) {
+        final guestLink = guestTrackingRedirect(state.uri);
+        if (guestLink != null) return guestLink;
+      }
+
       if (!isLoggedIn && isProtectedPath(path)) {
         // Mirrors middleware.ts redirecting to `/?authDialog=on`.
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -85,12 +114,27 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/store',
             name: 'store',
-            builder: (context, state) => const StoreScreen(),
+            builder: (context, state) {
+              // Accepts a ProductFilters via `extra` (home hero search) or the
+              // web's `?filter_products_type=` / `?filter_products_badge=`.
+              final q = state.uri.queryParameters;
+              final filters = state.extra is ProductFilters
+                  ? state.extra as ProductFilters
+                  : ProductFilters(
+                      type: q['filter_products_type'],
+                      badge: q['filter_products_badge'],
+                      search: q['filter_products_search'],
+                    );
+              return StoreScreen(initialFilters: filters);
+            },
           ),
           GoRoute(
             path: '/offers',
             name: 'offers',
-            builder: (context, state) => const OffersScreen(),
+            builder: (context, state) => const StoreScreen(
+              isOffers: true,
+              initialFilters: ProductFilters(badge: 'special_offer'),
+            ),
           ),
           GoRoute(
             path: '/product/:id',
@@ -129,8 +173,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/order-confirmation/:id',
             name: 'order-confirmation',
-            builder: (context, state) => _PlaceholderScreen(
-              title: 'Order Confirmation (${state.pathParameters['id']})',
+            builder: (context, state) => OrderConfirmationScreen(
+              orderId: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
             ),
           ),
           GoRoute(
@@ -183,6 +227,20 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
+            path: '/contact',
+            name: 'contact',
+            builder: (context, state) => const ContactScreen(),
+          ),
+          GoRoute(
+            path: '/track-order',
+            name: 'track-order',
+            builder: (context, state) => TrackOrderScreen(
+              reference: state.uri.queryParameters['reference'],
+              phone: state.uri.queryParameters['phone'],
+              type: state.uri.queryParameters['type'],
+            ),
+          ),
+          GoRoute(
             path: '/privacy-policy',
             name: 'privacy-policy',
             builder: (context, state) => const PrivacyPolicyScreen(),
@@ -219,20 +277,6 @@ class AppShell extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: const BottomNavBar(),
-    );
-  }
-}
-
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(child: Text(title)),
     );
   }
 }

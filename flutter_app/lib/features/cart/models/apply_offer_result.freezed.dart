@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ApplyOfferResult {
 
- num get discount; num get subtotal; num get total; AppliedOffer get offer;
+ num get discount; num get subtotal; num get total; num? get discount_percent; AppliedOffer get offer;
 /// Create a copy of ApplyOfferResult
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $ApplyOfferResultCopyWith<ApplyOfferResult> get copyWith => _$ApplyOfferResultCo
 @override
 bool operator ==(Object other) {
   final _this = this as ApplyOfferResult;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApplyOfferResult&&(identical(other.discount, _this.discount) || other.discount == _this.discount)&&(identical(other.subtotal, _this.subtotal) || other.subtotal == _this.subtotal)&&(identical(other.total, _this.total) || other.total == _this.total)&&(identical(other.offer, _this.offer) || other.offer == _this.offer));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApplyOfferResult&&(identical(other.discount, _this.discount) || other.discount == _this.discount)&&(identical(other.subtotal, _this.subtotal) || other.subtotal == _this.subtotal)&&(identical(other.total, _this.total) || other.total == _this.total)&&(identical(other.discount_percent, _this.discount_percent) || other.discount_percent == _this.discount_percent)&&(identical(other.offer, _this.offer) || other.offer == _this.offer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ApplyOfferResult;
-  return Object.hash(runtimeType,_this.discount,_this.subtotal,_this.total,_this.offer);
+  return Object.hash(runtimeType,_this.discount,_this.subtotal,_this.total,_this.discount_percent,_this.offer);
 }
 
 @override
 String toString() {
   final _this = this as ApplyOfferResult;
-  return 'ApplyOfferResult(discount: ${_this.discount}, subtotal: ${_this.subtotal}, total: ${_this.total}, offer: ${_this.offer})';
+  return 'ApplyOfferResult(discount: ${_this.discount}, subtotal: ${_this.subtotal}, total: ${_this.total}, discount_percent: ${_this.discount_percent}, offer: ${_this.offer})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $ApplyOfferResultCopyWith<$Res>  {
   factory $ApplyOfferResultCopyWith(ApplyOfferResult value, $Res Function(ApplyOfferResult) _then) = _$ApplyOfferResultCopyWithImpl;
 @useResult
 $Res call({
- num discount, num subtotal, num total, AppliedOffer offer
+ num discount, num subtotal, num total, num? discount_percent, AppliedOffer offer
 });
 
 
@@ -71,12 +71,13 @@ class _$ApplyOfferResultCopyWithImpl<$Res>
 
 /// Create a copy of ApplyOfferResult
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? discount = null,Object? subtotal = null,Object? total = null,Object? offer = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? discount = null,Object? subtotal = null,Object? total = null,Object? discount_percent = freezed,Object? offer = null,}) {
   return _then(ApplyOfferResult(
 discount: null == discount ? _self.discount : discount // ignore: cast_nullable_to_non_nullable
 as num,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
 as num,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as num,offer: null == offer ? _self.offer : offer // ignore: cast_nullable_to_non_nullable
+as num,discount_percent: freezed == discount_percent ? _self.discount_percent : discount_percent // ignore: cast_nullable_to_non_nullable
+as num?,offer: null == offer ? _self.offer : offer // ignore: cast_nullable_to_non_nullable
 as AppliedOffer,
   ));
 }
@@ -171,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( num discount,  num subtotal,  num total,  AppliedOffer offer)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( num discount,  num subtotal,  num total,  num? discount_percent,  AppliedOffer offer)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ApplyOfferResult() when $default != null:
-return $default(_that.discount,_that.subtotal,_that.total,_that.offer);case _:
+return $default(_that.discount,_that.subtotal,_that.total,_that.discount_percent,_that.offer);case _:
   return orElse();
 
 }
@@ -192,10 +193,10 @@ return $default(_that.discount,_that.subtotal,_that.total,_that.offer);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( num discount,  num subtotal,  num total,  AppliedOffer offer)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( num discount,  num subtotal,  num total,  num? discount_percent,  AppliedOffer offer)  $default,) {final _that = this;
 switch (_that) {
 case _ApplyOfferResult():
-return $default(_that.discount,_that.subtotal,_that.total,_that.offer);case _:
+return $default(_that.discount,_that.subtotal,_that.total,_that.discount_percent,_that.offer);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +213,10 @@ return $default(_that.discount,_that.subtotal,_that.total,_that.offer);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( num discount,  num subtotal,  num total,  AppliedOffer offer)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( num discount,  num subtotal,  num total,  num? discount_percent,  AppliedOffer offer)?  $default,) {final _that = this;
 switch (_that) {
 case _ApplyOfferResult() when $default != null:
-return $default(_that.discount,_that.subtotal,_that.total,_that.offer);case _:
+return $default(_that.discount,_that.subtotal,_that.total,_that.discount_percent,_that.offer);case _:
   return null;
 
 }
@@ -227,12 +228,13 @@ return $default(_that.discount,_that.subtotal,_that.total,_that.offer);case _:
 @JsonSerializable()
 
 class _ApplyOfferResult implements ApplyOfferResult {
-  const _ApplyOfferResult({required this.discount, required this.subtotal, required this.total, required this.offer});
+  const _ApplyOfferResult({required this.discount, required this.subtotal, required this.total, this.discount_percent, required this.offer});
   factory _ApplyOfferResult.fromJson(Map<String, dynamic> json) => _$ApplyOfferResultFromJson(json);
 
 @override final  num discount;
 @override final  num subtotal;
 @override final  num total;
+@override final  num? discount_percent;
 @override final  AppliedOffer offer;
 
 /// Create a copy of ApplyOfferResult
@@ -248,18 +250,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApplyOfferResult&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.total, total) || other.total == total)&&(identical(other.offer, offer) || other.offer == offer));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApplyOfferResult&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.total, total) || other.total == total)&&(identical(other.discount_percent, discount_percent) || other.discount_percent == discount_percent)&&(identical(other.offer, offer) || other.offer == offer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,discount,subtotal,total,offer);
+    return Object.hash(runtimeType,discount,subtotal,total,discount_percent,offer);
 }
 
 @override
 String toString() {
-    return 'ApplyOfferResult(discount: $discount, subtotal: $subtotal, total: $total, offer: $offer)';
+    return 'ApplyOfferResult(discount: $discount, subtotal: $subtotal, total: $total, discount_percent: $discount_percent, offer: $offer)';
 }
 
 
@@ -270,7 +272,7 @@ abstract mixin class _$ApplyOfferResultCopyWith<$Res> implements $ApplyOfferResu
   factory _$ApplyOfferResultCopyWith(_ApplyOfferResult value, $Res Function(_ApplyOfferResult) _then) = __$ApplyOfferResultCopyWithImpl;
 @override @useResult
 $Res call({
- num discount, num subtotal, num total, AppliedOffer offer
+ num discount, num subtotal, num total, num? discount_percent, AppliedOffer offer
 });
 
 
@@ -287,12 +289,13 @@ class __$ApplyOfferResultCopyWithImpl<$Res>
 
 /// Create a copy of ApplyOfferResult
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? discount = null,Object? subtotal = null,Object? total = null,Object? offer = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? discount = null,Object? subtotal = null,Object? total = null,Object? discount_percent = freezed,Object? offer = null,}) {
   return _then(_ApplyOfferResult(
 discount: null == discount ? _self.discount : discount // ignore: cast_nullable_to_non_nullable
 as num,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
 as num,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as num,offer: null == offer ? _self.offer : offer // ignore: cast_nullable_to_non_nullable
+as num,discount_percent: freezed == discount_percent ? _self.discount_percent : discount_percent // ignore: cast_nullable_to_non_nullable
+as num?,offer: null == offer ? _self.offer : offer // ignore: cast_nullable_to_non_nullable
 as AppliedOffer,
   ));
 }

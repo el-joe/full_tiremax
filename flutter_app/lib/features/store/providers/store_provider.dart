@@ -9,6 +9,7 @@ class StoreListState {
     this.filters = const ProductFilters(),
     this.page = 1,
     this.lastPage = 1,
+    this.total = 0,
     this.isLoadingMore = false,
   });
 
@@ -16,6 +17,7 @@ class StoreListState {
   final ProductFilters filters;
   final int page;
   final int lastPage;
+  final int total;
   final bool isLoadingMore;
 
   bool get hasMore => page < lastPage;
@@ -25,6 +27,7 @@ class StoreListState {
     ProductFilters? filters,
     int? page,
     int? lastPage,
+    int? total,
     bool? isLoadingMore,
   }) {
     return StoreListState(
@@ -32,6 +35,7 @@ class StoreListState {
       filters: filters ?? this.filters,
       page: page ?? this.page,
       lastPage: lastPage ?? this.lastPage,
+      total: total ?? this.total,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
@@ -46,6 +50,17 @@ class StoreListNotifier extends AsyncNotifier<StoreListState> {
     return _loadPage(const ProductFilters(), 1);
   }
 
+  /// Replaces the filters with [filters] (used when a screen opens with a
+  /// preset such as the web's `?filter_products_type=tire`).
+  Future<void> reset(ProductFilters filters) => applyFilters(filters);
+
+  /// Numbered pagination (web `Pagination` -> `paginate_page`).
+  Future<void> goToPage(int page) async {
+    final current = state.value;
+    if (current == null || page == current.page || page < 1 || page > current.lastPage) return;
+    state = await AsyncValue.guard(() => _loadPage(current.filters, page));
+  }
+
   Future<StoreListState> _loadPage(ProductFilters filters, int page) async {
     final repository = ref.read(storeRepositoryProvider);
     final result = await repository.fetchProducts(page: page, filters: filters);
@@ -54,6 +69,7 @@ class StoreListNotifier extends AsyncNotifier<StoreListState> {
       filters: filters,
       page: result.pagination.currentPage,
       lastPage: result.pagination.lastPage,
+      total: result.pagination.total,
     );
   }
 

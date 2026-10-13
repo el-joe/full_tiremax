@@ -1,8 +1,10 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/format.dart';
 import '../../../core/theme/app_radii.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../../core/models/branch.dart';
@@ -11,7 +13,8 @@ import '../data/reservation_repository.dart';
 import '../providers/reservation_flow_provider.dart';
 import 'booking_confirmation_screen.dart';
 
-const _stepLabels = ['Service', 'Branch', 'Date & Time', 'Confirm'];
+List<String> _stepLabels(BuildContext context) => [context.l10n.chooseService, context.l10n.chooseBranch, context.l10n.chooseAppointment, context.l10n.confirmBooking];
+List<String> _stepNums(BuildContext context) => [context.l10n.step1, context.l10n.step2, context.l10n.step3, context.l10n.step4];
 const _stepIcons = [Icons.build_outlined, Icons.location_on_outlined, Icons.calendar_today_outlined, Icons.check_circle_outline];
 
 /// The multi-step "Book Reservation" flow: choose service -> choose branch
@@ -21,7 +24,7 @@ const _stepIcons = [Icons.build_outlined, Icons.location_on_outlined, Icons.cale
 ///
 /// Accepts optional deep-link query params `service_id` / `branch_id`
 /// (mirroring `services/reservation?service_id=X&branch_id=Y`) to pre-fill
-/// and skip ahead, e.g. from the Services screen's "Book now" CTA.
+/// and skip ahead, e.g. from the Services screen's context.l10n.headerBookNow CTA.
 class ReservationScreen extends ConsumerStatefulWidget {
   const ReservationScreen({super.key, this.serviceId, this.branchId});
 
@@ -66,7 +69,7 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(backgroundColor: AppColors.background, title: const Text('Book Reservation')),
+      appBar: AppBar(backgroundColor: AppColors.background, title: Text(context.l10n.bookServiceAppointment)),
       body: SafeArea(
         child: Column(
           children: [
@@ -86,6 +89,9 @@ class _ReservationScreenState extends ConsumerState<ReservationScreen> {
   }
 }
 
+/// Web `StepIndicator`: rounded-square icon tile (complete = green, active =
+/// primary with glow, incomplete = white with gray border), step name, "Step N"
+/// and a 4px separator bar between items.
 class _StepperHeader extends StatelessWidget {
   const _StepperHeader({required this.currentStep});
 
@@ -94,51 +100,82 @@ class _StepperHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsetsDirectional.fromSTEB(12, 16, 12, 8),
       child: Row(
-        children: List.generate(_stepLabels.length, (index) {
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(_stepLabels(context).length, (index) {
           final isDone = index < currentStep;
           final isActive = index == currentStep;
-          final color = isDone
-              ? AppColors.green
+          final Color bg = isDone
+              ? const Color(0xFF00C950)
               : isActive
                   ? AppColors.primary
-                  : AppColors.gray3;
-          final iconColor = isActive ? AppColors.onPrimary : Colors.white;
+                  : Colors.white;
+          final Color fg = isDone
+              ? Colors.white
+              : isActive
+                  ? Colors.white
+                  : const Color(0xFF99A1AF);
+          final tile = Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: BorderRadius.circular(12),
+              border: !isDone && !isActive ? Border.all(color: const Color(0xFFE5E7EB), width: 2) : null,
+              boxShadow: [
+                BoxShadow(
+                  color: isActive ? const Color(0x80FDB604) : const Color(0x1A000000),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Icon(isDone ? Icons.check_circle_outline : _stepIcons[index], color: fg, size: 22),
+          );
           return Expanded(
             child: Column(
               children: [
                 Row(
                   children: [
-                    if (index != 0)
-                      Expanded(
-                        child: Container(height: 3, color: index <= currentStep ? AppColors.primary : AppColors.gray3),
-                      ),
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-                      alignment: Alignment.center,
-                      child: isDone
-                          ? const Icon(Icons.check, color: Colors.white, size: 18)
-                          : Icon(_stepIcons[index], color: iconColor, size: 18),
+                    Expanded(
+                      child: index == 0
+                          ? const SizedBox.shrink()
+                          : Container(
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: index <= currentStep ? AppColors.primary : const Color(0xFFE5E7EB),
+                                borderRadius: AppRadii.radiusFull,
+                              ),
+                            ),
                     ),
-                    if (index != _stepLabels.length - 1)
-                      Expanded(
-                        child: Container(height: 3, color: index < currentStep ? AppColors.primary : AppColors.gray3),
-                      ),
+                    tile,
+                    Expanded(
+                      child: index == _stepLabels(context).length - 1
+                          ? const SizedBox.shrink()
+                          : Container(
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: index < currentStep ? AppColors.primary : const Color(0xFFE5E7EB),
+                                borderRadius: AppRadii.radiusFull,
+                              ),
+                            ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  _stepLabels[index],
-                  style: TextStyle(
-                    color: isActive ? Colors.white : AppColors.gray2,
-                    fontSize: 11,
-                    fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
-                  ),
+                  _stepLabels(context)[index],
+                  maxLines: 2,
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: isActive || isDone ? Colors.white : const Color(0xFF6A7282),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
+                Text(_stepNums(context)[index], style: const TextStyle(color: Color(0xFF99A1AF), fontSize: 9)),
               ],
             ),
           );
@@ -158,18 +195,34 @@ class _ChooseServiceStep extends ConsumerWidget {
     return servicesAsync.when(
       data: (services) {
         if (services.isEmpty) {
-          return const Center(child: Text('No services available.', style: TextStyle(color: AppColors.gray2)));
+          return Center(child: Text(context.l10n.noServicesAvailable, style: TextStyle(color: AppColors.gray2)));
         }
         return ListView.separated(
           padding: const EdgeInsets.all(16),
-          itemCount: services.length,
+          itemCount: services.length + 1,
           separatorBuilder: (_, _) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
-            final service = services[index];
+            if (index == 0) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(context.l10n.chooseRequiredService,
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 20)),
+                  SizedBox(height: 4),
+                  Text(context.l10n.chooseRequiredServiceDescription,
+                      style: TextStyle(color: AppColors.gray2, fontSize: 13)),
+                ],
+              );
+            }
+            final service = services[index - 1];
             return _OptionCard(
               title: service.name,
               subtitle: service.description,
-              trailing: '${service.price} EGP  •  ${service.duration_minutes} min',
+              meta: [
+                (context.l10n.duration, '${service.duration_minutes} ${context.l10n.minute}'),
+                (context.l10n.cost, service.price < 1 ? context.l10n.free : formatIqd(service.price)),
+              ],
+              cta: context.l10n.chooseThisService,
               onTap: () => ref.read(reservationFlowProvider.notifier).setService(service),
             );
           },
@@ -191,22 +244,25 @@ class _ChooseBranchStep extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _BackHeader(onBack: () => ref.read(reservationFlowProvider.notifier).goBack()),
+        _BackHeader(
+          onBack: () => ref.read(reservationFlowProvider.notifier).goBack(),
+          title: context.l10n.chooseNearestBranch,
+          subtitle: '${context.l10n.selectedService}: ${ref.watch(reservationFlowProvider).service?.name ?? ''}',
+        ),
         Expanded(
           child: branchesAsync.when(
             data: (branches) {
               if (branches.isEmpty) {
-                return const Center(child: Text('No branches available.', style: TextStyle(color: AppColors.gray2)));
+                return Center(child: Text(context.l10n.noBranchesAvailable, style: TextStyle(color: AppColors.gray2)));
               }
               return ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
                 itemCount: branches.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final branch = branches[index];
-                  return _OptionCard(
-                    title: branch.name,
-                    subtitle: '${branch.address}  •  ${branch.phone}',
+                  return _BranchCard(
+                    branch: branch,
                     onTap: () => ref.read(reservationFlowProvider.notifier).setBranch(branch),
                   );
                 },
@@ -234,14 +290,18 @@ class _ChooseAppointmentStep extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _BackHeader(onBack: notifier.goBack, subtitle: 'Branch: ${flow.branch?.name ?? ''}'),
+        _BackHeader(
+          onBack: notifier.goBack,
+          title: context.l10n.chooseDateAndTime,
+          subtitle: '${context.l10n.selectedBranch}: ${flow.branch?.name ?? ''}',
+        ),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Choose date', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+                Text(context.l10n.chooseDate, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
                 const SizedBox(height: 10),
                 InkWell(
                   borderRadius: AppRadii.radiusLg,
@@ -278,7 +338,7 @@ class _ChooseAppointmentStep extends ConsumerWidget {
                         const Icon(Icons.calendar_today_outlined, color: AppColors.primary, size: 18),
                         const SizedBox(width: 10),
                         Text(
-                          flow.date ?? 'Select a date',
+                          flow.date ?? context.l10n.selectADate,
                           style: TextStyle(color: flow.date != null ? Colors.white : AppColors.gray2),
                         ),
                       ],
@@ -286,17 +346,17 @@ class _ChooseAppointmentStep extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text('Choose time', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+                Text(context.l10n.chooseTime, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
                 const SizedBox(height: 10),
                 if (flow.date == null)
-                  const Text('Choose a date first.', style: TextStyle(color: AppColors.gray2))
+                  Text(context.l10n.chooseDateFirst, style: TextStyle(color: AppColors.gray2))
                 else if (flow.isSlotsLoading)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 24),
                     child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
                   )
                 else if (flow.slots.isEmpty)
-                  const Text('No time slots available for this date.', style: TextStyle(color: AppColors.gray2))
+                  Text(context.l10n.noTimeAvailable, style: TextStyle(color: AppColors.gray2))
                 else
                   Wrap(
                     spacing: 10,
@@ -322,7 +382,7 @@ class _ChooseAppointmentStep extends ConsumerWidget {
                       shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusLg),
                     ),
                     onPressed: (flow.date != null && flow.time != null) ? notifier.goNext : null,
-                    child: const Text('Continue to confirmation', style: TextStyle(fontWeight: FontWeight.w800)),
+                    child: Text(context.l10n.continueToConfirmation, style: TextStyle(fontWeight: FontWeight.w800)),
                   ),
                 ),
               ],
@@ -383,7 +443,7 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
-  String? _contactError;
+  Map<String, String> _errors = {};
 
   @override
   void initState() {
@@ -392,20 +452,41 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
     if (customer != null) {
       _nameController.text = customer.name;
       _phoneController.text = customer.phone;
-      _emailController.text = customer.email;
+      _emailController.text = customer.email ?? '';
     }
   }
 
+  /// Mirrors `ReservationProvider.createBooking` validation.
   Future<void> _confirm() async {
-    if (_nameController.text.trim().length < 2 || _phoneController.text.trim().isEmpty) {
-      setState(() => _contactError = 'Please enter your name and phone number.');
+    final flow = ref.read(reservationFlowProvider);
+    final isLogged = ref.read(isLoggedInProvider);
+    final errs = <String, String>{};
+    final scheduled = DateTime.tryParse('${flow.date}T${flow.time}');
+    if (scheduled == null || !scheduled.isAfter(DateTime.now())) errs['date'] = context.l10n.bookingDateInPast;
+    if (!isLogged) {
+      final phone = _phoneController.text.trim();
+      final email = _emailController.text.trim();
+      if (_nameController.text.trim().isEmpty) errs['name'] = context.l10n.fullNameRequired;
+      if (phone.isEmpty) {
+        errs['phone'] = context.l10n.phoneRequired;
+      } else if (!isValidIraqiPhone(phone)) {
+        errs['phone'] = context.l10n.phoneInvalid;
+      }
+      if (email.isNotEmpty && !RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email)) {
+        errs['email'] = context.l10n.invalidEmail;
+      }
+    }
+    setState(() => _errors = errs);
+    if (errs.isNotEmpty) {
+      if (errs['date'] != null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errs['date']!)));
+      }
       return;
     }
-    setState(() => _contactError = null);
     final result = await ref.read(reservationFlowProvider.notifier).createBooking(
-          customerName: _nameController.text,
-          customerPhone: _phoneController.text,
-          customerEmail: _emailController.text,
+          customerName: isLogged ? null : _nameController.text,
+          customerPhone: isLogged ? null : _phoneController.text,
+          customerEmail: isLogged ? null : _emailController.text,
         );
     if (result != null && mounted) {
       Navigator.of(context).push(
@@ -414,7 +495,7 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
     }
   }
 
-  Widget _contactField(TextEditingController c, String hint, [TextInputType? type]) {
+  Widget _contactField(TextEditingController c, String hint, String? error, [TextInputType? type]) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: TextField(
@@ -423,6 +504,7 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: hint,
+          errorText: error,
           hintStyle: const TextStyle(color: AppColors.gray2),
           filled: true,
           fillColor: AppColors.gray3,
@@ -449,10 +531,10 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _BackHeader(onBack: notifier.goBack, subtitle: 'Review your booking details'),
+        _BackHeader(onBack: notifier.goBack, title: context.l10n.bookingConfirmation, subtitle: context.l10n.reviewBookingDetails),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -463,19 +545,19 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Booking summary', style: TextStyle(color: AppColors.onPrimary, fontWeight: FontWeight.w800, fontSize: 16)),
+                      Text(context.l10n.bookingSummary, style: TextStyle(color: AppColors.onPrimary, fontWeight: FontWeight.w800, fontSize: 16)),
                       const SizedBox(height: 16),
-                      _summaryRow('Service', flow.service?.name ?? '-'),
-                      _summaryRow('Branch', flow.branch?.name ?? '-'),
-                      _summaryRow('Date', flow.date ?? '-'),
-                      _summaryRow('Time', flow.time ?? '-'),
+                      _summaryRow(context.l10n.service, flow.service?.name ?? '-'),
+                      _summaryRow(context.l10n.branch, flow.branch?.name ?? '-'),
+                      _summaryRow(context.l10n.date, flow.date ?? '-'),
+                      _summaryRow(context.l10n.time, flow.time ?? '-'),
                       const Divider(color: AppColors.onPrimary, height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Estimated cost', style: TextStyle(color: AppColors.onPrimary)),
+                          Text(context.l10n.estimatedCost, style: TextStyle(color: AppColors.onPrimary)),
                           Text(
-                            '${flow.service?.price ?? 0} EGP',
+                            (flow.service?.price ?? 0) > 0 ? formatIqd(flow.service!.price) : context.l10n.free,
                             style: const TextStyle(color: AppColors.onPrimary, fontWeight: FontWeight.w800, fontSize: 18),
                           ),
                         ],
@@ -483,19 +565,20 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 16),
+                _BranchInfoCard(branch: flow.branch),
+                const SizedBox(height: 16),
+                const _NotesCard(),
                 const SizedBox(height: 20),
-                const Text('Contact details', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                const SizedBox(height: 8),
-                _contactField(_nameController, 'Full name'),
-                _contactField(_phoneController, 'Phone number', TextInputType.phone),
-                _contactField(_emailController, 'Email (optional)', TextInputType.emailAddress),
-                if (_contactError != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(_contactError!, style: const TextStyle(color: AppColors.error)),
-                  ),
+                if (!ref.watch(isLoggedInProvider)) ...[
+                  Text(context.l10n.contactInformation, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 8),
+                  _contactField(_nameController, context.l10n.fullName, _errors['name']),
+                  _contactField(_phoneController, context.l10n.phoneNumber, _errors['phone'], TextInputType.phone),
+                  _contactField(_emailController, context.l10n.emailOptional, _errors['email'], TextInputType.emailAddress),
+                ],
                 const SizedBox(height: 10),
-                const Text('Notes (optional)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                Text(context.l10n.notes, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 8),
                 TextField(
                   controller: _notesController,
@@ -503,7 +586,7 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
                   maxLines: 3,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'e.g. Please check wheel balance too',
+                    hintText: context.l10n.bookingNotesHint,
                     hintStyle: const TextStyle(color: AppColors.gray2),
                     filled: true,
                     fillColor: AppColors.gray3,
@@ -533,7 +616,7 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
                             width: 20,
                             child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.onPrimary),
                           )
-                        : const Text('Confirm Booking', style: TextStyle(fontWeight: FontWeight.w800)),
+                        : Text(context.l10n.confirmBookingButton, style: TextStyle(fontWeight: FontWeight.w800)),
                   ),
                 ),
               ],
@@ -565,34 +648,51 @@ class _ConfirmBookingStepState extends ConsumerState<_ConfirmBookingStep> {
 }
 
 class _BackHeader extends StatelessWidget {
-  const _BackHeader({required this.onBack, this.subtitle});
+  const _BackHeader({required this.onBack, this.title, this.subtitle});
 
   final VoidCallback onBack;
+  final String? title;
   final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 16, 8),
+      padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 16, 8),
       child: Row(
         children: [
-          IconButton(onPressed: onBack, icon: const Icon(Icons.arrow_back, color: Colors.white)),
-          if (subtitle != null)
-            Expanded(
-              child: Text(subtitle!, style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
+          IconButton(
+            onPressed: onBack,
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
             ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title != null)
+                  Text(title!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
+                if (subtitle != null)
+                  Text(subtitle!, style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
+/// Web service card: name, description, duration + cost and a
+/// context.l10n.chooseThisService action.
 class _OptionCard extends StatelessWidget {
-  const _OptionCard({required this.title, required this.subtitle, this.trailing, required this.onTap});
+  const _OptionCard({required this.title, required this.subtitle, this.meta = const [], required this.cta, required this.onTap});
 
   final String title;
   final String? subtitle;
-  final String? trailing;
+  final List<(String, String)> meta;
+  final String cta;
   final VoidCallback onTap;
 
   @override
@@ -602,28 +702,197 @@ class _OptionCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: AppColors.gray3, borderRadius: AppRadii.radiusXl),
-        child: Row(
+        decoration: BoxDecoration(
+          color: AppColors.gray3,
+          borderRadius: AppRadii.radiusXl,
+          border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
+            Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16)),
+            if (subtitle != null && subtitle!.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Text(subtitle!, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
+            ],
+            const SizedBox(height: 12),
+            for (final m in meta)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(m.$1, style: const TextStyle(color: AppColors.gray2, fontSize: 13)),
+                    Text(m.$2, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13)),
+                  ],
+                ),
+              ),
+            const Divider(color: Color(0x33FFFFFF), height: 20),
+            Row(
+              children: [
+                Text(cta, style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700)),
+                const SizedBox(width: 4),
+                Icon(
+                  Icons.chevron_right,
+                  color: AppColors.primary,
+                  size: 20,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget _iconLine(IconData icon, String? text) => Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: AppColors.primary, size: 18),
+          const SizedBox(width: 10),
+          Expanded(child: Text(text ?? '', style: const TextStyle(color: AppColors.gray2, fontSize: 13))),
+        ],
+      ),
+    );
+
+String? _branchHours(Branch? b) {
+  final sch = b?.schedules ?? const [];
+  if (sch.isEmpty) return null;
+  return formatTimeRange(sch.first.opens_at, sch.first.closes_at);
+}
+
+/// Web `BranchCard` (ChooseBranch): name, 4.8 rating, address, phone, hours
+/// and a context.l10n.chooseThisBranch action.
+class _BranchCard extends StatelessWidget {
+  const _BranchCard({required this.branch, required this.onTap});
+
+  final Branch branch;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: AppRadii.radiusXl,
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.gray3,
+          borderRadius: AppRadii.radiusXl,
+          border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(branch.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16)),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Icon(Icons.star, color: AppColors.primary, size: 16),
+                SizedBox(width: 4),
+                Text('4.8', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                SizedBox(width: 4),
+                Text('(288${context.l10n.rate})', style: TextStyle(color: AppColors.gray2, fontSize: 13)),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _iconLine(Icons.location_on_outlined, branch.address),
+            _iconLine(Icons.phone_outlined, branch.phone),
+            _iconLine(Icons.access_time, _branchHours(branch)),
+            const Divider(color: Color(0x33FFFFFF), height: 20),
+            Row(
+              children: [
+                Text(context.l10n.chooseThisBranch, style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700)),
+                const SizedBox(width: 4),
+                Icon(
+                  Icons.chevron_right,
+                  color: AppColors.primary,
+                  size: 20,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Web `BranchInfoCard` (ConfirmBooking).
+class _BranchInfoCard extends StatelessWidget {
+  const _BranchInfoCard({required this.branch});
+
+  final Branch? branch;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.gray3,
+        borderRadius: AppRadii.radiusXl,
+        border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(context.l10n.branchInformation, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
+          const SizedBox(height: 12),
+          _iconLine(Icons.location_on_outlined, branch?.address),
+          _iconLine(Icons.phone_outlined, branch?.phone),
+          _iconLine(Icons.access_time, _branchHours(branch)),
+          const Divider(color: Color(0x33FFFFFF), height: 20),
+          Row(
+            children: [
+              Icon(Icons.star, color: AppColors.primary, size: 18),
+              SizedBox(width: 8),
+              Text('4.8', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+              SizedBox(width: 6),
+              Text('(288${context.l10n.rate})', style: TextStyle(color: AppColors.gray2)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Web `NotesCard`: blue info box with the three important notes.
+class _NotesCard extends StatelessWidget {
+  const _NotesCard();
+
+  @override
+  Widget build(BuildContext context) {
+    const blue = Color(0xFF1447E6);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFF6FF),
+        borderRadius: AppRadii.radiusXl,
+        border: Border.all(color: Color(0xFFBEDBFF)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(context.l10n.importantNotes, style: TextStyle(color: blue, fontWeight: FontWeight.w800, fontSize: 18)),
+          SizedBox(height: 8),
+          for (final n in [context.l10n.arriveEarlyNote, context.l10n.lateArrivalNote, context.l10n.modifyBookingNote])
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
-                  if (subtitle != null && subtitle!.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Text(subtitle!, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.gray2, fontSize: 12)),
-                  ],
-                  if (trailing != null) ...[
-                    const SizedBox(height: 8),
-                    Text(trailing!, style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 12)),
-                  ],
+                  const Text('•  ', style: TextStyle(color: blue)),
+                  Expanded(child: Text(n, style: const TextStyle(color: blue, fontSize: 13))),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.gray2),
-          ],
-        ),
+        ],
       ),
     );
   }

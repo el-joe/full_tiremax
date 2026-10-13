@@ -41,10 +41,9 @@ class CartRepository {
     return CustomerCart.fromJson(body['data'] as Map<String, dynamic>);
   }
 
-  Future<CustomerCart> clearCart() async {
-    final response = await _dio.delete('cart');
-    final body = response.data as Map<String, dynamic>;
-    return CustomerCart.fromJson(body['data'] as Map<String, dynamic>);
+  /// `DELETE cart` replies with `data: null`, so there is no cart to parse.
+  Future<void> clearCart() async {
+    await _dio.delete('cart');
   }
 
   Future<ApplyOfferResult> applyOffer(String code) async {

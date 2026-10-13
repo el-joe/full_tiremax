@@ -1,17 +1,18 @@
+import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../core/network/api_exception.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/format.dart';
 import '../../../core/theme/app_radii.dart';
-import '../../orders/presentation/orders_screen.dart' show StatusChip;
+import '../../../shared/widgets/status_badge.dart';
 import '../data/reservation_repository.dart';
 import '../models/reservation.dart';
 
-/// GET /bookings/{id} detail. "Cancel" -> POST /bookings/{id}/cancel with a
-/// confirm dialog. "Reschedule" -> a warning dialog explaining that
+/// GET /bookings/{id} detail. context.l10n.commonCancel -> POST /bookings/{id}/cancel with a
+/// confirm dialog. context.l10n.reschedule -> a warning dialog explaining that
 /// rescheduling cancels the current booking, then on confirm calls
 /// POST /bookings/{id}/cancel and navigates to `/reservation?service_id=X&
 /// branch_id=Y` pre-filled with the same service/branch so the user rebooks
@@ -28,7 +29,7 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(backgroundColor: AppColors.background, title: const Text('Booking Detail')),
+      appBar: AppBar(backgroundColor: AppColors.background, title: Text(context.l10n.bookingDetail)),
       body: SafeArea(
         child: bookingAsync.when(
           loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
@@ -44,7 +45,7 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
                       child: Text('#${reservation.reference}',
                           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
                     ),
-                    StatusChip(status: reservation.status),
+                    StatusBadge(status: reservation.status, kind: StatusBadgeKind.bookingDetail),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -55,16 +56,16 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _row('Service', reservation.service.name),
-                      _row('Branch', reservation.branch.name),
-                      _row('Address', reservation.branch.address),
-                      _row('Phone', reservation.branch.phone),
-                      _row('Date & Time',
-                          DateFormat('MMM d, yyyy • h:mm a').format(reservation.scheduled_at.toLocal())),
-                      _row('Duration', '${reservation.duration_minutes} min'),
-                      _row('Price', '${reservation.service.price} EGP'),
+                      _row(context.l10n.service, reservation.service.name),
+                      _row(context.l10n.branchLabel, reservation.branch.name),
+                      _row(context.l10n.address, reservation.branch.address),
+                      _row(context.l10n.phoneLabel, reservation.branch.phone),
+                      _row(context.l10n.dateAndTime,
+                          formatDateLocalized('MMM d, yyyy • h:mm a', reservation.scheduled_at.toLocal())),
+                      _row(context.l10n.duration, context.l10n.minutesCount(reservation.duration_minutes)),
+                      _row(context.l10n.price, formatIqd(reservation.service.price)),
                       if (reservation.customer_notes != null && reservation.customer_notes!.isNotEmpty)
-                        _row('Notes', reservation.customer_notes!),
+                        _row(context.l10n.notes, reservation.customer_notes!),
                     ],
                   ),
                 ),
@@ -79,8 +80,8 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusLg),
                       ),
-                      onPressed: () => _confirmReschedule(context, ref, reservation),
-                      child: const Text('Reschedule', style: TextStyle(fontWeight: FontWeight.w800)),
+                      onPressed: () => confirmReschedule(context, ref, reservation),
+                      child: Text(context.l10n.reschedule, style: TextStyle(fontWeight: FontWeight.w800)),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -93,8 +94,8 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: AppRadii.radiusLg),
                       ),
-                      onPressed: () => _confirmCancel(context, ref, reservation.id),
-                      child: const Text('Cancel Booking', style: TextStyle(fontWeight: FontWeight.w700)),
+                      onPressed: () => confirmCancel(context, ref, reservation.id),
+                      child: Text(context.l10n.cancelBooking, style: TextStyle(fontWeight: FontWeight.w700)),
                     ),
                   ),
                 ],
@@ -124,18 +125,18 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
     );
   }
 
-  void _confirmCancel(BuildContext context, WidgetRef ref, int id) {
+  static void confirmCancel(BuildContext context, WidgetRef ref, int id) {
     showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: AppColors.gray3,
-        title: const Text('Cancel Booking', style: TextStyle(color: Colors.white)),
-        content: const Text(
-          "You won't be able to restore the booking once it has been canceled.",
+        title: Text(context.l10n.cancelBooking, style: TextStyle(color: Colors.white)),
+        content: Text(
+          context.l10n.cancelBookingWarning,
           style: TextStyle(color: AppColors.gray2),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Keep Booking')),
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(context.l10n.keepBooking)),
           TextButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
@@ -145,30 +146,30 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
                 ref.invalidate(bookingsListProvider);
               } catch (e) {
                 if (context.mounted) {
-                  final message = e is ApiException ? e.message : 'Could not cancel the booking.';
+                  final message = e is ApiException ? e.message : context.l10n.couldNotCancelBooking;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
                 }
               }
             },
-            child: const Text('Cancel Booking', style: TextStyle(color: AppColors.red)),
+            child: Text(context.l10n.cancelBooking, style: TextStyle(color: AppColors.red)),
           ),
         ],
       ),
     );
   }
 
-  void _confirmReschedule(BuildContext context, WidgetRef ref, Reservation reservation) {
+  static void confirmReschedule(BuildContext context, WidgetRef ref, Reservation reservation) {
     showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: AppColors.gray3,
-        title: const Text('Reschedule Booking', style: TextStyle(color: Colors.white)),
-        content: const Text(
-          'Rescheduling will cancel your current booking. Are you sure?',
+        title: Text(context.l10n.rescheduleBooking, style: TextStyle(color: Colors.white)),
+        content: Text(
+          context.l10n.rescheduleBookingWarning,
           style: TextStyle(color: AppColors.gray2),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Keep Booking')),
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(context.l10n.keepBooking)),
           TextButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
@@ -183,12 +184,12 @@ class ProfileReservationDetailScreen extends ConsumerWidget {
                 }
               } catch (e) {
                 if (context.mounted) {
-                  final message = e is ApiException ? e.message : 'Could not reschedule the booking.';
+                  final message = e is ApiException ? e.message : context.l10n.couldNotRescheduleBooking;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
                 }
               }
             },
-            child: const Text('Continue', style: TextStyle(color: AppColors.primary)),
+            child: Text(context.l10n.commonContinue, style: TextStyle(color: AppColors.primary)),
           ),
         ],
       ),

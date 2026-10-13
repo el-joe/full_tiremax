@@ -343,7 +343,7 @@ $ReservationServiceCopyWith<$Res> get service {
 /// @nodoc
 mixin _$ReservationBranch {
 
- int get id; String get code; String get name; String get address; String get phone; num get latitude; num get longitude;
+ int get id; String get code; String get name; String get address; String get phone; num? get latitude; num? get longitude;
 /// Create a copy of ReservationBranch
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -381,7 +381,7 @@ abstract mixin class $ReservationBranchCopyWith<$Res>  {
   factory $ReservationBranchCopyWith(ReservationBranch value, $Res Function(ReservationBranch) _then) = _$ReservationBranchCopyWithImpl;
 @useResult
 $Res call({
- int id, String code, String name, String address, String phone, num latitude, num longitude
+ int id, String code, String name, String address, String phone, num? latitude, num? longitude
 });
 
 
@@ -398,16 +398,16 @@ class _$ReservationBranchCopyWithImpl<$Res>
 
 /// Create a copy of ReservationBranch
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? code = null,Object? name = null,Object? address = null,Object? phone = null,Object? latitude = null,Object? longitude = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? code = null,Object? name = null,Object? address = null,Object? phone = null,Object? latitude = freezed,Object? longitude = freezed,}) {
   return _then(ReservationBranch(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String,latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
-as num,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
-as num,
+as String,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+as num?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as num?,
   ));
 }
 
@@ -492,7 +492,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String code,  String name,  String address,  String phone,  num latitude,  num longitude)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String code,  String name,  String address,  String phone,  num? latitude,  num? longitude)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ReservationBranch() when $default != null:
 return $default(_that.id,_that.code,_that.name,_that.address,_that.phone,_that.latitude,_that.longitude);case _:
@@ -513,7 +513,7 @@ return $default(_that.id,_that.code,_that.name,_that.address,_that.phone,_that.l
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String code,  String name,  String address,  String phone,  num latitude,  num longitude)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String code,  String name,  String address,  String phone,  num? latitude,  num? longitude)  $default,) {final _that = this;
 switch (_that) {
 case _ReservationBranch():
 return $default(_that.id,_that.code,_that.name,_that.address,_that.phone,_that.latitude,_that.longitude);case _:
@@ -533,7 +533,7 @@ return $default(_that.id,_that.code,_that.name,_that.address,_that.phone,_that.l
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String code,  String name,  String address,  String phone,  num latitude,  num longitude)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String code,  String name,  String address,  String phone,  num? latitude,  num? longitude)?  $default,) {final _that = this;
 switch (_that) {
 case _ReservationBranch() when $default != null:
 return $default(_that.id,_that.code,_that.name,_that.address,_that.phone,_that.latitude,_that.longitude);case _:
@@ -548,7 +548,7 @@ return $default(_that.id,_that.code,_that.name,_that.address,_that.phone,_that.l
 @JsonSerializable()
 
 class _ReservationBranch implements ReservationBranch {
-  const _ReservationBranch({required this.id, required this.code, required this.name, required this.address, required this.phone, required this.latitude, required this.longitude});
+  const _ReservationBranch({required this.id, required this.code, required this.name, required this.address, required this.phone, this.latitude, this.longitude});
   factory _ReservationBranch.fromJson(Map<String, dynamic> json) => _$ReservationBranchFromJson(json);
 
 @override final  int id;
@@ -556,8 +556,8 @@ class _ReservationBranch implements ReservationBranch {
 @override final  String name;
 @override final  String address;
 @override final  String phone;
-@override final  num latitude;
-@override final  num longitude;
+@override final  num? latitude;
+@override final  num? longitude;
 
 /// Create a copy of ReservationBranch
 /// with the given fields replaced by the non-null parameter values.
@@ -594,7 +594,7 @@ abstract mixin class _$ReservationBranchCopyWith<$Res> implements $ReservationBr
   factory _$ReservationBranchCopyWith(_ReservationBranch value, $Res Function(_ReservationBranch) _then) = __$ReservationBranchCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String code, String name, String address, String phone, num latitude, num longitude
+ int id, String code, String name, String address, String phone, num? latitude, num? longitude
 });
 
 
@@ -611,16 +611,16 @@ class __$ReservationBranchCopyWithImpl<$Res>
 
 /// Create a copy of ReservationBranch
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? code = null,Object? name = null,Object? address = null,Object? phone = null,Object? latitude = null,Object? longitude = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? code = null,Object? name = null,Object? address = null,Object? phone = null,Object? latitude = freezed,Object? longitude = freezed,}) {
   return _then(_ReservationBranch(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String,latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
-as num,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
-as num,
+as String,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+as num?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as num?,
   ));
 }
 
@@ -631,7 +631,7 @@ as num,
 /// @nodoc
 mixin _$ReservationService {
 
- int get id; String get slug; String get name; String get description; int get duration_minutes; num get price;
+ int get id; String get slug; String get name; String? get description; int get duration_minutes; num get price;
 /// Create a copy of ReservationService
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -669,7 +669,7 @@ abstract mixin class $ReservationServiceCopyWith<$Res>  {
   factory $ReservationServiceCopyWith(ReservationService value, $Res Function(ReservationService) _then) = _$ReservationServiceCopyWithImpl;
 @useResult
 $Res call({
- int id, String slug, String name, String description, int duration_minutes, num price
+ int id, String slug, String name, String? description, int duration_minutes, num price
 });
 
 
@@ -686,13 +686,13 @@ class _$ReservationServiceCopyWithImpl<$Res>
 
 /// Create a copy of ReservationService
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = null,Object? duration_minutes = null,Object? price = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = freezed,Object? duration_minutes = null,Object? price = null,}) {
   return _then(ReservationService(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,duration_minutes: null == duration_minutes ? _self.duration_minutes : duration_minutes // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,duration_minutes: null == duration_minutes ? _self.duration_minutes : duration_minutes // ignore: cast_nullable_to_non_nullable
 as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as num,
   ));
@@ -779,7 +779,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String description,  int duration_minutes,  num price)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String? description,  int duration_minutes,  num price)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ReservationService() when $default != null:
 return $default(_that.id,_that.slug,_that.name,_that.description,_that.duration_minutes,_that.price);case _:
@@ -800,7 +800,7 @@ return $default(_that.id,_that.slug,_that.name,_that.description,_that.duration_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String description,  int duration_minutes,  num price)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slug,  String name,  String? description,  int duration_minutes,  num price)  $default,) {final _that = this;
 switch (_that) {
 case _ReservationService():
 return $default(_that.id,_that.slug,_that.name,_that.description,_that.duration_minutes,_that.price);case _:
@@ -820,7 +820,7 @@ return $default(_that.id,_that.slug,_that.name,_that.description,_that.duration_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slug,  String name,  String description,  int duration_minutes,  num price)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slug,  String name,  String? description,  int duration_minutes,  num price)?  $default,) {final _that = this;
 switch (_that) {
 case _ReservationService() when $default != null:
 return $default(_that.id,_that.slug,_that.name,_that.description,_that.duration_minutes,_that.price);case _:
@@ -835,13 +835,13 @@ return $default(_that.id,_that.slug,_that.name,_that.description,_that.duration_
 @JsonSerializable()
 
 class _ReservationService implements ReservationService {
-  const _ReservationService({required this.id, required this.slug, required this.name, required this.description, required this.duration_minutes, required this.price});
+  const _ReservationService({required this.id, required this.slug, required this.name, this.description, required this.duration_minutes, required this.price});
   factory _ReservationService.fromJson(Map<String, dynamic> json) => _$ReservationServiceFromJson(json);
 
 @override final  int id;
 @override final  String slug;
 @override final  String name;
-@override final  String description;
+@override final  String? description;
 @override final  int duration_minutes;
 @override final  num price;
 
@@ -880,7 +880,7 @@ abstract mixin class _$ReservationServiceCopyWith<$Res> implements $ReservationS
   factory _$ReservationServiceCopyWith(_ReservationService value, $Res Function(_ReservationService) _then) = __$ReservationServiceCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String slug, String name, String description, int duration_minutes, num price
+ int id, String slug, String name, String? description, int duration_minutes, num price
 });
 
 
@@ -897,13 +897,13 @@ class __$ReservationServiceCopyWithImpl<$Res>
 
 /// Create a copy of ReservationService
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = null,Object? duration_minutes = null,Object? price = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? description = freezed,Object? duration_minutes = null,Object? price = null,}) {
   return _then(_ReservationService(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,duration_minutes: null == duration_minutes ? _self.duration_minutes : duration_minutes // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,duration_minutes: null == duration_minutes ? _self.duration_minutes : duration_minutes // ignore: cast_nullable_to_non_nullable
 as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as num,
   ));

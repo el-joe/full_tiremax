@@ -32,8 +32,8 @@ abstract class ReservationBranch with _$ReservationBranch {
     required String name,
     required String address,
     required String phone,
-    required num latitude,
-    required num longitude,
+    num? latitude,
+    num? longitude,
   }) = _ReservationBranch;
 
   factory ReservationBranch.fromJson(Map<String, dynamic> json) =>
@@ -47,7 +47,7 @@ abstract class ReservationService with _$ReservationService {
     required int id,
     required String slug,
     required String name,
-    required String description,
+    String? description,
     required int duration_minutes,
     required num price,
   }) = _ReservationService;

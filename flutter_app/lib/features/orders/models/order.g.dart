@@ -20,10 +20,11 @@ _Order _$OrderFromJson(Map<String, dynamic> json) => _Order(
   total: json['total'] as num,
   customer_name: json['customer_name'] as String,
   customer_phone: json['customer_phone'] as String,
-  customer_email: json['customer_email'] as String,
-  shipping_address: json['shipping_address'] as String,
-  tracking_number: json['tracking_number'] as String,
+  customer_email: json['customer_email'] as String?,
+  shipping_address: json['shipping_address'] as String?,
+  tracking_number: json['tracking_number'] as String?,
   placed_at: json['placed_at'] as String,
+  is_guest: json['is_guest'] as bool? ?? false,
   governorate: json['governorate'] == null
       ? null
       : Governorate.fromJson(json['governorate'] as Map<String, dynamic>),
@@ -55,6 +56,7 @@ Map<String, dynamic> _$OrderToJson(_Order instance) => <String, dynamic>{
   'shipping_address': instance.shipping_address,
   'tracking_number': instance.tracking_number,
   'placed_at': instance.placed_at,
+  'is_guest': instance.is_guest,
   'governorate': instance.governorate,
   'branch': instance.branch,
   'items': instance.items,
@@ -68,6 +70,7 @@ _OrderItem _$OrderItemFromJson(Map<String, dynamic> json) => _OrderItem(
   quantity: (json['quantity'] as num).toInt(),
   unit_price: json['unit_price'] as num,
   total: json['total'] as num,
+  image: json['image'] as String?,
 );
 
 Map<String, dynamic> _$OrderItemToJson(_OrderItem instance) =>
@@ -79,4 +82,5 @@ Map<String, dynamic> _$OrderItemToJson(_OrderItem instance) =>
       'quantity': instance.quantity,
       'unit_price': instance.unit_price,
       'total': instance.total,
+      'image': instance.image,
     };

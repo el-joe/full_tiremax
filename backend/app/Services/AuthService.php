@@ -38,7 +38,7 @@ class AuthService
             throw ApiException::unauthorized(__('messages.invalid_credentials'));
         }
 
-        if (!$customer->is_active) {
+        if (!$customer->is_active || $customer->is_banned) {
             throw ApiException::forbidden(__('messages.account_disabled'));
         }
 
@@ -52,7 +52,7 @@ class AuthService
     public function refresh(): array
     {
         $token = JWTAuth::parseToken()->refresh();
-        $customer = JWTAuth::setToken($token)->authenticate();
+        $customer = auth('api')->setToken($token)->user();
 
         return $this->respondWithToken($customer, $token);
     }

@@ -9,9 +9,9 @@ abstract class CustomerProfile with _$CustomerProfile {
   const factory CustomerProfile({
     required int id,
     required String name,
-    required String email,
+    String? email,
     required String phone,
-    required String address,
+    String? address,
     required String locale,
   }) = _CustomerProfile;
 

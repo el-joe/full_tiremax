@@ -12,6 +12,8 @@ import '../models/notification.dart';
 class NotificationsListNotifier extends AsyncNotifier<List<AppNotification>> {
   @override
   Future<List<AppNotification>> build() async {
+    // Re-fetch (and drop stale data) when the signed-in customer changes.
+    ref.watch(isLoggedInProvider);
     final repository = ref.read(notificationsRepositoryProvider);
     return repository.fetchNotifications();
   }

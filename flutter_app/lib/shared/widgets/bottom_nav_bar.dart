@@ -42,7 +42,7 @@ class BottomNavBar extends ConsumerWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
