@@ -1,5 +1,4 @@
 "use client";
-import useDir from "@/hooks/useDir";
 import { Tooltip as ChakraTooltip, Portal } from "@chakra-ui/react";
 import * as React from "react";
 
@@ -24,13 +23,12 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       portalRef,
       ...rest
     } = props;
-    const dir = useDir();
 
     if (disabled) return children;
 
     return (
       <ChakraTooltip.Root {...rest}>
-        <ChakraTooltip.Trigger asChild direction={dir}>
+        <ChakraTooltip.Trigger asChild>
           {children}
         </ChakraTooltip.Trigger>
         <Portal disabled={!portalled} container={portalRef}>
