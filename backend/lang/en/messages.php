@@ -255,6 +255,7 @@ return [
         'total' => 'Total',
         'sync_to_daftra' => 'Sync to Daftra',
         'notifications' => 'Notifications',
+        'notes' => 'Order Notes',
         'items' => 'Items',
         'sku_label' => 'SKU:',
         'qty_label' => 'Qty:',

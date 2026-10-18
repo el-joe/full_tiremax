@@ -120,6 +120,13 @@
                     </div>
                 </div>
 
+                @if ($viewing->notes)
+                <div class="bg-stone-800/50 rounded-lg p-3 text-sm">
+                    <div class="text-xs text-stone-400 mb-1">{{ __('messages.admin.notes') }}</div>
+                    <div class="text-stone-200">{{ $viewing->notes }}</div>
+                </div>
+                @endif
+
                 <div>
                     <h4 class="font-bold mb-2 text-stone-200">{{ __('messages.admin.items') }}</h4>
                     <div class="bg-stone-800/30 rounded-lg divide-y divide-stone-800">

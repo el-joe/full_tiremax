@@ -255,6 +255,7 @@ return [
         'total' => 'الإجمالي',
         'sync_to_daftra' => 'مزامنة إلى دفترة',
         'notifications' => 'الإشعارات',
+        'notes' => 'ملاحظات الطلب',
         'items' => 'العناصر',
         'sku_label' => 'SKU:',
         'qty_label' => 'الكمية:',
