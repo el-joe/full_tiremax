@@ -7,13 +7,18 @@ import { useState } from "react";
 
 const ApplyOfferInput = () => {
   const t = useTranslations("cartAndPayment");
-  const { applyOffer, appliedOffer, applyOfferError, isApplyingOffer } =
+  const { applyOffer, removeOffer, appliedOffer, applyOfferError, isApplyingOffer } =
     useCartContext();
   const [code, setCode] = useState("");
 
   const handleApply = () => {
     if (!code.trim()) return;
     applyOffer(code.trim());
+  };
+
+  const handleRemove = () => {
+    removeOffer();
+    setCode("");
   };
 
   return (
@@ -26,16 +31,30 @@ const ApplyOfferInput = () => {
           rounded={"16px"}
           bg="#F9FAFB"
           fontSize={{ base: "12px", md: "16px" }}
+          disabled={!!appliedOffer}
         />
-        <Button
-          onClick={handleApply}
-          loading={isApplyingOffer}
-          rounded={"16px"}
-          fontWeight={"bold"}
-          px={"20px"}
-        >
-          {t("apply")}
-        </Button>
+        {appliedOffer ? (
+          <Button
+            onClick={handleRemove}
+            rounded={"16px"}
+            fontWeight={"bold"}
+            px={"20px"}
+            colorScheme="red"
+            variant="outline"
+          >
+            {t("removeOffer")}
+          </Button>
+        ) : (
+          <Button
+            onClick={handleApply}
+            loading={isApplyingOffer}
+            rounded={"16px"}
+            fontWeight={"bold"}
+            px={"20px"}
+          >
+            {t("apply")}
+          </Button>
+        )}
       </HStack>
       {appliedOffer && (
         <Text mt="8px" fontSize={"14px"} fontWeight={"bold"} color={"green"}>

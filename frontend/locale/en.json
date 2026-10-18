@@ -214,6 +214,7 @@
         "offerCode": "Offer code",
         "enterOfferCode": "Enter offer code",
         "apply": "Apply",
+        "removeOffer": "Remove",
         "offerApplied": "Offer applied: {title}",
         "proceedToCheckout": "Procid to checkout",
         "flexible72HourReturnGuarantee": "Flexible 72-Hour Return Guarantee",

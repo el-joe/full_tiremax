@@ -198,6 +198,7 @@ export const useCart = () => {
     removeItem,
     clearCart,
     applyOffer,
+    removeOffer: () => setAppliedOffer(null),
     appliedOffer,
     applyOfferError,
     cartIsLoading,

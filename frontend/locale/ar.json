@@ -214,6 +214,7 @@
         "offerCode": "كود الخصم",
         "enterOfferCode": "أدخل كود الخصم",
         "apply": "تطبيق",
+        "removeOffer": "إزالة",
         "offerApplied": "تم تطبيق العرض: {title}",
         "proceedToCheckout": "تابع عمليه الشراء",
         "flexible72HourReturnGuarantee": "ضمان استرجاع مرن خلال 72 ساعة",

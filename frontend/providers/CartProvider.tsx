@@ -13,6 +13,7 @@ interface ICartContext {
   clearCart: () => void;
   refetchCart: () => void;
   applyOffer: (code: string) => void;
+  removeOffer: () => void;
   appliedOffer: IAppliedOffer | null;
   applyOfferError: string | null;
   totalQuantity: number;
@@ -41,6 +42,7 @@ const initialState: ICartContext = {
   clearCart() {},
   refetchCart() {},
   applyOffer() {},
+  removeOffer() {},
   appliedOffer: null,
   applyOfferError: null,
   totalQuantity: 0,
@@ -66,6 +68,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     clearCart,
     refetchCart,
     applyOffer,
+    removeOffer,
     appliedOffer,
     applyOfferError,
     cartIsLoading,
@@ -87,6 +90,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         clearCart,
         refetchCart,
         applyOffer,
+        removeOffer,
         appliedOffer,
         applyOfferError,
         totalQuantity,
