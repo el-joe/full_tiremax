@@ -127,6 +127,13 @@
                 </div>
                 @endif
 
+                @if ($viewing->cancellation_reason)
+                <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-sm">
+                    <div class="text-xs text-red-400 mb-1">{{ __('messages.admin.cancellation_reason') }}</div>
+                    <div class="text-stone-200">{{ $viewing->cancellation_reason }}</div>
+                </div>
+                @endif
+
                 <div>
                     <h4 class="font-bold mb-2 text-stone-200">{{ __('messages.admin.items') }}</h4>
                     <div class="bg-stone-800/30 rounded-lg divide-y divide-stone-800">
@@ -186,5 +193,35 @@
                 @endif
             </div>
         </div>
+    @endif
+
+    {{-- Cancellation Reason Modal --}}
+    @if ($showCancelModal)
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+        <div class="bg-stone-900 border border-stone-700 rounded-xl p-6 w-full max-w-md shadow-2xl">
+            <h3 class="text-lg font-bold text-stone-100 mb-1">{{ __('messages.admin.cancel_order') }}</h3>
+            <p class="text-sm text-stone-400 mb-4">{{ __('messages.admin.cancel_reason_required') }}</p>
+
+            <textarea
+                wire:model="cancellationReason"
+                rows="3"
+                placeholder="{{ __('messages.admin.cancel_reason_placeholder') }}"
+                class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-stone-100 placeholder-stone-500 focus:outline-none focus:border-yellow-500 resize-none"
+            ></textarea>
+
+            @error('cancellationReason')
+                <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+            @enderror
+
+            <div class="flex justify-end gap-2 mt-4">
+                <button wire:click="closeCancelModal" class="px-4 py-2 rounded-lg text-sm bg-stone-800 hover:bg-stone-700 text-stone-300">
+                    {{ __('messages.admin.cancel') }}
+                </button>
+                <button wire:click="confirmCancellation" class="px-4 py-2 rounded-lg text-sm bg-red-600 hover:bg-red-700 text-white font-bold">
+                    {{ __('messages.admin.confirm_cancellation') }}
+                </button>
+            </div>
+        </div>
+    </div>
     @endif
 </div>

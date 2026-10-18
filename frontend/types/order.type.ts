@@ -19,6 +19,7 @@ export interface IOrder {
     customer_phone: string;
     customer_email: string;
     shipping_address: string;
+    cancellation_reason: string | null;
     tracking_number: string;
     placed_at: Date | string;
     governorate: IGovernorate | null;

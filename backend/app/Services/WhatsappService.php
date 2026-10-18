@@ -128,6 +128,7 @@ class WhatsappService
             'total' => number_format((float) $order->total, 0),
             'items_count' => $order->items->sum('quantity'),
             'tracking_number' => $order->tracking_number ?? '—',
+            'cancellation_reason' => $order->cancellation_reason ?? '',
             'review_url' => config('app.frontend_url') . '/review',
             'shop_url' => config('app.frontend_url'),
             'track_url' => config('app.frontend_url') . '/profile/orders/' . $order->reference,

@@ -19,6 +19,7 @@ return [
     'currency' => 'IQD',
     'branch' => 'Branch',
     'address' => 'Address',
+    'cancellation_reason' => 'Cancellation Reason',
     'service' => 'Service',
     'date' => 'Date & time',
     'track_order' => 'Track your order',

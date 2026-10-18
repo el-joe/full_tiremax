@@ -276,6 +276,7 @@
         "readyForPickup": "Ready for pickup",
         "endingWith": "Ending in **** 4242",
         "deliveryAddress": "Delivery Address",
+        "cancellationReason": "Cancellation Reason",
         "pickupBranch": "Pickup Branch",
         "trackOrder": "Track Order",
         "backToHome": "Back to Home",

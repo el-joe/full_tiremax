@@ -50,6 +50,10 @@ class OrderManager extends Component
     public ?int $viewingId = null;
     public string $tab = 'details';
 
+    public bool $showCancelModal = false;
+    public string $cancellationReason = '';
+    public ?int $pendingCancelOrderId = null;
+
     public function view(int $id): void
     {
         $this->authorizePermission('orders.view');
@@ -65,11 +69,44 @@ class OrderManager extends Component
     public function changeStatus(int $id, string $status, OrderService $service): void
     {
         $this->authorizePermission('orders.change_status');
+
+        if ($status === Order::STATUS_CANCELLED) {
+            $this->pendingCancelOrderId = $id;
+            $this->cancellationReason = '';
+            $this->showCancelModal = true;
+            return;
+        }
+
         $order = Order::findOrFail($id);
         $oldStatus = $order->status;
         $service->changeStatus($order, $status);
         $this->logAction('order.status_changed', $order, ['status' => $oldStatus], ['status' => $status]);
         $this->dispatch('toast', icon: 'success', title: __('messages.success'));
+    }
+
+    public function confirmCancellation(OrderService $service): void
+    {
+        $this->authorizePermission('orders.change_status');
+        $this->validate(['cancellationReason' => 'required|string|max:500']);
+
+        $order = Order::findOrFail($this->pendingCancelOrderId);
+        $oldStatus = $order->status;
+        $order->cancellation_reason = $this->cancellationReason;
+        $order->save();
+        $service->changeStatus($order, Order::STATUS_CANCELLED);
+        $this->logAction('order.status_changed', $order, ['status' => $oldStatus], ['status' => Order::STATUS_CANCELLED]);
+
+        $this->showCancelModal = false;
+        $this->pendingCancelOrderId = null;
+        $this->cancellationReason = '';
+        $this->dispatch('toast', icon: 'success', title: __('messages.success'));
+    }
+
+    public function closeCancelModal(): void
+    {
+        $this->showCancelModal = false;
+        $this->pendingCancelOrderId = null;
+        $this->cancellationReason = '';
     }
 
     public function resendNotification(string $channel, int $logId): void

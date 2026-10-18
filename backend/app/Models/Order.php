@@ -58,6 +58,7 @@ class Order extends Model
         'daftra_invoice_url',
         'daftra_meta',
         'notes',
+        'cancellation_reason',
         'placed_at',
     ];
 

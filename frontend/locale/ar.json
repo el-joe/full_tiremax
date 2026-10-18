@@ -276,6 +276,7 @@
         "readyForPickup": "جاهز للاستلام",
         "endingWith": "ينتهي بـ **** ٤٢٤٢",
         "deliveryAddress": "عنوان التوصيل",
+        "cancellationReason": "سبب الإلغاء",
         "pickupBranch": "فرع الاستلام",
         "trackOrder": "تتبع الطلب",
         "backToHome": "العودة للرئيسية",

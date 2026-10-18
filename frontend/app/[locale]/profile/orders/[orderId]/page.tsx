@@ -169,6 +169,26 @@ export default async function page({ params }: props) {
                 </Box>
               </HStack>
             )}
+            {data.status === "cancelled" && data.cancellation_reason && (
+              <HStack
+                gap={"16px"}
+                px={"32px"}
+                py={"16px"}
+                borderStart={"4px solid red"}
+                rounded={"8px"}
+                bg="#FFF5F5"
+                align="start"
+              >
+                <Box>
+                  <Text fontSize={"18px"} fontWeight={"bold"} color={"red.600"}>
+                    {t("cancellationReason")}
+                  </Text>
+                  <Text fontSize={"14px"} color={"gray-2"}>
+                    {data.cancellation_reason}
+                  </Text>
+                </Box>
+              </HStack>
+            )}
           </VStack>
           {/* order summary */}
           <VStack gap={"32px"} maxW={"392px"}>

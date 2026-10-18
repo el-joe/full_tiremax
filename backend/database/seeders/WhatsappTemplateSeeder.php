@@ -100,14 +100,14 @@ class WhatsappTemplateSeeder extends Seeder
                 'key' => 'order_cancelled',
                 'trigger_after_days' => null,
                 'is_active' => true,
-                'variables' => ['customer_name', 'order_ref'],
+                'variables' => ['customer_name', 'order_ref', 'cancellation_reason'],
                 'en' => [
                     'subject' => 'Order Cancelled',
-                    'body' => "Hello {{customer_name}},\n\nYour order *{{order_ref}}* has been cancelled.\n\nIraq Max Tire",
+                    'body' => "Hello {{customer_name}},\n\nYour order *{{order_ref}}* has been cancelled.\n\n*Reason:* {{cancellation_reason}}\n\nIraq Max Tire",
                 ],
                 'ar' => [
                     'subject' => 'تم إلغاء طلبك',
-                    'body' => "مرحباً {{customer_name}}،\n\nتم إلغاء طلبك *{{order_ref}}*.\n\nإيراق ماكس تاير",
+                    'body' => "مرحباً {{customer_name}}،\n\nتم إلغاء طلبك *{{order_ref}}*.\n\n*السبب:* {{cancellation_reason}}\n\nإيراق ماكس تاير",
                 ],
             ],
             [

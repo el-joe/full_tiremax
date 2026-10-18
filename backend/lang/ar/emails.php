@@ -19,6 +19,7 @@ return [
     'currency' => 'دينار',
     'branch' => 'الفرع',
     'address' => 'العنوان',
+    'cancellation_reason' => 'سبب الإلغاء',
     'service' => 'الخدمة',
     'date' => 'التاريخ والوقت',
     'track_order' => 'تتبع طلبك',

@@ -32,6 +32,7 @@ class OrderResource extends JsonResource
             'customer_phone' => $this->customer_phone,
             'customer_email' => $this->customer_email,
             'shipping_address' => $this->shipping_address,
+            'cancellation_reason' => $this->cancellation_reason,
             'tracking_number' => $this->tracking_number,
             'placed_at' => optional($this->placed_at)->toIso8601String(),
             'governorate' => new GovernorateResource($this->whenLoaded('governorate')),

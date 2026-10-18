@@ -35,6 +35,10 @@
 
 **{{ __('emails.address', [], $loc) }}:** {{ $order->shipping_address }}
 @endif
+@if ($order->status === 'cancelled' && $order->cancellation_reason)
+
+**{{ __('emails.cancellation_reason', [], $loc) }}:** {{ $order->cancellation_reason }}
+@endif
 
 <x-mail::button :url="config('app.frontend_url') . '/' . $loc . '/profile/orders/' . $order->reference . '?phone=' . urlencode($order->customer_phone)">
 {{ __('emails.track_order', [], $loc) }}
