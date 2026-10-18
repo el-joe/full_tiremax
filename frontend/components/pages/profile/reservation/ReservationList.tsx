@@ -134,7 +134,7 @@ export default function ReservationList({
                 </Text>
               </HStack>
             </HStack>
-            {reserve.status !== "complete" && (
+            {reserve.status !== "complete" && reserve.status !== "cancelled" && (
               <HStack pt="16px" borderTop={"1px solid #F3F4F6"}>
                 <RescheduleReservationDialog
                   reservation={reserve}
