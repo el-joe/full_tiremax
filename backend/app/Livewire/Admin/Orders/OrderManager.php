@@ -133,6 +133,11 @@ class OrderManager extends Component
         $this->authorizePermission('orders.update');
         $order = Order::findOrFail($id);
 
+        if (! \App\Integrations\Daftra::isActive()) {
+            $this->dispatch('toast', icon: 'error', title: __('messages.admin.daftra_disabled'));
+            return;
+        }
+
         try {
             app(DaftraOrderSyncService::class)->push($order);
             $this->dispatch('toast', icon: 'success', title: __('messages.success'));

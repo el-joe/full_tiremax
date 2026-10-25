@@ -72,6 +72,10 @@ class SettingManager extends Component
             $setting->update(['value' => $value]);
         }
 
+        if ($setting->group === 'daftra' && \App\Integrations\Daftra::isEnabled() && ! \App\Integrations\Daftra::isActive()) {
+            $this->dispatch('toast', icon: 'warning', title: __('messages.admin.daftra_not_configured'));
+        }
+
         \App\Services\PublicSettings::flush();
         \App\Support\MailSettings::flush();
         $this->loadForm();

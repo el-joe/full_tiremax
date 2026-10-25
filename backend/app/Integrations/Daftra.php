@@ -43,6 +43,14 @@ class Daftra
         return (bool) Setting::getValue('daftra', 'enabled', false);
     }
 
+    /** Enabled AND credentials present: the only state in which syncing makes sense. */
+    public static function isActive(): bool
+    {
+        return static::isEnabled()
+            && filled(Setting::getValue('daftra', 'api_url'))
+            && filled(Setting::getValue('daftra', 'api_key'));
+    }
+
     // ──────────────────────────────────────────────────────────────────────────
     // HTTP client
     // ──────────────────────────────────────────────────────────────────────────

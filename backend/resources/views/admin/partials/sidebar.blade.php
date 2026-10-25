@@ -27,6 +27,9 @@
         ['can' => 'audit_logs.view', 'route' => 'admin.audit-logs.index', 'label' => __('messages.admin.audit_logs'), 'icon' => 'M9 12h6M9 16h6M7 3h7l5 5v13H7z'],
         ['can' => 'settings.view', 'route' => 'admin.settings.index', 'label' => __('messages.admin.settings'), 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065zM15 12a3 3 0 11-6 0 3 3 0 016 0z'],
     ];
+    if (! \App\Integrations\Daftra::isEnabled()) {
+        $nav = array_values(array_filter($nav, fn ($i) => $i['route'] !== 'admin.daftra-logs.index'));
+    }
 @endphp
 <aside
     class="fixed inset-y-0 {{ app()->getLocale() === 'ar' ? 'right-0' : 'left-0' }} w-64 bg-stone-900 border-{{ app()->getLocale() === 'ar' ? 'l' : 'r' }} border-stone-800 hidden lg:flex flex-col z-30">
