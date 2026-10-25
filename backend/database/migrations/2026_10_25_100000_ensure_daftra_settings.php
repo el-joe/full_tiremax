@@ -5,13 +5,16 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
-    /** Daftra is optional: make sure the toggle + credentials exist (off by default) on already-seeded installs. */
+    /**
+     * Daftra is optional. `settings.key` is globally unique and `enabled` already belongs to the
+     * maintenance group, so the toggle lives under its own key. Off by default.
+     */
     public function up(): void
     {
-        foreach (['api_url' => ['string', null], 'api_key' => ['string', null], 'enabled' => ['bool', '0']] as $key => [$cast, $value]) {
+        foreach (['api_url' => ['string', null], 'api_key' => ['string', null], 'daftra_enabled' => ['bool', '0']] as $key => [$cast, $value]) {
             Setting::firstOrCreate(
-                ['group' => 'daftra', 'key' => $key],
-                ['cast' => $cast, 'is_translatable' => false, 'value' => $value],
+                ['key' => $key],
+                ['group' => 'daftra', 'cast' => $cast, 'is_translatable' => false, 'value' => $value],
             );
         }
     }

@@ -19,8 +19,8 @@ class DaftraOptionalTest extends TestCase
 
     private function daftra(bool $enabled, bool $configured = true): void
     {
-        foreach (['enabled' => $enabled ? '1' : '0', 'api_url' => $configured ? 'https://x.daftra.com/api2' : null, 'api_key' => $configured ? 'k' : null] as $key => $value) {
-            Setting::updateOrCreate(['group' => 'daftra', 'key' => $key], ['cast' => $key === 'enabled' ? 'bool' : 'string', 'is_translatable' => false, 'value' => $value]);
+        foreach (['daftra_enabled' => $enabled ? '1' : '0', 'api_url' => $configured ? 'https://x.daftra.com/api2' : null, 'api_key' => $configured ? 'k' : null] as $key => $value) {
+            Setting::updateOrCreate(['group' => 'daftra', 'key' => $key], ['cast' => $key === 'daftra_enabled' ? 'bool' : 'string', 'is_translatable' => false, 'value' => $value]);
         }
     }
 

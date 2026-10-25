@@ -476,6 +476,7 @@ return [
             'from_number' => 'رقم المرسل',
             'enabled' => 'مفعّل',
             'api_key' => 'مفتاح API',
+            'daftra_enabled' => 'تكامل دفترة',
             'home_featured_limit' => 'عدد المنتجات المميزة بالرئيسية',
             'per_page' => 'عدد العناصر بالصفحة',
             'low_stock_alert' => 'تنبيه انخفاض المخزون',

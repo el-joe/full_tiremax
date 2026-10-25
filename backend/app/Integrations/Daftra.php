@@ -40,7 +40,7 @@ class Daftra
 
     public static function isEnabled(): bool
     {
-        return (bool) Setting::getValue('daftra', 'enabled', false);
+        return (bool) Setting::getValue('daftra', 'daftra_enabled', false);
     }
 
     /** Enabled AND credentials present: the only state in which syncing makes sense. */

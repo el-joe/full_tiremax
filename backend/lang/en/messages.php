@@ -476,6 +476,7 @@ return [
             'from_number' => 'From Number',
             'enabled' => 'Enabled',
             'api_key' => 'API Key',
+            'daftra_enabled' => 'Daftra integration',
             'home_featured_limit' => 'Home Featured Limit',
             'per_page' => 'Items Per Page',
             'low_stock_alert' => 'Low Stock Alert',

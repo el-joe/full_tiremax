@@ -272,7 +272,7 @@ class SettingSeeder extends Seeder
 
             [
                 'group' => 'daftra',
-                'key' => 'enabled',
+                'key' => 'daftra_enabled',
                 'cast' => 'bool',
                 'translatable' => false,
                 'value' => '0'
