@@ -39,8 +39,6 @@ const ApplyOfferInput = () => {
             rounded={"16px"}
             fontWeight={"bold"}
             px={"20px"}
-            colorScheme="red"
-            variant="outline"
           >
             {t("removeOffer")}
           </Button>

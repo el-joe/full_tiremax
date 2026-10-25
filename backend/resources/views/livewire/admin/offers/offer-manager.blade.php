@@ -21,8 +21,10 @@
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.code') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.title') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.discount') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.min_subtotal') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.window') }}</th>
                     <th class="px-4 py-3 text-start">{{ __('messages.admin.used') }}</th>
+                    <th class="px-4 py-3 text-start">{{ __('messages.admin.active') }}</th>
                     <th class="px-4 py-3 text-end">{{ __('messages.admin.actions') }}</th>
                 </tr>
             </thead>
@@ -34,10 +36,14 @@
                         <td class="px-4 py-3">
                             {{ $o->discount_type === 'percent' ? $o->discount_value . '%' : number_format($o->discount_value) . ' IQD' }}
                         </td>
+                        <td class="px-4 py-3">{{ $o->min_subtotal > 0 ? number_format($o->min_subtotal) . ' IQD' : '—' }}</td>
                         <td class="px-4 py-3 text-xs text-stone-400">{{ optional($o->starts_at)->format('Y-m-d') ?? '∞' }} →
                             {{ optional($o->ends_at)->format('Y-m-d') ?? '∞' }}
                         </td>
                         <td class="px-4 py-3">{{ $o->used_count }}{{ $o->usage_limit ? '/' . $o->usage_limit : '' }}</td>
+                        <td class="px-4 py-3">
+                            <span class="px-2 py-0.5 rounded-full text-xs {{ $o->is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' }}">{{ $o->is_active ? __('messages.admin.yes') : __('messages.admin.no') }}</span>
+                        </td>
                         <td class="px-4 py-3 text-end">
                             @can('offers.update')
 <button wire:click="edit({{ $o->id }})"
@@ -51,7 +57,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
+                        <td colspan="8" class="px-4 py-8 text-center text-stone-500">{{ __('messages.admin.no_data') }}</td>
                     </tr>
                 @endforelse
             </tbody>
