@@ -70,7 +70,7 @@ class WhatsappService
             'body' => $body,
         ]);
 
-        if (!config('services.whatsapp.api_url')) {
+        if (!config('services.whatsapp.api_url') || !config('services.whatsapp.api_token') || !config('services.whatsapp.app_key')) {
             $log->update(['status' => 'skipped', 'response' => ['error' => 'WhatsApp API not configured']]);
             return $log;
         }
@@ -91,20 +91,33 @@ class WhatsappService
         return $log;
     }
 
+    /**
+     * WhaSender: POST {host}/api/create-message with the client's authkey and the device's appkey.
+     * Success is {"message_status":"Success"}; failures are 401 {"error":..} or, for validation
+     * errors, HTTP 200 {"success":false,"message":..} — so the body must be checked, not the status.
+     */
     private function dispatch(string $phone, string $body): array
     {
         $response = Http::timeout(15)
-            ->withToken(config('services.whatsapp.api_token'))
+            ->acceptJson()
             ->post(config('services.whatsapp.api_url'), [
-                'from' => config('services.whatsapp.from_number'),
-                'to' => '+' . ltrim($phone, '+'),
-                'type' => 'text',
-                'message' => ['body' => $body],
+                'appkey' => config('services.whatsapp.app_key'),
+                'authkey' => config('services.whatsapp.api_token'),
+                'to' => ltrim($phone, '+'),
+                'message' => $body,
             ]);
 
-        $response->throw();
+        $json = $response->json() ?? [];
 
-        return $response->json() ?? [];
+        if ($response->failed() || ($json['message_status'] ?? null) !== 'Success') {
+            $reason = $json['error'] ?? $json['message'] ?? ('HTTP ' . $response->status());
+            if (is_array($reason)) {
+                $reason = json_encode($reason, JSON_UNESCAPED_UNICODE);
+            }
+            throw new \RuntimeException('WhaSender rejected the message: ' . $reason);
+        }
+
+        return $json;
     }
 
     public function variablesFor(?Model $subject, string $locale): array

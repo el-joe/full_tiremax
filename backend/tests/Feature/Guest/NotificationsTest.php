@@ -36,7 +36,7 @@ class NotificationsTest extends TestCase
         parent::setUp();
         PaymentGateway::create(['name' => 'cod', 'display_name' => 'COD', 'driver' => 'cod', 'is_active' => true, 'settings' => [], 'credentials' => []]);
         $this->seed(WhatsappTemplateSeeder::class);
-        config(['services.whatsapp.api_url' => 'https://wa.test/send', 'services.whatsapp.api_token' => 't']);
+        config(['services.whatsapp.api_url' => 'https://wa.test/send', 'services.whatsapp.api_token' => 't', 'services.whatsapp.app_key' => 'k']);
         Mail::fake();
     }
 
@@ -45,7 +45,7 @@ class NotificationsTest extends TestCase
     private function fakeWa(int $status = 200): void
     {
         $this->waFaked = true;
-        Http::fake(['wa.test/*' => Http::response(['id' => 'm1'], $status)]);
+        Http::fake(['wa.test/*' => Http::response($status === 200 ? ['message_status' => 'Success'] : ['error' => 'Request Failed'], $status)]);
     }
 
     private function h(): array
