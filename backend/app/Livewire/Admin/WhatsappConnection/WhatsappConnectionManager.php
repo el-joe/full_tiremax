@@ -14,7 +14,6 @@ class WhatsappConnectionManager extends Component
 {
     use AuthorizesAdmin;
 
-    public string $provider = 'api';
     public int $dailyLimit = 200;
     public int $hourlyLimit = 40;
     public int $minGap = 4;
@@ -26,7 +25,6 @@ class WhatsappConnectionManager extends Component
     public function mount(): void
     {
         $this->authorizePermission('whatsapp.view');
-        $this->provider = WhatsappSettings::get('wa_provider');
         $this->dailyLimit = WhatsappSettings::get('wa_daily_limit');
         $this->hourlyLimit = WhatsappSettings::get('wa_hourly_limit');
         $this->minGap = WhatsappSettings::get('wa_min_gap');
@@ -58,13 +56,11 @@ class WhatsappConnectionManager extends Component
     {
         $this->authorizePermission('whatsapp.update');
         $this->validate([
-            'provider' => 'required|in:api,qr',
             'dailyLimit' => 'required|integer|min:0|max:100000',
             'hourlyLimit' => 'required|integer|min:0|max:10000',
             'minGap' => 'required|integer|min:1|max:600',
             'maxGap' => 'required|integer|min:1|max:600|gte:minGap',
         ]);
-        WhatsappSettings::set('wa_provider', $this->provider);
         WhatsappSettings::set('wa_daily_limit', $this->dailyLimit);
         WhatsappSettings::set('wa_hourly_limit', $this->hourlyLimit);
         WhatsappSettings::set('wa_min_gap', $this->minGap);

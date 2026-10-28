@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class WhatsappSettings
 {
-    private const DEFAULTS = ['wa_provider' => 'api', 'wa_daily_limit' => 200, 'wa_hourly_limit' => 40, 'wa_min_gap' => 4, 'wa_max_gap' => 10];
+    private const DEFAULTS = ['wa_daily_limit' => 0, 'wa_hourly_limit' => 0, 'wa_min_gap' => 4, 'wa_max_gap' => 10];
 
     public static function get(string $key): mixed
     {
@@ -27,10 +27,5 @@ class WhatsappSettings
         $cast = is_int(self::DEFAULTS[$key] ?? null) ? 'int' : 'string';
         DB::table('settings')->updateOrInsert(['key' => $key], ['group' => 'whatsapp', 'cast' => $cast, 'is_translatable' => false, 'value' => (string) $value, 'updated_at' => now()]);
         \App\Services\PublicSettings::flush();
-    }
-
-    public static function useQr(): bool
-    {
-        return self::get('wa_provider') === 'qr';
     }
 }

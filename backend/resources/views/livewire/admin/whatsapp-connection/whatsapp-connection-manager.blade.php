@@ -60,13 +60,6 @@
     @can('whatsapp.update')
     <form wire:submit="saveSettings" class="bg-stone-900 border border-stone-800 rounded-2xl p-5 space-y-4">
         <div class="font-bold">{{ __('messages.admin.wa_sending_settings') }}</div>
-        <div class="max-w-sm">
-            <label class="text-xs text-stone-400">{{ __('messages.admin.wa_provider') }}</label>
-            <select wire:model="provider" class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
-                <option value="api">{{ __('messages.admin.wa_provider_api') }}</option>
-                <option value="qr">{{ __('messages.admin.wa_provider_qr') }}</option>
-            </select>
-        </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             @foreach ([['dailyLimit', 'wa_daily_limit'], ['hourlyLimit', 'wa_hourly_limit'], ['minGap', 'wa_min_gap'], ['maxGap', 'wa_max_gap']] as [$field, $label])
                 <div>

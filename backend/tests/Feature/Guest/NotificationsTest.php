@@ -36,7 +36,7 @@ class NotificationsTest extends TestCase
         parent::setUp();
         PaymentGateway::create(['name' => 'cod', 'display_name' => 'COD', 'driver' => 'cod', 'is_active' => true, 'settings' => [], 'credentials' => []]);
         $this->seed(WhatsappTemplateSeeder::class);
-        config(['services.whatsapp.api_url' => 'https://wa.test/send', 'services.whatsapp.api_token' => 't', 'services.whatsapp.app_key' => 'k']);
+        config(['services.whatsapp_gateway.url' => 'http://gw.test']);
         Mail::fake();
     }
 
@@ -45,7 +45,10 @@ class NotificationsTest extends TestCase
     private function fakeWa(int $status = 200): void
     {
         $this->waFaked = true;
-        Http::fake(['wa.test/*' => Http::response($status === 200 ? ['message_status' => 'Success'] : ['error' => 'Request Failed'], $status)]);
+        Http::fake([
+            'gw.test/status' => Http::response(['status' => 'connected']),
+            'gw.test/send' => Http::response($status === 200 ? ['id' => 'ABC'] : ['error' => 'Request Failed'], $status),
+        ]);
     }
 
     private function h(): array
@@ -80,7 +83,7 @@ class NotificationsTest extends TestCase
 
         Mail::assertQueued(OrderPlacedMail::class, 1);
         Mail::assertQueued(OrderPlacedMail::class, fn ($m) => $m->hasTo('ali@example.com'));
-        Http::assertSentCount(1);
+        Http::assertSentCount(2); // gateway status check + send
         $log = WhatsappLog::first();
         $this->assertSame('order_placed', $log->template_key);
         $this->assertSame('9647701234567', $log->phone);

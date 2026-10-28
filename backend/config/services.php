@@ -28,14 +28,6 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'whatsapp' => [
-        // WhaSender: api_url = https://<host>/api/create-message, api_token = client authkey, app_key = device appkey
-        'api_url'     => env('WHATSAPP_API_URL'),
-        'api_token'   => env('WHATSAPP_API_TOKEN'),
-        'app_key'     => env('WHATSAPP_APP_KEY'),
-        'from_number' => env('WHATSAPP_FROM_NUMBER'),
-    ],
-
     // Local Node/Baileys process (backend/whatsapp-gateway) holding the QR-linked WhatsApp session
     'whatsapp_gateway' => [
         'url'    => env('WA_GATEWAY_URL', 'http://127.0.0.1:3100'),

@@ -9,7 +9,6 @@ use App\Models\WhatsappTemplate;
 use App\Support\Phone;
 use App\Support\WhatsappSettings;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class WhatsappService
@@ -75,32 +74,23 @@ class WhatsappService
     }
 
     /**
-     * Deliver a pending/queued log through the active provider. With the QR provider, hourly/daily
+     * Deliver a pending/queued log through the QR-linked session. Hourly/daily
      * caps are enforced; messages over the cap stay 'queued' and are flushed later by
      * whatsapp:flush-queued, so automations are delayed rather than lost (and the number isn't flooded).
      */
     public function deliver(WhatsappLog $log): WhatsappLog
     {
-        $useQr = WhatsappSettings::useQr();
-        $log->channel = $useQr ? 'qr' : 'api';
+        $log->channel = 'qr';
 
         try {
-            if ($useQr) {
-                $gateway = app(WhatsappGateway::class);
-                if (!$gateway->isConnected()) {
-                    return $this->park($log, 'WhatsApp QR session is not connected');
-                }
-                if ($this->overLimit()) {
-                    return $this->park($log, 'Sending limit reached, will retry automatically');
-                }
-                $response = $gateway->send($log->phone, $log->body, WhatsappSettings::get('wa_min_gap'), WhatsappSettings::get('wa_max_gap'));
-            } else {
-                if (!config('services.whatsapp.api_url') || !config('services.whatsapp.api_token') || !config('services.whatsapp.app_key')) {
-                    $log->update(['status' => 'skipped', 'response' => ['error' => 'WhatsApp API not configured']]);
-                    return $log;
-                }
-                $response = $this->dispatch($log->phone, $log->body);
+            $gateway = app(WhatsappGateway::class);
+            if (!$gateway->isConnected()) {
+                return $this->park($log, 'WhatsApp QR session is not connected');
             }
+            if ($this->overLimit()) {
+                return $this->park($log, 'Sending limit reached, will retry automatically');
+            }
+            $response = $gateway->send($log->phone, $log->body, WhatsappSettings::get('wa_min_gap'), WhatsappSettings::get('wa_max_gap'));
             $log->update(['status' => 'sent', 'provider_message_id' => $response['id'] ?? null, 'response' => $response, 'sent_at' => now()]);
         } catch (\Throwable $e) {
             $log->update(['status' => 'failed', 'response' => ['error' => $e->getMessage()]]);
@@ -134,42 +124,13 @@ class WhatsappService
         $sent = 0;
         $logs = WhatsappLog::where('status', 'queued')->orderBy('id')->limit($max)->get();
         foreach ($logs as $log) {
-            if (WhatsappSettings::useQr() && (!app(WhatsappGateway::class)->isConnected() || $this->overLimit())) {
+            if (!app(WhatsappGateway::class)->isConnected() || $this->overLimit()) {
                 break;
             }
             $sent += $this->deliver($log)->status === 'sent' ? 1 : 0;
         }
 
         return $sent;
-    }
-
-    /**
-     * WhaSender: POST {host}/api/create-message with the client's authkey and the device's appkey.
-     * Success is {"message_status":"Success"}; failures are 401 {"error":..} or, for validation
-     * errors, HTTP 200 {"success":false,"message":..} — so the body must be checked, not the status.
-     */
-    private function dispatch(string $phone, string $body): array
-    {
-        $response = Http::timeout(15)
-            ->acceptJson()
-            ->post(config('services.whatsapp.api_url'), [
-                'appkey' => config('services.whatsapp.app_key'),
-                'authkey' => config('services.whatsapp.api_token'),
-                'to' => ltrim($phone, '+'),
-                'message' => $body,
-            ]);
-
-        $json = $response->json() ?? [];
-
-        if ($response->failed() || ($json['message_status'] ?? null) !== 'Success') {
-            $reason = $json['error'] ?? $json['message'] ?? ('HTTP ' . $response->status());
-            if (is_array($reason)) {
-                $reason = json_encode($reason, JSON_UNESCAPED_UNICODE);
-            }
-            throw new \RuntimeException('WhaSender rejected the message: ' . $reason);
-        }
-
-        return $json;
     }
 
     public function variablesFor(?Model $subject, string $locale): array
