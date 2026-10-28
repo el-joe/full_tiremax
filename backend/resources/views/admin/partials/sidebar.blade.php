@@ -20,6 +20,7 @@
         ['can' => 'contact_messages.view', 'route' => 'admin.contact-messages.index', 'label' => __('messages.admin.contact_messages'), 'icon' => 'M3 8l9 6 9-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z', 'badge' => \App\Models\ContactMessage::where('status', 'new')->count()],
         ['can' => 'daftra_logs.view', 'route' => 'admin.daftra-logs.index', 'label' => __('messages.admin.daftra_logs'), 'icon' => 'M4 4v16h16M8 16l3-4 3 3 4-6'],
         ['can' => 'whatsapp.view', 'route' => 'admin.whatsapp-templates.index', 'label' => __('messages.admin.whatsapp'), 'icon' => 'M20 12a8 8 0 11-15.5-3M4 4l1.5 5L11 8'],
+        ['can' => 'whatsapp.view', 'route' => 'admin.whatsapp-connection.index', 'label' => __('messages.admin.wa_connection'), 'icon' => 'M12 4v4m0 8v4M4 12h4m8 0h4M7 7h3v3H7zM14 14h3v3h-3z'],
         ['can' => 'whatsapp.view', 'route' => 'admin.whatsapp-logs.index', 'label' => __('messages.admin.whatsapp_logs'), 'icon' => 'M20 12a8 8 0 11-15.5-3M4 4l1.5 5L11 8'],
         ['can' => 'payment_gateways.view', 'route' => 'admin.payment-gateways.index', 'label' => __('messages.admin.payment_gateways'), 'icon' => 'M3 10h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2zM7 15h4'],
         ['can' => 'admins.view', 'route' => 'admin.admins.index', 'label' => __('messages.admin.admins'), 'icon' => 'M12 4a4 4 0 100 8 4 4 0 000-8zM4 20c0-4 4-6 8-6s8 2 8 6'],

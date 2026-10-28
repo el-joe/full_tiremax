@@ -2,7 +2,7 @@
     <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-bold">{{ __('messages.admin.whatsapp_logs') }}</h2>
         <x-admin.filter-bar :active="$this->hasActiveFilters()" :total="$items->total()">
-            <x-admin.select wire:model.live="statusFilter" :options="collect(['pending', 'sent', 'delivered', 'read', 'failed'])->map(fn($s) => ['value' => $s, 'label' => __('messages.admin.' . $s)])->all()" :searchable="false" placeholder="{{ __('messages.admin.all_statuses') }}" class="w-40" />
+            <x-admin.select wire:model.live="statusFilter" :options="collect(['pending', 'queued', 'sent', 'delivered', 'read', 'failed'])->map(fn($s) => ['value' => $s, 'label' => __('messages.admin.' . $s)])->all()" :searchable="false" placeholder="{{ __('messages.admin.all_statuses') }}" class="w-40" />
             <x-admin.select wire:model.live="templateFilter" :options="$templates->map(fn($t) => ['value' => $t->id, 'label' => $t->key])->all()" placeholder="{{ __('messages.admin.all_templates') }}" class="w-48" />
             <x-admin.date-range />
         </x-admin.filter-bar>

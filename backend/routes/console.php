@@ -14,4 +14,5 @@ Schedule::command('daftra:sync-products')->everyThirtyMinutes()->when(fn () => D
 Schedule::command('daftra:push-orders')->everyTenMinutes()->withoutOverlapping()->when(fn () => Daftra::isActive());
 Schedule::command('bookings:send-reminders')->dailyAt('09:00');
 Schedule::command('whatsapp:order-notifications')->everyFiveMinutes();
+Schedule::command('whatsapp:flush-queued')->everyFiveMinutes()->withoutOverlapping();
 Schedule::call(fn () => \App\Models\Cart::whereNull('customer_id')->whereNotNull('guest_token')->where('updated_at', '<', now()->subDays(30))->delete())->daily()->name('prune-guest-carts');

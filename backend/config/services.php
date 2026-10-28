@@ -36,6 +36,12 @@ return [
         'from_number' => env('WHATSAPP_FROM_NUMBER'),
     ],
 
+    // Local Node/Baileys process (backend/whatsapp-gateway) holding the QR-linked WhatsApp session
+    'whatsapp_gateway' => [
+        'url'    => env('WA_GATEWAY_URL', 'http://127.0.0.1:3100'),
+        'secret' => env('WA_GATEWAY_SECRET'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

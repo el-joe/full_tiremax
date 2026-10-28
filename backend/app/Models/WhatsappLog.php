@@ -16,6 +16,7 @@ class WhatsappLog extends Model
         'locale',
         'phone',
         'status',
+        'channel',
         'provider_message_id',
         'body',
         'response',
