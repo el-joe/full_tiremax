@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class WhatsappSettings
 {
-    private const DEFAULTS = ['wa_daily_limit' => 0, 'wa_hourly_limit' => 0, 'wa_min_gap' => 4, 'wa_max_gap' => 10];
+    private const DEFAULTS = ['wa_daily_limit' => 200, 'wa_hourly_limit' => 40, 'wa_min_gap' => 4, 'wa_max_gap' => 10];
 
     public static function get(string $key): mixed
     {

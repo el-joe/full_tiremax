@@ -52,22 +52,6 @@ class WhatsappConnectionManager extends Component
         }
     }
 
-    public function saveSettings(): void
-    {
-        $this->authorizePermission('whatsapp.update');
-        $this->validate([
-            'dailyLimit' => 'required|integer|min:0|max:100000',
-            'hourlyLimit' => 'required|integer|min:0|max:10000',
-            'minGap' => 'required|integer|min:1|max:600',
-            'maxGap' => 'required|integer|min:1|max:600|gte:minGap',
-        ]);
-        WhatsappSettings::set('wa_daily_limit', $this->dailyLimit);
-        WhatsappSettings::set('wa_hourly_limit', $this->hourlyLimit);
-        WhatsappSettings::set('wa_min_gap', $this->minGap);
-        WhatsappSettings::set('wa_max_gap', $this->maxGap);
-        $this->notify(__('messages.admin.saved'), 'ok');
-    }
-
     public function sendTest(WhatsappGateway $gateway): void
     {
         $this->authorizePermission('whatsapp.update');

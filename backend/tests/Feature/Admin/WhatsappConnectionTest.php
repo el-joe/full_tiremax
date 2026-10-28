@@ -24,10 +24,8 @@ class WhatsappConnectionTest extends TestCase
 
         Livewire::test(WhatsappConnectionManager::class)
             ->assertSee('data:image/png;base64,AAA', false)
-            ->set('dailyLimit', 5)
-            ->call('saveSettings')->assertHasNoErrors();
+            ->assertSet('dailyLimit', 200);
 
-        $this->assertSame(5, WhatsappSettings::get('wa_daily_limit'));
     }
 
     public function test_qr_provider_sends_then_queues_over_limit(): void
@@ -38,7 +36,7 @@ class WhatsappConnectionTest extends TestCase
             'gw.test/send' => Http::response(['id' => 'ABC']),
         ]);
         $this->seed(WhatsappTemplateSeeder::class);
-        WhatsappSettings::set('wa_daily_limit', 1); // limits are off by default; enable one to test queuing
+        WhatsappSettings::set('wa_daily_limit', 1);
         $key = \App\Models\WhatsappTemplate::first()->key;
 
         $svc = app(WhatsappService::class);

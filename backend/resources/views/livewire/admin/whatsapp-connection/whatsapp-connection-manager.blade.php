@@ -58,19 +58,18 @@
     </div>
 
     @can('whatsapp.update')
-    <form wire:submit="saveSettings" class="bg-stone-900 border border-stone-800 rounded-2xl p-5 space-y-4">
+    <div class="bg-stone-900 border border-stone-800 rounded-2xl p-5 space-y-4">
         <div class="font-bold">{{ __('messages.admin.wa_sending_settings') }}</div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             @foreach ([['dailyLimit', 'wa_daily_limit'], ['hourlyLimit', 'wa_hourly_limit'], ['minGap', 'wa_min_gap'], ['maxGap', 'wa_max_gap']] as [$field, $label])
                 <div>
                     <label class="text-xs text-stone-400">{{ __('messages.admin.' . $label) }}</label>
-                    <input type="number" min="0" wire:model="{{ $field }}" class="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm">
+                    <input type="number" readonly wire:model="{{ $field }}" class="w-full bg-stone-800 opacity-70 cursor-not-allowed border border-stone-700 rounded-lg px-3 py-2 text-sm">
                     @error($field) <p class="text-xs text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
             @endforeach
         </div>
         <p class="text-xs text-stone-500">{{ __('messages.admin.wa_limits_hint') }}</p>
-        <button class="px-4 py-2 rounded-lg bg-yellow-500 text-stone-900 text-sm font-bold">{{ __('messages.admin.save') }}</button>
-    </form>
+    </div>
     @endcan
 </div>
