@@ -1,4 +1,0 @@
-v5.0 update
-
-1. backup all from your server database and files
-2. replace all without .env and uploads folder from root/public (keep .env & uploads folder)
